@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ae:configurations xmlns:ae="http://agavi.org/agavi/config/global/envelope/1.1" xmlns="http://agavi.org/agavi/config/parts/testing/suites/1.0">
+    <ae:configuration>
+        <suites>
+            <suite name="Libraries">
+                <testfiles>
+                    <!-- CouchDbClient - Unit Tests -->
+                    <testfile>unit/lib/database/couchdb/ExtendedCouchDbClientTest.php</testfile>
+
+                    <!-- IEventProxy - Unit Tests -->
+                    <testfile>unit/lib/event/ProjectEventProxyTest.php</testfile>
+                </testfiles>
+            </suite>
+
+            <suite name="Import">
+                <testfiles>
+                    <!-- IImportFactory - Unit Tests -->
+                    <testfile>unit/modules/Import/lib/factory/ImportFactoryConfigTest.class.php</testfile>
+                    <testfile>unit/modules/Import/lib/factory/ImportFactoryTest.class.php</testfile>
+
+                    <!-- IImportConfig - Unit Tests -->
+                    <testfile>unit/modules/Import/lib/config/CouchDbDataImportConfigTest.class.php</testfile>
+
+                    <!-- Run - Fragment Tests -->
+                    <testfile>fragment/Import/Run/RunActionTest.class.php</testfile>
+                    <testfile>fragment/Import/Run/RunSuccessViewTest.class.php</testfile>
+                    <testfile>fragment/Import/Run/RunErrorViewTest.class.php</testfile>
+                </testfiles>
+            </suite>
+
+            <suite name="Workflow">
+                <testfiles>
+                    <!-- Unit Tests -->
+                    <testfile>unit/modules/Workflow/config/WorkflowConfigSyntaxTest.php</testfile>
+                    <testfile>unit/modules/Workflow/lib/NewsWorkflowSupervisorTest.class.php</testfile>
+                    <testfile>unit/modules/Workflow/lib/ticket/WorkflowTicketTest.php</testfile>
+                    <testfile>unit/modules/Workflow/lib/item/WorkflowItemStoreTest.php</testfile>
+                </testfiles>
+            </suite>
+
+            <suite name="News">
+                <testfiles>
+                    <!-- Newswire Import - Unit Tests -->
+                    <testfile>unit/modules/News/lib/import/newswire/DpaNitfDataRecordTest.php</testfile>
+                    <testfile>unit/modules/News/lib/import/newswire/NewswireDataSourceTest.php</testfile>
+
+                    <!-- Rss Import - Unit Tests -->
+                    <testfile>unit/modules/News/lib/import/rss/RssDataSourceTest.php</testfile>
+
+                    <!-- Imperia Import - Unit Tests -->
+                    <testfile>unit/modules/News/lib/import/imperia/PoliceReportDataRecordTest.php</testfile>
+                    <testfile>unit/modules/News/lib/import/imperia/ImperiaDataSourceConfigTest.php</testfile>
+                    <testfile>unit/modules/News/lib/import/imperia/ImperiaDataSourceTest.php</testfile>
+                    <!-- Imperia Import - Fragment Tests -->
+                    <testfile>fragment/News/Import_Imperia/Import_ImperiaActionTest.class.php</testfile>
+                    <testfile>fragment/News/Import_Imperia/Import_ImperiaSuccessViewTest.class.php</testfile>
+                    <testfile>fragment/News/Import_Imperia/Import_ImperiaErrorViewTest.class.php</testfile>
+                    <testfile>fragment/News/Import_Imperia/Import_ImperiaConsoleErrorViewTest.class.php</testfile>
+                    <testfile>fragment/News/Import_Imperia/Import_ImperiaConsoleSuccessViewTest.class.php</testfile>
+
+                    <!-- ProcMail Import - Fragment Tests -->
+                    <testfile>fragment/News/Import_ProcMail/Import_ProcMailActionTest.class.php</testfile>
+                    <testfile>fragment/News/Import_ProcMail/Import_ProcMailSuccessViewTest.class.php</testfile>
+                    <testfile>fragment/News/Import_ProcMail/Import_ProcMailErrorViewTest.class.php</testfile>
+
+                    <!-- List - Fragment Tests -->
+                    <testfile>fragment/News/List/ListActionTest.class.php</testfile>
+                    <!-- List - Flow Tests -->
+                    <testfile>flow/News/ListFlowTest.class.php</testfile>
+
+                    <!-- Statistics - Fragment Tests -->
+                    <testfile>fragment/News/Stats/StatsActionTest.class.php</testfile>
+                    <!-- Statistics - Flow Tests -->
+                    <testfile>flow/News/StatsFlowTest.class.php</testfile>
+
+                    <!-- Plain Edit/Workflow Edit - Fragment Tests -->
+                    <testfile>fragment/News/Edit/EditActionTest.class.php</testfile>
+                    <testfile>fragment/News/Edit/EditWorkflowActionTest.class.php</testfile>
+                    <!-- Workflow Edit - Flow Tests -->
+                    <testfile>flow/News/EditFlowTest.class.php</testfile>
+
+                    <!-- Api - Flow Tests -->
+                    <testfile>fragment/News/Api/ExtractLocationActionTest.class.php</testfile>
+                    <testfile>fragment/News/Api/ExtractDateActionTest.class.php</testfile>
+                </testfiles>
+            </suite>
+
+            <suite name="Shofi">
+                <testfiles>
+                    <!-- Shofi Import - Unit Tests -->
+                    <testfile>unit/modules/Shofi/lib/import/wkg/WkgDataSourceTest.class.php</testfile>
+                    <testfile>unit/modules/Shofi/lib/import/wkg/WkgDataRecordTest.class.php</testfile>
+                    <testfile>unit/modules/Shofi/lib/import/prototype/PrototypeDataRecordTest.class.php</testfile>
+                    <!-- Prototype Import - Fragment Tests -->
+                    <testfile>fragment/Shofi/Import_PrototypeActionTest.class.php</testfile>
+                    <!--
+                    <testfile>unit/modules/Shofi/lib/ContentMachineHttpExportTest.class.php</testfile>
+                    <testfile>fragment/Shofi/Import_PrototypeDeleteActionTest.class.php</testfile>
+                    -->
+                </testfiles>
+            </suite>
+
+            <suite name="Shofi_Categories">
+                <testfiles>
+                    <!-- Shofi Import - Unit Tests -->
+                    <testfile>unit/modules/Shofi_Categories/lib/import/prototype/PrototypeCategoryDataRecordTest.class.php</testfile>
+                    <!-- Prototype Import - Fragment Tests -->
+                    <testfile>fragment/Shofi_Categories/Import_PrototypeCategoriesActionTest.class.php</testfile>
+                </testfiles>
+            </suite>
+        </suites>
+    </ae:configuration>
+</ae:configurations>

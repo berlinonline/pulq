@@ -1,0 +1,378 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ae:configurations xmlns:ae="http://agavi.org/agavi/config/global/envelope/1.1" xmlns="http://agavi.org/agavi/config/parts/settings/1.0"
+                   xmlns:xi="http://www.w3.org/2001/XInclude">
+    <!--
+    ####################
+    DEFAULT
+    ####################
+    -->
+    <ae:configuration>
+        <system_actions>
+            <system_action name="default">
+                <module>Default</module>
+                <action>Index</action>
+            </system_action>
+            <system_action name="error_404">
+                <module>Default</module>
+                <action>Error404</action>
+            </system_action>
+            <system_action name="login">
+                <module>Auth</module>
+                <action>Login</action>
+            </system_action>
+            <system_action name="module_disabled">
+                <module>Default</module>
+                <action>ModuleDisabled</action>
+            </system_action>
+            <system_action name="secure">
+                <module>Default</module>
+                <action>Secure</action>
+            </system_action>
+            <system_action name="unavailable">
+                <module>Default</module>
+                <action>Unavailable</action>
+            </system_action>
+        </system_actions>
+
+        <settings>
+            <setting name="app_name">Midas - Content Refining Middleware</setting>
+            <setting name="available">true</setting>
+            <setting name="debug">false</setting>
+            <setting name="use_database">true</setting>
+            <setting name="use_logging">true</setting>
+            <setting name="use_security">true</setting>
+            <setting name="use_translation">true</setting>
+            <setting name="auth_provider">LdapAuthProvider</setting>
+            <setting name="test_bootstrap_tpl">%core.app_dir%/../testing/TestCaseMethod.tpl</setting>
+        </settings>
+
+        <settings prefix="ldap.">
+            <setting name="host">ldap://localhost</setting>
+            <setting name="base">dc=bo,dc=intern</setting>
+            <setting name="base_user">ou=People,dc=bo,dc=intern</setting>
+            <setting name="base_group">ou=Groups,dc=bo,dc=intern</setting>
+            <setting name="user_search">uid</setting>
+            <setting name="user_name_attr">cn</setting>
+            <setting name="user_email_attr">mail</setting>
+            <setting name="group_search">cn</setting>
+            <setting name="group_object_class">posixGroup</setting>
+            <setting name="group_member_attr">member</setting>
+            <setting name="group_member_attr_is_dn">true</setting>
+            <setting name="group_name_attr">cn</setting>
+            <setting name="group_required">midas.editor</setting>
+        </settings>
+
+        <settings prefix="import.">
+            <setting name="config_dir">%core.modules_dir%/Import/config/</setting>
+        </settings>
+
+        <settings prefix="assets.">
+            <setting name="mime_database">/usr/share/misc/magic.mgc</setting>
+            <setting name="base_dir">%core.app_dir%/../data/assets</setting>
+        </settings>
+
+        <!-- @todo: Move to the concrete module directories and auto include somehow. -->
+        <settings prefix="workflow.">
+            <setting name="workflows">
+                <ae:parameter name="news">%core.module_dir%/News/config/workflow/standard.workflow.xml</ae:parameter>
+                <ae:parameter name="shofi_places">%core.module_dir%/Shofi/config/workflows.xml</ae:parameter>
+                <ae:parameter name="shofi_categories">%core.module_dir%/Shofi_Categories/config/workflows.xml</ae:parameter>
+                <ae:parameter name="shofi_verticals">%core.module_dir%/Shofi_Verticals/config/workflows.xml</ae:parameter>
+            </setting>
+        </settings>
+
+        <!-- move to the news module -->
+        <settings prefix="news.">
+            <!--  News-Import related settings. -->
+            <setting name="import.newswire_dir">/var/tmp/dpa/regio-berlinbrandenburg/</setting>
+            <setting name="imperia.asset_base_href">http://www.berlin.de/</setting>
+            <setting name="imperia.base_url">https://imperia.berlinonline.de/</setting>
+
+            <!--
+                This settings defines the name of the database (databases.xml) connections,
+                that are used by the news module to write(couch) and read(elastic) data.
+                This setting has been introduced to allow switching the used databases at runtime.
+
+            -->
+            <setting name="connections">
+                <ae:parameters>
+                    <ae:parameter name="couchdb">News.Write</ae:parameter>
+                    <ae:parameter name="elasticsearch">News.Read</ae:parameter>
+                </ae:parameters>
+            </setting>
+            <!--
+                These setting specify external urls that we call to get some work done for us.
+            -->
+            <setting name="localize_api_url">http://geoprototype.berlinonline.de/api/query</setting>
+            <setting name="frontend_api_url">http://prodmgm.berlinonline.de/news/api/</setting>
+            <setting name="frontend_sync">off</setting>
+            <!--
+                The tags and categories settings define values that are used as dropdown options
+                by the corresponding form inputs on the news editing page.
+            -->
+            <setting name="tags">
+                <ae:parameters>
+                    <ae:parameter>mitmachen</ae:parameter>
+                    <ae:parameter>neu eröffnet</ae:parameter>
+                    <ae:parameter>geschlossen</ae:parameter>
+                    <ae:parameter>umgezogen</ae:parameter>
+                    <ae:parameter>verlegt</ae:parameter>
+                </ae:parameters>
+            </setting>
+            <setting name="categories">
+                <ae:parameters>
+                    <ae:parameter>Polizeimeldungen</ae:parameter>
+                    <ae:parameter>Kiezleben</ae:parameter>
+                    <ae:parameter>Kiezkultur</ae:parameter>
+                    <ae:parameter>Bekanntmachungen</ae:parameter>
+                    <ae:parameter>Stadtteilentwicklung</ae:parameter>
+                </ae:parameters>
+            </setting>
+        </settings>
+
+        <!-- move to the shofi module -->
+        <settings prefix="shofi.">
+            <setting name="cm_export_url">http://cm-fe.dev/index.php/adressen/midas-import</setting>
+            <setting name="cm_export_enabled">false</setting>
+            <setting name="connections">
+                <ae:parameters>
+                    <ae:parameter name="couchdb">Shofi.Write</ae:parameter>
+                    <ae:parameter name="elasticsearch">Shofi.Read</ae:parameter>
+                </ae:parameters>
+            </setting>
+        </settings>
+
+        <!-- move to the shofi_categories module -->
+        <settings prefix="shofi_categories.">
+            <setting name="cm_export_url">http://cm-fe.dev/index.php/adressen/midas-import</setting>
+            <setting name="cm_export_enabled">false</setting>
+            <setting name="connections">
+                <ae:parameters>
+                    <ae:parameter name="couchdb">Shofi.Write</ae:parameter>
+                    <ae:parameter name="elasticsearch">Shofi.Read</ae:parameter>
+                </ae:parameters>
+            </setting>
+        </settings>
+
+        <!-- move to the shofi_categories module -->
+        <settings prefix="shofi_verticals.">
+            <setting name="connections">
+                <ae:parameters>
+                    <ae:parameter name="couchdb">Shofi.Write</ae:parameter>
+                    <ae:parameter name="elasticsearch">Shofi.Read</ae:parameter>
+                </ae:parameters>
+            </setting>
+        </settings>
+
+        <exception_templates>
+            <exception_template>%core.agavi_dir%/exception/templates/shiny.php</exception_template>
+            <exception_template context="console">%core.agavi_dir%/exception/templates/plaintext.php</exception_template>
+        </exception_templates>
+    </ae:configuration>
+
+    <!--
+    ####################
+    PRODUCTION
+    ####################
+    -->
+    <ae:configuration environment="production-hetzner">
+        <settings prefix="news.">
+            <setting name="frontend_sync">on</setting>
+        </settings>
+    </ae:configuration>
+
+    <!--
+    ####################
+    STAGE
+    ####################
+    -->
+    <ae:configuration environment="stage">
+        <settings prefix="shofi.">
+            <setting name="cm_export_url">http://shofi.berlinonline.de/adressen/midas-import</setting>
+            <setting name="cm_export_enabled">true</setting>
+            <setting name="connections">
+                <ae:parameters>
+                    <ae:parameter name="couchdb">Shofi.Write</ae:parameter>
+                    <ae:parameter name="elasticsearch">Shofi.Read</ae:parameter>
+                </ae:parameters>
+            </setting>
+        </settings>
+    </ae:configuration>
+
+
+    <!--
+    ####################
+    DEVELOPMENT COMMONS
+    ####################
+    -->
+    <ae:configuration environment="development*">
+        <settings>
+            <setting name="debug">true</setting>
+        </settings>
+    </ae:configuration>
+
+
+    <!--
+    ####################
+    BERLINONLINE DEVEL
+    ####################
+    -->
+    <ae:configuration environment=".*bo-devel.*">
+        <settings prefix="ldap.">
+            <setting name="host">ldap://bohome3</setting>
+        </settings>
+        <settings prefix="curl.">
+            <setting name="proxy">proxy:3128</setting>
+        </settings>
+    </ae:configuration>
+
+
+    <!--
+    ####################
+    TAY
+    ####################
+    -->
+    <ae:configuration environment=".*cw-tay.*">
+        <settings>
+            <setting name="debug">true</setting>
+        </settings>
+        <settings prefix="ldap.">
+            <setting name="host">ldap://bohome3</setting>
+        </settings>
+        <settings prefix="curl.">
+            <setting name="proxy">proxy:3128</setting>
+            <!--
+            <setting name="verbose">TRUE</setting>
+            -->
+        </settings>
+        <settings prefix="php.">
+            <setting name="default-stream">
+                <ae:parameter name="http">
+                    <ae:parameter name="user_agent">Midas/0.1</ae:parameter>
+                    <ae:parameter name="proxy">tcp://proxy2:3128</ae:parameter>
+                    <ae:parameter name="request_fulluri">true</ae:parameter>
+                </ae:parameter>
+            </setting>
+        </settings>
+    </ae:configuration>
+
+
+    <!--
+    ####################
+    SHRINK
+    ####################
+    -->
+    <ae:configuration environment=".*development-shrink-work">
+        <settings prefix="curl.">
+            <setting name="proxy">proxy2:3128</setting>
+        </settings>
+        <settings prefix="ldap.">
+            <setting name="host">ldap://bohome3</setting>
+        </settings>
+        <settings prefix="php.">
+            <setting name="default-stream">
+                <ae:parameter name="http">
+                    <ae:parameter name="user_agent">Midas/0.1</ae:parameter>
+                    <ae:parameter name="proxy">tcp://proxy2:3128</ae:parameter>
+                    <ae:parameter name="request_fulluri">true</ae:parameter>
+                </ae:parameter>
+            </setting>
+        </settings>
+    </ae:configuration>
+
+    <ae:configuration environment="development-vagrant">
+        <settings>
+            <setting name="auth_provider">SimpleAuthProvider</setting>
+            <setting name="simple_logins">
+                <ae:parameters>
+                    <ae:parameter name="shrink0r">
+                        <ae:parameter name="pwd">shrink0r</ae:parameter>
+                        <ae:parameter name="attributes">
+                            <ae:parameter name="acl_role">news-editor</ae:parameter>
+                            <ae:parameter name="login">shrink0r</ae:parameter>
+                            <ae:parameter name="name">General Gaff</ae:parameter>
+                            <ae:parameter name="email">general@null.ly</ae:parameter>
+                        </ae:parameter>
+                    </ae:parameter>
+                </ae:parameters>
+            </setting>
+        </settings>
+    </ae:configuration>
+
+
+    <!--
+    ####################
+    TESTING
+    ####################
+    -->
+    <ae:configuration environment="testing.*">
+        <settings prefix="assets.">
+            <setting name="mime_database">/usr/share/misc/magic.mgc</setting>
+            <setting name="base_dir">%core.app_dir%/../data/testing/assets</setting>
+        </settings>
+
+        <settings prefix="curl.">
+            <setting name="timeout">10</setting>
+        </settings>
+
+        <settings>
+            <setting name="fixture_server_url">http://ci.berlinonline.de/fixtures</setting><!-- Testing only setting -->
+            <setting name="fixtures_dir">%core.app_dir%/../testing/fixtures/</setting><!-- Testing only setting -->
+            <setting name="default_context">web</setting>
+            <!-- @todo Nest the logins as auth provider parameters -->
+            <setting name="auth_provider">SimpleAuthProvider</setting>
+            <setting name="simple_logins">
+                <ae:parameters>
+                    <ae:parameter name="general_g">
+                        <ae:parameter name="pwd">n0tf0und</ae:parameter>
+                        <ae:parameter name="attributes">
+                            <ae:parameter name="acl_role">news-editor</ae:parameter>
+                            <ae:parameter name="login">general</ae:parameter>
+                            <ae:parameter name="name">General Gaff</ae:parameter>
+                            <ae:parameter name="email">general@null.ly</ae:parameter>
+                        </ae:parameter>
+                    </ae:parameter>
+                </ae:parameters>
+            </setting>
+        </settings>
+
+        <settings prefix="import.">
+            <setting name="config_dir">%core.app_dir%/../testing/fixtures/Import/config/</setting>
+        </settings>
+
+        <settings prefix="news.">
+            <setting name="import.newswire_dir">%core.app_dir%/../testing/fixtures/News/import/newswire/</setting>
+            <setting name="imperia.category_url"><!-- Testing only setting -->
+                https://imperia.berlinonline.de/cgi-bin/xml_export.pl?catid=/2/10/64/10935/
+            </setting>
+        </settings>
+
+        <settings prefix="shofi.">
+            <setting name="cm_export_enabled">off</setting>
+        </settings>
+    </ae:configuration>
+
+    <ae:configuration environment="testing.development-shrink-work">
+
+         <settings prefix="curl.">
+            <setting name="proxy">proxy2:3128</setting>
+        </settings>
+
+        <settings prefix="shofi.">
+            <setting name="cm_export_url">http://localhost/contentmachine/fe/index.php/adressen/midas-import</setting>
+        </settings>
+    </ae:configuration>
+
+    <xi:include href="%core.module_dir%/Shofi/config/settings.xml"
+        xpointer="xmlns(ae=http://agavi.org/agavi/config/global/envelope/1.1) xpointer(/ae:configurations/*)">
+    </xi:include>
+
+    <xi:include href="%core.module_dir%/Shofi_Categories/config/settings.xml"
+        xpointer="xmlns(ae=http://agavi.org/agavi/config/global/envelope/1.1) xpointer(/ae:configurations/*)">
+    </xi:include>
+
+    <xi:include href="%core.module_dir%/Shofi_Verticals/config/settings.xml"
+        xpointer="xmlns(ae=http://agavi.org/agavi/config/global/envelope/1.1) xpointer(/ae:configurations/*)">
+    </xi:include>
+
+</ae:configurations>

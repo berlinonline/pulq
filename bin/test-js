@@ -1,0 +1,19 @@
+#!/bin/sh
+
+PROJECT=`readlink -f $( dirname $0 )/..`
+LOCAL_CONFIG_SH=$PROJECT/etc/local/local.config.sh
+
+if [ -f $LOCAL_CONFIG_SH ] ; then
+  . $LOCAL_CONFIG_SH
+else
+  echo "[ERROR] Could not source $LOCAL_CONFIG_SH!"
+  echo "Make sure to run bin/configure-env before doing anything else after a fresh checkout"
+fi
+VOWS_COMMAND=`which vows`
+if (test -z "$VOWS_COMMAND") ; then
+  echo "[ERROR] Unable to find a valid vows command!"
+  echo "Have you run bin/configure-env.php allready?"
+  exit 0
+fi
+
+${VOWS_COMMAND} ${@} ${PROJECT}/testing/tests/behavioural/*

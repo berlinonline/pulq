@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project name="ContentWorker" basedir="." default="cc">
+
+    <property name="project.directory" value="${application.startdir}" />
+    <property name="project.directory.etc" value="${application.startdir}/etc" />
+
+    <property userProperty="true" override="true" file="${project.directory.etc}/build/build.properties" />
+	<taskdef name="run" classname="BoPhingRunTask" classpath="${project.directory}/dev/phing"/>
+
+    <target name="cc" description="Clear the config cache.">
+        <echo message="Clearing the config cache." />
+        <run command="bin/clear-cache.sh" dir="${project.directory}"/>
+    </target>
+
+    <target name="phpcs" description="Run the php codesniffer.">
+        <echo message="Running the php codesniffer (phpcs)." />
+        <run command="mkdir -p ${project.directory}/etc/integration/build/logs/" dir="${project.directory}" />
+        <run command="nice bin/phpcs --report=checkstyle --report-file=${project.directory}/etc/integration/build/logs/checkstyle.xml --standard=dev/lint/CodingStandard/BerlinOnline/ruleset.xml --ignore='app/cache*,*Success.php,*Input.php,*Error.php,app/templates/*' ${project.directory}/app" dir="${project.directory}" />
+    </target>
+
+    <target name="test" description="Run the project's testsuite.">
+        <echo message="Running the project's testsuite." />
+        <run command="nice bin/test --configuration testing/config/phpunit.xml" dir="${project.directory}" />
+    </target>
+
+    <target name="phpdoc" description="Generate API documentation using PHPDocumentor." depends="cc">
+        <echo message="Generating the API documentation using PHPDocumentor."/>
+        <run command="/bin/rm -rf etc/integration/build/api/serverside" dir="${project.directory}"/>
+        <run command="/bin/mkdir -p etc/integration/build/api/serverside" dir="${project.directory}"/>
+        <run command="nice bin/phpdoc -c ${project.directory}/app/config/docblox.xml" dir="${project.directory}" />
+    </target>
+
+    <target name="jsdoc" description="Generate Clientside API documentation using jsdoc-toolkit." depends="cc">
+        <echo message="Generating the clientside API documentation."/>
+        <run command="/bin/rm -rf etc/integration/build/api/clientside" dir="${project.directory}"/>
+        <run command="/bin/mkdir -p etc/integration/build/api/clientside" dir="${project.directory}"/>
+        <run command="bin/jsdoc.sh pub/js/midas/* pub/js/midas/items/edit/*" dir="${project.directory}"/>
+    </target>
+
+    <target name="js-xunit" description="Running client side tests with xunit output." depends="cc">
+        <echo message="Running client side tests with xunit output."/>
+        <run command="/bin/rm -rf etc/integration/build/logs/clientside.xml" dir="${project.directory}"/>
+        <run command="/bin/mkdir -p etc/integration/build/logs" dir="${project.directory}"/>
+        <run command="bin/test-js --xunit | cat > etc/integration/build/logs/clientside.xml" dir="${project.directory}"/>
+    </target>
+
+    <target name="js-spec" description="Running client side tests with spec output." depends="cc">
+        <echo message="Running client side tests with spec output."/>
+        <run command="bin/test-js --spec" dir="${project.directory}"/>
+    </target>
+
+    <target name="compile-css" description="Compile our less code into real css.">
+        <echo message="Compiling less syntax into real css."/>
+        <run command="bin/lessc pub/less pub/css" dir="${project.directory}" />
+    </target>
+
+    <target name="watch-css" description="Watch our css code for changes and recompile when they occur.">
+        <echo message="Precompiling once and starting less file watcher."/>
+        <run command="bin/lessc pub/less pub/css -watch" dir="${project.directory}" />
+    </target>
+
+    <target name="import" description="Import messages from all configured sources">
+        <echo message="Import messages"/>
+        <run command="unset DISPLAY; umask 002; rsync --recursive --times --delete ftp@ftp.berlinonline.de:/srv/ftp/dpa/ /var/tmp/dpa/" dir="${project.directory}"/>
+        <run command="chmod -R ug+rwX /var/tmp/dpa/" dir="${project.directory}"/>
+        <run command="bin/cli import.run -i couchdb" dir="${project.directory}"/>
+    </target>
+
+</project>

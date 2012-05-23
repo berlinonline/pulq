@@ -1,0 +1,22 @@
+#!/bin/sh
+
+LOCAL_CONFIG_SH=`dirname $0`/../etc/local/local.config.sh
+
+if [ -f $LOCAL_CONFIG_SH ] ; then
+  . $LOCAL_CONFIG_SH
+else
+  echo "Required config file does not exists: ${LOCAL_CONFIG_SH}"
+  echo "Have you run bin/configure-env.php allready?"
+exit 0
+fi
+
+PHING_DIR="`dirname $0`/../libs/phing/bin"
+
+if (test -z "$PHP_COMMAND") ; then
+  echo "WARNING: PHP_COMMAND environment not set. (Assuming php on PATH)"
+  PHP_COMMAND=`which php`
+  export PHP_COMMAND
+fi
+
+$PHP_COMMAND -d html_errors=off -qC "$PHING_DIR/phing.php" -logger phing.listener.AnsiColorLogger "$@"
+

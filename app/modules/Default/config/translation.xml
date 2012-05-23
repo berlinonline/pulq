@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ae:configurations xmlns:ae="http://agavi.org/agavi/config/global/envelope/1.1" xmlns="http://agavi.org/agavi/config/parts/translation/1.0">
+    <ae:configuration>
+
+        <translators default_domain="default.ui">
+            <translator domain="default">
+                <message_translator class="AgaviSimpleTranslator">
+
+                    <ae:parameter name="ui">
+                        <ae:parameter name="de">
+                            <ae:parameter name="Logout">Abmelden</ae:parameter>
+                            <ae:parameter name="Available Modules">Verfügbare Module</ae:parameter>
+                            <ae:parameter name="News Stream">News Editieren</ae:parameter>
+                            <ae:parameter name="News Stats">News Statistik</ae:parameter>
+                        </ae:parameter>
+                    </ae:parameter>
+
+                    <ae:parameter name="messages">
+                        <ae:parameter name="de">
+<!--                             <ae:parameter name=""></ae:parameter> -->
+                        </ae:parameter>
+                    </ae:parameter>
+
+                </message_translator>
+
+            </translator>
+        </translators>
+
+    </ae:configuration>
+
+</ae:configurations>

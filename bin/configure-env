@@ -1,0 +1,29 @@
+#!/bin/sh
+
+LOCAL_CONFIG_SH=`dirname $0`/../etc/local/local.config.sh
+CMS_CONFIG_SH=`dirname $0`/../../ExoCMS/app/custom/etc/local/local.config.sh
+
+if [ -f $LOCAL_CONFIG_SH ] ; then
+  echo "[INFO] Found and sourcing the local.config.sh"
+  . $LOCAL_CONFIG_SH
+elif [ -f $CMS_CONFIG_SH ] ; then
+  echo "[INFO] Found and sourcing stingray's local.config.sh"
+  . $CMS_CONFIG_SH
+fi
+
+if (test -z "$PHP_COMMAND") ; then
+  echo "[WARNING] Unable to resolve PHP_COMMAND from neither $LOCAL_CONFIG_SH and $CMS_CONFIG_SH."
+  echo "(Assuming php on PATH) `which php`"
+  PHP_COMMAND=`which php`
+  export PHP_COMMAND
+fi
+
+if (test -z "$PHP_COMMAND") ; then
+  echo "[ERROR] Unable to find a valid php command!"
+  echo "Have you run bin/configure-env.php allready?"
+  exit 0
+fi
+
+echo "[Executing] `which rlwrap` $PHP_COMMAND -d html_errors=off -f `dirname $0`/configure-env.php $@"
+PHP_COMMAND=$PHP_COMMAND `which rlwrap` $PHP_COMMAND -d html_errors=off -f "`dirname $0`/configure-env.php" -- "$@"
+

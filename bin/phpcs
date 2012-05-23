@@ -1,0 +1,21 @@
+#!/bin/sh
+
+LOCAL_CONFIG_SH=`dirname $0`/../etc/local/local.config.sh
+
+if [ -f $LOCAL_CONFIG_SH ] ; then
+  echo "[INFO] Found and sourcing the local.config.sh"
+  . $LOCAL_CONFIG_SH
+else
+  echo "[ERROR] Could not source $LOCAL_CONFIG_SH!"
+  echo "Make sure to run bin/configure-env before doing anything else after a fresh checkout"
+fi
+
+if (test -z "$PHP_COMMAND") ; then
+  echo "[ERROR] Unable to find a valid php command!"
+  echo "Have you run bin/configure-env.php allready?"
+  exit 0
+fi
+
+echo "[Executing] `which rlwrap` $PHP_COMMAND -d html_errors=off -f `dirname $0`/phpcs.php $@"
+PHP_COMMAND=$PHP_COMMAND `which rlwrap` $PHP_COMMAND -d html_errors=off -f "`dirname $0`/phpcs.php" -- "$@"
+

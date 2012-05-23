@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ae:configurations
+    xmlns="http://berlinonline.de/schemas/midas/config/access_control/1.0" xmlns:env="http://berlinonline.de/schemas/midas/config/envelope/definition/1.0" xmlns:ae="http://agavi.org/agavi/config/global/envelope/1.1">
+    <ae:configuration>
+        <!-- This is use when you replace AgaviSecurityUser with ProjectZendAclSecurityUser in factories.xml -->
+        <resources>
+            <resource name="NewsWorkflowItem">
+                <description>
+                    Defines a resource that represents the NewsWorkflowItem
+                    and is mostly used to control access through workflow plugins.
+                </description>
+                <actions>
+                    <action>refine_news::read</action>
+                    <action>refine_news::write</action>
+                    <action>publish_news::write</action>
+                    <action>delete_news::write</action>
+                </actions>
+            </resource>
+
+            <resource name="ShofiWorkflowItem">
+                <description>
+                    Defines a resource that represents the ShofiWorkflowItem
+                    and is mostly used to control access through workflow plugins.
+                </description>
+                <actions>
+                    <action>edit_places::read</action>
+                    <action>edit_places::write</action>
+                </actions>
+            </resource>
+
+            <resource name="ShofiCategoriesWorkflowItem">
+                <description>
+                    Defines a resource that represents the ShofiCategoriesWorkflowItem
+                    and is mostly used to control access through workflow plugins.
+                </description>
+                <actions>
+                    <action>shofi_category_edit::read</action>
+                    <action>shofi_category_edit::write</action>
+                </actions>
+            </resource>
+
+            <resource name="ShofiVerticalsWorkflowItem">
+                <description>
+                    Defines a resource that represents the ShofiVerticalsWorkflowItem
+                    and is mostly used to control access through workflow plugins.
+                </description>
+                <actions>
+                    <action>shofi_vertical_edit::read</action>
+                    <action>shofi_vertical_edit::write</action>
+                </actions>
+            </resource>
+        </resources>
+
+        <roles>
+            <role name="user">
+                <description>
+                    An empty user without any permissions.
+                    Serves as a secure base for all users.
+                </description>
+            </role>
+
+            <role name="news-editor" parent="user">
+                <description>
+                    The role that defines the privledges of news-editors.
+                    Has all required rights to read, update and publish news.
+                </description>
+                <members>
+                    <member type="ldap">midas.editor</member>
+                </members>
+                <acl>
+                    <grant>refine_news::read</grant>
+                    <grant if="user_is_item_owner">refine_news::write</grant>
+                    <grant>publish_news::write</grant>
+                    <grant>delete_news::write</grant>
+
+                    <grant>edit_places::read</grant>
+                    <grant>edit_places::write</grant>
+
+                    <grant>shofi_category_edit::read</grant>
+                    <grant>shofi_category_edit::write</grant>
+
+                    <grant>shofi_vertical_edit::read</grant>
+                    <grant>shofi_vertical_edit::write</grant>
+                </acl>
+            </role>
+
+            <role name="news-admin" parent="news-editor">
+                <description>
+                    The news-admin will be responsable for managing system settings
+                    for the news process.
+                </description>
+                <members>
+                    <member type="ldap">midas.cvd</member>
+                </members>
+            </role>
+        </roles>
+
+    </ae:configuration>
+</ae:configurations>

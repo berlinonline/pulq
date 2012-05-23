@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  specific settings for the current working copy
+  
+  file is read by and expanded in the context of ../app/config/settings.xml
+  
+  @version $Id$ 
+-->
+<ae:configurations xmlns:ae="http://agavi.org/agavi/config/global/envelope/1.0" xmlns="http://agavi.org/agavi/config/parts/settings/1.0" xmlns:xi="http://www.w3.org/2001/XInclude">
+    <ae:configuration environment=".*SOME-ENVIRONMENT.*">
+        <settings prefix="some-prefix.">
+            <setting name="some-setting">some-value</setting>
+        </settings>
+    </ae:configuration>
+</ae:configurations>

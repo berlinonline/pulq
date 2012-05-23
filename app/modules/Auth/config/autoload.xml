@@ -1,0 +1,19 @@
+<ae:configurations xmlns="http://agavi.org/agavi/config/parts/autoload/1.1" xmlns:ae="http://agavi.org/agavi/config/global/envelope/1.1" parent="%core.system_config_dir%/autoload.xml">
+    <ae:configuration>
+        <autoloads>
+            <!-- Agavi -->
+            <autoload name="AuthBaseAction">%core.module_dir%/Auth/lib/agavi/action/AuthBaseAction.class.php</autoload>
+            <autoload name="AuthBaseView">%core.module_dir%/Auth/lib/agavi/view/AuthBaseView.class.php</autoload>
+            <!-- /Agavi -->
+
+            <!-- AuthProvider -->
+            <autoload name="IAuthProvider">%core.module_dir%/Auth/lib/auth_provider/IAuthProvider.iface.php</autoload>
+            <autoload name="IAuthResponse">%core.module_dir%/Auth/lib/auth_provider/IAuthResponse.iface.php</autoload>
+            <autoload name="BaseAuthProvider">%core.module_dir%/Auth/lib/auth_provider/BaseAuthProvider.class.php</autoload>
+            <autoload name="SimpleAuthProvider">%core.module_dir%/Auth/lib/auth_provider/SimpleAuthProvider.class.php</autoload>
+            <autoload name="LdapAuthProvider">%core.module_dir%/Auth/lib/auth_provider/LdapAuthProvider.class.php</autoload>
+            <autoload name="AuthResponse">%core.module_dir%/Auth/lib/auth_provider/AuthResponse.class.php</autoload>
+            <!-- /AuthProvider -->
+        </autoloads>
+    </ae:configuration>
+</ae:configurations>

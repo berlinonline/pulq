@@ -1,0 +1,30 @@
+{
+  "author": "",
+  "name": "aaaaa ",
+  "description": "A static file server to make any directory available via HTTP from the command line.",
+  "keywords": ["static", "file", "server", "cli", "command line", "http"],
+  "version": "1.1.0",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/techpriester/statify.js.git"
+  },
+  "bugs": {
+    "url": "https://github.com/techpriester/statify.js/issues"
+  },
+  "licenses": [{
+    "type": "APACHE",
+    "url": "http://www.apache.org/licenses/LICENSE-2.0.txt"
+  }],
+  "main": "statify.js",
+  "engines": {
+    "node": ">= 0.4.12"
+  },
+  "bin": {
+    "statify": "./statify.js"
+  },
+  "dependencies": {
+    "connect": ">=1.8.5",
+    "argsparser": ">=0.0.6"
+  }
+}
+

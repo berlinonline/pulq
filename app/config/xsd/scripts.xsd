@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    targetNamespace="http://agavi.org/agavi/config/global/envelope/1.1"
+    elementFormDefault="qualified">
+
+    <xs:import namespace="http://berlinonline.de/schemas/midas/config/scripts/1.0"
+               schemaLocation="parts/scripts.xsd" />
+
+    <xs:redefine schemaLocation="../../../libs/agavi/config/xsd/_envelope.xsd"
+                 xmlns:scripts="http://berlinonline.de/schemas/midas/config/scripts/1.0">
+        <xs:complexType name="configuration">
+            <xs:complexContent>
+                <xs:extension base="configuration">
+                    <xs:group ref="scripts:configuration" />
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:redefine>
+
+</xs:schema>

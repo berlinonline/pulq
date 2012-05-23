@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ae:configurations xmlns:ae="http://agavi.org/agavi/config/global/envelope/1.1" xmlns="http://agavi.org/agavi/config/parts/translation/1.0">
+    <ae:configuration>
+
+        <translators default_domain="auth.ui">
+            <translator domain="auth">
+                <message_translator class="AgaviSimpleTranslator">
+
+                    <ae:parameter name="ui">
+                        <ae:parameter name="de">
+                            <ae:parameter name="Signin">Anmelden</ae:parameter>
+                            <ae:parameter name="Username">Nutzername</ae:parameter>
+                            <ae:parameter name="Password">Kennwort</ae:parameter>
+                            <ae:parameter name="Sign in using your company account">Melde dich mit deinem Verlagskonto an</ae:parameter>
+                        </ae:parameter>
+                    </ae:parameter>
+
+                    <ae:parameter name="messages">
+                        <ae:parameter name="de">
+                            <ae:parameter name="This combination of username and password is invalid.">Die Kombination von Benutzername und Kennwort ist ungültig.</ae:parameter>
+                            <ae:parameter name="Failed authentication attempt for username %1$s, require group membership of '%2$s'">Fehlende Gruppe '%2$s' für Benutzer '%1$s'.</ae:parameter>
+                            <ae:parameter name="Login Error">Fehler in der Anmeldung</ae:parameter>
+                            <ae:parameter name="ldap authenticaton failed">(Ldap) Authentifizierung fehlgeschlagen</ae:parameter>
+                            <ae:parameter name="The password is either missing or invalid.">Das Passwort fehlt entweder oder ist ungültig.</ae:parameter>
+                            <ae:parameter name="The username is either missing or invalid.">Das Nutzername fehlt entweder oder ist ungültig.</ae:parameter>
+                        </ae:parameter>
+                    </ae:parameter>
+
+                </message_translator>
+
+            </translator>
+        </translators>
+
+    </ae:configuration>
+
+</ae:configurations>

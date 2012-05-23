@@ -1,0 +1,110 @@
+#! /bin/sh
+# This file is part of the Agavi package.
+# Copyright (c) 2005-2011 the Agavi Project.
+#
+# For the full copyright and license information, please view the LICENSE file
+# that was distributed with this source code. You can also view the LICENSE
+# file online at http://www.agavi.org/LICENSE.txt
+
+# Set this to the path to the Agavi installation's source directory. This is
+# the directory that contains the `agavi.php' file.
+
+BASEDIR=`readlink -f "$( dirname $0 )/.."`
+AGAVI_SOURCE_DIRECTORY="${BASEDIR}/libs/agavi"
+LOCAL_CONFIG_SH="${BASEDIR}/etc/local/local.config.sh"
+
+if [ -f $LOCAL_CONFIG_SH ] ; then
+  . $LOCAL_CONFIG_SH
+else
+  echo "Required config file does not exists: ${LOCAL_CONFIG_SH}"
+  echo "Have you run bin/configure-env.php allready?"
+  exit 0
+fi
+
+# Message display shortcuts.
+agavi_message_null()
+{
+	printf "\n"
+}
+
+agavi_message_notice()
+{
+	MESSAGE=$1
+	printf "   [notice] %s\n" "${MESSAGE}"
+}
+
+agavi_message_warning()
+{
+	MESSAGE=$1
+	printf "  [warning] %s\n" "${MESSAGE}"
+}
+
+agavi_message_error()
+{
+	MESSAGE=$1
+	printf "    [error] %s\n" "${MESSAGE}"
+}
+
+agavi_message_fatal()
+{
+	MESSAGE=$1
+	RETURN=$2
+	printf "    [fatal] %s\n" "${MESSAGE}"
+	exit $RETURN
+}
+
+agavi_input()
+{
+	VARIABLE=$1
+	MESSAGE=$2
+	PROMPT=$3
+	printf "        [?] %s%s " "${MESSAGE}" "${PROMPT}"
+	read "${VARIABLE}"
+}
+
+# Initial detection.
+php_executable_exists()
+{
+	if test -x "${PHP_COMMAND}"; then
+		return 0
+	else
+		return 1
+	fi
+}
+
+agavi_directory_exists()
+{
+	if test -d "${AGAVI_SOURCE_DIRECTORY}" -a -e "${AGAVI_SOURCE_DIRECTORY}/agavi.php"; then
+		return 0
+	else
+		return 1
+	fi
+}
+
+until php_executable_exists; do
+	if [ -z "${PHP_COMMAND}" ]; then
+		PHP_COMMAND="(unknown)"
+	fi
+	agavi_message_error "PHP not found at ${PHP_COMMAND}."
+	agavi_message_error "Please set the PHP_COMMAND variable in the script"
+	agavi_message_error "${0} to avoid this message."
+	agavi_message_null
+	agavi_input PHP_COMMAND "Path to PHP executable" ":"
+	agavi_message_null
+done
+
+until agavi_directory_exists; do
+	if [ -z "${AGAVI_SOURCE_DIRECTORY}" ]; then
+		AGAVI_SOURCE_DIRECTORY="(unknown)"
+	fi
+	agavi_message_error "No Agavi installation found in ${AGAVI_SOURCE_DIRECTORY}."
+	agavi_message_error "Please set the AGAVI_SOURCE_DIRECTORY variable in the script"
+	agavi_message_error "${0} to avoid this message."
+	agavi_message_null
+	agavi_input AGAVI_SOURCE_DIRECTORY "Path to Agavi source directory" ":"
+	agavi_message_null
+done
+
+# Call build script.
+`which rlwrap` ${PHP_COMMAND} -d include_path=${BASEDIR}/libs -d memory_limit=4294967295 -f "${AGAVI_SOURCE_DIRECTORY}/build/agavi/script/agavi.php" -- --agavi-source-directory "${AGAVI_SOURCE_DIRECTORY}" "$@"
+

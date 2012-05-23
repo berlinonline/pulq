@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ae:configurations xmlns:ae="http://agavi.org/agavi/config/global/envelope/1.1" xmlns="http://agavi.org/agavi/config/parts/logging/1.0">
+    <ae:configuration>
+
+        <loggers default="app">
+            <!-- logs only DEBUG messages -->
+            <logger name="app" class="AgaviLogger" level="AgaviLogger::ALL ^ AgaviLogger::DEBUG">
+                <appenders>
+                    <appender>ApplicationLogAppender</appender>
+                </appenders>
+            </logger>
+            <logger name="debug" class="AgaviLogger" level="AgaviLogger::DEBUG">
+                <appenders>
+                    <appender>DebugLogAppender</appender>
+                </appenders>
+            </logger>
+            <logger name="error" class="AgaviLogger" level="AgaviLogger::ALL ^ AgaviLogger::DEBUG ^ AgaviLogger::INFO">
+                <appenders>
+                    <appender>ErrorLogAppender</appender>
+                </appenders>
+            </logger>
+            <logger name="login" class="AgaviLogger" level="AgaviLogger::ALL ^ AgaviLogger::DEBUG">
+                <appenders>
+                    <appender>LoginLogAppender</appender>
+                </appenders>
+            </logger>
+        </loggers>
+
+        <appenders>
+            <!--
+                    Debug logs are rotated in a 7 day (AgaviRotatingFileLoggerAppender default) cycle
+                    Use 'cycle' parameter to alter the cycle.
+            -->
+            <appender name="ApplicationLogAppender" class="AgaviRotatingFileLoggerAppender" layout="DateTimeLayout">
+                <ae:parameters>
+                    <ae:parameter name="dir">%core.app_dir%/log/</ae:parameter>
+                    <ae:parameter name="prefix">app-</ae:parameter>
+                </ae:parameters>
+            </appender>
+            <appender name="DebugLogAppender" class="AgaviRotatingFileLoggerAppender" layout="DateTimeLayout">
+                <ae:parameters>
+                    <ae:parameter name="dir">%core.app_dir%/log/</ae:parameter>
+                    <ae:parameter name="prefix">debug-</ae:parameter>
+                </ae:parameters>
+            </appender>
+            <appender name="ErrorLogAppender" class="AgaviRotatingFileLoggerAppender" layout="DateTimeLayout">
+                <ae:parameters>
+                    <ae:parameter name="dir">%core.app_dir%/log/</ae:parameter>
+                    <ae:parameter name="prefix">error-</ae:parameter>
+                </ae:parameters>
+            </appender>
+            <appender name="LoginLogAppender" class="AgaviRotatingFileLoggerAppender" layout="DateTimeLayout">
+                <ae:parameters>
+                    <ae:parameter name="dir">%core.app_dir%/log/</ae:parameter>
+                    <ae:parameter name="prefix">login-</ae:parameter>
+                </ae:parameters>
+            </appender>
+        </appenders>
+
+        <layouts>
+            <layout name="DateTimeLayout" class="AgaviTimestampLoggerLayout"/>
+        </layouts>
+
+    </ae:configuration>
+</ae:configurations>

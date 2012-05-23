@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    This buildfile is part of the ContentWorker (Midas) projekt.
+    It's purpose it to provide an entry point for testing how your current code integrates into the project,
+    thereby providing xml based reports for various aspects of the code such as checkstyle, mess detection,
+    unit testing, the resulting code coverage and a couple more.
+    At the moment there two sorts of tools used with this build file:
+    1. Tools that are included to the project's vendor libraries and ready to use without further setup.
+    2. Tools that must be manually installed on the machine where you want to run the whole build
+
+    @TODO At the moment you need to know that these tools are and which version to install.
+          This build file should provide a setup task, that takes care of that.
+
+    @see http://qualityassuranceinphpprojects.com/pages/tools.html
+-->
+<project name="ContentWorker" default="build" basedir="../../">
+
+    <!--
+        Project property definitions.
+    -->
+    <property name="source" value="${basedir}/app/"/>
+    <property name="build_dir" value="${basedir}/etc/integration/build/"/>
+    <property name="project_bin" value="${basedir}/bin/project"/>
+    <property name="pub_dir" value="${basedir}/pub/"/>
+    <property name="jslint_jar" value="${basedir}/dev/lint/jslint4java/jslint4java-2.0.0.jar"/>
+
+    <!--
+        Initial cleanup task that provides a green field for our integration,
+        thereby removing any previous build data and freshly creating all required sub directories,
+        where you and Jenkins (our CI-Tool) can find all relevant integration/test data.
+    -->
+    <target name="clean" description="Clean up and create artifact directories">
+        <delete dir="${build_dir}/api"/>
+        <delete dir="${build_dir}/code-browser"/>
+        <delete dir="${build_dir}/coverage"/>
+        <delete dir="${build_dir}/logs"/>
+        <delete dir="${build_dir}/pdepend"/>
+
+        <mkdir dir="${build_dir}/api"/>
+        <mkdir dir="${build_dir}/code-browser"/>
+        <mkdir dir="${build_dir}/coverage"/>
+        <mkdir dir="${build_dir}/logs"/>
+        <mkdir dir="${build_dir}/pdepend"/>
+    </target>
+
+    <!--
+        These are tasks that use the vendor libraries, that are shipped with the project such as:
+          - PHPUnit         (http://www.phpunit.de/manual/current/en/)
+          - PHPCodesniffer
+          - PHPDocumentor
+    -->
+    <target name="phpunit" description="Run unit tests using PHPUnit and generates junit.xml and clover.xml">
+        <exec executable="${project_bin}" failonerror="true">
+            <arg value="test" />
+        </exec>
+    </target>
+
+    <target name="phpcs" description="Generate checkstyle.xml using PHP_CodeSniffer">
+        <exec executable="${project_bin}" failonerror="true">
+            <arg value="phpcs" />
+        </exec>
+    </target>
+
+    <target name="phpdoc" description="Generate API documentation using PHPDocumentor">
+        <exec executable="${project_bin}" failonerror="true">
+            <arg value="phpdoc" />
+        </exec>
+    </target>
+    
+    <target name="jsdoc" description="Generate clientside API documentation using jsdoc-toolkit.">
+        <exec executable="${project_bin}" failonerror="true">
+            <arg value="jsdoc" />
+        </exec>
+    </target>
+
+    <!--
+        These are tasks that require certain libraries
+        to be locally available on the machine where the build is run:
+          - PHPDepend   (http://pdepend.org/)
+          - PHPMd       (http://phpmd.org/)
+          - PHPCpd      (https://github.com/sebastianbergmann/phpcpd)
+          - PHPLoc      (https://github.com/sebastianbergmann/phploc)
+          - PHPCb       (http://blog.mayflower.de/archives/464-PHP_CodeBrowser-Release-version-0.1.0.html)
+    -->
+    <target name="pdepend" description="Generate jdepend.xml and software metrics charts using PHP_Depend">
+        <exec executable="pdepend">
+            <arg value="--jdepend-xml=${build_dir}/logs/jdepend.xml" />
+            <arg value="--jdepend-chart=${build_dir}/pdepend/dependencies.svg" />
+            <arg value="--overview-pyramid=${build_dir}/pdepend/overview-pyramid.svg" />
+            <arg path="${source}" />
+        </exec>
+    </target>
+
+    <target name="phpmd" description="Generate pmd.xml using PHPMD">
+        <exec executable="phpmd">
+            <arg path="${source}" />
+            <arg value="xml" />
+            <arg value="codesize,design,naming,unusedcode" />
+            <arg value="--reportfile" />
+            <arg value="${build_dir}/logs/pmd.xml" />
+        </exec>
+    </target>
+
+    <target name="phpcpd" description="Generate pmd-cpd.xml using PHPCPD">
+        <exec executable="phpcpd">
+            <arg value="--log-pmd" />
+            <arg value="${build_dir}/logs/pmd-cpd.xml" />
+            <arg path="${source}" />
+        </exec>
+    </target>
+
+    <target name="phploc" description="Generate phploc.csv">
+        <exec executable="phploc">
+            <arg value="--log-csv" />
+            <arg value="${build_dir}/logs/phploc.csv" />
+            <arg path="${source}" />
+        </exec>
+    </target>
+
+    <target name="phpcb" description="Aggregate tool output with PHP_CodeBrowser">
+        <exec executable="phpcb">
+            <arg value="--log" />
+            <arg path="${build_dir}/logs" />
+            <arg value="--source" />
+            <arg path="${source}" />
+            <arg value="--output" />
+            <arg path="${build_dir}/code-browser" />
+        </exec>
+    </target>
+
+    <!--
+        These are native ant tasks that don't have any dependcies towards other libs than java.
+    -->
+    <target name="phpunit_to_xunit">
+        <xslt in="${build_dir}/logs/phpunit.xml" out="${build_dir}/logs/junit.xml" style="${basedir}/etc/integration/phpunit.xsl"/>
+    </target>
+
+    <target name="jslint" description="Run the JSLint tool on JS files">
+        <fileset dir="${pub_dir}/js/" id="jsfiles.raw">
+            <include name="**/*.js" />
+            <!-- Exclude all minified files and vendor libraries. -->
+            <exclude name="**/*.min.js" />
+            <exclude name="**/libs/*.js" />
+        </fileset>
+        <pathconvert pathsep=" " targetos="unix" property="jsfiles.clean" refid="jsfiles.raw" />
+        <echo message="${jsfiles.clean}" />
+        <exec executable="java" output="${build_dir}/logs/jslint.xml">
+            <arg line="-jar ${jslint_jar} --report xml ${jsfiles.clean}" />
+        </exec>
+    </target>
+
+    <target name="parallelTasks" description="Run the pdepend, phpmd, phpcpd, phpcs, phpdoc and phploc tasks in parallel using a maximum of 2 threads.">
+        <parallel threadCount="2">
+            <sequential>
+                <antcall target="pdepend"/>
+                <antcall target="phpmd"/>
+            </sequential>
+            <antcall target="phpcpd"/>
+            <antcall target="phpcs"/>
+            <antcall target="phpdoc"/>
+            <antcall target="phploc"/>
+            <antcall target="jsdoc"/>
+        </parallel>
+    </target>
+
+    <target name="build" depends="clean,parallelTasks,phpunit,phpunit_to_xunit,phpcb"/>
+</project>

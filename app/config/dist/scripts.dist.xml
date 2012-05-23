@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ae:configurations
+    xmlns="http://berlinonline.de/schemas/midas/config/scripts/1.0"
+    xmlns:ae="http://agavi.org/agavi/config/global/envelope/1.1"
+    xmlns:xi="http://www.w3.org/2001/XInclude">
+    <ae:configuration>
+
+        <packages>
+            <package name="core">
+                <javascripts>
+                    <script>js/libs/jquery-1.6.4.js</script>
+                    <script>js/libs/jquery-ui-1.8.13.js</script>
+                </javascripts>
+
+                <stylesheets>
+                    <script>css/reset.css</script>
+                    <script>css/fonts.css</script>
+                    <script>css/screen.css</script>
+                    <script>css/jquery-ui.1.8.13.custom.css</script>
+                </stylesheets>
+            </package>
+
+            <package name="plugins" depends="core">
+                <javascripts>
+                    <script>js/plugins.js</script>
+                </javascripts>
+
+                <stylesheets>
+                    <script>css/plugins.css</script>
+                </stylesheets>
+            </package>
+
+            <package name="custom" depends="plugins">
+                <javascripts>
+                    <script>js/plugins.js</script>
+                </javascripts>
+            </package>
+        </packages>
+
+        <deployments>
+            <deployment viewpath="*"> <!-- require the core package for all views -->
+                <package ref="core" />
+            </deployment>
+
+            <deployment viewpath="items.edit.*"> <!-- require the plugins package for all views of the Item module's EditAction.. -->
+                <package ref="custom" />
+
+                <javascripts>
+                    <script>js/edit.js</script>
+                </javascripts>
+            </deployment>
+        </deployments>
+
+    </ae:configuration>
+</ae:configurations>

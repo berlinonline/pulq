@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ae:configurations xmlns:ae="http://agavi.org/agavi/config/global/envelope/1.1" xmlns="http://agavi.org/agavi/config/parts/config_handlers/1.1" xmlns:xi="http://www.w3.org/2001/XInclude" parent="%core.system_config_dir%/config_handlers.xml">
+    <ae:configuration>
+        <handlers>
+
+            <handler pattern="%core.module_dir%/*/*.validate.xml" class="AgaviValidatorConfigHandler">
+                <validation>%core.agavi_dir%/config/xsd/validators.xsd</validation>
+                <transformation>%core.agavi_dir%/config/xsl/validators.xsl</transformation>
+            </handler>
+
+            <handler pattern="%core.module_dir%/*/*.cache.xml" class="AgaviCachingConfigHandler">
+                <validation>%core.agavi_dir%/config/xsd/caching.xsd</validation>
+                <transformation>%core.agavi_dir%/config/xsl/caching.xsl</transformation>
+            </handler>
+
+            <handler pattern="%core.config_dir%/scripts.xml" class="ProjectScriptsConfigHandler">
+                <validation>%core.config_dir%/xsd/scripts.xsd</validation>
+            </handler>
+
+            <handler pattern="%core.config_dir%/access_control.xml" class="ProjectAclConfigHandler">
+                <validation>%core.config_dir%/xsd/access_control.xsd</validation>
+            </handler>
+
+            <!-- Default -->
+            <!--
+
+            So validiert man testdatei.xml
+
+            <handler pattern="subdir/testdatei.xml" class="AgaviReturnArrayConfigHandler" />
+
+                Validierung mit xsd file
+
+            <handler pattern="subdir/testdatei.xml" class="AgaviReturnArrayConfigHandler" />
+                <validation>%core.config_dir%/xsd/foo_definition.xsd</validation/>
+            </handler>
+
+            -->
+
+        </handlers>
+    </ae:configuration>
+
+    <xi:include href="%core.app_dir%/modules/Import/config/config_handlers.xml"
+         xpointer="xmlns(ae=http://agavi.org/agavi/config/global/envelope/1.1) xpointer(/ae:configurations/*)">
+    </xi:include>
+
+    <!-- include workflow config handlers -->
+    <xi:include href="%core.app_dir%/modules/Workflow/config/config_handlers.xml"
+         xpointer="xmlns(ae=http://agavi.org/agavi/config/global/envelope/1.1) xpointer(/ae:configurations/*)">
+    </xi:include>
+
+</ae:configurations>

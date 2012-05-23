@@ -1,0 +1,20 @@
+#!/bin/sh
+
+LOCAL_CONFIG_SH=`dirname $0`/../etc/local/local.config.sh
+
+if [ -f $LOCAL_CONFIG_SH ] ; then
+  . $LOCAL_CONFIG_SH
+else
+  echo "Required config file does not exists: ${LOCAL_CONFIG_SH}"
+  echo "Have you run bin/configure-env.php allready?"
+exit 0
+fi
+BASE_DIR="`dirname $0`/.."
+LESS_BIN="`readlink -f ${BASE_DIR}`/dev/less-compile/bin/lessw.js"
+
+if (test -z "$LESS_BIN") ; then
+  echo "WARNING: executable not found at location: '$LESS_BIN'"
+  exit 1
+fi
+
+node $LESS_BIN "$@"

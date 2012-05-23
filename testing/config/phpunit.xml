@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit backupGlobals="true"
+         backupStaticAttributes="false"
+         colors="true"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true"
+         forceCoversAnnotation="false"
+         mapTestClassNameToCoveredClassName="false"
+         processIsolation="false"
+         stopOnError="false"
+         stopOnFailure="false"
+         stopOnIncomplete="false"
+         stopOnSkipped="false"
+         syntaxCheck="false"
+         strict="false"
+         verbose="false">
+    <logging>
+        <log type="coverage-html" target="../../etc/integration/build/coverage" title="ContentWorker" charset="UTF-8" yui="true" highlight="true" lowUpperBound="35" highLowerBound="70"/>
+        <log type="coverage-clover" target="../../etc/integration/build/logs/clover.xml"/>
+        <log type="junit" target="../../etc/integration/build/logs/phpunit.xml" logIncompleteSkipped="false"/>
+        <pmd>
+            <rule class="PHPUnit_Util_Log_PMD_Rule_Project_CRAP" threshold="5,30"/>
+            <rule class="PHPUnit_Util_Log_PMD_Rule_Class_DepthOfInheritanceTree" threshold="6"/>
+            <rule class="PHPUnit_Util_Log_PMD_Rule_Class_EfferentCoupling" threshold="20"/>
+            <rule class="PHPUnit_Util_Log_PMD_Rule_Class_ExcessiveClassLength" threshold="500"/>
+            <rule class="PHPUnit_Util_Log_PMD_Rule_Class_ExcessivePublicCount" threshold="20"/>
+            <rule class="PHPUnit_Util_Log_PMD_Rule_Class_TooManyFields" threshold="15"/>
+            <rule class="PHPUnit_Util_Log_PMD_Rule_Class_TooManyMethods" threshold="20"/>
+            <rule class="PHPUnit_Util_Log_PMD_Rule_Function_CodeCoverage" threshold="35,70"/>
+            <rule class="PHPUnit_Util_Log_PMD_Rule_Function_CRAP" threshold="30"/>
+            <rule class="PHPUnit_Util_Log_PMD_Rule_Function_CyclomaticComplexity" threshold="20"/>
+            <rule class="PHPUnit_Util_Log_PMD_Rule_Function_ExcessiveMethodLength" threshold="100"/>
+            <rule class="PHPUnit_Util_Log_PMD_Rule_Function_ExcessiveParameterList" threshold="10"/>
+            <rule class="PHPUnit_Util_Log_PMD_Rule_Function_NPathComplexity" threshold="200"/>
+        </pmd>
+    </logging>
+    <filter>
+        <whitelist>
+            <directory suffix=".php">../../app/models</directory>
+            <directory suffix=".php">../../app/lib</directory>
+            <directory suffix=".php">../../app/modules/Import/</directory>
+            <directory suffix=".php">../../app/modules/Workflow/</directory>
+            <directory suffix=".php">../../app/modules/News/</directory>
+            <directory suffix=".php">../../app/modules/Shofi/</directory>
+            <directory suffix=".php">../../testing/</directory>
+            <exclude>
+                <!--
+                    Fixtures are not executed during test runtime and therefore are excluded from the code coverage.
+                -->
+                <directory>../../app/modules/Import/impl/Fixtures/</directory>
+                <directory suffix="Success.php">../../app/</directory>
+                <directory suffix="Input.php">../../app/</directory>
+                <directory suffix="Error.php">../../app/</directory>
+                <file>../../app/modules/Shofi/impl/Edit/CoreItem.php</file>
+                <file>../../app/modules/Shofi/impl/Edit/DetailItem.php</file>
+                <file>../../app/modules/Shofi/impl/Edit/SalesItem.php</file>
+                <directory suffix="Error.php">../../app/</directory>
+                <directory>../fixtures/</directory>
+            </exclude>
+        </whitelist>
+    </filter>
+</phpunit>

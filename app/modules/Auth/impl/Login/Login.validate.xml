@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ae:configurations xmlns="http://agavi.org/agavi/config/parts/validators/1.1"
+    xmlns:ae="http://agavi.org/agavi/config/global/envelope/1.1"
+    parent="%core.app_dir%/config/validators.xml">
+
+    <ae:configuration>
+
+        <validators method="write">
+            <validator class="string" translation_domain='auth.messages'>
+                <argument>username</argument>
+                <ae:parameter name="min">3</ae:parameter>
+                <ae:parameter name="max">50</ae:parameter>
+                <error>The username is either missing or invalid.</error>
+            </validator>
+
+            <validator class="string" translation_domain='auth.messages'>
+                <argument>password</argument>
+                <ae:parameter name="min">7</ae:parameter>
+                <ae:parameter name="max">50</ae:parameter>
+                <error>The password is either missing or invalid.</error>
+            </validator>
+
+        </validators>
+
+        <validators method="read">
+            <validator class="string" translation_domain='auth.messages' required="false">
+                <argument>username</argument>
+                <ae:parameter name="min">3</ae:parameter>
+                <ae:parameter name="max">50</ae:parameter>
+                <error>The username is invalid.</error>
+            </validator>
+
+            <validator class="string" translation_domain='auth.messages' required="false">
+                <argument>password</argument>
+                <ae:parameter name="min">7</ae:parameter>
+                <ae:parameter name="max">50</ae:parameter>
+                <error>The password is invalid.</error>
+            </validator>
+
+        </validators>
+
+    </ae:configuration>
+
+</ae:configurations>

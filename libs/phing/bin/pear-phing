@@ -1,0 +1,25 @@
+#!/bin/sh
+
+# ------------------------------------------------------------------------
+# The phing build script for Unix based systems
+# $Id: pear-phing 478 2009-07-29 17:25:59Z mrook $
+# ------------------------------------------------------------------------
+
+# Change this to reflect your environment if the default value doesn't work
+PHP_COMMAND="/usr/bin/php"
+export PHP_COMMAND
+CUR_DIR=`dirname $0`
+
+# -------------------------------------------------------------------------
+# Do not change anything below this line unless you know what you're doing.
+# -------------------------------------------------------------------------
+
+if (test -z "$PHP_COMMAND") ; then
+	echo "WARNING: PHP_COMMAND environment not set. (Assuming php on PATH)"
+	PHP_COMMAND=php
+	export PHP_COMMAND
+fi
+
+PHP_CLASSPATH=$CUR_DIR/..
+
+$PHP_COMMAND -d html_errors=off -qC "$CUR_DIR/phing.php" -logger phing.listener.AnsiColorLogger "$@"

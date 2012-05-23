@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ae:configurations xmlns:ae="http://agavi.org/agavi/config/global/envelope/1.1" xmlns="http://agavi.org/agavi/config/parts/factories/1.0">
+
+    <ae:configuration>
+
+        <controller class="AgaviController" />
+
+        <database_manager class="AgaviDatabaseManager" />
+
+        <dispatch_filter class="AgaviDispatchFilter" />
+
+        <execution_container class="AgaviExecutionContainer" />
+
+        <execution_filter class="ProjectExecutionFilter" />
+
+        <filter_chain class="AgaviFilterChain" />
+
+        <logger_manager class="AgaviLoggerManager" />
+
+        <request class="AgaviWebRequest" />
+
+        <response class="AgaviWebResponse">
+            <ae:parameters>
+                <ae:parameter name="send_content_length">false</ae:parameter>
+            </ae:parameters>
+        </response>
+
+        <routing class="AgaviWebRouting" />
+
+        <security_filter class="AgaviSecurityFilter" />
+
+        <storage class="AgaviSessionStorage" />
+
+        <user class="AgaviSecurityUser" />
+        <!--<user class="ProjectZendAclSecurityUser" />-->
+
+        <translation_manager class="AgaviTranslationManager" />
+
+        <validation_manager class="AgaviValidationManager" />
+
+    </ae:configuration>
+
+    <ae:configuration environment="development.vagrant.*">
+        
+        <request class="AgaviWebRequest">
+            <ae:parameters>
+                <ae:parameter name="sources">
+                    <ae:parameter name="SERVER_NAME">localhost</ae:parameter>
+                    <ae:parameter name="SERVER_PORT">8080</ae:parameter>
+                </ae:parameter>
+            </ae:parameters>
+        </request>
+
+    </ae:configuration>
+
+    <ae:configuration context="console">
+
+        <request class="AgaviConsoleRequest">
+            <ae:parameter name="read_stdin">on</ae:parameter>
+            <ae:parameter name="stdin_file_name">stdin_buffer_filepath</ae:parameter>
+        </request>
+
+        <response class="AgaviConsoleResponse" />
+
+        <routing class="AgaviConsoleRouting" />
+
+        <user class="ProjectZendAclSecurityUser" />
+
+    </ae:configuration>
+
+    <ae:configuration context="web" environment="testing.*">
+
+        <request class="AgaviWebRequest">
+			<!-- static values for unit tests -->
+            <ae:parameter name="sources">
+                <ae:parameter name="HTTPS" />
+                <ae:parameter name="REQUEST_METHOD">GET</ae:parameter>
+                <ae:parameter name="SERVER_NAME">testing.berlinonline.de</ae:parameter>
+                <ae:parameter name="SERVER_PORT">80</ae:parameter>
+                <ae:parameter name="SERVER_PROTOCOL">HTTP/1.1</ae:parameter>
+            </ae:parameter>
+        </request>
+
+    </ae:configuration>
+
+</ae:configurations>

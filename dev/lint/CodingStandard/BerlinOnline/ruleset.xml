@@ -1,0 +1,99 @@
+<?xml version="1.0"?>
+<ruleset name="BerlinOnline">
+    <description>The BerlinOnline coding standard carved into xml and php.</description>
+
+
+    <!--
+        Classes - Standards for formatting class files.
+    -->
+    <rule ref="Generic.Classes.DuplicateClassName" />
+
+
+    <!--
+        CodeAnalysis - Sniffs for detecting bad code logic.
+    -->
+    <rule ref="Generic.CodeAnalysis.EmptyStatement" />
+    <rule ref="Generic.CodeAnalysis.ForLoopShouldBeWhileLoop" />
+    <rule ref="Generic.CodeAnalysis.JumbledIncrementer" />
+    <rule ref="Generic.CodeAnalysis.UnconditionalIfStatement" />
+    <rule ref="Generic.CodeAnalysis.UnnecessaryFinalModifier" />
+    <rule ref="Generic.CodeAnalysis.UnusedFunctionParameter" />
+    <rule ref="Generic.CodeAnalysis.UselessOverridingMethod" />
+
+
+    <!--
+        ControlStructures - Sniffs for detecting non-compliant control structures.
+    -->
+    <rule ref="Generic.ControlStructures.InlineControlStructure" />
+
+
+    <!--
+        Files - Standards for file/line metrics.
+    -->
+    <rule ref="Generic.Files.LineLength">
+        <properties>
+            <property name="lineLimit" value="120"/>
+            <property name="absoluteLineLimit" value="160"/>
+        </properties>
+    </rule>
+    <rule ref="Generic.Files.LineEndings">
+        <properties>
+            <property name="eolChar" value="\n"/>
+        </properties>
+    </rule>
+
+
+    <!--
+        Formatting - Common code formatting rules.
+    -->
+    <rule ref="Generic.Formatting.DisallowMultipleStatements" />
+    <rule ref="Generic.Formatting.NoSpaceAfterCast" />
+
+
+    <!--
+        Functions - Common function format rules.
+    -->
+    <rule ref="Generic.Functions.CallTimePassByReference" />
+    <rule ref="Generic.Functions.OpeningFunctionBraceBsdAllman" />
+
+
+    <!--
+        Metrics - Detection of too complex or deep code structures.
+    -->
+    <rule ref="Generic.Metrics.CyclomaticComplexity">
+        <properties>
+            <property name="complexity" value="10"/>
+            <property name="absoluteComplexity" value="20"/>
+        </properties>
+    </rule>
+    <rule ref="Generic.Metrics.NestingLevel">
+        <properties>
+            <property name="nestingLevel" value="5"/>
+            <property name="absoluteNestingLevel" value="10"/>
+        </properties>
+    </rule>
+
+
+    <!--
+        NamingConventions - Coding standard rules for naming conventions.
+    -->
+    <rule ref="Generic.NamingConventions.ConstructorName" />
+    <rule ref="Generic.NamingConventions.UpperCaseConstantName" />
+
+
+    <!--
+        WhiteSpace rules (get it? ^^)
+    -->
+    <rule ref="Generic.WhiteSpace.DisallowTabIndent" />
+
+    <!--
+        PHP Specific - Php dedicated code checks.
+    -->
+    <rule ref="Generic.PHP.ForbiddenFunctions" />
+    <rule ref="Generic.PHP.DisallowShortOpenTag" />
+    <rule ref="Generic.PHP.ForbiddenFunctions" />
+    <rule ref="Generic.PHP.UpperCaseConstant" />
+    <rule ref="Generic.PHP.NoSilencedErrors" />
+    <rule ref="Squiz.PHP.Eval" />
+
+</ruleset>
