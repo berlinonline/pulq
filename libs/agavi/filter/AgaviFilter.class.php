@@ -28,7 +28,7 @@
  *
  * @since      0.9.0
  *
- * @version    $Id: AgaviFilter.class.php 4810 2011-08-18 15:55:10Z david $
+ * @version    $Id: AgaviFilter.class.php 4667 2011-05-20 12:34:58Z david $
  */
 abstract class AgaviFilter extends AgaviParameterHolder implements AgaviIFilter
 {
@@ -67,6 +67,20 @@ abstract class AgaviFilter extends AgaviParameterHolder implements AgaviIFilter
 		$this->context = $context;
 
 		$this->setParameters($parameters);
+	}
+	
+	/**
+	 * The default "execute once" method, which just calls the regular one.
+	 *
+	 * @param      AgaviFilterChain        A FilterChain instance.
+	 * @param      AgaviExecutionContainer The current execution container.
+	 *
+	 * @author     David Zülke <dz@bitxtender.com>
+	 * @since      0.11.0
+	 */
+	public function executeOnce(AgaviFilterChain $filterChain, AgaviExecutionContainer $container)
+	{
+		$this->execute($filterChain, $container);
 	}
 	
 	/**

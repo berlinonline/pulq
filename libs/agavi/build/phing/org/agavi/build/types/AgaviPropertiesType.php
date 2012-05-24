@@ -13,7 +13,7 @@
 // |   End:                                                                    |
 // +---------------------------------------------------------------------------+
 
-require_once(__DIR__ . '/AgaviType.php');
+require_once(dirname(__FILE__) . '/AgaviType.php');
 
 /**
  * Represents any property-holding data.
@@ -27,7 +27,7 @@ require_once(__DIR__ . '/AgaviType.php');
  *
  * @since      1.0.0
  *
- * @version    $Id: AgaviPropertiesType.php 4669 2011-05-25 20:53:42Z david $
+ * @version    $Id: AgaviPropertiesType.php 4667 2011-05-20 12:34:58Z david $
  */
 abstract class AgaviPropertiesType extends AgaviType
 {

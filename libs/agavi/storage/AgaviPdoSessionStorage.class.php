@@ -52,7 +52,7 @@
  *
  * @since      0.11.0
  *
- * @version    $Id: AgaviPdoSessionStorage.class.php 4679 2011-06-05 15:56:27Z david $
+ * @version    $Id: AgaviPdoSessionStorage.class.php 4674 2011-06-05 15:13:05Z david $
  */
 class AgaviPdoSessionStorage extends AgaviSessionStorage
 {
@@ -156,7 +156,7 @@ class AgaviPdoSessionStorage extends AgaviSessionStorage
 			return true;
 		} catch(PDOException $e) {
 			$error = sprintf('PDOException was thrown when trying to manipulate session data. Message: "%s"', $e->getMessage());
-			throw new AgaviDatabaseException($error, 0, $e);
+			throw new AgaviDatabaseException($error);
 		}
 	}
 
@@ -213,7 +213,7 @@ class AgaviPdoSessionStorage extends AgaviSessionStorage
 			return true;
 		} catch(PDOException $e) {
 			$error = sprintf('PDOException was thrown when trying to manipulate session data. Message: "%s"', $e->getMessage());
-			throw new AgaviDatabaseException($error, 0, $e);
+			throw new AgaviDatabaseException($error);
 		}
 	}
 
@@ -301,7 +301,7 @@ class AgaviPdoSessionStorage extends AgaviSessionStorage
 			return '';
 		} catch(PDOException $e) {
 			$error = sprintf('PDOException was thrown when trying to manipulate session data. Message: "%s"', $e->getMessage());
-			throw new AgaviDatabaseException($error, 0, $e);
+			throw new AgaviDatabaseException($error);
 		}
 	}
 
@@ -410,7 +410,7 @@ class AgaviPdoSessionStorage extends AgaviSessionStorage
 		} catch(PDOException $e) {
 			$this->connection->rollback();
 			$error = sprintf('PDOException was thrown when trying to manipulate session data. Message: "%s"', $e->getMessage());
-			throw new AgaviDatabaseException($error, 0, $e);
+			throw new AgaviDatabaseException($error);
 		}
 		
 		return true;

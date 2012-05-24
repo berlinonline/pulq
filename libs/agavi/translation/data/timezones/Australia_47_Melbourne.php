@@ -2,7 +2,7 @@
 
 /**
  * Data file for timezone "Australia/Melbourne".
- * Compiled from olson file "australasia", version 8.27.
+ * Compiled from olson file "australasia", version 8.29.
  *
  * @package    agavi
  * @subpackage translation
@@ -12,7 +12,7 @@
  *
  * @since      0.11.0
  *
- * @version    $Id: Australia_47_Melbourne.php 4822 2011-10-07 20:52:10Z david $
+ * @version    $Id: Australia_47_Melbourne.php 4833 2011-11-01 11:40:11Z david $
  */
 
 return array (
@@ -484,7 +484,7 @@ return array (
     'startYear' => 2008,
   ),
   'source' => 'australasia',
-  'version' => '8.27',
+  'version' => '8.29',
   'name' => 'Australia/Melbourne',
 );
 

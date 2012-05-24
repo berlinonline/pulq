@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ae:configurations xmlns:ae="http://agavi.org/agavi/config/global/envelope/1.1" xmlns="http://agavi.org/agavi/config/parts/autoload/1.1">
+<ae:configurations xmlns:ae="http://agavi.org/agavi/config/global/envelope/1.0" xmlns="http://agavi.org/agavi/config/parts/autoload/1.0">
 	<ae:configuration>
 		<autoloads>
 
@@ -48,6 +48,8 @@
 			<autoload name="AgaviXmlConfigDomNotation">%core.agavi_dir%/config/util/dom/AgaviXmlConfigDomNotation.class.php</autoload>
 			<autoload name="AgaviXmlConfigDomProcessingInstruction">%core.agavi_dir%/config/util/dom/AgaviXmlConfigDomProcessingInstruction.class.php</autoload>
 			<autoload name="AgaviXmlConfigDomText">%core.agavi_dir%/config/util/dom/AgaviXmlConfigDomText.class.php</autoload>
+			<autoload name="AgaviXmlConfigXsltProcessor">%core.agavi_dir%/config/util/xsl/AgaviXmlConfigXsltProcessor.class.php</autoload>
+			<autoload name="AgaviXmlConfigSchematronProcessor">%core.agavi_dir%/config/util/schematron/AgaviXmlConfigSchematronProcessor.class.php</autoload>
 			<autoload name="AgaviXmlConfigHandler">%core.agavi_dir%/config/AgaviXmlConfigHandler.class.php</autoload>
 			<autoload name="AgaviXmlConfigParser">%core.agavi_dir%/config/AgaviXmlConfigParser.class.php</autoload>
 
@@ -63,6 +65,8 @@
 			<autoload name="AgaviContext">%core.agavi_dir%/core/AgaviContext.class.php</autoload>
 
 			<!-- agavi/database -->
+			<autoload name="AgaviAdodbDatabase">%core.agavi_dir%/database/AgaviAdodbDatabase.class.php</autoload>
+			<autoload name="AgaviCreoleDatabase">%core.agavi_dir%/database/AgaviCreoleDatabase.class.php</autoload>
 			<autoload name="AgaviDatabase">%core.agavi_dir%/database/AgaviDatabase.class.php</autoload>
 			<autoload name="AgaviDatabaseManager">%core.agavi_dir%/database/AgaviDatabaseManager.class.php</autoload>
 			<autoload name="AgaviDoctrine2Database">%core.agavi_dir%/database/AgaviDoctrine2Database.class.php</autoload>
@@ -77,6 +81,7 @@
 			<autoload name="AgaviPropelDatabase">%core.agavi_dir%/database/AgaviPropelDatabase.class.php</autoload>
 			<autoload name="AgaviSqlsrvDatabase">%core.agavi_dir%/database/AgaviSqlsrvDatabase.class.php</autoload>
 			<autoload name="AgaviZendclouddocumentserviceDatabase">%core.agavi_dir%/database/AgaviZendclouddocumentserviceDatabase.class.php</autoload>
+			<autoload name="Propel">%core.agavi_dir%/database/AgaviPropelAutoload.php</autoload>
 
 			<!-- agavi/date -->
 			<autoload name="AgaviCalendar">%core.agavi_dir%/date/AgaviCalendar.class.php</autoload>
@@ -188,7 +193,6 @@
 
 			<!-- agavi/routing -->
 			<autoload name="AgaviConsoleRouting">%core.agavi_dir%/routing/AgaviConsoleRouting.class.php</autoload>
-			<autoload name="AgaviHttpRedirectRoutingCallback">%core.agavi_dir%/routing/AgaviHttpRedirectRoutingCallback.class.php</autoload>
 			<autoload name="AgaviILegacyRoutingCallback">%core.agavi_dir%/routing/AgaviILegacyRoutingCallback.interface.php</autoload>
 			<autoload name="AgaviIRoutingSource">%core.agavi_dir%/routing/AgaviIRoutingSource.interface.php</autoload>
 			<autoload name="AgaviIRoutingValue">%core.agavi_dir%/routing/AgaviIRoutingValue.interface.php</autoload>
@@ -203,6 +207,7 @@
 			<autoload name="AgaviXmlrpcepiphpRouting">%core.agavi_dir%/routing/AgaviXmlrpcepiphpRouting.class.php</autoload>
 
 			<!-- agavi/storage -->
+			<autoload name="AgaviCreoleSessionStorage">%core.agavi_dir%/storage/AgaviCreoleSessionStorage.class.php</autoload>
 			<autoload name="AgaviMysqlSessionStorage">%core.agavi_dir%/storage/AgaviMysqlSessionStorage.class.php</autoload>
 			<autoload name="AgaviNullStorage">%core.agavi_dir%/storage/AgaviNullStorage.class.php</autoload>
 			<autoload name="AgaviPdoSessionStorage">%core.agavi_dir%/storage/AgaviPdoSessionStorage.class.php</autoload>
@@ -238,11 +243,8 @@
 			<autoload name="AgaviDecimalFormatter">%core.agavi_dir%/util/AgaviDecimalFormatter.class.php</autoload>
 			<autoload name="AgaviInflector">%core.agavi_dir%/util/AgaviInflector.class.php</autoload>
 			<autoload name="AgaviParameterHolder">%core.agavi_dir%/util/AgaviParameterHolder.class.php</autoload>
-			<autoload name="AgaviSchematronProcessor">%core.agavi_dir%/util/AgaviSchematronProcessor.class.php</autoload>
 			<autoload name="AgaviToolkit">%core.agavi_dir%/util/AgaviToolkit.class.php</autoload>
 			<autoload name="AgaviVirtualArrayPath">%core.agavi_dir%/util/AgaviVirtualArrayPath.class.php</autoload>
-			<autoload name="AgaviRecursiveDirectoryFilterIterator">%core.agavi_dir%/util/AgaviRecursiveDirectoryFilterIterator.class.php</autoload>
-			<autoload name="AgaviXsltProcessor">%core.agavi_dir%/util/AgaviXsltProcessor.class.php</autoload>
 
 			<!-- agavi/validator -->
 			<autoload name="AgaviAndoperatorValidator">%core.agavi_dir%/validator/AgaviAndoperatorValidator.class.php</autoload>
@@ -300,6 +302,7 @@
 			
 			<autoload name="AgaviTestSuite">%core.agavi_dir%/testing/AgaviTestSuite.class.php</autoload>
 			
+			<autoload name="AgaviBaseConstraintBecausePhpunitSucksAtBackwardsCompatibility">%core.agavi_dir%/testing/AgaviBaseConstraintBecausePhpunitSucksAtBackwardsCompatibility.class.php</autoload>
 			<autoload name="AgaviConstraintActionHandlesMethod">%core.agavi_dir%/testing/PHPUnit/Constraint/AgaviConstraintActionHandlesMethod.php</autoload>
 			<autoload name="AgaviConstraintViewHandlesOutputType">%core.agavi_dir%/testing/PHPUnit/Constraint/AgaviConstraintViewHandlesOutputType.php</autoload>
 		</autoloads>

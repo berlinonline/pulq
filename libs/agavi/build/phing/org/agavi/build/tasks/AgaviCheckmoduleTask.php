@@ -13,7 +13,7 @@
 // |   End:                                                                    |
 // +---------------------------------------------------------------------------+
 
-require_once(__DIR__ . '/AgaviTask.php');
+require_once(dirname(__FILE__) . '/AgaviTask.php');
 
 /**
  * Validates that a given directory is a module directory for a project.
@@ -27,7 +27,7 @@ require_once(__DIR__ . '/AgaviTask.php');
  *
  * @since      1.0.0
  *
- * @version    $Id: AgaviCheckmoduleTask.php 4669 2011-05-25 20:53:42Z david $
+ * @version    $Id: AgaviCheckmoduleTask.php 4667 2011-05-20 12:34:58Z david $
  */
 class AgaviCheckmoduleTask extends AgaviTask
 {
@@ -78,7 +78,7 @@ class AgaviCheckmoduleTask extends AgaviTask
 		}
 		
 		$check = new AgaviModuleFilesystemCheck();
-		$check->setConfigDirectory($this->project->getProperty('module.config.directory'));
+		$check->setConfigDirectory($this->project->getProperty('module.directory.config'));
 		
 		$check->setPath($this->path->getAbsolutePath());
 		if($check->check()) {

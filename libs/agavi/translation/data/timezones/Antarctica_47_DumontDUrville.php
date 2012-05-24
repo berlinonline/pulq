@@ -12,7 +12,7 @@
  *
  * @since      0.11.0
  *
- * @version    $Id: Antarctica_47_DumontDUrville.php 4782 2011-07-23 21:13:33Z david $
+ * @version    $Id: Antarctica_47_DumontDUrville.php 4758 2011-06-28 15:53:22Z david $
  */
 
 return array (

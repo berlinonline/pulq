@@ -25,7 +25,7 @@
  *
  * @since      1.0.6
  *
- * @version    $Id: AgaviTwigRenderer.class.php 4782 2011-07-23 21:13:33Z david $
+ * @version    $Id: AgaviTwigRenderer.class.php 4746 2011-06-23 23:46:52Z david $
  */
 class AgaviTwigRenderer extends AgaviRenderer implements AgaviIReusableRenderer
 {

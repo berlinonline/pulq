@@ -27,7 +27,7 @@
  *
  * @since      0.11.0
  *
- * @version    $Id: AgaviDoctrineDatabase.class.php 4806 2011-08-18 15:34:08Z david $
+ * @version    $Id: AgaviDoctrineDatabase.class.php 4837 2011-11-07 12:50:19Z david $
  */
 class AgaviDoctrineDatabase extends AgaviDatabase
 {
@@ -63,7 +63,7 @@ class AgaviDoctrineDatabase extends AgaviDatabase
 	 */
 	public function getResource()
 	{
-		return $this->connection->getDbh();
+		return $this->getConnection()->getDbh();
 	}
 
 	/**
@@ -90,10 +90,6 @@ class AgaviDoctrineDatabase extends AgaviDatabase
 		}
 		
 		$is12 = version_compare(Doctrine::VERSION, '1.2', '>=');
-		
-		if(!$is12) {
-		  trigger_error('Support for Doctrine versions older than 1.2 is deprecated and will be removed in Agavi 1.2.', E_USER_DEPRECATED);
-		}
 		
 		// in any case, it's loaded now. maybe we need to register the autoloading stuff for it!
 		// we need this list further down
@@ -221,7 +217,7 @@ class AgaviDoctrineDatabase extends AgaviDatabase
 			}
 		} catch(Doctrine_Exception $e) {
 			// the connection's foobar'd
-			throw new AgaviDatabaseException($e->getMessage(), 0, $e);
+			throw new AgaviDatabaseException($e->getMessage());
 		}
 	}
 	

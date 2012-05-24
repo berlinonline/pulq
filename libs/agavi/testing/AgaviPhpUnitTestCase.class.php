@@ -15,8 +15,8 @@
 
 /**
  * AgaviPhpUnitTestCase is the base class for all Agavi Testcases.
- *
- *
+ * 
+ * 
  * @package    agavi
  * @subpackage testing
  *
@@ -25,7 +25,7 @@
  *
  * @since      1.0.0
  *
- * @version    $Id: AgaviPhpUnitTestCase.class.php 4725 2011-06-16 20:36:18Z david $
+ * @version    $Id: AgaviPhpUnitTestCase.class.php 4717 2011-06-16 18:47:41Z david $
  */
 abstract class AgaviPhpUnitTestCase extends PHPUnit_Framework_TestCase
 {
@@ -33,22 +33,22 @@ abstract class AgaviPhpUnitTestCase extends PHPUnit_Framework_TestCase
 	 * @var        string  the name of the environment to bootstrap in isolated tests.
 	 */
 	protected $isolationEnvironment;
-
+	
 	/**
 	 * @var        string  the name of the default context to use in isolated tests.
 	 */
 	protected $isolationDefaultContext;
-
+	
 	/**
 	 * @var         bool if the cache in the isolated process should be cleared
 	 */
 	protected $clearIsolationCache = false;
-
+	
 	/**
 	 * set the environment to bootstrap in isolated tests
-	 *
+	 * 
 	 * @param        string the name of the environment
-	 *
+	 * 
 	 * @author       Felix Gilcher <felix.gilcher@bitextender.com>
 	 *
 	 * @since        1.0.0
@@ -57,13 +57,13 @@ abstract class AgaviPhpUnitTestCase extends PHPUnit_Framework_TestCase
 	{
 		$this->isolationEnvironment = $environmentName;
 	}
-
-
+	
+	
 	/**
 	 * get the environment to bootstrap in isolated tests
-	 *
+	 * 
 	 * @return       string the name of the isolation environment
-	 *
+	 * 
 	 * @author       Felix Gilcher <felix.gilcher@bitextender.com>
 	 *
 	 * @since        1.0.2
@@ -71,9 +71,9 @@ abstract class AgaviPhpUnitTestCase extends PHPUnit_Framework_TestCase
 	public function getIsolationEnvironment()
 	{
 		$environmentName = null;
-
+		
 		$annotations = $this->getAnnotations();
-
+		
 		if(!empty($annotations['method']['agaviIsolationEnvironment'])) {
 			$environmentName = $annotations['method']['agaviIsolationEnvironment'][0];
 		} elseif(!empty($annotations['class']['agaviIsolationEnvironment'])) {
@@ -81,16 +81,16 @@ abstract class AgaviPhpUnitTestCase extends PHPUnit_Framework_TestCase
 		} elseif(!empty($this->isolationEnvironment)) {
 			$environmentName = $this->isolationEnvironment;
 		}
-
+		
 		return $environmentName;
 	}
-
-
+	
+	
 	/**
 	 * set the default context to use in isolated tests
-	 *
+	 * 
 	 * @param        string the name of the context
-	 *
+	 * 
 	 * @author       Felix Gilcher <felix.gilcher@bitextender.com>
 	 *
 	 * @since        1.0.2
@@ -99,13 +99,13 @@ abstract class AgaviPhpUnitTestCase extends PHPUnit_Framework_TestCase
 	{
 		$this->isolationDefaultContext = $contextName;
 	}
-
-
+	
+	
 	/**
 	 * get the default context to use in isolated tests
-	 *
+	 * 
 	 * @return       string the default context to use in isolated tests
-	 *
+	 * 
 	 * @author       Felix Gilcher <felix.gilcher@bitextender.com>
 	 *
 	 * @since        1.0.2
@@ -113,9 +113,9 @@ abstract class AgaviPhpUnitTestCase extends PHPUnit_Framework_TestCase
 	public function getIsolationDefaultContext()
 	{
 		$ctxName = null;
-
+		
 		$annotations = $this->getAnnotations();
-
+		
 		if(!empty($annotations['method']['agaviIsolationDefaultContext'])) {
 			$ctxName = $annotations['method']['agaviIsolationDefaultContext'][0];
 		} elseif(!empty($annotations['class']['agaviIsolationDefaultContext'])) {
@@ -123,16 +123,16 @@ abstract class AgaviPhpUnitTestCase extends PHPUnit_Framework_TestCase
 		} elseif(!empty($this->isolationDefaultContext)) {
 			$ctxName = $this->isolationDefaultContext;
 		}
-
+		
 		return $ctxName;
 	}
-
-
+	
+	
 	/**
 	 * set whether the cache should be cleared for the isolated subprocess
-	 *
+	 * 
 	 * @param        bool true if the cache should be cleared
-	 *
+	 * 
 	 * @author       Felix Gilcher <felix.gilcher@bitextender.com>
 	 *
 	 * @since        1.0.2
@@ -141,13 +141,13 @@ abstract class AgaviPhpUnitTestCase extends PHPUnit_Framework_TestCase
 	{
 		$this->clearIsolationCache = (bool)$flag;
 	}
-
-
+	
+	
 	/**
 	 * check whether to clear the cache in isolated tests
-	 *
+	 * 
 	 * @return       bool true if the cache is cleared in isolated tests
-	 *
+	 * 
 	 * @author       Felix Gilcher <felix.gilcher@bitextender.com>
 	 *
 	 * @since        1.0.2
@@ -155,9 +155,9 @@ abstract class AgaviPhpUnitTestCase extends PHPUnit_Framework_TestCase
 	public function getClearCache()
 	{
 		$flag = null;
-
+		
 		$annotations = $this->getAnnotations();
-
+		
 		if(!empty($annotations['method']['agaviClearIsolationCache'])) {
 			$flag = true;
 		} elseif(!empty($annotations['class']['agaviClearIsolationCache'])) {
@@ -165,11 +165,10 @@ abstract class AgaviPhpUnitTestCase extends PHPUnit_Framework_TestCase
 		} else {
 			$flag = $this->clearIsolationCache;
 		}
-
+		
 		return $flag;
 	}
-
-
+	
 	/**
 	 * Performs custom preparations on the process isolation template.
 	 *
@@ -181,38 +180,38 @@ abstract class AgaviPhpUnitTestCase extends PHPUnit_Framework_TestCase
 	protected function prepareTemplate(Text_Template $template)
 	{
 		parent::prepareTemplate($template);
-
+		
 		$vars = array(
 			'agavi_environment' => '',
 			'agavi_default_context' => '',
 			'agavi_clear_cache' => 'false', // literal strings required for proper template rendering
 		);
-
+		
 		if(null !== ($env = $this->getIsolationEnvironment())) {
 			$vars['agavi_environment'] = $env;
 		}
-
+		
 		if(null !== ($ctx = $this->getIsolationDefaultContext())) {
 			$vars['agavi_default_context'] = $ctx;
 		}
-
+		
 		if($this->getClearCache()) {
 			$vars['agavi_clear_cache'] = 'true'; // literal strings required for proper template rendering
 		}
-
+		
 		$template->setVar($vars);
-
+		
 		$templateFile = $this->getTemplateFile();
 		if(null !== $templateFile) {
 			$template->setFile($templateFile);
 		}
 	}
-
+	
 	/**
 	 * Returns the template file to use.
-	 *
+	 * 
 	 * @return       string the full template path, null for the phpunit standard template
-	 *
+	 * 
 	 * @author       Felix Gilcher <felix.gilcher@bitextender.com>
 	 *
 	 * @since        1.0.2
@@ -220,18 +219,18 @@ abstract class AgaviPhpUnitTestCase extends PHPUnit_Framework_TestCase
 	protected function getTemplateFile()
 	{
 		if($this->doBootstrap()) {
-            $defaultFile = AgaviConfig::get('core.agavi_dir') . DIRECTORY_SEPARATOR . 'testing' . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . 'TestCaseMethod.tpl';
-            return AgaviConfig::get('core.test_bootstrap_tpl', $defaultFile);
+			return AgaviConfig::get('core.agavi_dir') . DIRECTORY_SEPARATOR . 'testing' . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . 'TestCaseMethod.tpl';
 		}
-
+		
 		return null;
 	}
-
+	
+	
 	/**
 	 * Whether or not an agavi bootstrap should be done in isolation.
-	 *
+	 * 
 	 * @return       boolean true if agavi should be bootstrapped
-	 *
+	 * 
 	 * @author       Felix Gilcher <felix.gilcher@bitextender.com>
 	 *
 	 * @since        1.0.2
@@ -239,7 +238,7 @@ abstract class AgaviPhpUnitTestCase extends PHPUnit_Framework_TestCase
 	protected function doBootstrap()
 	{
 		$flag = true;
-
+			
 		$annotations = $this->getAnnotations();
 		if(!empty($annotations['method']['agaviBootstrap'])) {
 			$flag = AgaviToolkit::literalize($annotations['method']['agaviBootstrap'][0]);
@@ -248,5 +247,4 @@ abstract class AgaviPhpUnitTestCase extends PHPUnit_Framework_TestCase
 		}
 		return $flag;
 	}
-
 }

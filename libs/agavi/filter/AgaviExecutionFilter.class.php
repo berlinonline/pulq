@@ -28,7 +28,7 @@
  *
  * @since      0.9.0
  *
- * @version    $Id: AgaviExecutionFilter.class.php 4669 2011-05-25 20:53:42Z david $
+ * @version    $Id: AgaviExecutionFilter.class.php 4847 2011-11-12 11:36:01Z david $
  */
 class AgaviExecutionFilter extends AgaviFilter implements AgaviIActionFilter
 {
@@ -237,7 +237,7 @@ class AgaviExecutionFilter extends AgaviFilter implements AgaviIActionFilter
 			
 			if(is_object($val) && is_callable(array($val, '__toString'))) {
 				$val = $val->__toString();
-			} elseif(is_object($val) && function_exists('spl_object_hash')) {
+			} elseif(is_object($val)) {
 				$val = spl_object_hash($val);
 			}
 			
@@ -423,7 +423,7 @@ class AgaviExecutionFilter extends AgaviFilter implements AgaviIActionFilter
 				if(isset($rememberTheView) && $actionCache != $rememberTheView) {
 					// yup. clear it!
 					$ourClass = get_class($this);
-					$ourClass::clearCache($groups);
+					call_user_func(array($ourClass, 'clearCache'), $groups);
 				}
 				
 				// check if the returned view is cacheable
@@ -437,7 +437,7 @@ class AgaviExecutionFilter extends AgaviFilter implements AgaviIActionFilter
 					if(isset($rememberTheView)) {
 						// yup. clear it!
 						$ourClass = get_class($this);
-						$ourClass::clearCache($groups);
+						call_user_func(array($ourClass, 'clearCache'), $groups);
 					}
 					// $lm->log('Returned View is not cleared for caching, setting cacheable status to false.');
 				} else {
@@ -627,7 +627,7 @@ class AgaviExecutionFilter extends AgaviFilter implements AgaviIActionFilter
 								}
 							}
 							// set the presentation data as a template attribute
-							AgaviArrayPathDefinition::setValue($slotName, $output, $slotResponse->getContent());
+							$output[$slotName] = $slotResponse->getContent();
 							// and merge the other slot's response (this used to be conditional and done only when the content was not null)
 							// $lm->log('Merging in response from slot "' . $slotName . '"...');
 							$response->merge($slotResponse);
@@ -636,7 +636,6 @@ class AgaviExecutionFilter extends AgaviFilter implements AgaviIActionFilter
 							'container' => $container,
 							'inner' => $nextOutput,
 							'request_data' => $container->getRequestData(),
-							'response' => $response,
 							'validation_manager' => $container->getValidationManager(),
 							'view' => $viewInstance,
 						);

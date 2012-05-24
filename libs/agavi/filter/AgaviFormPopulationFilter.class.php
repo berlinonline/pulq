@@ -38,9 +38,9 @@
  *
  * @since      0.11.0
  *
- * @version    $Id: AgaviFormPopulationFilter.class.php 4810 2011-08-18 15:55:10Z david $
+ * @version    $Id: AgaviFormPopulationFilter.class.php 4886 2011-12-11 20:42:58Z david $
  */
-class AgaviFormPopulationFilter extends AgaviFilter implements AgaviIGlobalFilter
+class AgaviFormPopulationFilter extends AgaviFilter implements AgaviIGlobalFilter, AgaviIActionFilter
 {
 	const ENCODING_UTF_8 = 'utf-8';
 
@@ -73,7 +73,7 @@ class AgaviFormPopulationFilter extends AgaviFilter implements AgaviIGlobalFilte
 	 * @author     David Zülke <dz@bitxtender.com>
 	 * @since      0.11.0
 	 */
-	public function execute(AgaviFilterChain $filterChain, AgaviExecutionContainer $container)
+	public function executeOnce(AgaviFilterChain $filterChain, AgaviExecutionContainer $container)
 	{
 		$filterChain->execute($container);
 		$response = $container->getResponse();
@@ -272,14 +272,27 @@ class AgaviFormPopulationFilter extends AgaviFilter implements AgaviIGlobalFilte
 
 		$forms = array();
 		if(is_array($populate)) {
-			$query = array();
-			foreach(array_keys($populate) as $id) {
+			$queries = array();
+			foreach($populate as $id => $data) {
 				if(is_string($id)) {
-					$query[] = sprintf('@id="%s"', $id);
+					$id = sprintf('@id="%s"', $id);
+					if($data === true) {
+						// prepend to the array to give re-populates preferential treatment, see #1461
+						array_unshift($queries, $id);
+					} else {
+						$queries[] = $id;
+					}
 				}
 			}
-			if($query) {
-				$forms = $this->xpath->query(sprintf('//%1$sform[%2$s]', $this->xmlnsPrefix, implode(' or ', $query)));
+			if($queries) {
+				// we must assemble the array by hand as neither '//form[@id="foo"] or //form[@id="bar"]' nor '//form[@id="foo"] || //form[@id="bar"]' will order the elements as given in the query (order of element in the document is used instead and that can be a problem for error insertion, see #1461)
+				$forms = array();
+				foreach($queries as $query) {
+					$form = $this->xpath->query(sprintf('//%1$sform[%2$s]', $this->xmlnsPrefix, $query));
+					if($form->length) {
+						$forms[] = $form->item(0);
+					}
+				}
 			}
 		} else {
 			$forms = $this->xpath->query(sprintf('//%1$sform[@action]', $this->xmlnsPrefix));
@@ -619,7 +632,19 @@ class AgaviFormPopulationFilter extends AgaviFilter implements AgaviIGlobalFilte
 					$this->doc->documentElement->setAttributeNode($attribute);
 				}
 			}
-			$out = $this->doc->saveXML(null, $cfg['savexml_options']);
+			if(strpos(PHP_VERSION, '5.2.6') === 0) { // check like this so 5.2.6-0.dotdeb.yourmom is also matched
+				// PHP 5.2.6 does not accept null as the first argument to saveXML()
+				// as a workaround, the whole document can be passed, but then it is saved as UTF-8, no matter what, so that won't work for other charsets
+				if(!$cfg['savexml_options']) {
+					$out = $this->doc->saveXML();
+				} elseif($utf8) {
+					$out = $this->doc->saveXML($this->doc, $cfg['savexml_options']);
+				} else {
+					throw new AgaviException("On systems running PHP version 5.2.6, the parameter 'savexml_options' cannot be used in combination with input documents that have a character set other than UTF-8. Please see the following tickets for details:\n\n- http://trac.agavi.org/ticket/1372\n- http://trac.agavi.org/ticket/1279\n- http://bugs.php.net/46191\n- http://trac.agavi.org/ticket/1262");
+				}
+			} else {
+				$out = $this->doc->saveXML(null, $cfg['savexml_options']);
+			}
 			if((!$cfg['parse_xhtml_as_xml'] || !$properXhtml) && $cfg['cdata_fix']) {
 				// these are ugly fixes so inline style and script blocks still work. better don't use them with XHTML to avoid trouble
 				// http://www.456bereastreet.com/archive/200501/the_perils_of_using_xhtml_properly/

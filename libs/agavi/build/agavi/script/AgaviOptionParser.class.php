@@ -13,7 +13,7 @@
 // |   End:                                                                    |
 // +---------------------------------------------------------------------------+
 
-require_once(__DIR__ . '/AgaviOptionException.class.php');
+require_once(dirname(__FILE__) . '/AgaviOptionException.class.php');
 
 /**
  * Parses input options and arguments to the Agavi script.
@@ -27,7 +27,7 @@ require_once(__DIR__ . '/AgaviOptionException.class.php');
  *
  * @since      1.0.0
  *
- * @version    $Id: AgaviOptionParser.class.php 4669 2011-05-25 20:53:42Z david $
+ * @version    $Id: AgaviOptionParser.class.php 4667 2011-05-20 12:34:58Z david $
  */
 class AgaviOptionParser
 {

@@ -22,3 +22,6 @@
 [submodule "libs/phpDocumentor2"]
 	path = libs/phpDocumentor2
 	url = https://github.com/phpDocumentor/phpDocumentor2.git
+[submodule "libs/phing"]
+	path = libs/phing
+	url = https://github.com/phingofficial/phing.git

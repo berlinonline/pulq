@@ -30,7 +30,7 @@
  *
  * @since      0.9.0
  *
- * @version    $Id: AgaviSecurityFilter.class.php 4822 2011-10-07 20:52:10Z david $
+ * @version    $Id: AgaviSecurityFilter.class.php 4799 2011-08-13 18:32:34Z david $
  */
 class AgaviSecurityFilter extends AgaviFilter implements AgaviIActionFilter, AgaviISecurityFilter
 {

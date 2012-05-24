@@ -25,7 +25,7 @@
  *
  * @since      1.0.0
  *
- * @version    $Id: AgaviTidyFilter.class.php 4830 2011-10-13 14:48:12Z david $
+ * @version    $Id: AgaviTidyFilter.class.php 4667 2011-05-20 12:34:58Z david $
  */
 class AgaviTidyFilter extends AgaviFilter implements AgaviIGlobalFilter
 {
@@ -40,7 +40,7 @@ class AgaviTidyFilter extends AgaviFilter implements AgaviIGlobalFilter
 	 * @author     David Zülke <david.zuelke@bitextender.com>
 	 * @since      1.0.0
 	 */
-	public function execute(AgaviFilterChain $filterChain, AgaviExecutionContainer $container)
+	public function executeOnce(AgaviFilterChain $filterChain, AgaviExecutionContainer $container)
 	{
 		// nothing to do so far. let's carry on in the chain
 		$filterChain->execute($container);

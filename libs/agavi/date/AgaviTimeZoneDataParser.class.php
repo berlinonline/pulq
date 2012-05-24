@@ -26,7 +26,7 @@
  *
  * @since      0.11.0
  *
- * @version    $Id: AgaviTimeZoneDataParser.class.php 4669 2011-05-25 20:53:42Z david $
+ * @version    $Id: AgaviTimeZoneDataParser.class.php 4667 2011-05-20 12:34:58Z david $
  */
 class AgaviTimeZoneDataParser
 {
@@ -88,6 +88,21 @@ class AgaviTimeZoneDataParser
 	}
 
 	/**
+	 * Checks whether a line is all empty or only comment
+	 *
+	 * @param      string The line to check.
+	 *
+	 * @param      bool Whether the line is empty or only consists of a comment.
+	 *
+	 * @author     Dominik del Bondio <ddb@bitxtender.com>
+	 * @since      0.11.0
+	 */
+	public static function commentFilter($line)
+	{
+		return !(strlen(trim($line)) == 0 || preg_match('!^\s*#!', $line));
+	}
+
+	/**
 	 * Parses the given file
 	 *
 	 * @param      string The full path to the file to parse.
@@ -111,7 +126,7 @@ class AgaviTimeZoneDataParser
 		
 		$zoneLines = explode("\n", $data);
 		// filter comments
-		$zoneLines = array_filter($zoneLines, function($line) { return !(strlen(trim($line)) == 0 || preg_match('!^\s*#!', $line)); });
+		$zoneLines = array_filter($zoneLines, array(__CLASS__, 'commentFilter'));
 
 		$zones = array();
 		$rules = array();

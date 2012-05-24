@@ -2,7 +2,7 @@
 
 /**
  * Data file for timezone "America/Anguilla".
- * Compiled from olson file "northamerica", version 8.49.
+ * Compiled from olson file "northamerica", version 8.51.
  *
  * @package    agavi
  * @subpackage translation
@@ -12,7 +12,7 @@
  *
  * @since      0.11.0
  *
- * @version    $Id: America_47_Anguilla.php 4824 2011-10-07 21:00:24Z david $
+ * @version    $Id: America_47_Anguilla.php 4833 2011-11-01 11:40:11Z david $
  */
 
 return array (
@@ -41,7 +41,7 @@ return array (
     'startYear' => 1913,
   ),
   'source' => 'northamerica',
-  'version' => '8.49',
+  'version' => '8.51',
   'name' => 'America/Anguilla',
 );
 

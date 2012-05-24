@@ -27,7 +27,7 @@
  *
  * @since      0.9.0
  *
- * @version    $Id: AgaviToolkit.class.php 4669 2011-05-25 20:53:42Z david $
+ * @version    $Id: AgaviToolkit.class.php 4667 2011-05-20 12:34:58Z david $
  */
 final class AgaviToolkit
 {
@@ -323,7 +323,7 @@ final class AgaviToolkit
 			$oldvalue = $value;
 			$value = preg_replace_callback(
 				'/\%([\w\.]+?)\%/',
-				function($matches) { return AgaviConfig::get($matches[1], '%' . $matches[1] . '%'); },
+				array('AgaviToolkit', 'expandDirectivesCallback'),
 				$value
 			);
 		} while($oldvalue != $value);
@@ -331,6 +331,21 @@ final class AgaviToolkit
 		return $value;
 	}
 	
+	/**
+	 * preg_replace_callback used in AgaviTookit::expandDirectives()
+	 *
+	 * @param      array An array of matches; index 1 is used.
+	 *
+	 * @return     string A value to use for replacement.
+	 *
+	 * @author     David Zülke <dz@bitxtender.com>
+	 * @since      0.11.0
+	 */
+	private static function expandDirectivesCallback($matches)
+	{
+		return AgaviConfig::get($matches[1], '%' . $matches[1] . '%');
+	}
+
 	/**
 	 * This function takes the numerator and divides it through the denominator while
 	 * storing the remainder and returning the quotient.

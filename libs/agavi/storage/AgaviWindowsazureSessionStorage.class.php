@@ -36,7 +36,7 @@
  *
  * @since      1.0.4
  *
- * @version    $Id: AgaviWindowsazureSessionStorage.class.php 4669 2011-05-25 20:53:42Z david $
+ * @version    $Id: AgaviWindowsazureSessionStorage.class.php 4667 2011-05-20 12:34:58Z david $
  */
 class AgaviWindowsazureSessionStorage extends AgaviSessionStorage
 {

@@ -27,7 +27,7 @@
  *
  * @since      0.11.0
  *
- * @version    $Id: AgaviWebRequestDataHolder.class.php 4808 2011-08-18 15:44:58Z david $
+ * @version    $Id: AgaviWebRequestDataHolder.class.php 4667 2011-05-20 12:34:58Z david $
  */
 class AgaviWebRequestDataHolder extends AgaviRequestDataHolder implements AgaviICookiesRequestDataHolder, AgaviIFilesRequestDataHolder, AgaviIHeadersRequestDataHolder
 {
@@ -615,7 +615,7 @@ class AgaviWebRequestDataHolder extends AgaviRequestDataHolder implements AgaviI
 		}
 		$sub = AgaviArrayPathDefinition::getValue($fromIndex, $input);
 		$theIndices = array();
-		foreach(array('name', 'type', 'size', 'tmp_name', 'error', 'is_uploaded_file', 'contents') as $name) {
+		foreach(array('name', 'type', 'size', 'tmp_name', 'error', 'is_uploaded_file') as $name) {
 			$theIndex = $fromIndex;
 			$first = array_shift($theIndex);
 			array_shift($theIndex);
@@ -628,18 +628,18 @@ class AgaviWebRequestDataHolder extends AgaviRequestDataHolder implements AgaviI
 				if(is_array($value)) {
 					$this->fixFilesArray($input, $toIndex);
 				} else {
+					$data = new $this->uploadedFileClass();
 					foreach($theIndices as $name => $theIndex) {
-						$data[$name] = AgaviArrayPathDefinition::getValue(array_merge($theIndex, array($key)), $input, $name == 'is_uploaded_file' ? true : null);
+						$data[$name] = AgaviArrayPathDefinition::getValue(array_merge($theIndex, array($key)), $input, true /* for is_uploaded_file */);
 					}
-					$data = new $this->uploadedFileClass($data);
 					AgaviArrayPathDefinition::setValue($toIndex, $this->files, $data);
 				}
 			}
 		} else {
+			$data = new $this->uploadedFileClass();
 			foreach($theIndices as $name => $theIndex) {
-				$data[$name] = AgaviArrayPathDefinition::getValue($theIndex, $input, $name == 'is_uploaded_file' ? true : null);
+				$data[$name] = AgaviArrayPathDefinition::getValue($theIndex, $input, true /* for is_uploaded_file */);
 			}
-			$data = new $this->uploadedFileClass($data);
 			AgaviArrayPathDefinition::setValue($index, $this->files, $data);
 		}
 	}

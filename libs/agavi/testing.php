@@ -24,10 +24,10 @@
  *
  * @since      1.0.0
  *
- * @version    $Id: testing.php 4725 2011-06-16 20:36:18Z david $
+ * @version    $Id: testing.php 4880 2011-12-04 22:02:05Z david $
  */
 
-$here = realpath(__DIR__);
+$here = realpath(dirname(__FILE__));
 
 // load Agavi basics
 require_once($here . '/agavi.php');
@@ -37,8 +37,8 @@ require_once($here . '/testing/AgaviTesting.class.php');
 
 // changing the init procedure in a minor release... good job, PHPUnit...
 require_once('PHPUnit/Runner/Version.php'); 
-if(version_compare(PHPUnit_Runner_Version::id(), '3.5', '<')) { 
-	trigger_error('Agavi requires PHPUnit version 3.5 or higher', E_USER_ERROR);
+if(version_compare(PHPUnit_Runner_Version::id(), '3.5.2', '<')) { 
+	trigger_error('Agavi requires PHPUnit version 3.5.2 or higher', E_USER_ERROR);
 }
 // load PHPUnit basics
 require_once('PHPUnit/Autoload.php');

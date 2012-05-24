@@ -13,7 +13,7 @@
 // |   End:                                                                    |
 // +---------------------------------------------------------------------------+
 
-require_once(__DIR__ . '/AgaviTask.php');
+require_once(dirname(__FILE__) . '/AgaviTask.php');
 
 /**
  * Sets relevant Agavi properties given an Agavi installation directory.
@@ -27,7 +27,7 @@ require_once(__DIR__ . '/AgaviTask.php');
  *
  * @since      1.0.0
  *
- * @version    $Id: AgaviReadconfigurationTask.php 4669 2011-05-25 20:53:42Z david $
+ * @version    $Id: AgaviReadconfigurationTask.php 4667 2011-05-20 12:34:58Z david $
  */
 class AgaviReadconfigurationTask extends AgaviTask
 {
@@ -66,9 +66,10 @@ class AgaviReadconfigurationTask extends AgaviTask
 			throw new BuildException('The configurationValue attribute must be specified');
 		}
 		
-		$this->tryLoadAgavi();
-		/* XXX: We don't need to be bootstrapped for this. That said, we also can't
-		 * read configuration data from projects this way. Oh well. */
+		if(!class_exists('Agavi')) {
+			$sourceDirectory = (string)$this->project->getProperty('agavi.directory.src');
+			require_once($sourceDirectory . '/agavi.php');
+		}
 		
 		$this->project->setUserProperty($this->property, AgaviConfig::get($this->configurationValue));
 	}

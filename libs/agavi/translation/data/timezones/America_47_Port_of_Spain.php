@@ -2,7 +2,7 @@
 
 /**
  * Data file for timezone "America/Port_of_Spain".
- * Compiled from olson file "southamerica", version 8.50.
+ * Compiled from olson file "southamerica", version 8.52.
  *
  * @package    agavi
  * @subpackage translation
@@ -12,7 +12,7 @@
  *
  * @since      0.11.0
  *
- * @version    $Id: America_47_Port_of_Spain.php 4782 2011-07-23 21:13:33Z david $
+ * @version    $Id: America_47_Port_of_Spain.php 4832 2011-10-27 02:31:12Z david $
  */
 
 return array (
@@ -41,7 +41,7 @@ return array (
     'startYear' => 1913,
   ),
   'source' => 'southamerica',
-  'version' => '8.50',
+  'version' => '8.52',
   'name' => 'America/Port_of_Spain',
 );
 

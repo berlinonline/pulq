@@ -12,7 +12,7 @@
  *
  * @since      0.11.0
  *
- * @version    $Id: Asia_47_Riyadh87.php 4385 2010-01-10 19:43:51Z david $
+ * @version    $Id: Asia_47_Riyadh87.php 4343 2009-11-06 13:59:00Z david $
  */
 
 return array (

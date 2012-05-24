@@ -29,7 +29,7 @@
  *
  * @since      0.9.0
  *
- * @version    $Id: AgaviWebRequest.class.php 4809 2011-08-18 15:45:56Z david $
+ * @version    $Id: AgaviWebRequest.class.php 4846 2011-11-12 11:33:34Z david $
  */
 class AgaviWebRequest extends AgaviRequest
 {
@@ -289,8 +289,24 @@ class AgaviWebRequest extends AgaviRequest
 		$rla = ini_get('register_long_arrays');
 
 		// very first thing to do: remove magic quotes
-		if(function_exists('get_magic_quotes_gpc') && get_magic_quotes_gpc()) {
-			trigger_error('Support for php.ini directive "magic_quotes_gpc" is deprecated and will be dropped in Agavi 1.2. The setting is deprecated in PHP 5.3 and will be removed in PHP 5.4. Please refer to the PHP manual for details.', E_USER_DEPRECATED);
+		if(get_magic_quotes_gpc()) {
+			// check if we're on PHP < 5.2.8
+			// http://trac.agavi.org/ticket/953
+			// http://trac.agavi.org/ticket/945
+			// http://bugs.php.net/bug.php?id=46313
+			if(version_compare(PHP_VERSION, '5.2.8', 'lt')) {
+				throw new AgaviException(
+					"For security reasons, PHP 5.2.8 or later is required when magic_quotes_gpc is enabled. Upgrade to the latest PHP release or disable magic_quotes_gpc.\n" . 
+					"\nMore info:\n" .
+					"- http://trac.agavi.org/ticket/953\n" .
+					"- http://trac.agavi.org/ticket/945\n" .
+					"- http://bugs.php.net/bug.php?id=46313\n" .
+					"\nAlso related:\n" .
+					"- http://trac.agavi.org/ticket/944\n" .
+					"- http://bugs.php.net/bug.php?id=41093\n"
+				);
+			}
+			
 			$_GET = self::clearMagicQuotes($_GET);
 			$_POST = self::clearMagicQuotes($_POST);
 			$_COOKIE = self::clearMagicQuotes($_COOKIE);
@@ -431,14 +447,16 @@ class AgaviWebRequest extends AgaviRequest
 				}
 			} else {
 				// some other data via PUT. we need to populate $_FILES manually
-				$httpBody = file_get_contents('php://input');
+				$putFile = tempnam(AgaviConfig::get('core.cache_dir'), 'PUTUpload_');
+				$size = stream_copy_to_stream(fopen('php://input', 'rb'), $handle = fopen($putFile, 'wb'));
+				fclose($handle);
 
 				$_FILES = array(
 					$this->getParameter('http_put_file_name', 'put_file') => array(
-						'name' => $this->getMethod(),
+						'name' => $putFile,
 						'type' => isset($_SERVER['CONTENT_TYPE']) ? $_SERVER['CONTENT_TYPE'] : 'application/octet-stream',
-						'size' => strlen($httpBody),
-						'contents' => $httpBody,
+						'size' => $size,
+						'tmp_name' => $putFile,
 						'error' => UPLOAD_ERR_OK,
 						'is_uploaded_file' => false,
 					)
@@ -446,14 +464,16 @@ class AgaviWebRequest extends AgaviRequest
 			}
 		} elseif($this->getMethod() == $methods['POST'] && (!isset($_SERVER['CONTENT_TYPE']) || (isset($_SERVER['CONTENT_TYPE']) && !preg_match('#^(application/x-www-form-urlencoded|multipart/form-data)(;[^;]+)*?$#', $_SERVER['CONTENT_TYPE'])))) {
 			// POST, but no regular urlencoded data or file upload. lets put the request payload into a file
-			$httpBody = file_get_contents('php://input');
+			$postFile = tempnam(AgaviConfig::get('core.cache_dir'), 'POSTUpload_');
+			$size = stream_copy_to_stream(fopen('php://input', 'rb'), $handle = fopen($postFile, 'wb'));
+			fclose($handle);
 
 			$_FILES = array(
 				$this->getParameter('http_post_file_name', 'post_file') => array(
-					'name' => $this->getMethod(),
+					'name' => $postFile,
 					'type' => isset($_SERVER['CONTENT_TYPE']) ? $_SERVER['CONTENT_TYPE'] : 'application/octet-stream',
-					'size' => strlen($httpBody),
-					'contents' => $httpBody,
+					'size' => $size,
+					'tmp_name' => $postFile,
 					'error' => UPLOAD_ERR_OK,
 					'is_uploaded_file' => false,
 				)

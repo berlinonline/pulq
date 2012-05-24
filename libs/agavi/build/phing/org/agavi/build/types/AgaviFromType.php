@@ -13,7 +13,7 @@
 // |   End:                                                                    |
 // +---------------------------------------------------------------------------+
 
-require_once(__DIR__ . '/AgaviType.php');
+require_once(dirname(__FILE__) . '/AgaviType.php');
 
 /**
  * Represents a reference to a path from which additional information is
@@ -28,7 +28,7 @@ require_once(__DIR__ . '/AgaviType.php');
  *
  * @since      1.0.0
  *
- * @version    $Id: AgaviFromType.php 4669 2011-05-25 20:53:42Z david $
+ * @version    $Id: AgaviFromType.php 4667 2011-05-20 12:34:58Z david $
  */
 class AgaviFromType extends AgaviType
 {

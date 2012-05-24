@@ -26,7 +26,7 @@
  *
  * @since      0.11.0
  *
- * @version    $Id: AgaviXmlrpcepiphpResponse.class.php 4669 2011-05-25 20:53:42Z david $
+ * @version    $Id: AgaviXmlrpcepiphpResponse.class.php 4667 2011-05-20 12:34:58Z david $
  */
 class AgaviXmlrpcepiphpResponse extends AgaviResponse
 {
@@ -105,7 +105,6 @@ class AgaviXmlrpcepiphpResponse extends AgaviResponse
 	 */
 	public function merge(AgaviResponse $otherResponse)
 	{
-		parent::merge($otherResponse);
 	}
 	
 	/**

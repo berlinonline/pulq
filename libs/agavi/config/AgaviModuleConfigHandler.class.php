@@ -27,11 +27,11 @@
  *
  * @since      0.9.0
  *
- * @version    $Id: AgaviModuleConfigHandler.class.php 4734 2011-06-21 15:47:49Z david $
+ * @version    $Id: AgaviModuleConfigHandler.class.php 4667 2011-05-20 12:34:58Z david $
  */
 class AgaviModuleConfigHandler extends AgaviXmlConfigHandler
 {
-	const XML_NAMESPACE = 'http://agavi.org/agavi/config/parts/module/1.1';
+	const XML_NAMESPACE = 'http://agavi.org/agavi/config/parts/module/1.0';
 	
 	/**
 	 * Execute this configuration handler.

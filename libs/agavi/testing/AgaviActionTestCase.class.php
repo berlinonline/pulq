@@ -26,7 +26,7 @@
  *
  * @since      1.0.0
  *
- * @version    $Id: AgaviActionTestCase.class.php 4669 2011-05-25 20:53:42Z david $
+ * @version    $Id: AgaviActionTestCase.class.php 4667 2011-05-20 12:34:58Z david $
  */
 abstract class AgaviActionTestCase extends AgaviFragmentTestCase
 {	
@@ -41,6 +41,22 @@ abstract class AgaviActionTestCase extends AgaviFragmentTestCase
 	protected $viewModuleName;
 	
 	/**
+	 * creates an Action instance and initializes it with this testcases
+	 * container
+	 * 
+	 * @return     AgaviAction
+	 * 
+	 * @author     Felix Gilcher <felix.gilcher@bitextender.com>
+	 * @since      1.0.0
+	 */
+	protected function createActionInstance()
+	{
+		$actionInstance = $this->getContext()->getController()->createActionInstance($this->moduleName, $this->actionName);
+		$actionInstance->initialize($this->container);
+		return $actionInstance;
+	}
+	
+	/**
 	 * run the action for this testcase
 	 *  
 	 * @return     void
@@ -51,8 +67,7 @@ abstract class AgaviActionTestCase extends AgaviFragmentTestCase
 	protected function runAction()
 	{
 		$this->container->setActionInstance($this->createActionInstance());
-		//$executionFilter = $this->createExecutionFilter();
-		$this->container->initRequestData();
+		$executionFilter = $this->createExecutionFilter();
 		list($this->viewModuleName, $this->viewName) = $this->container->runAction();
 	}
 	

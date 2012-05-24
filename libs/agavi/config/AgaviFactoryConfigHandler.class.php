@@ -28,11 +28,11 @@
  *
  * @since      0.9.0
  *
- * @version    $Id: AgaviFactoryConfigHandler.class.php 4734 2011-06-21 15:47:49Z david $
+ * @version    $Id: AgaviFactoryConfigHandler.class.php 4667 2011-05-20 12:34:58Z david $
  */
 class AgaviFactoryConfigHandler extends AgaviXmlConfigHandler
 {
-	const XML_NAMESPACE = 'http://agavi.org/agavi/config/parts/factories/1.1';
+	const XML_NAMESPACE = 'http://agavi.org/agavi/config/parts/factories/1.0';
 	
 	/**
 	 * Execute this configuration handler.
@@ -223,7 +223,7 @@ class AgaviFactoryConfigHandler extends AgaviXmlConfigHandler
 				} catch(ReflectionException $e) {
 					$error = 'Configuration file "%s" specifies unknown class "%s" for entry "%s"';
 					$error = sprintf($error, $config, $data[$factory]['class'], $factory);
-					throw new AgaviConfigurationException($error, 0,  $e);
+					throw new AgaviConfigurationException($error);
 				}
 				foreach($info['must_implement'] as $interface) {
 					if(!$rc->implementsInterface($interface)) {

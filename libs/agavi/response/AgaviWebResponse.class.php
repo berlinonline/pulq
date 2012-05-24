@@ -25,7 +25,7 @@
  *
  * @since      0.11.0
  *
- * @version    $Id: AgaviWebResponse.class.php 4669 2011-05-25 20:53:42Z david $
+ * @version    $Id: AgaviWebResponse.class.php 4667 2011-05-20 12:34:58Z david $
  */
 class AgaviWebResponse extends AgaviResponse
 {
@@ -298,8 +298,6 @@ class AgaviWebResponse extends AgaviResponse
 	 */
 	public function merge(AgaviResponse $otherResponse)
 	{
-		parent::merge($otherResponse);
-		
 		if($otherResponse instanceof AgaviWebResponse) {
 			foreach($otherResponse->getHttpHeaders() as $name => $value) {
 				if(!$this->hasHttpHeader($name)) {
@@ -634,6 +632,13 @@ class AgaviWebResponse extends AgaviResponse
 	{
 		if($outputType === null) {
 			$outputType = $this->getOutputType();
+		}
+		
+		$file = $line = '';
+		if(headers_sent($file, $line)) {
+			throw new AgaviException('Headers already sent, output started in "' . $file . '" on line "' . $line . '"');
+		} else {
+			unset($file, $line);
 		}
 		
 		// send HTTP status code

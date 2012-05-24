@@ -27,11 +27,11 @@
  *
  * @since      1.0.0
  *
- * @version    $Id: AgaviTestSuitesConfigHandler.class.php 4734 2011-06-21 15:47:49Z david $
+ * @version    $Id: AgaviTestSuitesConfigHandler.class.php 4667 2011-05-20 12:34:58Z david $
  */
 class AgaviTestSuitesConfigHandler extends AgaviXmlConfigHandler
 {
-	const XML_NAMESPACE = 'http://agavi.org/agavi/config/parts/testing/suites/1.1';
+	const XML_NAMESPACE = 'http://agavi.org/agavi/config/parts/testing/suites/1.0';
 	
 	/**
 	 * Execute this configuration handler.
@@ -58,28 +58,11 @@ class AgaviTestSuitesConfigHandler extends AgaviXmlConfigHandler
 		// loop over <configuration> elements
 		foreach($document->getConfigurationElements() as $configuration) {
 			foreach($configuration->get('suites') as $current) {
-				$includes = array();
-				foreach($current->get('includes') as $include) {
-					$includes[] = $include->textContent;
-				}
-				
-				$excludes = array();
-				foreach($current->get('excludes') as $excludes) {
-					$excludes[] = $excludes->textContent;
-				}
-				
-				$suite =  array(
-					'class' => $current->getAttribute('class', 'AgaviTestSuite'),
-					'base' => $current->getAttribute('base', 'tests/'),
-					'includes' => $includes,
-					'excludes' => $excludes
-				);
-				
+				$suite =  array('class' => $current->getAttribute('class', 'AgaviTestSuite'));
 				$suite['testfiles'] = array();
 				foreach($current->get('testfiles') as $file) {
 					$suite['testfiles'][] = $file->textContent;
 				}
-				
 				$data[$current->getAttribute('name')] = $suite;
 			}
 		}

@@ -26,19 +26,20 @@
  *
  * @since      1.0.0
  *
- * @version    $Id: agavi.php 4669 2011-05-25 20:53:42Z david $
+ * @version    $Id: agavi.php 4667 2011-05-20 12:34:58Z david $
  */
 
-define('BUILD_DIRECTORY', realpath(__DIR__ . '/../..'));
+define('BUILD_DIRECTORY', realpath(dirname(__FILE__) . '/../..'));
 define('START_DIRECTORY', getcwd());
 define('MIN_PHING_VERSION', '2.4.0');
 
 require('phing/Phing.php');
+die(Phing::getPhingVersion());
 
-require(__DIR__ . '/../build.php');
+require(dirname(__FILE__) . '/../build.php');
 AgaviBuild::bootstrap();
 
-require(__DIR__ . '/AgaviOptionParser.class.php');
+require(dirname(__FILE__) . '/AgaviOptionParser.class.php');
 
 $GLOBALS['OUTPUT'] = new OutputStream(fopen('php://stdout', 'w'));
 $GLOBALS['ERROR'] = new OutputStream(fopen('php://stderr', 'w'));
@@ -94,7 +95,7 @@ function input_help(AgaviOptionParser $parser, $name, $arguments, $scriptArgumen
 
 function input_version(AgaviOptionParser $parser, $name, $arguments, $scriptArguments)
 {
-	$GLOBALS['OUTPUT']->write('Agavi project configuration system, script version $Id: agavi.php 4669 2011-05-25 20:53:42Z david $' . PHP_EOL);
+	$GLOBALS['OUTPUT']->write('Agavi project configuration system, script version $Id: agavi.php 4667 2011-05-20 12:34:58Z david $' . PHP_EOL);
 	$GLOBALS['OUTPUT']->write(Phing::getPhingVersion() . PHP_EOL);
 	exit(0);
 }
@@ -163,7 +164,7 @@ try {
 $GLOBALS['TARGETS'] = $parser->getPassedArguments();
 
 if(!isset($GLOBALS['PROPERTIES']['agavi.directory.src'])) {
-	$GLOBALS['PROPERTIES']['agavi.directory.src'] = new PhingFile(realpath(__DIR__ . '/../../..'));
+	$GLOBALS['PROPERTIES']['agavi.directory.src'] = new PhingFile(realpath(dirname(__FILE__) . '/../../..'));
 }
 if(!is_dir($GLOBALS['PROPERTIES']['agavi.directory.src']) || !is_file($GLOBALS['PROPERTIES']['agavi.directory.src'] . DIRECTORY_SEPARATOR . 'agavi.php')) {
 	$GLOBALS['ERROR']->write(sprintf('Error: Agavi source directory expected at %s, but is not present', $GLOBALS['PROPERTIES']['agavi.directory.src']) . PHP_EOL);

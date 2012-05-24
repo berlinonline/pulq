@@ -25,7 +25,7 @@
  *
  * @since      1.0.4
  *
- * @version    $Id: AgaviDoctrineDatabaseEventListener.class.php 4782 2011-07-23 21:13:33Z david $
+ * @version    $Id: AgaviDoctrineDatabaseEventListener.class.php 4763 2011-07-10 11:36:57Z david $
  */
 class AgaviDoctrineDatabaseEventListener extends Doctrine_EventListener
 {

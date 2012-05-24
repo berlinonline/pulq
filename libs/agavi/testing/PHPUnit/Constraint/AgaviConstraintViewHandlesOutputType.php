@@ -12,9 +12,9 @@
  *
  * @since      1.0.0
  *
- * @version    $Id: AgaviConstraintViewHandlesOutputType.php 4393 2010-01-11 14:29:17Z david $
+ * @version    $Id: AgaviConstraintViewHandlesOutputType.php 4882 2011-12-04 22:06:45Z david $
  */
-class AgaviConstraintViewHandlesOutputType extends PHPUnit_Framework_Constraint
+class AgaviConstraintViewHandlesOutputType extends AgaviBaseConstraintBecausePhpunitSucksAtBackwardsCompatibility
 {
 	/**
 	 * @var        AgaviView The View instance.
@@ -50,9 +50,9 @@ class AgaviConstraintViewHandlesOutputType extends PHPUnit_Framework_Constraint
 	 * @return     bool The result of the evaluation.
 	 * 
 	 * @author     Felix Gilcher <felix.gilcher@bitextender.com>
-	 * @since      1.0.0
+	 * @since      1.0.7
 	 */
-	public function evaluate($other)
+	public function matches($other)
 	{
 		$executeMethod = 'execute' . $other;
 		if(is_callable(array($this->viewInstance, $executeMethod)) || ($this->acceptGeneric && is_callable(array($this->viewInstance, 'execute')))) {

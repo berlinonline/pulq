@@ -13,7 +13,7 @@
 // |   End:                                                                    |
 // +---------------------------------------------------------------------------+
 
-require_once(__DIR__ . '/AgaviPropertiesType.php');
+require_once(dirname(__FILE__) . '/AgaviPropertiesType.php');
 require_once('phing/system/util/Properties.php');
 
 /**
@@ -28,7 +28,7 @@ require_once('phing/system/util/Properties.php');
  *
  * @since      1.0.0
  *
- * @version    $Id: AgaviPropertyType.php 4669 2011-05-25 20:53:42Z david $
+ * @version    $Id: AgaviPropertyType.php 4667 2011-05-20 12:34:58Z david $
  */
 class AgaviPropertyType extends AgaviPropertiesType
 {

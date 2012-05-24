@@ -25,7 +25,7 @@
  *
  * @since      1.0.0
  *
- * @version    $Id: AgaviBuild.class.php 4669 2011-05-25 20:53:42Z david $
+ * @version    $Id: AgaviBuild.class.php 4667 2011-05-20 12:34:58Z david $
  */
 final class AgaviBuild
 {
@@ -85,7 +85,7 @@ final class AgaviBuild
 	public static function __autoload($class)
 	{
 		if(isset(self::$autoloads[$class])) {
-			require(__DIR__ . '/' . self::$autoloads[$class]);
+			require(dirname(__FILE__) . '/' . self::$autoloads[$class]);
 		}
 
 		/* If the class isn't loaded by this method, the only other

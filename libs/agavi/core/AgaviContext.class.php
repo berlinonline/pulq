@@ -32,7 +32,7 @@
  *
  * @since      0.9.0
  *
- * @version    $Id: AgaviContext.class.php 4669 2011-05-25 20:53:42Z david $
+ * @version    $Id: AgaviContext.class.php 4667 2011-05-20 12:34:58Z david $
  */
 class AgaviContext
 {
@@ -166,20 +166,6 @@ class AgaviContext
 			return $this->factories[$for];
 		}
 	}
-	
-	/**
-	 * Set information on a frequently used class.
-	 *
-	 * @param      string The factory identifier.
-	 * @param      array An associative array (keys 'class' and 'parameters').
-	 *
-	 * @author     Felix Gilcher <felix.gilcher@bitxtender.com>
-	 * @since      1.0.1
-	 */
-	public function setFactoryInfo($for, array $info)
-	{
-		$this->factories[$for] = $info;
-	}
 
 	/**
 	 * Factory for frequently used classes from factories.xml
@@ -283,7 +269,7 @@ class AgaviContext
 			}
 			$profile = strtolower($profile);
 			if(!isset(self::$instances[$profile])) {
-				$class = AgaviConfig::get('core.context_implementation', get_called_class());
+				$class = AgaviConfig::get('core.context_implementation', __CLASS__);
 				self::$instances[$profile] = new $class($profile);
 				self::$instances[$profile]->initialize();
 			}

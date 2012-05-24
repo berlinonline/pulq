@@ -26,7 +26,7 @@
  *
  * @since      1.0.0
  *
- * @version    $Id: AgaviViewTestCase.class.php 4827 2011-10-10 15:36:30Z david $
+ * @version    $Id: AgaviViewTestCase.class.php 4826 2011-10-10 15:02:00Z david $
  */
 abstract class AgaviViewTestCase extends AgaviFragmentTestCase
 {
@@ -68,7 +68,6 @@ abstract class AgaviViewTestCase extends AgaviFragmentTestCase
 	 */
 	protected function runView($otName = null)
 	{
-		$this->container->setActionInstance($this->createActionInstance());
 		$this->container->setOutputType($this->getContext()->getController()->getOutputType($otName));
 		$this->container->setViewInstance($this->createViewInstance());
 		$executionFilter = $this->createExecutionFilter();
@@ -119,7 +118,7 @@ abstract class AgaviViewTestCase extends AgaviFragmentTestCase
 	 * @author     Felix Gilcher <felix.gilcher@bitextender.com>
 	 * @since      1.0.0
 	 */
-	protected function assertViewRedirects($message = 'Failed asserting that the view redirects')
+	protected function assertResponseHasRedirect($message = 'Failed asserting that the view redirects')
 	{
 		$response = $this->container->getResponse();
 		try {
@@ -137,7 +136,7 @@ abstract class AgaviViewTestCase extends AgaviFragmentTestCase
 	 * @author     Felix Gilcher <felix.gilcher@bitextender.com>
 	 * @since      1.0.0
 	 */
-	protected function assertViewRedirectsNot($message = 'Failed asserting that the view does not redirect')
+	protected function assertResponseHasNoRedirect($message = 'Failed asserting that the view does not redirect')
 	{
 		$response = $this->container->getResponse();
 		try {
@@ -156,7 +155,7 @@ abstract class AgaviViewTestCase extends AgaviFragmentTestCase
 	 * @author     Felix Gilcher <felix.gilcher@bitextender.com>
 	 * @since      1.0.0
 	 */
-	protected function assertViewRedirectsTo($expected, $message = 'Failed asserting that the view redirects to the given target.')
+	protected function assertResponseRedirectsTo($expected, $message = 'Failed asserting that the view redirects to the given target.')
 	{
 		$response = $this->container->getResponse();
 		try {
@@ -167,7 +166,7 @@ abstract class AgaviViewTestCase extends AgaviFragmentTestCase
 	}
 	
 	/**
-	 * Assert that the view sets the given content type.
+	 * assert that the response has the given content type
 	 * 
 	 * this assertion only works on AgaviWebResponse or subclasses
 	 * 
@@ -177,7 +176,7 @@ abstract class AgaviViewTestCase extends AgaviFragmentTestCase
 	 * @author     Felix Gilcher <felix.gilcher@bitextender.com>
 	 * @since      1.0.0
 	 */
-	protected function assertViewSetsContentType($expected, $message = 'Failed asserting that the view sets the content type "%1$s".')
+	protected function assertResponseHasContentType($expected, $message = 'Failed asserting that the response content type is %1$s.')
 	{
 		$response = $this->container->getResponse();
 		
@@ -188,7 +187,7 @@ abstract class AgaviViewTestCase extends AgaviFragmentTestCase
 	}
 	
 	/**
-	 * Assert that the view sets the given header with the given value.
+	 * assert that the response has the given header and value
 	 * 
 	 * this response only works on AgaviWebResponse and subclasses
 	 * 
@@ -199,7 +198,7 @@ abstract class AgaviViewTestCase extends AgaviFragmentTestCase
 	 * @author     Felix Gilcher <felix.gilcher@bitextender.com>
 	 * @since      1.0.0
 	 */
-	protected function assertViewSetsHeader($expected, $expectedValue = null, $message = 'Failed asserting that the view sets a header named <%1$s> with the value <%2$s>')
+	protected function assertResponseHasHeader($expected, $expectedValue = null, $message = 'Failed asserting that the response has a header named <%1$s> with the value <%2$s>')
 	{
 		$response = $this->container->getResponse();
 		
@@ -210,7 +209,7 @@ abstract class AgaviViewTestCase extends AgaviFragmentTestCase
 	}
 	
 	/**
-	 * Assert that the view sets the given cookie with the given value.<y></y>
+	 * assert that the response has the given cookie and value
 	 * 
 	 * this response only works on AgaviWebResponse and subclasses
 	 * 
@@ -221,14 +220,14 @@ abstract class AgaviViewTestCase extends AgaviFragmentTestCase
 	 * @author     Felix Gilcher <felix.gilcher@bitextender.com>
 	 * @since      1.0.0
 	 */
-	protected function assertViewSetsCookie($expected, $expectedValue = null, $message = 'Failed asserting that the view sets a cookie named <%1$s> with a value of <%2$s>')
+	protected function assertResponseHasCookie($expected, $expectedValue = null, $message = 'Failed asserting that the response has a cookie named <%1$s>')
 	{
 		$response = $this->container->getResponse();
 		
 		if(!($response instanceof AgaviWebResponse)) {
 			$this->fail(sprintf($message . ' (response is not an AgaviWebResponse)', $expected));
 		}
-		$this->assertEquals($expectedValue, $response->getCookie($expected), sprintf($message, $expected, $expectedValue));
+		$this->assertEquals($expectedValue, $response->getCookie($expected), sprintf($message, $expected));
 	}
 	
 	/**
@@ -242,7 +241,7 @@ abstract class AgaviViewTestCase extends AgaviFragmentTestCase
 	 * @author     Felix Gilcher <felix.gilcher@bitextender.com>
 	 * @since      1.0.0
 	 */
-	protected function assertViewResponseHasHTTPStatus($expected, $message = 'Failed asserting that the response status is %1$s.')
+	protected function assertResponseHasHTTPStatus($expected, $message = 'Failed asserting that the response status is %1$s.')
 	{
 		$response = $this->container->getResponse();
 		
@@ -261,7 +260,7 @@ abstract class AgaviViewTestCase extends AgaviFragmentTestCase
 	 * @author     Felix Gilcher <felix.gilcher@bitextender.com>
 	 * @since      1.0.0
 	 */
-	protected function assertViewResponseHasContent($expected, $message = 'Failed asserting that the response has content <%1$s>.')
+	protected function assertResponseHasContent($expected, $message = 'Failed asserting that the response has content <%1$s>.')
 	{
 		$response = $this->container->getResponse();
 		$this->assertEquals($expected, $response->getContent(), sprintf($message, $expected));
@@ -291,13 +290,11 @@ abstract class AgaviViewTestCase extends AgaviFragmentTestCase
 	 * @author     Felix Gilcher <felix.gilcher@bitextender.com>
 	 * @since      1.0.0
 	 */
-	protected function assertViewForwards($expectedModule, $expectedAction, $message = 'Failed asserting that the view forwards to "%1$s" "%2$s".')
+	protected function assertForwards($expectedModule, $expectedAction, $message = '')
 	{
 		if(!($this->viewResult instanceof AgaviExecutionContainer)) {
-			$this->fail(sprintf($message, $expectedModule, $expectedAction));
+			$this->fail('Failed asserting that the view result is a forward.');
 		}
-		$this->assertEquals($expectedModule, $this->viewResult->getModuleName());
-		$this->assertEquals(AgaviToolkit::canonicalName($expectedAction), $this->viewResult->getActionName());
 	}
 	
 	/**
@@ -309,13 +306,13 @@ abstract class AgaviViewTestCase extends AgaviFragmentTestCase
 	 * @author     Felix Gilcher <felix.gilcher@bitextender.com>
 	 * @since      1.0.0
 	 */
-	protected function assertHasLayer($expectedLayer, $message = 'Failed asserting that the view contains the layer "%1$s".')
+	protected function assertHasLayer($expectedLayer, $message = '')
 	{
 		$viewInstance = $this->container->getViewInstance();
 		$layer = $viewInstance->getLayer($expectedLayer);
 		
 		if(null === $layer) {
-			$this->fail(sprintf($message, $expectedLayer));
+			$this->fail('Failed asserting that the view contains the layer.');
 		}
 	}
 	
