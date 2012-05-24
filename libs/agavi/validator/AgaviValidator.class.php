@@ -26,7 +26,7 @@
  *   'severity'   error severity in case of failure
  *   'error'      error message when validation fails
  *   'errors'     an array of errors with the reason as key
- *   'required'   if true the validator will fail when the input parameter is 
+ *   'required'   if true the validator will fail when the input parameter is
  *                not set
  *
  * @package    agavi
@@ -39,7 +39,7 @@
  *
  * @since      0.11.0
  *
- * @version    $Id: AgaviValidator.class.php 4667 2011-05-20 12:34:58Z david $
+ * @version    $Id: AgaviValidator.class.php 4669 2011-05-25 20:53:42Z david $
  */
 abstract class AgaviValidator extends AgaviParameterHolder
 {
@@ -55,18 +55,18 @@ abstract class AgaviValidator extends AgaviParameterHolder
 
 	/**
 	 * validator error severity (validator failed but without impact on result
-	 * of whole validation process, completely silent and does not remove the 
+	 * of whole validation process, completely silent and does not remove the
 	 * "failed" parameters from the input parameters)
 	 */
 	const INFO = 100;
-	
+
 	/**
 	 * validator error severity (validator failed but without impact on result
 	 * of whole validation process and completely silent)
 	 */
 	const SILENT = 200;
 	const NONE = AgaviValidator::SILENT;
-	
+
 	/**
 	 * validator error severity (validator failed but without impact on result
 	 * of whole validation process)
@@ -97,7 +97,7 @@ abstract class AgaviValidator extends AgaviParameterHolder
 	protected $parentContainer = null;
 
 	/**
-	 * @var        AgaviVirtualArrayPath The current base for input names, 
+	 * @var        AgaviVirtualArrayPath The current base for input names,
 	 *                                   dependencies etc.
 	 */
 	protected $curBase = null;
@@ -129,7 +129,7 @@ abstract class AgaviValidator extends AgaviParameterHolder
 	 * @var        AgaviValidationIncident The current incident.
 	 */
 	protected $incident = null;
-	
+
 	/**
 	 * @var        array The affected arguments of this validation run.
 	 */
@@ -326,7 +326,7 @@ abstract class AgaviValidator extends AgaviParameterHolder
 	}
 
 	/**
-	 * Returns true if this validator has multiple arguments which need to be 
+	 * Returns true if this validator has multiple arguments which need to be
 	 * validated.
 	 *
 	 * @return     bool Whether this validator has multiple arguments or not.
@@ -351,7 +351,7 @@ abstract class AgaviValidator extends AgaviParameterHolder
 	 *
 	 * @author     Dominik del Bondio <ddb@bitxtender.com>
 	 * @author     David Zülke <david.zuelke@bitextender.com>
-	 * 
+	 *
 	 * @since      0.11.0
 	 */
 	protected function getArgument($name = null)
@@ -379,13 +379,13 @@ abstract class AgaviValidator extends AgaviParameterHolder
 	{
 		return $this->arguments;
 	}
-	
+
 	/**
-	 * Sets the arguments which should be flagged with the result of the 
+	 * Sets the arguments which should be flagged with the result of the
 	 * validator
-	 * 
+	 *
 	 * @param      array A list of (absolute) argument names
-	 * 
+	 *
 	 * @author     Dominik del Bondio <ddb@bitxtender.com>
 	 * @since      0.11.0
 	 */
@@ -398,7 +398,7 @@ abstract class AgaviValidator extends AgaviParameterHolder
 	 * Returns whether all arguments are set in the validation input parameters.
 	 * Set means anything but empty string.
 	 *
-	 * @param      bool Whether an error should be thrown for each missing 
+	 * @param      bool Whether an error should be thrown for each missing
 	 *                  argument if this validator is required.
 	 *
 	 * @return     bool Whether the arguments are set.
@@ -427,9 +427,9 @@ abstract class AgaviValidator extends AgaviParameterHolder
 	}
 
 	/**
-	 * Retrieves the error message for the given index with fallback. 
+	 * Retrieves the error message for the given index with fallback.
 	 *
-	 * If the given index does not exist in the error messages array, it first 
+	 * If the given index does not exist in the error messages array, it first
 	 * checks if an unnamed error message exists and returns it or falls back the
 	 * the backup message.
 	 *
@@ -457,10 +457,10 @@ abstract class AgaviValidator extends AgaviParameterHolder
 	 * Submits an error to the error manager.
 	 *
 	 * Will look up the index in the errors array with automatic fallback to the
-	 * default error. You can optionally specify the fields affected by this 
+	 * default error. You can optionally specify the fields affected by this
 	 * error. The error will be appended to the current incident.
 	 *
-	 * @param      string The name of the error parameter to fetch the message 
+	 * @param      string The name of the error parameter to fetch the message
 	 *                    from.
 	 * @param      string|array The arguments which are affected by this error.
 	 *                          If null is given it will affect all fields.
@@ -484,7 +484,7 @@ abstract class AgaviValidator extends AgaviParameterHolder
 				}
 			}
 		}
-		
+
 		if($setAffected) {
 			$this->affectedArguments = $affectedArguments;
 		}
@@ -502,7 +502,7 @@ abstract class AgaviValidator extends AgaviParameterHolder
 		foreach($affectedArguments as &$argument) {
 			$argument = new AgaviValidationArgument($argument, $this->getParameter('source'));
 		}
-		
+
 		if($error !== null || count($affectedArguments) != 0) {
 			// don't throw empty error messages without affected fields
 			$this->incident->addError(new AgaviValidationError($error, $index, $affectedArguments));
@@ -521,13 +521,13 @@ abstract class AgaviValidator extends AgaviParameterHolder
 	 * overwrite stuff you don't want to.
 	 *
 	 * @param      mixed The value to be exported.
-	 * @param      string An optional name which should be used for exporting 
+	 * @param      string An optional name which should be used for exporting
 	 *                    instead of the export parameter.
 	 *
 	 * @author     Dominik del Bondio <ddb@bitxtender.com>
 	 * @since      0.11.0
 	 */
-	protected function export($value, $name = null)
+	protected function export($value, $name = null, $paramType = null)
 	{
 		if($name === null) {
 			$name = $this->getParameter('export');
@@ -537,11 +537,11 @@ abstract class AgaviValidator extends AgaviParameterHolder
 			return;
 		}
 
-		$paramType = $this->getParameter('source');
+		$paramType = $paramType ? $paramType : $this->getParameter('source');
 
 		$array =& $this->validationParameters->getAll($paramType);
 		$currentParts = $this->curBase->getParts();
-		
+
 		if(count($currentParts) > 0 && strpos($name, '%') !== false) {
 			// this is a validator which actually has a base (<arguments base="xx">) set
 			// and the export name contains sprintf syntax
@@ -559,17 +559,17 @@ abstract class AgaviValidator extends AgaviParameterHolder
 			if(is_array($value)) {
 				// for arrays all child elements need to be marked as not processed
 				foreach(AgaviArrayPathDefinition::getFlatKeyNames($value) as $keyName) {
-					$this->parentContainer->addArgumentResult(new AgaviValidationArgument($cp->pushRetNew($keyName)->__toString(), $this->getParameter('source')), AgaviValidator::SUCCESS, $this);
+					$this->parentContainer->addArgumentResult(new AgaviValidationArgument($cp->pushRetNew($keyName)->__toString(), $paramType), AgaviValidator::SUCCESS, $this);
 				}
 			}
-			$this->parentContainer->addArgumentResult(new AgaviValidationArgument($cp->__toString(), $this->getParameter('source')), AgaviValidator::SUCCESS, $this);
+			$this->parentContainer->addArgumentResult(new AgaviValidationArgument($cp->__toString(), $paramType), AgaviValidator::SUCCESS, $this);
 		}
 	}
 
 	/**
 	 * Validates this validator in the given base.
 	 *
-	 * @param      AgaviVirtualArrayPath The base in which the input should be 
+	 * @param      AgaviVirtualArrayPath The base in which the input should be
 	 *                                   validated.
 	 *
 	 * @return     int AgaviValidator::SUCCESS if validation succeeded or given
@@ -732,7 +732,7 @@ abstract class AgaviValidator extends AgaviParameterHolder
 	 *
 	 * @return     int The error severity as in (see severity constants).
 	 *
-	 * @throws     <b>AgaviValidatorException</b> if the input was no known 
+	 * @throws     <b>AgaviValidatorException</b> if the input was no known
 	 *                                           severity
 	 *
 	 * @author     Uwe Mesecke <uwe@mesecke.net>
@@ -799,7 +799,7 @@ abstract class AgaviValidator extends AgaviParameterHolder
 
 	/**
 	 * Returns the depency manager of the parent container if any.
-	 * 
+	 *
 	 * @return     AgaviDependencyManager The parent's dependency manager.
 	 *
 	 * @author     Dominik del Bondio <ddb@bitxtender.com>

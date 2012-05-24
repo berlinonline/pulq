@@ -26,7 +26,7 @@
  *
  * @since      0.11.0
  *
- * @version    $Id: AgaviPhptalRenderer.class.php 4835 2011-11-06 18:44:11Z david $
+ * @version    $Id: AgaviPhptalRenderer.class.php 4807 2011-08-18 15:35:04Z david $
  */
 class AgaviPhptalRenderer extends AgaviRenderer
 {
@@ -95,10 +95,8 @@ class AgaviPhptalRenderer extends AgaviRenderer
 		
 		if(version_compare(PHPTAL_VERSION, '1.2', 'ge')) {
 			$phptal->setPhpCodeDestination($phptalPhpCodeDestination);
-		}
-		
-		if($this->hasParameter('encoding')) {
-			$phptal->setEncoding($this->getParameter('encoding'));
+		} else {
+		  trigger_error('Support for PHPTAL versions older than 1.2 is deprecated and will be removed in Agavi 1.2.', E_USER_DEPRECATED);
 		}
 		
 		return $phptal;

@@ -13,7 +13,7 @@
 // |   End:                                                                    |
 // +---------------------------------------------------------------------------+
 
-require_once(dirname(__FILE__) . '/AgaviTask.php');
+require_once(__DIR__ . '/AgaviTask.php');
 
 /**
  * Locates a module directory given a project and a module name.
@@ -27,7 +27,7 @@ require_once(dirname(__FILE__) . '/AgaviTask.php');
  *
  * @since      1.0.0
  *
- * @version    $Id: AgaviLocatemoduleTask.php 4667 2011-05-20 12:34:58Z david $
+ * @version    $Id: AgaviLocatemoduleTask.php 4669 2011-05-25 20:53:42Z david $
  */
 class AgaviLocatemoduleTask extends AgaviTask
 {
@@ -91,7 +91,7 @@ class AgaviLocatemoduleTask extends AgaviTask
 		
 		/* Check if the current directory is a project directory. */
 		$check = new AgaviModuleFilesystemCheck();
-		$check->setConfigDirectory($this->project->getProperty('module.directory.config'));
+		$check->setConfigDirectory($this->project->getProperty('module.config.directory'));
 		
 		$check->setPath($this->path->getAbsolutePath());
 		if($check->check()) {
@@ -101,15 +101,11 @@ class AgaviLocatemoduleTask extends AgaviTask
 			return;
 		}
 		
-		/* Check if "actions", "views", "templates", or "config" are in the current path. */
-		if(preg_match(sprintf('#^(.+?)/(?:%s|%s|%s|%s)(?:/|$)#', $this->project->getProperty('module.directory.actions'), $this->project->getProperty('module.directory.views'), $this->project->getProperty('module.directory.templates'), $this->project->getProperty('module.directory.config')), $this->path->getPath(), $matches)) {
-			$directory = new PhingFile($matches[1]);
-			$check->setPath($directory->getAbsolutePath());
-			if($check->check()) {
-				$this->log('Module base directory: ' . $directory);
-				$this->project->setUserProperty($this->property, $directory->getName());
-				return;
-			}
+		$check->setPath($this->path->getAbsolutePath());
+		if($check->check()) {
+			$this->log('Module base directory: ' . $directory);
+			$this->project->setUserProperty($this->property, $directory->getName());
+			return;
 		}
 		
 		/* Last chance: recurse upward and check for a project directory. */

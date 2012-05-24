@@ -25,7 +25,7 @@
  *
  * @since      1.0.0
  *
- * @version    $Id: AgaviConsoleResponse.class.php 4667 2011-05-20 12:34:58Z david $
+ * @version    $Id: AgaviConsoleResponse.class.php 4669 2011-05-25 20:53:42Z david $
  */
 class AgaviConsoleResponse extends AgaviResponse
 {
@@ -49,6 +49,7 @@ class AgaviConsoleResponse extends AgaviResponse
 	 */
 	public function merge(AgaviResponse $otherResponse)
 	{
+		parent::merge($otherResponse);
 	}
 	
 	/**

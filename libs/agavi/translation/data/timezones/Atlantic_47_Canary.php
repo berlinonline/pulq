@@ -2,7 +2,7 @@
 
 /**
  * Data file for timezone "Atlantic/Canary".
- * Compiled from olson file "europe", version 8.40.
+ * Compiled from olson file "europe", version 8.38.
  *
  * @package    agavi
  * @subpackage translation
@@ -12,7 +12,7 @@
  *
  * @since      0.11.0
  *
- * @version    $Id: Atlantic_47_Canary.php 4833 2011-11-01 11:40:11Z david $
+ * @version    $Id: Atlantic_47_Canary.php 4824 2011-10-07 21:00:24Z david $
  */
 
 return array (
@@ -256,7 +256,7 @@ return array (
     'startYear' => 1996,
   ),
   'source' => 'europe',
-  'version' => '8.40',
+  'version' => '8.38',
   'name' => 'Atlantic/Canary',
 );
 

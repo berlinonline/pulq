@@ -26,7 +26,7 @@
  *
  * @since      1.0.4
  *
- * @version    $Id: AgaviSqlsrvDatabase.class.php 4850 2011-11-12 12:05:39Z david $
+ * @version    $Id: AgaviSqlsrvDatabase.class.php 4745 2011-06-23 17:27:23Z david $
  */
 class AgaviSqlsrvDatabase extends AgaviDatabase
 {
@@ -67,7 +67,6 @@ class AgaviSqlsrvDatabase extends AgaviDatabase
 			$this->connection = null;
 			throw new AgaviDatabaseException(sprintf("%s\n\n%s", sprintf('Could not open database connection "%s".', $this->getName()), implode("\n", $this->getErrors())));
 		}
-		$this->resource =& $this->connection;
 
 		foreach((array)$this->getParameter('init_queries') as $query) {
 			sqlsrv_query($this->connection, $query);
@@ -112,7 +111,6 @@ class AgaviSqlsrvDatabase extends AgaviDatabase
 	{
 		if($this->connection) {
 			sqlsrv_close($this->connection);
-			$this->connection = $this->resource = null;
 		}
 	}
 }

@@ -12,7 +12,7 @@
  *
  * @since      0.11.0
  *
- * @version    $Id: Etc_47_GMT_45_11.php 4640 2011-04-16 11:13:19Z david $
+ * @version    $Id: Etc_47_GMT_45_11.php 4641 2011-04-16 11:27:21Z david $
  */
 
 return array (

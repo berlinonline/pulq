@@ -30,7 +30,7 @@
  *
  * @since      0.9.0
  *
- * @version    $Id: AgaviException.class.php 4667 2011-05-20 12:34:58Z david $
+ * @version    $Id: AgaviException.class.php 4669 2011-05-25 20:53:42Z david $
  */
 class AgaviException extends Exception
 {
@@ -277,15 +277,11 @@ class AgaviException extends Exception
 		$exitCode = 70;
 		
 		$exceptions = array();
-		if(version_compare(PHP_VERSION, '5.3', 'ge')) {
-			// reverse order of exceptions
-			$ce = $e;
-			while($ce) {
-				array_unshift($exceptions, $ce);
-				$ce = $ce->getPrevious();
-			}
-		} else {
-			$exceptions[] = $e;
+		// reverse order of exceptions for linking
+		$ce = $e;
+		while($ce) {
+			array_unshift($exceptions, $ce);
+			$ce = $ce->getPrevious();
 		}
 		
 		// discard any previous output waiting in the buffer

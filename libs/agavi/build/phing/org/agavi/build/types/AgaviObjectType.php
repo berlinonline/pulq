@@ -13,7 +13,7 @@
 // |   End:                                                                    |
 // +---------------------------------------------------------------------------+
 
-require_once(dirname(__FILE__) . '/AgaviType.php');
+require_once(__DIR__ . '/AgaviType.php');
 
 /**
  * Represents an object that persists across the build session.
@@ -27,7 +27,7 @@ require_once(dirname(__FILE__) . '/AgaviType.php');
  *
  * @since      1.0.0
  *
- * @version    $Id: AgaviObjectType.php 4667 2011-05-20 12:34:58Z david $
+ * @version    $Id: AgaviObjectType.php 4669 2011-05-25 20:53:42Z david $
  */
 class AgaviObjectType extends AgaviType
 {

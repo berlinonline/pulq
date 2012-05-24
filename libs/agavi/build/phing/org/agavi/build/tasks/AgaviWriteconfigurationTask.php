@@ -13,7 +13,7 @@
 // |   End:                                                                    |
 // +---------------------------------------------------------------------------+
 
-require_once(dirname(__FILE__) . '/AgaviTask.php');
+require_once(__DIR__ . '/AgaviTask.php');
 
 /**
  * Writes XPath-defined configuration values to an Agavi configuration file.
@@ -27,7 +27,7 @@ require_once(dirname(__FILE__) . '/AgaviTask.php');
  *
  * @since      1.0.0
  *
- * @version    $Id: AgaviWriteconfigurationTask.php 4667 2011-05-20 12:34:58Z david $
+ * @version    $Id: AgaviWriteconfigurationTask.php 4727 2011-06-18 20:04:12Z david $
  */
 class AgaviWriteconfigurationTask extends AgaviTask
 {
@@ -96,6 +96,8 @@ class AgaviWriteconfigurationTask extends AgaviTask
 		
 		$path = new DOMXPath($document);
 		$path->registerNamespace('envelope', 'http://agavi.org/agavi/config/global/envelope/1.0');
+		$path->registerNamespace('envelope10', 'http://agavi.org/agavi/config/global/envelope/1.0');
+		$path->registerNamespace('envelope11', 'http://agavi.org/agavi/config/global/envelope/1.1');
 		if($this->namespace !== null) {
 			$path->registerNamespace('document', $this->namespace);
 		}

@@ -26,7 +26,7 @@
  *
  * @since      0.11.0
  *
- * @version    $Id: AgaviWebRouting.class.php 4846 2011-11-12 11:33:34Z david $
+ * @version    $Id: AgaviWebRouting.class.php 4679 2011-06-05 15:56:27Z david $
  */
 class AgaviWebRouting extends AgaviRouting
 {
@@ -169,7 +169,7 @@ class AgaviWebRouting extends AgaviRouting
 			$parsedRuQuery = $parsedInput = '';
 			parse_str($ru['query'], $parsedRuQuery);
 			parse_str($this->input, $parsedInput);
-			if(get_magic_quotes_gpc()) {
+			if(function_exists('get_magic_quotes_gpc') && get_magic_quotes_gpc()) {
 				$parsedRuQuery = AgaviWebRequest::clearMagicQuotes($parsedRuQuery);
 				$parsedInput = AgaviWebRequest::clearMagicQuotes($parsedInput, false /* start on the first level */);
 			}
@@ -241,19 +241,6 @@ class AgaviWebRouting extends AgaviRouting
 		return $this->baseHref;
 	}
 	
-	/**
-	 * Callback for array_walk_recursive.
-	 *
-	 * @param      mixed The value to decode, passed as a reference.
-	 *
-	 * @author     David Zülke <dz@bitxtender.com>
-	 * @since      0.11.1
-	 */
-	protected function rawurldecodeCallback(&$value)
-	{
-		$value = rawurldecode($value);
-	}
-
 	/**
 	 * Generate a formatted Agavi URL.
 	 *

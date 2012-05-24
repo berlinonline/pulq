@@ -27,11 +27,11 @@
  *
  * @since      0.9.0
  *
- * @version    $Id: AgaviFilterConfigHandler.class.php 4667 2011-05-20 12:34:58Z david $
+ * @version    $Id: AgaviFilterConfigHandler.class.php 4810 2011-08-18 15:55:10Z david $
  */
 class AgaviFilterConfigHandler extends AgaviXmlConfigHandler
 {
-	const XML_NAMESPACE = 'http://agavi.org/agavi/config/parts/filters/1.0';
+	const XML_NAMESPACE = 'http://agavi.org/agavi/config/parts/filters/1.1';
 	
 	/**
 	 * Execute this configuration handler.
@@ -79,6 +79,9 @@ class AgaviFilterConfigHandler extends AgaviXmlConfigHandler
 		$data = array();
 
 		foreach($filters as $name => $filter) {
+			if(stripos($name, 'agavi') === 0) {
+				throw new AgaviConfigurationException('Filter names must not start with "agavi".');
+			}
 			if(!isset($filter['class'])) {
 				throw new AgaviConfigurationException('No class name specified for filter "' . $name . '" in ' . $config);
 			}
@@ -90,7 +93,7 @@ class AgaviFilterConfigHandler extends AgaviXmlConfigHandler
 				}
 				$data[] = '$filter = new ' . $filter['class'] . '();';
 				$data[] = '$filter->initialize($this->context, ' . var_export($filter['params'], true) . ');';
-				$data[] = '$filters[] = $filter;';
+				$data[] = '$filters[' . var_export($name, true) . '] = $filter;';
 			}
 		}
 

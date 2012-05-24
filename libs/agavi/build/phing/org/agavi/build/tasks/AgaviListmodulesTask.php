@@ -13,7 +13,7 @@
 // |   End:                                                                    |
 // +---------------------------------------------------------------------------+
 
-require_once(dirname(__FILE__) . '/AgaviTask.php');
+require_once(__DIR__ . '/AgaviTask.php');
 
 /**
  * Lists all modules in an Agavi project.
@@ -27,7 +27,7 @@ require_once(dirname(__FILE__) . '/AgaviTask.php');
  *
  * @since      1.0.0
  *
- * @version    $Id: AgaviListmodulesTask.php 4667 2011-05-20 12:34:58Z david $
+ * @version    $Id: AgaviListmodulesTask.php 4669 2011-05-25 20:53:42Z david $
  */
 class AgaviListmodulesTask extends AgaviTask
 {
@@ -82,7 +82,7 @@ class AgaviListmodulesTask extends AgaviTask
 			}
 			
 			$check = new AgaviModuleFilesystemCheck();
-			$check->setConfigDirectory($this->project->getProperty('module.directory.config'));
+			$check->setConfigDirectory($this->project->getProperty('module.config.directory'));
 			
 			$check->setPath($file->getPathname());
 			if($check->check()) {

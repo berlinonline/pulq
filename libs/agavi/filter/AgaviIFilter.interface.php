@@ -26,21 +26,10 @@
  *
  * @since      0.11.0
  *
- * @version    $Id: AgaviIFilter.interface.php 4667 2011-05-20 12:34:58Z david $
+ * @version    $Id: AgaviIFilter.interface.php 4810 2011-08-18 15:55:10Z david $
  */
 interface AgaviIFilter
 {
-	/**
-	 * Execute this filter for the first time in this context.
-	 *
-	 * @param      AgaviFilterChain A FilterChain instance.
-	 * @param      AgaviExecutionContainer The current execution container.
-	 *
-	 * @author     Sean Kerr <skerr@mojavi.org>
-	 * @since      0.11.0
-	 */
-	public function executeOnce(AgaviFilterChain $filterChain, AgaviExecutionContainer $container);
-
 	/**
 	 * Execute this filter.
 	 *

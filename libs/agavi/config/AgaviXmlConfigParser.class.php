@@ -28,7 +28,7 @@
  *
  * @since      0.11.0
  *
- * @version    $Id: AgaviXmlConfigParser.class.php 4667 2011-05-20 12:34:58Z david $
+ * @version    $Id: AgaviXmlConfigParser.class.php 4794 2011-08-12 17:14:49Z david $
  */
 class AgaviXmlConfigParser
 {
@@ -36,7 +36,9 @@ class AgaviXmlConfigParser
 	
 	const NAMESPACE_AGAVI_ENVELOPE_1_0 = 'http://agavi.org/agavi/config/global/envelope/1.0';
 	
-	const NAMESPACE_AGAVI_ENVELOPE_LATEST = self::NAMESPACE_AGAVI_ENVELOPE_1_0;
+	const NAMESPACE_AGAVI_ENVELOPE_1_1 = 'http://agavi.org/agavi/config/global/envelope/1.1';
+	
+	const NAMESPACE_AGAVI_ENVELOPE_LATEST = self::NAMESPACE_AGAVI_ENVELOPE_1_1;
 	
 	const NAMESPACE_AGAVI_ANNOTATIONS_1_0 = 'http://agavi.org/agavi/config/global/annotations/1.0';
 	
@@ -52,9 +54,13 @@ class AgaviXmlConfigParser
 	
 	const NAMESPACE_SVRL_ISO = 'http://purl.oclc.org/dsdl/svrl';
 	
+	const NAMESPACE_XML_1998 = 'http://www.w3.org/XML/1998/namespace'; 
+	
 	const NAMESPACE_XMLNS_2000 = 'http://www.w3.org/2000/xmlns/';
 	
 	const NAMESPACE_XSL_1999 = 'http://www.w3.org/1999/XSL/Transform';
+	
+	const NAMESPACE_XINCLUDE_2001 = 'http://www.w3.org/2001/XInclude';
 	
 	const STAGE_SINGLE = 'single';
 	
@@ -71,6 +77,7 @@ class AgaviXmlConfigParser
 	public static $agaviEnvelopeNamespaces = array(
 		self::NAMESPACE_AGAVI_ENVELOPE_0_11 => 'agavi_envelope_0_11',
 		self::NAMESPACE_AGAVI_ENVELOPE_1_0 => 'agavi_envelope_1_0',
+		self::NAMESPACE_AGAVI_ENVELOPE_1_1 => 'agavi_envelope_1_1',
 	);
 	
 	/**
@@ -80,8 +87,8 @@ class AgaviXmlConfigParser
 	public static $agaviNamespaces = array(
 		self::NAMESPACE_AGAVI_ENVELOPE_0_11 => 'agavi_envelope_0_11',
 		self::NAMESPACE_AGAVI_ENVELOPE_1_0 => 'agavi_envelope_1_0',
-		
-		self::NAMESPACE_AGAVI_ANNOTATIONS_1_0 => 'agavi_annotations_1_0'
+		self::NAMESPACE_AGAVI_ENVELOPE_1_1 => 'agavi_envelope_1_1',
+		self::NAMESPACE_AGAVI_ANNOTATIONS_1_0 => 'agavi_annotations_1_0',
 	);
 	
 	/**
@@ -382,7 +389,7 @@ class AgaviXmlConfigParser
 			$this->doc = new AgaviXmlConfigDomDocument();
 			$this->doc->load($path);
 		} catch(DOMException $dome) {
-			throw new AgaviParseException(sprintf('Configuration file "%s" could not be parsed: %s', $path, $dome->getMessage()));
+			throw new AgaviParseException(sprintf('Configuration file "%s" could not be parsed: %s', $path, $dome->getMessage()), 0, $dome);
 		}
 	}
 	
@@ -488,12 +495,24 @@ class AgaviXmlConfigParser
 	public static function xinclude(AgaviXmlConfigDomDocument $document)
 	{
 		// replace %lala% directives in XInclude href attributes
-		foreach($document->getElementsByTagNameNS('http://www.w3.org/2001/XInclude', '*') as $element) {
+		foreach($document->getElementsByTagNameNS(self::NAMESPACE_XINCLUDE_2001, 'include') as $element) {
 			if($element->hasAttribute('href')) {
 				$attribute = $element->getAttributeNode('href');
 				$parts = explode('#', $attribute->nodeValue, 2);
 				$parts[0] = str_replace('\\', '/', AgaviToolkit::expandDirectives($parts[0]));
 				$attribute->nodeValue = implode('#', $parts);
+				if(strpos($parts[0], '*') !== false || strpos($parts[0], '{') !== false) {
+					$glob = glob($parts[0], GLOB_BRACE | GLOB_NOSORT);
+					if($glob) {
+						$glob = array_unique($glob); // it could be that someone used /path/to/{Foo,*}/burp.xml so Foo would come before all others, that's why we need to remove duplicates as the * would match Foo again
+						foreach($glob as $path) {
+							$new = $element->cloneNode(true);
+							$new->setAttribute('href', $path . (isset($parts[1]) ? '#' . $parts[1] : ''));
+							$element->parentNode->insertBefore($new, $element);
+						}
+						$element->parentNode->removeChild($element);
+					}
+				}
 			}
 		}
 		
@@ -501,7 +520,7 @@ class AgaviXmlConfigParser
 		try {
 			$document->xinclude();
 		} catch(DOMException $dome) {
-			throw new AgaviParseException(sprintf('Configuration file "%s" could not be parsed: %s', $document->documentURI, $dome->getMessage()));
+			throw new AgaviParseException(sprintf('Configuration file "%s" could not be parsed: %s', $document->documentURI, $dome->getMessage()), 0, $dome);
 		}
 		
 		// remove all xml:base attributes inserted by XIncludes
@@ -572,7 +591,7 @@ class AgaviXmlConfigParser
 				$xsl = new AgaviXmlConfigDomDocument();
 				$xsl->load($href);
 			} catch(DOMException $dome) {
-				throw new AgaviParseException(sprintf('Configuration file "%s" could not be parsed: Could not load XSL stylesheet "%s": %s', $document->documentURI, $href, $dome->getMessage()));
+				throw new AgaviParseException(sprintf('Configuration file "%s" could not be parsed: Could not load XSL stylesheet "%s": %s', $document->documentURI, $href, $dome->getMessage()), 0, $dome);
 			}
 			
 			// add them to the list of transformations to be done
@@ -583,10 +602,10 @@ class AgaviXmlConfigParser
 		foreach($transformations as $xsl) {
 			// load the stylesheet document into an XSLTProcessor instance
 			try {
-				$proc = new AgaviXmlConfigXsltProcessor();
+				$proc = new AgaviXsltProcessor();
 				$proc->importStylesheet($xsl);
 			} catch(Exception $e) {
-				throw new AgaviParseException(sprintf('Configuration file "%s" could not be parsed: Could not import XSL stylesheet "%s": %s', $document->documentURI, $xsl->documentURI, $e->getMessage()));
+				throw new AgaviParseException(sprintf('Configuration file "%s" could not be parsed: Could not import XSL stylesheet "%s": %s', $document->documentURI, $xsl->documentURI, $e->getMessage()), 0, $e);
 			}
 			
 			// set some info (config file path, context name, environment name) as params
@@ -602,7 +621,7 @@ class AgaviXmlConfigParser
 				// transform the doc
 				$newdoc = $proc->transformToDoc($document);
 			} catch(Exception $e) {
-				throw new AgaviParseException(sprintf('Configuration file "%s" could not be parsed: Could not transform the document using the XSL stylesheet "%s": %s', $document->documentURI, $xsl->documentURI, $e->getMessage()));
+				throw new AgaviParseException(sprintf('Configuration file "%s" could not be parsed: Could not transform the document using the XSL stylesheet "%s": %s', $document->documentURI, $xsl->documentURI, $e->getMessage()), 0, $e);
 			}
 			
 			// no errors and we got a document back? excellent. this will be our new baby from now. time to kill the old one
@@ -661,7 +680,7 @@ class AgaviXmlConfigParser
 							$xsl = new AgaviXmlConfigDomDocument();
 							$xsl->appendChild($xsl->importNode($stylesheets->item(0), true));
 						} catch(DOMException $dome) {
-							throw new AgaviParseException(sprintf('Configuration file "%s" could not be parsed: Could not load XSL stylesheet "%s": %s', $document->documentURI, $href, $dome->getMessage()));
+							throw new AgaviParseException(sprintf('Configuration file "%s" could not be parsed: Could not load XSL stylesheet "%s": %s', $document->documentURI, $href, $dome->getMessage()), 0, $dome);
 						}
 						
 						// and append to the list of XSLs to process
@@ -809,7 +828,7 @@ class AgaviXmlConfigParser
 			try {
 				$document->schemaValidate($validationFile);
 			} catch(DOMException $dome) {
-				throw new AgaviParseException(sprintf('XML Schema validation of configuration file "%s" failed:' . "\n\n%s", $document->documentURI, $dome->getMessage()));
+				throw new AgaviParseException(sprintf('XML Schema validation of configuration file "%s" failed:' . "\n\n%s", $document->documentURI, $dome->getMessage()), 0, $dome);
 			}
 		}
 	}
@@ -830,7 +849,7 @@ class AgaviXmlConfigParser
 			try {
 				$document->schemaValidateSource($validationSource);
 			} catch(DOMException $dome) {
-				throw new AgaviParseException(sprintf('XML Schema validation of configuration file "%s" failed:' . "\n\n%s", $document->documentURI, $dome->getMessage()));
+				throw new AgaviParseException(sprintf('XML Schema validation of configuration file "%s" failed:' . "\n\n%s", $document->documentURI, $dome->getMessage()), 0, $dome);
 			}
 		}
 	}
@@ -855,7 +874,7 @@ class AgaviXmlConfigParser
 			try {
 				$document->relaxNGValidate($validationFile);
 			} catch(DOMException $dome) {
-				throw new AgaviParseException(sprintf('RELAX NG validation of configuration file "%s" failed:' . "\n\n%s", $document->documentURI, $dome->getMessage()));
+				throw new AgaviParseException(sprintf('RELAX NG validation of configuration file "%s" failed:' . "\n\n%s", $document->documentURI, $dome->getMessage()), 0, $dome);
 			}
 		}
 	}
@@ -879,7 +898,7 @@ class AgaviXmlConfigParser
 		}
 		
 		// load the schematron processor
-		$schematron = new AgaviXmlConfigSchematronProcessor();
+		$schematron = new AgaviSchematronProcessor();
 		$schematron->setNode($document);
 		// set some info (config file path, context name, environment name) as params
 		// first arg is the namespace URI, which PHP doesn't support. awesome. see http://bugs.php.net/bug.php?id=30622 for the sad details
@@ -901,14 +920,14 @@ class AgaviXmlConfigParser
 				$sch = new AgaviXmlConfigDomDocument();
 				$sch->load($href);
 			} catch(DOMException $dome) {
-				throw new AgaviParseException(sprintf('Schematron validation of configuration file "%s" failed: Could not load schema file "%s": %s', $document->documentURI, $href, $dome->getMessage()));
+				throw new AgaviParseException(sprintf('Schematron validation of configuration file "%s" failed: Could not load schema file "%s": %s', $document->documentURI, $href, $dome->getMessage()), 0, $dome);
 			}
 			
 			// perform the validation transformation
 			try {
 				$result = $schematron->transform($sch);
 			} catch(Exception $e) {
-				throw new AgaviParseException(sprintf('Schematron validation of configuration file "%s" failed: Transformation failed: %s', $document->documentURI, $e->getMessage()));
+				throw new AgaviParseException(sprintf('Schematron validation of configuration file "%s" failed: Transformation failed: %s', $document->documentURI, $e->getMessage()), 0, $e);
 			}
 			
 			// validation ran okay, now we need to look at the result document to see if there are errors

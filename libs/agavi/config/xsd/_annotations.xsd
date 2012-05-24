@@ -6,7 +6,7 @@
 	targetNamespace="http://agavi.org/agavi/config/global/annotations/1.0"
 	elementFormDefault="qualified"
 	attributeFormDefault="qualified"
-	version="$Id: _annotations.xsd 3595 2009-01-19 08:31:33Z impl $">
+	version="$Id: _annotations.xsd 3913 2009-03-10 17:05:13Z david $">
 
 	<xs:import namespace="http://agavi.org/agavi/config/global/types/1.0"
 	           schemaLocation="_types.xsd" />

@@ -13,7 +13,7 @@
 // |   End:                                                                    |
 // +---------------------------------------------------------------------------+
 
-require_once(dirname(__FILE__) . '/AgaviTask.php');
+require_once(__DIR__ . '/AgaviTask.php');
 
 /**
  * Writes properties to a given file.
@@ -27,7 +27,7 @@ require_once(dirname(__FILE__) . '/AgaviTask.php');
  *
  * @since      1.0.0
  *
- * @version    $Id: AgaviWritepropertiesTask.php 4667 2011-05-20 12:34:58Z david $
+ * @version    $Id: AgaviWritepropertiesTask.php 4669 2011-05-25 20:53:42Z david $
  */
 class AgaviWritepropertiesTask extends AgaviTask
 {

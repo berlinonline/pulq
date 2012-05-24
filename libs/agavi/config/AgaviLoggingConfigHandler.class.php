@@ -29,11 +29,11 @@
  *
  * @since      0.10.0
  *
- * @version    $Id: AgaviLoggingConfigHandler.class.php 4721 2011-06-16 19:34:56Z david $
+ * @version    $Id: AgaviLoggingConfigHandler.class.php 4734 2011-06-21 15:47:49Z david $
  */
 class AgaviLoggingConfigHandler extends AgaviXmlConfigHandler
 {
-	const XML_NAMESPACE = 'http://agavi.org/agavi/config/parts/logging/1.0';
+	const XML_NAMESPACE = 'http://agavi.org/agavi/config/parts/logging/1.1';
 	
 	/**
 	 * Execute this configuration handler.

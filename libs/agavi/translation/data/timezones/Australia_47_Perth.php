@@ -2,7 +2,7 @@
 
 /**
  * Data file for timezone "Australia/Perth".
- * Compiled from olson file "australasia", version 8.29.
+ * Compiled from olson file "australasia", version 8.27.
  *
  * @package    agavi
  * @subpackage translation
@@ -12,7 +12,7 @@
  *
  * @since      0.11.0
  *
- * @version    $Id: Australia_47_Perth.php 4833 2011-11-01 11:40:11Z david $
+ * @version    $Id: Australia_47_Perth.php 4822 2011-10-07 20:52:10Z david $
  */
 
 return array (
@@ -141,7 +141,7 @@ return array (
     'startYear' => 2010,
   ),
   'source' => 'australasia',
-  'version' => '8.29',
+  'version' => '8.27',
   'name' => 'Australia/Perth',
 );
 

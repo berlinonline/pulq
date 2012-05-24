@@ -42,7 +42,7 @@
  *
  * @since      1.0.0
  *
- * @version    $Id: AgaviMysqliDatabase.class.php 4838 2011-11-07 13:26:13Z david $
+ * @version    $Id: AgaviMysqliDatabase.class.php 4669 2011-05-25 20:53:42Z david $
  */
 class AgaviMysqliDatabase extends AgaviMysqlDatabase
 {
@@ -164,7 +164,6 @@ class AgaviMysqliDatabase extends AgaviMysqlDatabase
 	{
 		if($this->connection != null) {
 			$this->connection->close();
-			$this->connection = $this->resource = null;
 		}
 	}
 }

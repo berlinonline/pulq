@@ -61,7 +61,7 @@
  *
  * @since      1.0.6
  *
- * @version    $Id: AgaviDoctrine2ormDatabase.class.php 4836 2011-11-07 11:55:04Z david $
+ * @version    $Id: AgaviDoctrine2ormDatabase.class.php 4782 2011-07-23 21:13:33Z david $
  */
 class AgaviDoctrine2ormDatabase extends AgaviDoctrine2Database
 {
@@ -169,7 +169,7 @@ class AgaviDoctrine2ormDatabase extends AgaviDoctrine2Database
 	 */
 	public function getResource()
 	{
-		return $this->getConnection()->getConnection();
+		return $this->connection->getConnection();
 	}
 }
 

@@ -16,7 +16,7 @@
 /**
  * AgaviNumberValidator verifies that a parameter is a number and allows you to
  * apply size constraints.
- * 
+ *
  * Parameters:
  *   'no_locale' do not use localized number format parsing with translation on
  *   'in_locale' locale to use for parsing rather than the current locale
@@ -24,7 +24,7 @@
  *   'cast_to'   type to cast to (int/integer or double/float)
  *   'min'       minimum value for the input
  *   'max'       maximum value for the input
- * 
+ *
  * @package    agavi
  * @subpackage validator
  *
@@ -34,15 +34,15 @@
  *
  * @since      0.11.0
  *
- * @version    $Id: AgaviNumberValidator.class.php 4667 2011-05-20 12:34:58Z david $
+ * @version    $Id: AgaviNumberValidator.class.php 4669 2011-05-25 20:53:42Z david $
  */
 class AgaviNumberValidator extends AgaviValidator
 {
 	/**
 	 * Validates the input
-	 * 
+	 *
 	 * @return     bool The input is valid number according to given parameters.
-	 * 
+	 *
 	 * @author     Dominik del Bondio <ddb@bitxtender.com>
 	 * @author     David Zülke <david.zuelke@bitextender.com>
 	 * @since      0.11.0
@@ -67,12 +67,12 @@ class AgaviNumberValidator extends AgaviValidator
 					$locale = $this->getContext()->getTranslationManager()->getCurrentLocale();
 				}
 			}
-			
+
 			$parsedValue = AgaviDecimalFormatter::parse($value, $locale, $hasExtraChars);
 		} else {
 			$parsedValue = $value;
 		}
-		
+
 		switch(strtolower($this->getParameter('type'))) {
 			case 'int':
 			case 'integer':
@@ -80,18 +80,18 @@ class AgaviNumberValidator extends AgaviValidator
 					$this->throwError('type');
 					return false;
 				}
-				
+
 				break;
-			
+
 			case 'float':
 			case 'double':
 				if((!is_float($parsedValue) && !is_int($parsedValue)) || $hasExtraChars) {
 					$this->throwError('type');
 					return false;
 				}
-				
+
 				break;
-			
+
 			default:
 				if($parsedValue === false || $hasExtraChars) {
 					$this->throwError('type');
@@ -108,13 +108,13 @@ class AgaviNumberValidator extends AgaviValidator
 			$this->throwError('max');
 			return false;
 		}
-		
+
 		switch(strtolower($this->getParameter('cast_to', $this->getParameter('type')))) {
 			case 'int':
 			case 'integer':
 				$parsedValue = (int) $parsedValue;
 				break;
-			
+
 			case 'float':
 			case 'double':
 				$parsedValue = (float) $parsedValue;
@@ -126,7 +126,7 @@ class AgaviNumberValidator extends AgaviValidator
 		} else {
 			$value = $parsedValue;
 		}
-		
+
 		return true;
 	}
 }

@@ -2,7 +2,7 @@
 
 /**
  * Data file for timezone "Asia/Irkutsk".
- * Compiled from olson file "europe", version 8.40.
+ * Compiled from olson file "europe", version 8.38.
  *
  * @package    agavi
  * @subpackage translation
@@ -12,7 +12,7 @@
  *
  * @since      0.11.0
  *
- * @version    $Id: Asia_47_Irkutsk.php 4833 2011-11-01 11:40:11Z david $
+ * @version    $Id: Asia_47_Irkutsk.php 4824 2011-10-07 21:00:24Z david $
  */
 
 return array (
@@ -396,7 +396,7 @@ return array (
     'startYear' => 2012,
   ),
   'source' => 'europe',
-  'version' => '8.40',
+  'version' => '8.38',
   'name' => 'Asia/Irkutsk',
 );
 

@@ -25,7 +25,7 @@
  *
  * @since      0.11.0
  *
- * @version    $Id: AgaviSoapResponse.class.php 4667 2011-05-20 12:34:58Z david $
+ * @version    $Id: AgaviSoapResponse.class.php 4669 2011-05-25 20:53:42Z david $
  */
 class AgaviSoapResponse extends AgaviResponse
 {
@@ -49,6 +49,8 @@ class AgaviSoapResponse extends AgaviResponse
 	 */
 	public function merge(AgaviResponse $otherResponse)
 	{
+		parent::merge($otherResponse);
+		
 		if($otherResponse instanceof AgaviSoapResponse) {
 			foreach($otherResponse->getSoapHeaders() as $soapHeader) {
 				if(!$this->hasSoapHeader($soapHeader->namespace, $soapHeader->name)) {

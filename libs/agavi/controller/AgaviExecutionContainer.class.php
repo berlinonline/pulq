@@ -26,7 +26,7 @@
  *
  * @since      0.11.0
  *
- * @version    $Id: AgaviExecutionContainer.class.php 4667 2011-05-20 12:34:58Z david $
+ * @version    $Id: AgaviExecutionContainer.class.php 4810 2011-08-18 15:55:10Z david $
  */
 class AgaviExecutionContainer extends AgaviAttributeHolder
 {
@@ -34,6 +34,11 @@ class AgaviExecutionContainer extends AgaviAttributeHolder
 	 * @var        AgaviContext The context instance.
 	 */
 	protected $context = null;
+
+	/**
+	 * @var        AgaviFilterChain The container's filter chain.
+	 */
+	protected $filterChain = null;
 
 	/**
 	 * @var        AgaviValidationManager The validation manager instance.
@@ -112,16 +117,19 @@ class AgaviExecutionContainer extends AgaviAttributeHolder
 	protected $next = null;
 
 	/**
-	 * action names can contain any valid php token, dots and slashes for subactions
+	 * Action names may contain any valid PHP token, as well as dots and slashes
+	 * (for sub-actions).
 	 */
 	const SANE_ACTION_NAME = '/[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff\/.]*/';
 	
 	/**
-	 * view names can contain any valid php token, dots and slashes for subactions
+	 * View names may contain any valid PHP token, as well as dots and slashes
+	 * (for sub-actions).
 	 */
 	const SANE_VIEW_NAME   = '/[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff\/.]*/';
+	
 	/**
-	 * only php tokens are allowed as module names
+	 * Only valid PHP tokens are allowed in module names.
 	 */
 	const SANE_MODULE_NAME = '/[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*/';
 	
@@ -246,13 +254,10 @@ class AgaviExecutionContainer extends AgaviAttributeHolder
 	{
 		$controller = $this->context->getController();
 
-		$request = $this->context->getRequest();
-
 		$controller->countExecution();
 
 		$moduleName = $this->getModuleName();
 		$actionName = $this->getActionName();
-		
 		
 		try {
 			// TODO: cleanup and merge with createActionInstance once Exceptions have been cleaned up and specced properly so that the two error conditions can be told apart
@@ -271,26 +276,13 @@ class AgaviExecutionContainer extends AgaviAttributeHolder
 		// initialize the action
 		$this->actionInstance->initialize($this);
 
-		if($this->actionInstance->isSimple()) {
-			if($this->arguments !== null) {
-				// clone it so mutating it has no effect on the "outside world"
-				$this->requestData = clone $this->arguments;
-			} else {
-				$rdhc = $request->getParameter('request_data_holder_class');
-				$this->requestData = new $rdhc();
-			}
-			// run the execution filter, without a proper chain
-			$controller->getFilter('execution')->execute(new AgaviFilterChain(), $this);
-		} else {
-			// mmmh I smell awesomeness... clone the RD JIT, yay, that's the spirit
-			$this->requestData = clone $this->globalRequestData;
-
-			if($this->arguments !== null) {
-				$this->requestData->merge($this->arguments);
-			}
-
-			// create a new filter chain
-			$filterChain = $this->context->createInstanceFor('filter_chain');
+		// copy and merge request data as required
+		$this->initRequestData();
+		
+		$filterChain = $this->getFilterChain();
+		
+		if(!$this->actionInstance->isSimple()) {
+			// simple actions have no filters
 
 			if(AgaviConfig::get('core.available', false)) {
 				// the application is available so we'll register
@@ -299,44 +291,67 @@ class AgaviExecutionContainer extends AgaviAttributeHolder
 				// does this action require security?
 				if(AgaviConfig::get('core.use_security', false)) {
 					// register security filter
-					$filterChain->register($controller->getFilter('security'));
+					$filterChain->register($controller->getFilter('security'), 'agavi_security_filter');
 				}
 
 				// load filters
 				$controller->loadFilters($filterChain, 'action');
 				$controller->loadFilters($filterChain, 'action', $moduleName);
 			}
-
-			// register the execution filter
-			$filterChain->register($controller->getFilter('execution'));
-
-			// process the filter chain
-			$filterChain->execute($this);
 		}
+
+		// register the execution filter
+		$filterChain->register($controller->getFilter('execution'), 'agavi_execution_filter');
+
+		// process the filter chain
+		$filterChain->execute($this);
 		
 		return $this->proceed();
 	}
 	
+	/**
+	 * Copies and merges the global request data.
+	 * 
+	 * @author       Felix Gilcher <felix.gilcher@bitextender.com>
+	 * @since        1.1.0
+	 */
+	protected function initRequestData()
+	{
+		if($this->actionInstance->isSimple()) {
+			if($this->arguments !== null) {
+				// clone it so mutating it has no effect on the "outside world"
+				$this->requestData = clone $this->arguments;
+			} else {
+				$rdhc = $this->getContext()->getRequest()->getParameter('request_data_holder_class');
+				$this->requestData = new $rdhc();
+			}
+		} else {
+			// mmmh I smell awesomeness... clone the RD JIT, yay, that's the spirit
+			$this->requestData = clone $this->globalRequestData;
+
+			if($this->arguments !== null) {
+				$this->requestData->merge($this->arguments);
+			}
+		}
+	}
 	
 	/**
-	 * create a system forward container
+	 * Create a system forward container
 	 *
-	 * calling this method will set the attributes 
-	 * 
+	 * Calling this method will set the attributes:
 	 *  - requested_module
 	 *  - requested_action
-	 *  - an optional system exception 
-	 * 
-	 * in the appropriate namespace on the created container and the request 
-	 * (for legacy reasons)
+	 *  - (optional) exception
+	 * in the appropriate namespace on the created container as well as the global
+	 * request (for legacy reasons)
 	 *
 	 *
-	 * @param      string          the type of forward to create (error_404, 
-	 *                             module_disabled, secure, login, unavailable)
-	 * @param      AgaviException  optional the exception thrown by the controller
-	 *                             when resolving the module/action
+	 * @param      string          The type of forward to create (error_404, 
+	 *                             module_disabled, secure, login, unavailable).
+	 * @param      AgaviException  Optional exception thrown by the controller
+	 *                             while resolving the module/action.
 	 *
-	 * @return     AgaviExecutionContainer The forward container
+	 * @return     AgaviExecutionContainer The forward container.
 	 *
 	 * @author     Felix Gilcher <felix.gilcher@bitextender.com>
 	 * @since      1.0.0
@@ -423,9 +438,26 @@ class AgaviExecutionContainer extends AgaviAttributeHolder
 		return $this->validationManager;
 	}
 	
+	/**
+	 * Get the container's filter chain.
+	 *
+	 * @return     AgaviFilterChain The container's filter chain.
+	 *
+	 * @author     David Zülke <david.zuelke@bitextender.com>
+	 * @since      1.1.0
+	 */
+	public function getFilterChain()
+	{
+		if($this->filterChain === null) {
+			$this->filterChain = $this->context->createInstanceFor('filter_chain');
+			$this->filterChain->setType(AgaviFilterChain::TYPE_ACTION);
+		}
+		
+		return $this->filterChain;
+	}
 	
 	/**
-	 * Execute the Action
+	 * Execute the Action.
 	 *
 	 * @return     mixed The processed View information returned by the Action.
 	 *
@@ -533,9 +565,9 @@ class AgaviExecutionContainer extends AgaviAttributeHolder
 	}
 	
 	/**
-	 * performs the validation for this container
+	 * Performs validation for this execution container.
 	 * 
-	 * @return     bool true if the data validated successfully, false in any other case
+	 * @return     bool true if the data validated successfully, false otherwise.
 	 * 
 	 * @author     David Zülke <david.zuelke@bitxtender.com>
 	 * @author     Felix Gilcher <felix.gilcher@bitextender.com>
@@ -570,7 +602,7 @@ class AgaviExecutionContainer extends AgaviAttributeHolder
 	}
 
 	/**
-	 * register the validators for this container
+	 * Register validators for this execution container.
 	 * 
 	 * @author     David Zülke <david.zuelke@bitxtender.com>
 	 * @author     Felix Gilcher <felix.gilcher@bitextender.com>

@@ -24,7 +24,7 @@
  *
  * @since      1.0.0
  *
- * @version    $Id: AgaviTestSuite.class.php 4667 2011-05-20 12:34:58Z david $
+ * @version    $Id: AgaviTestSuite.class.php 4669 2011-05-25 20:53:42Z david $
  */
 class AgaviTestSuite extends PHPUnit_Framework_TestSuite
 {

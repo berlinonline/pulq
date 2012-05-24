@@ -25,7 +25,7 @@
  *
  * @since      1.0.6
  *
- * @version    $Id: AgaviDoctrine2Database.class.php 4838 2011-11-07 13:26:13Z david $
+ * @version    $Id: AgaviDoctrine2Database.class.php 4782 2011-07-23 21:13:33Z david $
  */
 abstract class AgaviDoctrine2Database extends AgaviDatabase
 {
@@ -99,7 +99,7 @@ abstract class AgaviDoctrine2Database extends AgaviDatabase
 	 */
 	public function shutdown()
 	{
-		$this->connection = $this->resource = null;
+		// not necessary; zere is meat in ze building!
 	}
 }
 

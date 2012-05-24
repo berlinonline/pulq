@@ -25,7 +25,7 @@
  *
  * @since      0.9.0
  *
- * @version    $Id: AgaviConsoleRequest.class.php 4865 2011-11-15 15:29:22Z david $
+ * @version    $Id: AgaviConsoleRequest.class.php 4844 2011-11-09 14:44:45Z david $
  */
 class AgaviConsoleRequest extends AgaviRequest
 {
@@ -81,31 +81,30 @@ class AgaviConsoleRequest extends AgaviRequest
 			$prev = $arg;
 		}
 		
-		$files = array();
+		$_FILES = array();
 		if($this->getParameter('read_stdin', false)) {
-			$stdinFile = tempnam(AgaviConfig::get('core.cache_dir'), 'stdin_');
 			$stdin = fopen('php://stdin', 'rb');
+			// set to non-blocking so the stream_get_contents() call won't hang forever if there is no STDIN input
 			stream_set_blocking($stdin, false);
-			$size = stream_copy_to_stream($stdin, $handle = fopen($stdinFile, 'wb'));
-			fclose($handle);
+			$stdinContents = stream_get_contents($stdin);
+			$stdinName = $this->getParameter('stdin_file_name', 'stdin_file');
 			
-			$ufc = $this->getParameter('uploaded_file_class', 'AgaviUploadedFile');
-			$files = array(
-				$this->getParameter('stdin_file_name', 'stdin_file') => new $ufc(array(
-					'name' => $stdinFile,
+			$_FILES = array(
+				$stdinName => array(
+					'name' => $stdinName,
 					'type' => 'application/octet-stream',
-					'size' => $size,
-					'tmp_name' => $stdinFile,
+					'size' => strlen($stdinContents),
+					'contents' => $stdinContents,
 					'error' => UPLOAD_ERR_OK,
 					'is_uploaded_file' => false,
-				))
+				)
 			);
 		}
 
 		$rdhc = $this->getParameter('request_data_holder_class');
 		$this->setRequestData(new $rdhc(array(
 			constant("$rdhc::SOURCE_PARAMETERS") => array(),
-			constant("$rdhc::SOURCE_FILES") => $files,
+			constant("$rdhc::SOURCE_FILES") => $_FILES,
 		)));
 		$rd = $this->getRequestData();
 		

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ae:configurations xmlns="http://agavi.org/agavi/config/parts/module/1.0" xmlns:ae="http://agavi.org/agavi/config/global/envelope/1.0">
+<ae:configurations xmlns="http://agavi.org/agavi/config/parts/module/1.1" xmlns:ae="http://agavi.org/agavi/config/global/envelope/1.1">
 	
 	<ae:configuration>
 		
@@ -15,6 +15,12 @@
 				<setting name="update_url" />
 				<setting name="description">An example module</setting>
 -->
+				<setting name="agavi.action.path">%%MODULE_ACTION_PATH%%</setting>
+				<setting name="agavi.view.path">%%MODULE_VIEW_PATH%%</setting>
+				<setting name="agavi.view.name">%%MODULE_VIEW_NAME%%</setting>
+				<setting name="agavi.cache.path">%%MODULE_CACHE_PATH%%</setting>
+				<setting name="agavi.validate.path">%%MODULE_VALIDATE_PATH%%</setting>
+				<setting name="agavi.template.directory">%%MODULE_TEMPLATES_DIRECTORY%%</setting>
 			</settings>
 		</module>
 		

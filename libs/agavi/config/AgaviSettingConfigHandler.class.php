@@ -28,11 +28,11 @@
  *
  * @since      0.9.0
  *
- * @version    $Id: AgaviSettingConfigHandler.class.php 4667 2011-05-20 12:34:58Z david $
+ * @version    $Id: AgaviSettingConfigHandler.class.php 4734 2011-06-21 15:47:49Z david $
  */
 class AgaviSettingConfigHandler extends AgaviXmlConfigHandler
 {
-	const XML_NAMESPACE = 'http://agavi.org/agavi/config/parts/settings/1.0';
+	const XML_NAMESPACE = 'http://agavi.org/agavi/config/parts/settings/1.1';
 	
 	/**
 	 * Execute this configuration handler.
@@ -87,7 +87,7 @@ class AgaviSettingConfigHandler extends AgaviXmlConfigHandler
 				if($setting->hasAgaviParameters()) {
 					$data[$settingName] = $setting->getAgaviParameters();
 				} else {
-					$data[$settingName] = AgaviToolkit::literalize($setting->getValue());
+					$data[$settingName] = $setting->getLiteralValue();
 				}
 			}
 			

@@ -46,7 +46,7 @@
  *
  * @since      0.9.0
  *
- * @version    $Id: AgaviPostgresqlDatabase.class.php 4838 2011-11-07 13:26:13Z david $
+ * @version    $Id: AgaviPostgresqlDatabase.class.php 4669 2011-05-25 20:53:42Z david $
  */
 class AgaviPostgresqlDatabase extends AgaviDatabase
 {
@@ -166,7 +166,6 @@ class AgaviPostgresqlDatabase extends AgaviDatabase
 	{
 		if($this->connection != null) {
 			@pg_close($this->connection);
-			$this->connection = $this->resource = null;
 		}
 	}
 }

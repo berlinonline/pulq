@@ -13,7 +13,7 @@
 // |   End:                                                                    |
 // +---------------------------------------------------------------------------+
 
-require_once(dirname(__FILE__) . '/AgaviTask.php');
+require_once(__DIR__ . '/AgaviTask.php');
 
 /**
  * Executes a target in the buildfile.
@@ -27,7 +27,7 @@ require_once(dirname(__FILE__) . '/AgaviTask.php');
  *
  * @since      1.0.0
  *
- * @version    $Id: AgaviExecutetargetTask.php 4667 2011-05-20 12:34:58Z david $
+ * @version    $Id: AgaviExecutetargetTask.php 4669 2011-05-25 20:53:42Z david $
  */
 class AgaviExecutetargetTask extends AgaviTask
 {
@@ -103,7 +103,17 @@ class AgaviExecutetargetTask extends AgaviTask
 		
 		Phing::setCurrentProject($this->project);
 		
-		$project->copyUserProperties($this->project);
+		/**
+		 * :NOTE: copy all user properties so that child task may overwrite
+		 * properties that were already set in the parent project
+		 * 
+		 * using the Project::copyUserProperties() will result in
+		 * properties not adjusted to the new value.
+		 */
+		foreach($project->getUserProperties() as $name => $property) {
+			$this->project->setUserProperty($name, $property);
+		}
+		
 		$project->copyInheritedProperties($this->project);
 		foreach($project->getProperties() as $name => $property) {
 			if($this->project->getProperty($name) === null) {

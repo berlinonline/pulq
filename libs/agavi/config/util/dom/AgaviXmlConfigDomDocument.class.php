@@ -26,7 +26,7 @@
  *
  * @since      1.0.0
  *
- * @version    $Id: AgaviXmlConfigDomDocument.class.php 4667 2011-05-20 12:34:58Z david $
+ * @version    $Id: AgaviXmlConfigDomDocument.class.php 4669 2011-05-25 20:53:42Z david $
  */
 class AgaviXmlConfigDomDocument extends DOMDocument
 {
@@ -221,13 +221,6 @@ class AgaviXmlConfigDomDocument extends DOMDocument
 		}
 		
 		libxml_use_internal_errors($luie);
-		
-		// necessary due to a PHP bug, see http://trac.agavi.org/ticket/621 and http://bugs.php.net/bug.php?id=43364
-		if(version_compare(PHP_VERSION, '5.2.6', '<')) {
-			$documentUri = $this->documentURI;
-			$this->loadXml($this->saveXml());
-			$this->documentURI = $documentUri;
-		}
 		
 		return $result;
 	}

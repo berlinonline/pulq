@@ -13,8 +13,8 @@
 // |   End:                                                                    |
 // +---------------------------------------------------------------------------+
 
-require_once(dirname(__FILE__) . '/AgaviTask.php');
-require_once(dirname(__FILE__) . '/AgaviTransformstringtoidentifierTask.php');
+require_once(__DIR__ . '/AgaviTask.php');
+require_once(__DIR__ . '/AgaviTransformstringtoidentifierTask.php');
 
 /**
  * Transforms a string into an identifier suitable for use in PHP in the same
@@ -30,7 +30,7 @@ require_once(dirname(__FILE__) . '/AgaviTransformstringtoidentifierTask.php');
  *
  * @since      1.0.0
  *
- * @version    $Id: AgaviTransformstringtoagaviidentifierTask.php 4667 2011-05-20 12:34:58Z david $
+ * @version    $Id: AgaviTransformstringtoagaviidentifierTask.php 4669 2011-05-25 20:53:42Z david $
  */
 class AgaviTransformstringtoagaviidentifierTask extends AgaviTransformstringtoidentifierTask
 {

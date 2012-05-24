@@ -26,7 +26,7 @@
  *
  * @since      0.11.0
  *
- * @version    $Id: AgaviSmartyRenderer.class.php 4851 2011-11-12 16:23:09Z david $
+ * @version    $Id: AgaviSmartyRenderer.class.php 4782 2011-07-23 21:13:33Z david $
  */
 class AgaviSmartyRenderer extends AgaviRenderer implements AgaviIReusableRenderer
 {
@@ -123,7 +123,7 @@ class AgaviSmartyRenderer extends AgaviRenderer implements AgaviIReusableRendere
 
 		$this->smarty = $this->createEngineInstance();
 		
-		$this->isSmarty2 = !defined("Smarty::SMARTY_VERSION") || !preg_match('#^Smarty.?3#', Smarty::SMARTY_VERSION, $matches);
+		$this->isSmarty2 = !defined("Smarty::SMARTY_VERSION") || (strpos(Smarty::SMARTY_VERSION, 'Smarty-3') !== 0);
 		
 		if($this->isSmarty2) {
 			$this->smarty->config_dir = AgaviConfig::get('core.config_dir');

@@ -2,7 +2,7 @@
 
 /**
  * Data file for timezone "Asia/Hebron".
- * Compiled from olson file "asia", version 8.69.
+ * Compiled from olson file "asia", version 8.68.
  *
  * @package    agavi
  * @subpackage translation
@@ -545,7 +545,7 @@ return array (
     'startYear' => 2012,
   ),
   'source' => 'asia',
-  'version' => '8.69',
+  'version' => '8.68',
   'name' => 'Asia/Hebron',
 );
 

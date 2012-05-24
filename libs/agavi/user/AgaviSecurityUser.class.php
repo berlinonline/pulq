@@ -26,7 +26,7 @@
  *
  * @since      0.9.0
  *
- * @version    $Id: AgaviSecurityUser.class.php 4667 2011-05-20 12:34:58Z david $
+ * @version    $Id: AgaviSecurityUser.class.php 4669 2011-05-25 20:53:42Z david $
  */
 class AgaviSecurityUser extends AgaviUser implements AgaviISecurityUser
 {

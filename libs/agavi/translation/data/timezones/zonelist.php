@@ -2,7 +2,7 @@
 
 /**
  * Zone list file.
- * Generated on 2011-11-01T11:38:05+00:00.
+ * Generated on 2011-10-10T16:38:39+00:00.
  *
  * @package    agavi
  * @subpackage translation
@@ -12,7 +12,7 @@
  *
  * @since      0.11.0
  *
- * @version    $Id: zonelist.php 4833 2011-11-01 11:40:11Z david $
+ * @version    $Id: zonelist.php 4829 2011-10-10 16:45:39Z david $
  */
 
 return array (

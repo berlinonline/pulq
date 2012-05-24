@@ -45,7 +45,7 @@
  *
  * @since      1.0.6
  *
- * @version    $Id: AgaviSqlsrvSessionStorage.class.php 4742 2011-06-22 23:58:43Z david $
+ * @version    $Id: AgaviSqlsrvSessionStorage.class.php 4745 2011-06-23 17:27:23Z david $
  */
 class AgaviSqlsrvSessionStorage extends AgaviSessionStorage
 {

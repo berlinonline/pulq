@@ -25,12 +25,13 @@
  *
  * @since      1.0.0
  *
- * @version    $Id: AgaviTask.php 4667 2011-05-20 12:34:58Z david $
+ * @version    $Id: AgaviTask.php 4669 2011-05-25 20:53:42Z david $
  */
 abstract class AgaviTask extends Task
 {
 	protected $quiet = false;
 	protected static $bootstrapped = false;
+	protected static $agaviBootstrapped = false;
 	
 	/**
 	 * Initializes the task by bootstrapping Agavi build components.
@@ -38,7 +39,7 @@ abstract class AgaviTask extends Task
 	public function init()
 	{
 		if(!class_exists('AgaviBuild')) {
-			require_once(dirname(__FILE__) . '/../../../../../agavi/build.php');
+			require_once(__DIR__ . '/../../../../../agavi/build.php');
 			AgaviBuild::bootstrap();
 		}
 	}
@@ -63,6 +64,45 @@ abstract class AgaviTask extends Task
 	{
 		if($this->quiet === false) {
 			parent::log($message, $level);
+		}
+	}
+	
+	/**
+	 * Utility method to load Agavi classes.
+	 */
+	protected function tryLoadAgavi()
+	{
+		if(!class_exists('Agavi')) {
+			$sourceDirectory = (string)$this->project->getProperty('agavi.directory.src');
+			require_once($sourceDirectory . '/agavi.php');
+		}
+	}
+	
+	/**
+	 * Utility method to bootstrap Agavi.
+	 */
+	protected function tryBootstrapAgavi()
+	{
+		if(!self::$agaviBootstrapped) {
+			/* Something might fuck up. We always use the template that you can
+			 * actually read. */
+			AgaviConfig::set('exception.default_template',
+				sprintf('%s/templates/plaintext.php', (string)$this->project->getProperty('agavi.directory.src.exception')),
+				$overwrite = true,
+				$readonly = true
+			);
+			
+			/* To further prevent fucking up, we force it into debug mode. */
+			AgaviConfig::set('core.debug', true, $overwrite = true, $readonly = true);
+			
+			require_once(
+				sprintf('%s/%s/config.php',
+					(string)$this->project->getProperty('project.directory'),
+					(string)$this->project->getProperty('project.directory.app')
+				)
+			);
+			Agavi::bootstrap($this->project->getProperty('project.build.environment'));
+			self::$agaviBootstrapped = true;
 		}
 	}
 }

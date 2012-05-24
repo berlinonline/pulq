@@ -26,7 +26,7 @@
  *
  * @since      1.0.0
  *
- * @version    $Id: AgaviConsoleRequestDataHolder.class.php 4865 2011-11-15 15:29:22Z david $
+ * @version    $Id: AgaviConsoleRequestDataHolder.class.php 4669 2011-05-25 20:53:42Z david $
  */
 class AgaviConsoleRequestDataHolder extends AgaviRequestDataHolder implements AgaviIFilesRequestDataHolder
 {
@@ -39,6 +39,11 @@ class AgaviConsoleRequestDataHolder extends AgaviRequestDataHolder implements Ag
 	 * @var        array An array of files uploaded during the request.
 	 */
 	protected $files = array();
+	
+	/**
+	 * @var        string The name of the AgaviUploadedFile implementation to use.
+	 */
+	protected $uploadedFileClass = 'AgaviUploadedFile';
 
 	/**
 	 * Retrieve an array of file information.

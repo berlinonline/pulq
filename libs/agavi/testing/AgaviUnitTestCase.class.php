@@ -26,15 +26,12 @@
  *
  * @since      1.0.0
  *
- * @version    $Id: AgaviUnitTestCase.class.php 4898 2011-12-14 21:51:42Z david $
+ * @version    $Id: AgaviUnitTestCase.class.php 4669 2011-05-25 20:53:42Z david $
  */
 abstract class AgaviUnitTestCase extends AgaviPhpUnitTestCase implements AgaviIUnitTestCase
 {
-	/**
-	 * @var        string the name of the context to use, null for default context
-	 */
 	protected $contextName = null;
-	
+
 	/**
 	 * Constructs a test case with the given name.
 	 *
@@ -47,17 +44,10 @@ abstract class AgaviUnitTestCase extends AgaviPhpUnitTestCase implements AgaviIU
 		parent::__construct($name, $data, $dataName);
 		$this->setRunTestInSeparateProcess(true);
 	}
-	
-	/**
-	 * Return the context defined for this test (or the default one).
-	 *
-	 * @return     AgaviContext The context instance defined for this test.
-	 *
-	 * @author     Felix Gilcher <felix.gilcher@bitextender.com>
-	 * @since      1.0.0
-	 */
+
 	public function getContext()
 	{
 		return AgaviContext::getInstance($this->contextName);
 	}
+
 }

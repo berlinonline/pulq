@@ -2,7 +2,7 @@
 
 /**
  * Data file for timezone "America/North_Dakota/New_Salem".
- * Compiled from olson file "northamerica", version 8.51.
+ * Compiled from olson file "northamerica", version 8.49.
  *
  * @package    agavi
  * @subpackage translation
@@ -12,7 +12,7 @@
  *
  * @since      0.11.0
  *
- * @version    $Id: America_47_North_Dakota_47_New_Salem.php 4833 2011-11-01 11:40:11Z david $
+ * @version    $Id: America_47_North_Dakota_47_New_Salem.php 4824 2011-10-07 21:00:24Z david $
  */
 
 return array (
@@ -544,7 +544,7 @@ return array (
     'startYear' => 2007,
   ),
   'source' => 'northamerica',
-  'version' => '8.51',
+  'version' => '8.49',
   'name' => 'America/North_Dakota/New_Salem',
 );
 

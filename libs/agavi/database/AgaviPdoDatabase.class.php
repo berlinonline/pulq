@@ -28,7 +28,7 @@
  *
  * @since      0.9.0
  *
- * @version    $Id: AgaviPdoDatabase.class.php 4849 2011-11-12 12:04:10Z david $
+ * @version    $Id: AgaviPdoDatabase.class.php 4669 2011-05-25 20:53:42Z david $
  */
 class AgaviPdoDatabase extends AgaviDatabase
 {
@@ -108,7 +108,7 @@ class AgaviPdoDatabase extends AgaviDatabase
 				}
 			}
 
-			$this->connection = $this->resource = new PDO($dsn, $username, $password, $options);
+			$this->connection = new PDO($dsn, $username, $password, $options);
 
 			// default connection attributes
 			$attributes = array(
@@ -127,7 +127,7 @@ class AgaviPdoDatabase extends AgaviDatabase
 				$this->connection->exec($query);
 			}
 		} catch(PDOException $e) {
-			throw new AgaviDatabaseException($e->getMessage());
+			throw new AgaviDatabaseException($e->getMessage(), 0, $e);
 		}
 	}
 
@@ -143,7 +143,7 @@ class AgaviPdoDatabase extends AgaviDatabase
 	public function shutdown()
 	{
 		// assigning null to a previously open connection object causes a disconnect
-		$this->connection = $this->resource = null;
+		$this->connection = null;
 	}
 }
 
