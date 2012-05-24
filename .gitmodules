@@ -10,3 +10,15 @@
 [submodule "libs/node_modules/zombie"]
 	path = libs/node_modules/zombie
 	url = https://github.com/assaf/zombie.git
+[submodule "libs/node_modules/less"]
+	path = libs/node_modules/less
+	url = https://github.com/cloudhead/less.js.git
+[submodule "libs/Elastica"]
+	path = libs/Elastica
+	url = https://github.com/ruflin/Elastica.git
+[submodule "libs/PHPUnit"]
+	path = libs/PHPUnit
+	url = https://github.com/sebastianbergmann/phpunit.git
+[submodule "libs/phpDocumentor2"]
+	path = libs/phpDocumentor2
+	url = https://github.com/phpDocumentor/phpDocumentor2.git

@@ -24,7 +24,7 @@ if (ini_get('safe_mode'))
 {
     die('Please switch off "safe_mode"');
 }
-foreach (array('ldap', 'fileinfo', 'mailparse') as $extension)
+foreach (array('ldap', 'fileinfo') as $extension)
 {
     if (! extension_loaded($extension))
     {

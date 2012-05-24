@@ -1,7 +1,0 @@
-.idea
-deploy.properties
-build/*
-.buildpath
-.project
-.settings/
-*.swp
