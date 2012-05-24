@@ -12,7 +12,7 @@
 BASEDIR=`readlink -f "$( dirname $0 )/.."`
 AGAVI_SOURCE_DIRECTORY="${BASEDIR}/libs/agavi"
 LOCAL_CONFIG_SH="${BASEDIR}/etc/local/local.config.sh"
-INCLUDE_PATH="${BASEDIR}/libs:${BASEDIR}/libs/phing/classes"
+INCLUDE_PATH="${BASEDIR}/libs"
 
 if [ -f $LOCAL_CONFIG_SH ] ; then
   . $LOCAL_CONFIG_SH
