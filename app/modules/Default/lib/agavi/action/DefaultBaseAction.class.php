@@ -28,6 +28,10 @@ class DefaultBaseAction extends ProjectBaseAction
       build.properties settings. Also, keep in mind that you can define templates
       for specific modules in case you require this.
      */
+    public function isSecure()
+    {
+        return false;
+    }
 }
 
 ?>

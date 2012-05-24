@@ -32,62 +32,6 @@
 
             <route name="disabled" pattern="^/disabled$" module="Disabled" action="Index" />
 
-            <route name="asset" pattern="^/asset" module="Asset">
-                <xi:include
-                    href="%core.app_dir%/modules/Asset/config/routing.xml"
-                    xpointer="xmlns(ae=http://agavi.org/agavi/config/global/envelope/1.1)
-                        xmlns(r=http://agavi.org/agavi/config/parts/routing/1.0)
-                        xpointer(//ae:configuration[@context='web']/r:routes/r:route)/"/>
-            </route>
-
-            <route pattern="^/import" module="Import">
-                <xi:include
-                    href="%core.app_dir%/modules/Import/config/routing.xml"
-                    xpointer="xmlns(ae=http://agavi.org/agavi/config/global/envelope/1.1)
-                        xmlns(r=http://agavi.org/agavi/config/parts/routing/1.0)
-                        xpointer(//ae:configuration[@context='web']/r:routes/r:route)/"/>
-            </route>
-
-            <route name="workflow" pattern="^/workflow" module="Workflow">
-                <xi:include
-                    href="%core.app_dir%/modules/Workflow/config/routing.xml"
-                    xpointer="xmlns(ae=http://agavi.org/agavi/config/global/envelope/1.1)
-                        xmlns(r=http://agavi.org/agavi/config/parts/routing/1.0)
-                        xpointer(//ae:configuration[@context='web']/r:routes/r:route)/"/>
-            </route>
-
-            <route name="news" pattern="^/news" module="News">
-                <xi:include
-                    href="%core.app_dir%/modules/News/config/routing.xml"
-                    xpointer="xmlns(ae=http://agavi.org/agavi/config/global/envelope/1.1)
-                        xmlns(r=http://agavi.org/agavi/config/parts/routing/1.0)
-                        xpointer(//ae:configuration[@context='web']/r:routes/r:route)/"/>
-            </route>
-
-            <route name="shofi" pattern="^/shofi/places" module="Shofi">
-                <xi:include
-                    href="%core.app_dir%/modules/Shofi/config/routing.xml"
-                    xpointer="xmlns(ae=http://agavi.org/agavi/config/global/envelope/1.1)
-                        xmlns(r=http://agavi.org/agavi/config/parts/routing/1.0)
-                        xpointer(//ae:configuration[@context='web']/r:routes/r:route)/"/>
-            </route>
-
-            <route name="shofi_categories" pattern="^/shofi/categories" module="Shofi_Categories">
-                <xi:include
-                    href="%core.app_dir%/modules/Shofi_Categories/config/routing.xml"
-                    xpointer="xmlns(ae=http://agavi.org/agavi/config/global/envelope/1.1)
-                        xmlns(r=http://agavi.org/agavi/config/parts/routing/1.0)
-                        xpointer(//ae:configuration[@context='web']/r:routes/r:route)/"/>
-            </route>
-
-            <route name="shofi_verticals" pattern="^/shofi/verticals" module="Shofi_Verticals">
-                <xi:include
-                    href="%core.app_dir%/modules/Shofi_Verticals/config/routing.xml"
-                    xpointer="xmlns(ae=http://agavi.org/agavi/config/global/envelope/1.1)
-                        xmlns(r=http://agavi.org/agavi/config/parts/routing/1.0)
-                        xpointer(//ae:configuration[@context='web']/r:routes/r:route)/"/>
-            </route>
-
             <route name="auth" pattern="^/auth" module="Auth">
                 <route name=".logout" pattern="^/logout" action="Logout"/>
             </route>
@@ -101,29 +45,5 @@
         -->
         </routes>
     </ae:configuration>
-
-    <xi:include
-        href="%core.app_dir%/modules/Import/config/routing.xml"
-        xpointer="xmlns(ae=http://agavi.org/agavi/config/global/envelope/1.1)
-            xpointer(/ae:configurations/ae:configuration[@context='console'])/">
-    </xi:include>
-
-    <xi:include
-        href="%core.app_dir%/modules/Asset/config/routing.xml"
-        xpointer="xmlns(ae=http://agavi.org/agavi/config/global/envelope/1.1)
-            xpointer(/ae:configurations/ae:configuration[@context='console'])/">
-    </xi:include>
-
-    <xi:include
-        href="%core.app_dir%/modules/News/config/routing.xml"
-        xpointer="xmlns(ae=http://agavi.org/agavi/config/global/envelope/1.1)
-            xpointer(/ae:configurations/ae:configuration[@context='console'])/">
-    </xi:include>
-
-    <xi:include
-        href="%core.app_dir%/modules/Workflow/config/routing.xml"
-        xpointer="xmlns(ae=http://agavi.org/agavi/config/global/envelope/1.1)
-            xpointer(/ae:configurations/ae:configuration[@context='console'])/">
-    </xi:include>
 
 </ae:configurations>

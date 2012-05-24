@@ -38,14 +38,4 @@
 
         </handlers>
     </ae:configuration>
-
-    <xi:include href="%core.app_dir%/modules/Import/config/config_handlers.xml"
-         xpointer="xmlns(ae=http://agavi.org/agavi/config/global/envelope/1.1) xpointer(/ae:configurations/*)">
-    </xi:include>
-
-    <!-- include workflow config handlers -->
-    <xi:include href="%core.app_dir%/modules/Workflow/config/config_handlers.xml"
-         xpointer="xmlns(ae=http://agavi.org/agavi/config/global/envelope/1.1) xpointer(/ae:configurations/*)">
-    </xi:include>
-
 </ae:configurations>

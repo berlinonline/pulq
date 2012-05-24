@@ -4,3 +4,8 @@
 ehthumbs.db
 Icon?
 Thumbs.db
+
+# Caches #
+##########
+app/cache/*
+

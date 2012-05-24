@@ -6,26 +6,8 @@
     <ae:configuration>
 
         <packages>
-            <!--
-                @deprecated Only used inside the news-editview.
-                @todo Refactor the news-editview to use twitter bootstrap.
-            -->
-            <package name="jquery-ui">
-                <javascripts>
-                    <script>js/libs/jquery-1.7.2.js</script>
-                    <script>js/libs/jquery-ui-1.8.13.js</script>
-                    <script>js/libs/jquery-easing-1.3.js</script>
-                    <script>js/libs/jquery-caretrange.js</script>
-                    <script>js/libs/jquery-contextmenu-1.3.js</script>
-                    <script>js/libs/jquery-taghandler.js</script>
-                    <script>js/libs/ICanHaz.js</script>
-                </javascripts>
-                <stylesheets>
-                    <script>css/jquery-ui.1.8.13.custom.css</script>
-                    <script>css/jquery-taghandler.css</script>
-                </stylesheets>
+            <package name="default">
             </package>
-
             <!--
                 This package defines our gui foundation and is included to all deployments.
             -->
@@ -51,124 +33,20 @@
                 </javascripts>
                 <stylesheets>
                     <script>css/bootstrap.css</script>
-                    <script>css/jquery-ui.1.8.13.custom.css</script>
-                    <!--  @todo remove as soon as the News module has jquery-ui removed. -->
-                </stylesheets>
-            </package>
-
-            <package name="midas.core">
-                <javascripts>
-                    <script>js/midas/core/core.js</script>
-                    <script>js/midas/core/Module.js</script>
-                    <script>js/midas/core/BaseObject.js</script>
-                    <script>js/midas/core/CidSequence.js</script>
-                    <script>js/midas/core/Behaviour.js</script>
-                    <script>js/midas/core/Routing.js</script>
-                    <script>js/midas/core/BaseController.js</script>
-                    <script>js/midas/core/BaseView.js</script>
-                    <script>js/midas/core/CommandTriggerList.js</script>
-                    <script>js/midas/core/Request.js</script>
-                </javascripts>
-                <stylesheets>
-                    <script>css/midas.css</script>
-                </stylesheets>
-            </package>
-
-            <package name="midas.widgets" depends="midas.core">
-                <javascripts>
-                    <script>js/midas/widgets/widgets.js</script>
-                    <script>js/midas/widgets/Widget.js</script>
-                    <script>js/midas/widgets/SearchWidget.js</script>
-                    <script>js/midas/widgets/TagsList.js</script>
-                    <script>js/midas/widgets/KeyValuesList.js</script>
-                    <script>js/midas/widgets/TimeTable.js</script>
-                    <script>js/midas/widgets/AutoComplete.js</script>
-                    <script>js/midas/widgets/LocationWidget.js</script>
-                    <script>js/midas/widgets/DropdownWidget.js</script>
-                    <script>js/midas/widgets/AssetList.js</script>
-                </javascripts>
-            </package>
-
-            <package name="midas.list" depends="midas.widgets">
-                <javascripts>
-                    <script>js/midas/list/list.js</script>
-                    <script>js/midas/list/WorkflowHandler.js</script>
-                    <script>js/midas/list/Action.js</script>
-                    <script>js/midas/list/ActionBatch.js</script>
-                    <script>js/midas/list/ListItemModel.js</script>
-                    <script>js/midas/list/ListViewModel.js</script>
-                    <script>js/midas/list/ListController.js</script>
-                </javascripts>
-            </package>
-
-            <!-- Chart rendering -->
-            <package name="flotr" depends="midas.core">
-                <javascripts>
-                    <script>js/libs/flotr2.js</script>
-                </javascripts>
-            </package>
-
-            <!--
-                @deprecated
-                @todo Refactor the news-editview to use knockoutjs.
-            -->
-            <package name="midas.items.edit" depends="midas.core jquery-ui">
-                <javascripts>
-                    <script>js/midas/items/items.js</script>
-                    <script>js/midas/items/edit/SlidePanel.js</script>
-                    <script>js/midas/items/edit/Input.js</script>
-                    <script>js/midas/items/edit/DateInput.js</script>
-                    <script>js/midas/items/edit/TagInput.js</script>
-                    <script>js/midas/items/edit/UrlInput.js</script>
-                    <script>js/midas/items/edit/AssistiveTextInput.js</script>
-                    <script>js/midas/items/edit/EditForm.js</script>
-                    <script>js/midas/items/edit/ContentItemsList.js</script>
-                    <script>js/midas/items/edit/AssetList.js</script>
-                    <script>js/midas/items/edit/ImportItemContainer.js</script>
-                    <script>js/midas/items/edit/EditService.js</script>
-                    <script>js/midas/items/edit/EditView.js</script>
-                    <script>js/midas/items/edit/EditController.js</script>
-                </javascripts>
-                <stylesheets>
-                    <script>css/reset.css</script>
-                    <script>css/screen.css</script>
-                    <script>css/edit_buttons.css</script>
                 </stylesheets>
             </package>
         </packages>
 
         <deployments>
-<!--
-    ################## 
-    #      core      #
-    ##################
---> 
-            <!--
-                This is the default deployment of our core stuff,
-                that we want available on all views, except two special cases:
-                1. As the workflow is not allowed to define any layout/gui specific stuff,
-                it is always excluded from the default deployment.
-                2. The items edit-view has not yet been switched to be compatible with twitter-bootstrap,
-                so it's excluded until this has been fixed.
-            -->
-            <deployment viewpath="^(?:(?!news.edit*|workflow.run.success*))*$">
-                <package ref="twitter-bootstrap" />
-            </deployment>
-            <deployment viewpath="default.index*">
-                <package ref="midas.core" />
-                <javascripts>
-                    <script>js/midas/items/dashboard/init.js</script>
-                </javascripts>
-                <stylesheets>
-                    <script>css/dashboard.css</script>
-                </stylesheets>
+            <deployment viewpath="*">
             </deployment>
 <!--
-    ################## 
-    #      news      #
-    ##################
+    ########################### 
+    #    ViewPath Example     #
+    ###########################
 --> 
-            <deployment viewpath="news.list*">
+            <!--        
+            <deployment viewpath="default.index">
                 <package ref="midas.core" />
                 <javascripts>
                     <script>js/midas/items/items.js</script>
@@ -180,110 +58,7 @@
                     <script>css/list.css</script>
                 </stylesheets>
             </deployment>
-            <deployment viewpath="news.edit*">
-                <package ref="midas.items.edit" />
-                <javascripts>
-                    <script>js/midas/items/edit/init.js</script>
-                </javascripts>
-            </deployment>
-            <deployment viewpath="news.stats*">
-                <package ref="flotr" />
-                <javascripts>
-                    <script>js/midas/items/items.js</script>
-                    <script>js/midas/items/stats/StatsView.js</script>
-                    <script>js/midas/items/stats/init.js</script>
-                </javascripts>
-                <stylesheets>
-                    <script>css/stats.css</script>
-                </stylesheets>
-            </deployment>
-<!--
-    ################## 
-    #     shofi      #
-    ##################
---> 
-            <deployment viewpath="shofi.list*">
-                <package ref="midas.list" />
-                <javascripts>
-                    <script>js/midas/shofi/shofi.js</script>
-                    <script>js/midas/shofi/PlacesListController.js</script>
-                    <script>js/midas/shofi/SelectCategoryDialog.js</script>
-                    <script>js/midas/shofi/init.list.js</script>
-                </javascripts>
-                <stylesheets>
-                    <script>css/list.css</script>
-                    <script>css/shofi.css</script>
-                </stylesheets>
-            </deployment>
-            <deployment viewpath="shofi.edit*">
-                <package ref="midas.widgets" />
-                <javascripts>
-                    <script>js/midas/shofi/shofi.js</script>
-                    <script>js/midas/shofi/EditController.js</script>
-                    <script>js/midas/shofi/init.edit.js</script>
-                </javascripts>
-                <stylesheets>
-                    <script>css/shofi.css</script>
-                </stylesheets>
-            </deployment>
-<!--
-    #########################
-    #    shofi categories   #
-    #########################
---> 
-            <deployment viewpath="shofi_categories.list*">
-                <package ref="midas.list" />
-                <javascripts>
-                    <script>js/midas/shofi/shofi.js</script>
-                    <script>js/midas/shofi/CategoriesListController.js</script>
-                    <script>js/midas/shofi/SelectVerticalDialog.js</script>
-                    <script>js/midas/shofi/init.list.js</script>
-                </javascripts>
-                <stylesheets>
-                    <script>css/list.css</script>
-                    <script>css/shofi.css</script>
-                </stylesheets>
-            </deployment>
-            <deployment viewpath="shofi_categories.edit*">
-                <package ref="midas.widgets" />
-                <javascripts>
-                    <script>js/midas/shofi/shofi.js</script>
-                    <script>js/midas/shofi/EditController.js</script>
-                    <script>js/midas/shofi/init.edit.js</script>
-                </javascripts>
-                <stylesheets>
-                    <script>css/shofi.css</script>
-                </stylesheets>
-            </deployment>
-
-<!--
-    #########################
-    #    shofi verticals    #
-    #########################
---> 
-            <deployment viewpath="shofi_verticals.list*">
-                <package ref="midas.list" />
-                <javascripts>
-                    <script>js/midas/shofi/shofi.js</script>
-                    <script>js/midas/shofi/VerticalsListController.js</script>
-                    <script>js/midas/shofi/init.list.js</script>
-                </javascripts>
-                <stylesheets>
-                    <script>css/list.css</script>
-                    <script>css/shofi.css</script>
-                </stylesheets>
-            </deployment>
-            <deployment viewpath="shofi_verticals.edit*">
-                <package ref="midas.widgets" />
-                <javascripts>
-                    <script>js/midas/shofi/shofi.js</script>
-                    <script>js/midas/shofi/EditController.js</script>
-                    <script>js/midas/shofi/init.edit.js</script>
-                </javascripts>
-                <stylesheets>
-                    <script>css/shofi.css</script>
-                </stylesheets>
-            </deployment>
+            -->
          </deployments>
     </ae:configuration>
 </ae:configurations>

@@ -79,12 +79,4 @@ class Default_IndexAction extends DefaultBaseAction
     {
         return 'Success';
     }
-
-    public function isSecure()
-    {
-        return TRUE;
-    }
-
 }
-
-?>

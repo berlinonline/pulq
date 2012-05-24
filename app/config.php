@@ -57,6 +57,6 @@ AgaviConfig::set('project.libs', dirname(dirname(__FILE__)) . DIRECTORY_SEPARATO
 
 date_default_timezone_set('Europe/Berlin');
 
-require_once 'phar://' . AgaviConfig::get('project.libs') . 'imagine.phar';
+#require_once 'phar://' . AgaviConfig::get('project.libs') . 'imagine.phar';
 
 ?>
