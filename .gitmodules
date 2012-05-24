@@ -1,0 +1,12 @@
+[submodule "libs/node_modules/coffee-script"]
+	path = libs/node_modules/coffee-script
+	url = https://github.com/jashkenas/coffee-script.git
+[submodule "libs/node_modules/kyuri"]
+	path = libs/node_modules/kyuri
+	url = https://github.com/nodejitsu/kyuri.git
+[submodule "libs/node_modules/vows"]
+	path = libs/node_modules/vows
+	url = https://github.com/cloudhead/vows.git
+[submodule "libs/node_modules/zombie"]
+	path = libs/node_modules/zombie
+	url = https://github.com/assaf/zombie.git
