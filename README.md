@@ -5,5 +5,7 @@ appbase
 
     git@github.com:berlinonline/appbase.git
     
-** Pull recursively!**
+**Pull all submodules!**
     git submodule foreach git pull
+   
+   
