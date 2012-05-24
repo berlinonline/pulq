@@ -16,9 +16,6 @@
 [submodule "libs/Elastica"]
 	path = libs/Elastica
 	url = https://github.com/ruflin/Elastica.git
-[submodule "libs/PHPUnit"]
-	path = libs/PHPUnit
-	url = https://github.com/sebastianbergmann/phpunit.git
 [submodule "libs/phpDocumentor2"]
 	path = libs/phpDocumentor2
 	url = https://github.com/phpDocumentor/phpDocumentor2.git
