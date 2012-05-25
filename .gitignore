@@ -6,3 +6,4 @@ Icon?
 Thumbs.db
 
 app/cache/*
+app/log/*
