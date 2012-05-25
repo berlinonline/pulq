@@ -138,6 +138,7 @@ $r1 = ($usec3/1000 + $sec3*1000);*/
 
         $jsString = '';
         $cssString = '';
+        print_r($javascripts);
         if ($this->config->isPackingEnabled())
         {
             $jsString = $this->renderJavascripts(
@@ -238,10 +239,64 @@ error_log("<HeroScriptFilter>" . ($r2 - $r1) . "</HeroScriptFilter>");*/
                     }
                 }
             }
-            $javascripts = array_merge($javascripts, $deployment['javascripts']);
-            $stylesheets = array_merge($stylesheets, $deployment['stylesheets']);
+            $javascripts = $this->findFilePaths(array_merge($javascripts, $deployment['javascripts']));
+            $stylesheets = $this->findFilePaths(array_merge($stylesheets, $deployment['stylesheets']));
         }
         return array($javascripts, $stylesheets);
+    }
+
+    /**
+     * Identifies the actual paths to the script and style paths that will be used.
+     *
+     * @param array
+     *
+     * @return array
+     */
+    protected function findFilePaths($files)
+    {
+        $modules_dir = AgaviConfig::get('core.module_dir');
+        $global_resources_dir = AgaviConfig::get('core.app_dir') . DIRECTORY_SEPARATOR . 'resources';
+
+        $modules = array();
+        foreach (self::$views2Deploy as $view)
+        {
+            $modules[] = $view['module'];
+        }
+
+        $found_files = array();
+
+        foreach($files as $file)
+        {
+            foreach($modules as $module)
+            {
+                $path_in_module = $modules_dir
+                    . DIRECTORY_SEPARATOR
+                    . $module
+                    . DIRECTORY_SEPARATOR
+                    . 'resources'
+                    . DIRECTORY_SEPARATOR
+                    . $file;
+
+                if(is_readable($path_in_module))
+                {
+                    if (!in_array($path_in_module, $found_files))
+                    {
+                        $found_files[] = $path_in_module;
+                        continue 2; //proceed with next $file
+                    }
+                }
+                
+                $global_path = $global_resources_dir . DIRECTORY_SEPARATOR . $file;
+                if (is_readable($global_path))
+                {
+                    $found_files[]
+                }
+
+            }
+            
+        }
+
+        return $found_files;
     }
 
     /**
@@ -337,6 +392,7 @@ error_log("<HeroScriptFilter>" . ($r2 - $r1) . "</HeroScriptFilter>");*/
      */
     protected function packJavascripts(array $scripts)
     {
+#        var_dump($scripts);die();
 /* list($usec3, $sec3) = explode(" ",microtime());
 $r1 = ($usec3/1000 + $sec3*1000);*/
         $deployHash = $this->calculateDeployHash($scripts);
@@ -349,7 +405,7 @@ $r1 = ($usec3/1000 + $sec3*1000);*/
             $script_packer = new HeroScriptPacker();
             $packedJs = $script_packer->pack($scripts, 'js', $pubDir);
             //array_map("unlink", glob($this->config->getJsCacheDir() . '/*.js')); // remove all prev caches
-            file_put_contents($deployPath, $packedJs);
+#            file_put_contents($deployPath, $packedJs);
         }
 /*list($usec4, $sec4) = explode(" ",microtime());
 $r2 = ($usec4/1000 + $sec4*1000);

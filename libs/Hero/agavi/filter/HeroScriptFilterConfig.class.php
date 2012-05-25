@@ -11,7 +11,9 @@
  */
 class HeroScriptFilterConfig
 {
-    const CFG_ENABLE_PACKING = 'pack_scripts';
+    const CFG_ENABLE_COMBINE = 'combine_scripts';
+
+    const CFG_ENABLE_COMPRESS = 'compress_scripts';
 
     const CFG_OUTPUT_TYPES = 'output_types';
 
@@ -24,7 +26,8 @@ class HeroScriptFilterConfig
     const CFG_PUB_DIR = 'pub_dir';
 
     protected static $supportedSettings = array(
-        self::CFG_ENABLE_PACKING,
+        self::CFG_ENABLE_COMBINE,
+        self::CFG_ENABLE_COMPRESS,
         self::CFG_JS_CACHE_DIR,
         self::CFG_CSS_CACHE_DIR,
         self::CFG_SCRIPT_SETTINGS,
@@ -84,7 +87,7 @@ class HeroScriptFilterConfig
 
     public function isPackingEnabled()
     {
-        return $this->get(self::CFG_ENABLE_PACKING, FALSE);
+        return $this->get(self::CFG_ENABLE_COMBINE, FALSE);
     }
 
     public function getPackageDefinitions()
@@ -174,10 +177,10 @@ class HeroScriptFilterConfig
         $this->settings[self::CFG_JS_CACHE_DIR] = $jsCacheDir;
         $this->settings[self::CFG_CSS_CACHE_DIR] = $cssCacheDir;
 
-        $this->settings[self::CFG_ENABLE_PACKING] = (
-            isset($parameters[self::CFG_ENABLE_PACKING])
+        $this->settings[self::CFG_ENABLE_COMBINE] = (
+            isset($parameters[self::CFG_ENABLE_COMBINE])
             &&
-            TRUE === $parameters[self::CFG_ENABLE_PACKING]
+            TRUE === $parameters[self::CFG_ENABLE_COMBINE]
         );
 
         $this->settings[self::CFG_PUB_DIR] = realpath(

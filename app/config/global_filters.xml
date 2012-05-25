@@ -9,7 +9,8 @@
                     <ae:parameter>html</ae:parameter>
                 </ae:parameter>
 
-                <ae:parameter name="pack_scripts">off</ae:parameter>
+                <ae:parameter name="combine_scripts">on</ae:parameter>
+                <ae:parameter name="compress_scripts">off</ae:parameter>
                 <ae:parameter name="js_cache">%core.app_dir%/../pub/js/_cache/</ae:parameter>
                 <ae:parameter name="css_cache">%core.app_dir%/../pub/css/_cache/</ae:parameter>
             </filter>

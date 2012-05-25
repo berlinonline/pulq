@@ -33,12 +33,23 @@
                 </javascripts>
                 <stylesheets>
                     <script>css/bootstrap.css</script>
+                    <script>css/bootstrap-responsive.css</script>
                 </stylesheets>
+            </package>
+            <package name="test-log">
+                <javascripts>
+                    <script>js/test_log.js</script>
+                </javascripts>
             </package>
         </packages>
 
         <deployments>
             <deployment viewpath="*">
+                <package ref="twitter-bootstrap" />
+            </deployment>
+
+            <deployment viewpath="Default.Index.Success">
+                <package ref="test-log" />
             </deployment>
 <!--
     ########################### 

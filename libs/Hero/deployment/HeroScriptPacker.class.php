@@ -29,6 +29,8 @@ class HeroScriptPacker
             $combined .= file_get_contents($path) . "\n\n\n";
         }
 
+        return $combined;
+
         return $this->compressScript($combined, $type);
     }
 
