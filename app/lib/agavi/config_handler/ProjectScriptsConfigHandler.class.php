@@ -8,6 +8,6 @@
  * @package    Project
  * @subpackage Agavi/ConfigHandler
  */
-class ProjectScriptsConfigHandler extends BobaseScriptsConfigHandler
+class ProjectScriptsConfigHandler extends HeroScriptsConfigHandler
 {
 }

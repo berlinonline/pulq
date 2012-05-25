@@ -9,7 +9,7 @@
  * @package         Project
  * @subpackage      Agavi/Action
  */
-class ProjectBaseAction extends BobaseBaseAction
+class ProjectBaseAction extends HeroBaseAction
 {
 
 }

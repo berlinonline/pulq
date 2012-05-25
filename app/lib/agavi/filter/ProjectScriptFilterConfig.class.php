@@ -9,6 +9,6 @@
  * @package         Project
  * @subpackage      Agavi/Filter
  */
-class ProjectScriptFilterConfig extend BobaseScriptFilterConfig
+class ProjectScriptFilterConfig extend HeroScriptFilterConfig
 {
 }

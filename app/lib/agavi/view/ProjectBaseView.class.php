@@ -11,6 +11,6 @@
  *
  * @SuppressWarnings(PHPMD.NumberOfChildren)
  */
-class ProjectBaseView extends BobaseBaseView
+class ProjectBaseView extends HeroBaseView
 {
 }

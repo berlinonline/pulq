@@ -11,6 +11,6 @@
  *
  * @SuppressWarnings(PHPMD.TooManyMethods)
  */
-class ProjectScriptFilter extends BobaseScriptFilter
+class ProjectScriptFilter extends HeroScriptFilter
 {
 }

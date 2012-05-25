@@ -11,6 +11,6 @@
  * @package         Project
  * @subpackage      Agavi/Routing
  */
-class ProjectLanguageRoutingCallback extends BobaseLanguageRoutingCallback
+class ProjectLanguageRoutingCallback extends HeroLanguageRoutingCallback
 {
 }

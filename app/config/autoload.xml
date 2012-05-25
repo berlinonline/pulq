@@ -11,7 +11,7 @@
         xpointer="xmlns(ae=http://agavi.org/agavi/config/global/envelope/1.1) xpointer(/ae:configurations/*)">
     </xi:include>
 
-    <xi:include href="%core.app_dir%/../libs/Bobase/config/autoload.xml"
+    <xi:include href="%core.app_dir%/../libs/Hero/config/autoload.xml"
         xpointer="xmlns(ae=http://agavi.org/agavi/config/global/envelope/1.1) xpointer(/ae:configurations/*)">
     </xi:include>
 

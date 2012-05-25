@@ -8,6 +8,6 @@
  * @package    Project
  * @subpackage Agavi/ConfigHandler
  */
-class ProjectAclConfigHandler extends BobaseAclConfigHandler
+class ProjectAclConfigHandler extends HeroAclConfigHandler
 {
 }

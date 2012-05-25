@@ -1,5 +1,5 @@
 <?php
 
-class ProjectArrayValidator extends BobaseArrayValidator
+class ProjectArrayValidator extends HeroArrayValidator
 {
 }

@@ -9,6 +9,6 @@
  * @package         Project
  * @subpackage      Agavi/User
  */
-class ProjectZendAclSecurityUser extends BobaseZendAclSecurityUser
+class ProjectZendAclSecurityUser extends HeroZendAclSecurityUser
 {
 }
