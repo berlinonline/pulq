@@ -1,16 +1,16 @@
 <?php
 
 /**
- * The ProjectFileSystemRegexpIterator lets you traverse files on the file system thereby applying
+ * The BobaseFileSystemRegexpIterator lets you traverse files on the file system thereby applying
  * a given regexp to iterate only files that the expression.
  *
- * @version         $Id: ProjectDirectoryRegexpIterator.class.php 1024 2012-03-03 15:35:16Z tschmitt $
+ * @version         $Id: BobaseDirectoryRegexpIterator.class.php 1024 2012-03-03 15:35:16Z tschmitt $
  * @copyright       BerlinOnline Stadtportal GmbH & Co. KG
  * @author          Thorsten Schmitt-Rink <tschmittrink@gmail.com>
- * @package         Project
+ * @package         Bobase
  * @subpackage      Iterator
  */
-class ProjectDirectoryRegexpIterator extends FilterIterator
+class BobaseDirectoryRegexpIterator extends FilterIterator
 {
     const REGEXP_DELIMITER = '~';
 

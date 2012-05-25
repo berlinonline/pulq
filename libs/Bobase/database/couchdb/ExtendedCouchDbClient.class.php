@@ -3,12 +3,11 @@
 /**
  * The ExtendedCouchDbClient wraps a selection of couchdb api calls to php using CURL
  *
- * @version         $Id: ExtendedCouchDbClient.class.php -1   $
+ * @version         $Id: ExtendedCouchDbClient.class.php 4952 2012-05-22 12:26:06Z tay $
  * @copyright       BerlinOnline Stadtportal GmbH & Co. KG
  * @author          Thorsten Schmitt-Rink <tschmittrink@gmail.com>
  * @author          Tom Anheyer <tanheyer@gmail.com>
- * @package Project
- * @subpackage Database/CouchDb
+ * @package         Database
  *
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  * @SuppressWarnings(PHPMD.TooManyMethods)
@@ -186,7 +185,10 @@ class ExtendedCouchDbClient
         $this->curlOptions = array(
             CURLOPT_VERBOSE => 0,
             CURLOPT_RETURNTRANSFER => 1,
+            CURLOPT_POST => 0,
+            CURLOPT_PUT => 0,
             CURLOPT_HEADER => 0,
+            CURLOPT_HTTPGET => 1,
             CURLOPT_FORBID_REUSE => 0,
             CURLOPT_FRESH_CONNECT => 0,
             CURLOPT_FOLLOWLOCATION => 0,
@@ -634,37 +636,37 @@ class ExtendedCouchDbClient
         $this->lastMethod = $method;
         $this->lastResponse = NULL;
 
-        if (TRUE || ! is_resource($this->curlHandle))
+        if (! is_resource($this->curlHandle))
         {
             $curlHandle = $this->curlHandle = curl_init($uri);
         }
         else
         {
             $curlHandle = $this->curlHandle;
-            // reset existing handle
-            curl_setopt_array($curlHandle, array(
-                CURLOPT_URL => $uri,
-                CURLOPT_HEADER => 0,
-                CURLOPT_HTTPGET => 1,
-            ));
         }
+
+        // reset existing handle
+        curl_setopt($curlHandle, CURLOPT_URL, $uri);
         curl_setopt_array($curlHandle, $this->curlOptions);
 
         switch ($method)
         {
             case self::METHOD_GET:
                 curl_setopt($curlHandle, CURLOPT_HTTPGET, 1);
+                curl_setopt($curlHandle, CURLOPT_CUSTOMREQUEST, 'GET');
                 break;
             case self::METHOD_HEAD:
-                curl_setopt($curlHandle, CURLOPT_HTTPGET, 1);
                 curl_setopt($curlHandle, CURLOPT_NOBODY, 1);
                 curl_setopt($curlHandle, CURLOPT_HEADER, 1);
+                curl_setopt($curlHandle, CURLOPT_CUSTOMREQUEST, 'HEAD');
                 break;
             case self::METHOD_POST:
                 curl_setopt($curlHandle, CURLOPT_POST, 1);
+                curl_setopt($curlHandle, CURLOPT_CUSTOMREQUEST, 'POST');
                 break;
             case self::METHOD_PUT:
                 curl_setopt($curlHandle, CURLOPT_PUT, 1);
+                curl_setopt($curlHandle, CURLOPT_CUSTOMREQUEST, 'PUT');
                 break;
             default:
                 curl_setopt($curlHandle, CURLOPT_CUSTOMREQUEST, $method);

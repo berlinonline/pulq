@@ -6,13 +6,13 @@
  * @version         $Id: UserIsItemOwnerAssertion.class.php 1010 2012-03-02 20:08:23Z tschmitt $
  * @copyright       BerlinOnline Stadtportal GmbH & Co. KG
  * @author          Thorsten Schmitt-Rink <tschmittrink@gmail.com>
- * @package         Project
+ * @package         Bobase
  * @subpackage      Agavi/User
  */
 class UserIsItemOwnerAssertion implements Zend_Acl_Assert_Interface
 {
     /**
-     * Assert that a the given ProjectZendAcelUser ($role) owns the given WorkflowItem ($resource).
+     * Assert that a the given BobaseZendAcelUser ($role) owns the given WorkflowItem ($resource).
      *
      * @param Zend_Acl $acl
      * @param Zend_Acl_Role_Interface $role
@@ -33,7 +33,7 @@ class UserIsItemOwnerAssertion implements Zend_Acl_Assert_Interface
             return FALSE;
         }
 
-        if (!($role instanceof ProjectZendAclSecurityUser))
+        if (!($role instanceof BobaseZendAclSecurityUser))
         {
             // in case the check is performed without a specific user instance:
             // let's assume that any generic user cannot edit this workflow-item.

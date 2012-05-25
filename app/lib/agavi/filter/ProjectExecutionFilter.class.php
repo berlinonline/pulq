@@ -9,21 +9,6 @@
  * @package         Project
  * @subpackage      Agavi/Filter
  */
-class ProjectExecutionFilter extends AgaviExecutionFilter
+class ProjectExecutionFilter extends BobaseExecutionFilter
 {
-    protected function executeView(AgaviExecutionContainer $container)
-    {
-        $viewResult = parent::executeView($container);
-        $outputType = $container->getOutputType()->getName();
-        ProjectScriptFilter::addView(
-            $container->getViewModuleName(),
-            $container->getActionName(),
-            $container->getViewName(),
-            $outputType
-        );
-        return $viewResult;
-    }
-
 }
-
-?>

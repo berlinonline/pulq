@@ -1,15 +1,15 @@
 <?php
 
 /**
- * The ProjectScriptPacker packs an compresses js and css scripts.
+ * The BobaseScriptPacker packs an compresses js and css scripts.
  *
- * @version         $Id: ProjectScriptPacker.class.php 1063 2012-04-05 11:59:16Z tschmitt $
+ * @version         $Id: BobaseScriptPacker.class.php 1063 2012-04-05 11:59:16Z tschmitt $
  * @copyright       BerlinOnline Stadtportal GmbH & Co. KG
  * @author          Thorsten Schmitt-Rink <tschmittrink@gmail.com>
- * @package         Project
+ * @package         Bobase
  * @subpackage      Deployment
  */
-class ProjectScriptPacker
+class BobaseScriptPacker
 {
     public function pack(array $files, $type, $baseDir = NULL)
     {

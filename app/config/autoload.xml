@@ -1,75 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ae:configurations xmlns="http://agavi.org/agavi/config/parts/autoload/1.1" xmlns:ae="http://agavi.org/agavi/config/global/envelope/1.1" xmlns:xi="http://www.w3.org/2001/XInclude" parent="%core.system_config_dir%/autoload.xml">
-
-    <ae:configuration>
+    <!--
+        <ae:configuration>
         <autoloads>
-            <!-- Zend (can be removed when agavi delivers integration) -->
-            <autoload name="Zend_Acl">%core.app_dir%/../libs/Zend/Acl.php</autoload>
-            <autoload name="Zend_Acl_Assert_Interface">%core.app_dir%/../libs/Zend/Acl/Assert/Interface.php</autoload>
-            <autoload name="Zend_Acl_Resource_Interface">%core.app_dir%/../libs/Zend/Acl/Resource/Interface.php</autoload>
-            <autoload name="Zend_Acl_Role_Interface">%core.app_dir%/../libs/Zend/Acl/Role/Interface.php</autoload>
-            <!-- /Zend -->
-
-            <!-- Agavi Integration -->
-            <autoload name="ProjectBaseAction">%core.lib_dir%/agavi/action/ProjectBaseAction.class.php</autoload>
-            <autoload name="ProjectBaseModel">%core.lib_dir%/agavi/model/ProjectBaseModel.class.php</autoload>
-            <autoload name="ProjectBaseView">%core.lib_dir%/agavi/view/ProjectBaseView.class.php</autoload>
-
-            <autoload name="ProjectArrayValidator">%core.lib_dir%/agavi/validator/ProjectArrayValidator.class.php</autoload>
-
-            <autoload name="ProjectLanguageRoutingCallback">%core.lib_dir%/agavi/routing/ProjectLanguageRoutingCallback.class.php</autoload>
-
-            <autoload name="ProjectScriptFilter">%core.lib_dir%/agavi/filter/ProjectScriptFilter.class.php</autoload>
-            <autoload name="ProjectExecutionFilter">%core.lib_dir%/agavi/filter/ProjectExecutionFilter.class.php</autoload>
-            <autoload name="ProjectScriptFilterConfig">%core.lib_dir%/agavi/filter/ProjectScriptFilterConfig.class.php</autoload>
-            <autoload name="ProjectScriptsConfigHandler">%core.lib_dir%/agavi/config_handler/ProjectScriptsConfigHandler.class.php</autoload>
-            <autoload name="ProjectAclConfigHandler">%core.lib_dir%/agavi/config_handler/ProjectAclConfigHandler.class.php</autoload>
-
-            <autoload name="ElasticSearchDatabase">%core.lib_dir%/agavi/database/ElasticSearchDatabase.class.php</autoload>
-            <autoload name="CouchDatabase">%core.lib_dir%/agavi/database/CouchDatabase.class.php</autoload>
-            <autoload name="IDatabaseSetup">%core.lib_dir%/agavi/database/IDatabaseSetup.iface.php</autoload>
-
-            <autoload name="ProjectZendAclSecurityUser">%core.lib_dir%/agavi/user/ProjectZendAclSecurityUser.class.php</autoload>
-            <autoload name="UserIsItemOwnerAssertion">%core.lib_dir%/agavi/user/assertions/UserIsItemOwnerAssertion.class.php</autoload>
-            <!-- /Agavi Integration -->
-
-            <!-- DataObject -->
-            <autoload name="IComparable">%core.lib_dir%/data_object/IComparable.iface.php</autoload>
-            <autoload name="IDataObject">%core.lib_dir%/data_object/IDataObject.iface.php</autoload>
-            <autoload name="IFreezable">%core.lib_dir%/data_object/IFreezable.iface.php</autoload>
-            <autoload name="FreezableDataObject">%core.lib_dir%/data_object/FreezableDataObject.class.php</autoload>
-            <autoload name="BaseDataObject">%core.lib_dir%/data_object/BaseDataObject.class.php</autoload>
-            <autoload name="IDocument">%core.lib_dir%/data_object/IDocument.iface.php</autoload>
-            <autoload name="BaseDocument">%core.lib_dir%/data_object/BaseDocument.class.php</autoload>
-            <autoload name="IDocumentStore">%core.lib_dir%/data_object/IDocumentStore.iface.php</autoload>
-            <autoload name="CouchDocumentStore">%core.lib_dir%/data_object/CouchDocumentStore.class.php</autoload>
-            <autoload name="IItemLocation">%core.lib_dir%/data_object/IItemLocation.iface.php</autoload>
-            <autoload name="ItemLocation">%core.lib_dir%/data_object/ItemLocation.class.php</autoload>
-            <!-- /DataObject -->
-
-            <!-- Database -->
-            <autoload name="ExtendedCouchDbClient">%core.lib_dir%/database/couchdb/ExtendedCouchDbClient.class.php</autoload>
-            <autoload name="CouchdbClientException">%core.lib_dir%/database/couchdb/CouchdbClientException.class.php</autoload>
-            <autoload name="BaseCouchDatabaseSetup">%core.lib_dir%/database/couchdb/BaseCouchDatabaseSetup.class.php</autoload>
-            <autoload name="ElasticSearchIndexSetup">%core.lib_dir%/database/ElasticSearchIndexSetup.class.php</autoload>
-            <!-- /Database -->
-
-            <!-- Deployment -->
-            <autoload name="ProjectScriptPacker">%core.lib_dir%/deployment/ProjectScriptPacker.class.php</autoload>
-            <!-- /Deployment -->
-
-            <!-- Iterator -->
-            <autoload name="ProjectDirectoryRegexpIterator">%core.lib_dir%/iterator/ProjectDirectoryRegexpIterator.class.php</autoload>
-            <!-- /Iterator -->
-
-            <!-- Http -->
-            <autoload name="ProjectCurl">%core.lib_dir%/http/ProjectCurl.class.php</autoload>
-            <!-- /Http -->
 
         </autoloads>
     </ae:configuration>
-
+    -->
     <xi:include href="%core.app_dir%/modules/Auth/config/autoload.xml"
+        xpointer="xmlns(ae=http://agavi.org/agavi/config/global/envelope/1.1) xpointer(/ae:configurations/*)">
+    </xi:include>
+
+    <xi:include href="%core.app_dir%/../libs/Bobase/config/autoload.xml"
         xpointer="xmlns(ae=http://agavi.org/agavi/config/global/envelope/1.1) xpointer(/ae:configurations/*)">
     </xi:include>
 

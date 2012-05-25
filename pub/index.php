@@ -9,4 +9,5 @@ AgaviConfig::set(
         ? 'web_binaries'
         : 'web'
 );
+
 AgaviContext::getInstance()->getController()->dispatch();

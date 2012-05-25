@@ -5,7 +5,7 @@
  * @author tay
  * @version $Id: CouchDatabase.class.php 1010 2012-03-02 20:08:23Z tschmitt $
  * @since 10.10.2011
- * @package Project
+ * @package Bobase
  * @subpackage Agavi/Database
  */
 class CouchDatabase extends AgaviDatabase

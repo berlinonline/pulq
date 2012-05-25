@@ -6,7 +6,7 @@
  * @version         $Id: IDatabaseSetup.iface.php 1010 2012-03-02 20:08:23Z tschmitt $
  * @copyright       BerlinOnline Stadtportal GmbH & Co. KG
  * @author          Tom Anheyer
- * @package Project
+ * @package Bobase
  * @subpackage Agavi/Database
  */
 interface IDatabaseSetup

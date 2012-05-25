@@ -9,7 +9,7 @@
  * @package         Project
  * @subpackage      Agavi/Model
  */
-class ProjectBaseModel extends AgaviModel
+class ProjectBaseModel extends BobaseModel
 {
 
 }

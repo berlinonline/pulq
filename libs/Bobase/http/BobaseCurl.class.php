@@ -1,16 +1,16 @@
 <?php
 
 /**
- * The ProjectCurl class is a convenience wrapper around php's curl library.
+ * The BobaseCurl class is a convenience wrapper around php's curl library.
  * It's job is to create curl handles thereby using system defined settings to init.
  *
- * @version         $Id: ProjectCurl.class.php 1060 2012-03-30 10:32:54Z tschmitt $
+ * @version         $Id: BobaseCurl.class.php 1060 2012-03-30 10:32:54Z tschmitt $
  * @copyright       BerlinOnline Stadtportal GmbH & Co. KG
  * @author          Thorsten Schmitt-Rink <tschmittrink@gmail.com>
- * @package         Project
+ * @package         Bobase
  * @subpackage      Http
  */
-class ProjectCurl
+class BobaseCurl
 {
     /**
      * The default timeout to use for curl handles created by this class.

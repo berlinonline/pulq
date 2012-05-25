@@ -5,7 +5,7 @@
  * @author tay
  * @version $Id: ElasticSearchDatabase.class.php 1218 2012-05-20 23:20:11Z tschmitt $
  * @since 10.10.2011
- * @package Project
+ * @package Bobase
  * @subpackage Agavi/Database
  */
 class ElasticSearchDatabase extends AgaviDatabase
