@@ -19,16 +19,6 @@ class HeroResourceFilter extends AgaviFilter implements AgaviIGlobalFilter
     }
 
     /**
-     * Holds a string that respresents the utf8 encoding.
-     */
-    const ENCODING_UTF_8 = 'utf-8';
-
-    /**
-     * Holds a string that respresents the iso 8859-1 encoding.
-     */
-    const ENCODING_ISO_8859_1 = 'iso-8859-1';
-
-    /**
      * Hold the list of modules that have been used in the current request.
      * Grouped by output_type.
      */
@@ -82,27 +72,71 @@ class HeroResourceFilter extends AgaviFilter implements AgaviIGlobalFilter
         $packer = new HeroResourcePacker(self::$modules, $this->curOutputType, $this->config);
         $packer->pack();
 
-        die();
+        $styleTags = $this->getStyleTags();
+        $scriptTags = $this->getScriptTags();
 
-        $scripts = array();
-        if ($config->isPackingEnabled())
-        {
-            $scripts = array();
-            foreach($modules as $module)
-            {
-                $scripts[] = $module . '.js';
-            }
+        $output = str_replace(array(
+            '<!-- %%STYLESHEETS%% -->',
+            '<!-- %%JAVASCRIPTS%% -->'
+        ), array(
+            $styleTags,
+            $scriptTags
+        ), $output);
 
-            $scripts[] = 'global.js';
-        }
-        else
-        {
-            $scripts = $packer->getCombinedFileName($modules);
-        }
-
-        $output = preg_replace('~</body>~', $jsString . '</body>', $output);
-        $output = preg_replace('~</head>~', $cssString . '</head>', $output);
         $response->setContent($output);
+    }
+
+    protected function getScriptTags()
+    {
+        $tags = '';
+
+        foreach($this->getCachedAssetUrls('scripts') as $url)
+        {
+            $tags .= sprintf('<script type="text/javascript" src="%s"></script>'.PHP_EOL, $url);
+        }
+
+        return $tags;
+    }
+
+    protected function getStyleTags()
+    {
+        $tags = '';
+
+        foreach($this->getCachedAssetUrls('styles') as $url)
+        {
+            $tags .= sprintf('<link rel="stylesheet" type="text/css" href="%s" />'.PHP_EOL, $url);
+        }
+
+        return $tags;
+    }
+
+    protected function getCachedAssetUrls($subdirectory)
+    {
+        $cacheBaseUrl = $this->getContext()->getRouting()->getBaseHref() . 'static/cache/';
+        $cacheDir = $this->config->getCacheDir();
+
+        $files = glob($cacheDir.DIRECTORY_SEPARATOR.'_global'.DIRECTORY_SEPARATOR.$subdirectory.DIRECTORY_SEPARATOR.'*');
+
+        foreach(static::$modules[$this->curOutputType] as $module)
+        {
+            $moduleCachePath = $cacheDir
+                . DIRECTORY_SEPARATOR
+                . $module
+                . DIRECTORY_SEPARATOR
+                . $subdirectory
+                . DIRECTORY_SEPARATOR
+                . '*';
+            $files = array_merge($files, glob($moduleCachePath));
+        }
+
+        $urls = array();
+
+        foreach($files as $file)
+        {
+            $urls[] = $cacheBaseUrl . str_replace($cacheDir.DIRECTORY_SEPARATOR, '', $file);
+        }
+
+        return $urls;
     }
 
     /**
@@ -115,176 +149,6 @@ class HeroResourceFilter extends AgaviFilter implements AgaviIGlobalFilter
         return $this->config;
     }
 
-    /**
-     * Build the viewpath for the global action.
-     *
-     * @param AgaviExecutionContainer $container
-     *
-     * @return string
-     */
-    protected function buildViewPath(array $executionData)
-    {
-        $module = strtolower($executionData['module']);
-        $action = strtolower($executionData['action']);
-        $viewParts = explode('/', $executionData['view']);
-        $view = strtolower(
-            str_replace($viewParts[0], '', array_pop($viewParts))
-        );
-        return implode('.', array($module, $action, $view));
-    }
-
-    /**
-     * Load all scripts to be deployed for the given viewpath.
-     *
-     * @param string $viewpath
-     *
-     * @return array Where the first index is a js-script collection and the second a css collection.
-     */
-    protected function loadResources()
-    {
-        $scripts = array();
-        $styles = array();
-        $binaries = array();
-
-        $directories = $this->getResourceDirectories();
-
-        foreach($directories as $dir)
-        {
-            $scripts = array_merge($scripts, glob($dir.DIRECTORY_SEPARATOR.'scripts'.DIRECTORY_SEPARATOR.'*'));
-            $styles = array_merge($styles, glob($dir.DIRECTORY_SEPARATOR.'styles'.DIRECTORY_SEPARATOR.'*'));
-            $binaries = array_merge($binaries, glob($dir.DIRECTORY_SEPARATOR.'binaries'.DIRECTORY_SEPARATOR.'*'));
-        }
-
-    return array($scripts, $styles, $binaries);
-    }
-
-    /**
-     * Determines the directories from where resource files will be loaded.
-     *
-     * @return array A List of absolute directory paths
-     */
-    protected function getResourceDirectories()
-    {
-        $modulesDirectory = AgaviConfig::get('core.modules_dir');
-        $modules = array_unique(static::$modules[$this->curOutputType]);
-        $resourceDirectories = array();
-
-        foreach($modules as $module)
-        {
-            $resourceDirectories[] = $modulesDirectory
-                . DIRECTORY_SEPARATOR
-                . $module
-                . DIRECTORY_SEPARATOR
-                . 'resources';
-        }
-
-        $resourceDirectories[] = AgaviConfig::get('core.app_dir')
-            . DIRECTORY_SEPARATOR
-            . 'resources';
-
-        return $resourceDirectories; 
-    }
-
-    /**
-     * Identifies the actual paths to the script and style paths that will be used.
-     *
-     * @param array
-     *
-     * @return array
-     */
-    protected function findFilePaths($files)
-    {
-        $modules_dir = AgaviConfig::get('core.module_dir');
-        $global_resources_dir = AgaviConfig::get('core.app_dir') . DIRECTORY_SEPARATOR . 'resources';
-
-        $modules = array();
-        foreach (self::$views2Deploy as $view)
-        {
-            $modules[] = $view['module'];
-        }
-
-        $found_files = array();
-
-        foreach($files as $file)
-        {
-            foreach($modules as $module)
-            {
-                $path_in_module = $modules_dir
-                    . DIRECTORY_SEPARATOR
-                    . $module
-                    . DIRECTORY_SEPARATOR
-                    . 'resources'
-                    . DIRECTORY_SEPARATOR
-                    . $file;
-
-                if(is_readable($path_in_module))
-                {
-                    if (!in_array($path_in_module, $found_files))
-                    {
-                        $found_files[] = $path_in_module;
-                        continue 2; //proceed with next $file
-                    }
-                }
-                
-                $global_path = $global_resources_dir . DIRECTORY_SEPARATOR . $file;
-                if (is_readable($global_path))
-                {
-                #    $found_files[]
-                }
-
-            }
-            
-        }
-
-        return $found_files;
-    }
-
-    /**
-     * Takes a list of javascripts and packs them into one file.
-     *
-     * @param array $scripts
-     *
-     * @return array
-     */
-    protected function packJavascripts(array $scripts)
-    {
-        $deployHash = $this->calculateDeployHash($scripts);
-        $pubDir = $this->config->get(HeroResourceFilterConfig::CFG_PUB_DIR);
-        $deployPath = $this->config->getJsCacheDir() . DIRECTORY_SEPARATOR . $deployHash . '.js';
-        $pubPath = substr(str_replace($pubDir, '', $deployPath), 1);
-
-        if (!file_exists($deployPath))
-        {
-            $script_packer = new HeroScriptPacker($this->config);
-            $packedJs = $script_packer->pack($scripts, 'js', $pubDir);
-        }
-        return array($pubPath);
-    }
-
-    /**
-     * Takes a list of stylesheets and packs them into one file.
-     *
-     * @param array $scripts
-     *
-     * @return array
-     */
-    protected function packStylesheets(array $scripts)
-    {
-        $deployHash = $this->calculateDeployHash($scripts);
-        $pubDir = $this->config->get(HeroResourceFilterConfig::CFG_PUB_DIR);
-        $deployPath = $this->config->getCssCacheDir() . DIRECTORY_SEPARATOR . $deployHash . '.css';
-        $pubPath = substr(str_replace($pubDir, '', $deployPath), 1);
-
-        if (!file_exists($deployPath))
-        {
-            $script_packer = new HeroScriptPacker();
-            $packedCss = $script_packer->pack(
-                $this->adjustRelativeCssPaths($scripts), 'css'
-            );
-            file_put_contents($deployPath, $packedCss);
-        }
-        return array($pubPath);
-    }
 
     /**
      * Takes a list of stylesheets and adjusts all relative filesystem paths
@@ -341,64 +205,4 @@ class HeroResourceFilter extends AgaviFilter implements AgaviIGlobalFilter
         return $stylesheets;
     }
 
-    /**
-     * Calculate the deploy hash for the given script collection.
-     *
-     * @param array $scripts
-     *
-     * @return string
-     */
-    protected function calculateDeployHash(array $scripts)
-    {
-        $lastModified = 0;
-        $hashBase = '';
-        foreach ($scripts as $script)
-        {
-            $pubDir = $this->config->get(HeroResourceFilterConfig::CFG_PUB_DIR);
-            $mTime = filemtime($pubDir . DIRECTORY_SEPARATOR . $script);
-            $hashBase .= $script;
-
-            if ($lastModified < $mTime)
-            {
-                $lastModified = $mTime;
-            }
-        }
-        return sha1($hashBase . $lastModified);
-    }
-
-    /**
-     * Add the given stylesheet file collection to our markup,
-     * one new DOMElement per given script.
-     *
-     * @param array $stylesheets
-     */
-    protected function renderStylesheets(array $stylesheets)
-    {
-        $script_tpl = "        <link rel='stylesheet' type='text/css' href='%1\$s' />\n";
-        $scripts_string = PHP_EOL;
-        foreach ($stylesheets as $stylesheet)
-        {
-            $scripts_string .= sprintf($script_tpl, $stylesheet);
-        }
-        return $scripts_string;
-    }
-
-    /**
-     * Add the given javascripts file collection to our markup,
-     * one new DOMElement per given script.
-     *
-     * @param array $javascripts
-     */
-    protected function renderJavascripts(array $javascripts)
-    {
-        $script_tpl = "    <script type='text/javascript' src='%1\$s'></script>\n";
-        $scripts_string = PHP_EOL;
-        foreach ($javascripts as $javascript)
-        {
-            $scripts_string .= sprintf($script_tpl, $javascript);
-        }
-        return $scripts_string;
-    }
 }
-
-?>
