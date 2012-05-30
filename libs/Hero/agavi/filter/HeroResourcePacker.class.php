@@ -181,9 +181,9 @@ class HeroResourcePacker
         {
             $success = mkdir($path, 0777, true);
         }
-
-        clearstatcache();
-
+ 
+        clearstatcache(true, $path);
+        
         return $success;
     }
 }
