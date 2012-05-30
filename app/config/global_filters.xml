@@ -4,15 +4,15 @@
     <ae:configuration context="web">
         <filters>
 
-            <filter name="ScriptFilter" class="ProjectScriptFilter">
+            <filter name="ResourceFilter" class="ProjectResourceFilter">
                 <ae:parameter name="output_types">
                     <ae:parameter>html</ae:parameter>
                 </ae:parameter>
 
                 <ae:parameter name="combine_scripts">on</ae:parameter>
                 <ae:parameter name="compress_scripts">off</ae:parameter>
-                <ae:parameter name="js_cache">%core.app_dir%/../pub/js/_cache/</ae:parameter>
-                <ae:parameter name="css_cache">%core.app_dir%/../pub/css/_cache/</ae:parameter>
+                <ae:parameter name="cache_dir">%core.app_dir%/../pub/static/cache/</ae:parameter>
+                <ae:parameter name="use_caching">false</ae:parameter>
             </filter>
 
 
@@ -53,7 +53,7 @@
     <ae:configuration environment="testing.*">
         <filters>
 
-            <filter name="ScriptFilter" class="ProjectScriptFilter">
+            <filter name="ResourceFilter" class="ProjectResourceFilter">
                 <ae:parameter name="output_types">
                     <ae:parameter>html</ae:parameter>
                 </ae:parameter>

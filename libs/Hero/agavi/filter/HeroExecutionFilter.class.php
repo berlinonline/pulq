@@ -1,7 +1,7 @@
 <?php
 
 /**
- * The HeroExecutionFilter class registers view executions for the HeroScriptFilter.
+ * The HeroExecutionFilter class registers view executions for the HeroResourceFilter.
  *
  * @version         $Id: HeroExecutionFilter.class.php 1010 2012-03-02 20:08:23Z tschmitt $
  * @copyright       BerlinOnline Stadtportal GmbH & Co. KG
@@ -15,10 +15,8 @@ class HeroExecutionFilter extends AgaviExecutionFilter
     {
         $viewResult = parent::executeView($container);
         $outputType = $container->getOutputType()->getName();
-        HeroScriptFilter::addView(
+        HeroResourceFilter::addModule(
             $container->getViewModuleName(),
-            $container->getActionName(),
-            $container->getViewName(),
             $outputType
         );
         return $viewResult;

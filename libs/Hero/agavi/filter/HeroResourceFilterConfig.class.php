@@ -1,25 +1,25 @@
 <?php
 
 /**
- * The HeroScriptFilterConfig provides access to the scripts.xml settings.
+ * The HeroResourceFilterConfig provides access to the scripts.xml settings.
  *
- * @version         $Id: HeroScriptFilterConfig.class.php 1010 2012-03-02 20:08:23Z tschmitt $
+ * @version         $Id: HeroResourceFilterConfig.class.php 1010 2012-03-02 20:08:23Z tschmitt $
  * @copyright       BerlinOnline Stadtportal GmbH & Co. KG
  * @author          Thorsten Schmitt-Rink <tschmittrink@gmail.com>
  * @package         Hero
  * @subpackage      Agavi/Filter
  */
-class HeroScriptFilterConfig
+class HeroResourceFilterConfig
 {
     const CFG_ENABLE_COMBINE = 'combine_scripts';
+
+    const CFG_ENABLE_CACHING = 'use_caching';
 
     const CFG_ENABLE_COMPRESS = 'compress_scripts';
 
     const CFG_OUTPUT_TYPES = 'output_types';
 
-    const CFG_JS_CACHE_DIR = 'js_cache';
-
-    const CFG_CSS_CACHE_DIR = 'css_cache';
+    const CFG_CACHE_DIR = 'cache_dir';
 
     const CFG_SCRIPT_SETTINGS = 'script_settings';
 
@@ -27,9 +27,9 @@ class HeroScriptFilterConfig
 
     protected static $supportedSettings = array(
         self::CFG_ENABLE_COMBINE,
+        self::CFG_ENABLE_CACHING,
         self::CFG_ENABLE_COMPRESS,
-        self::CFG_JS_CACHE_DIR,
-        self::CFG_CSS_CACHE_DIR,
+        self::CFG_CACHE_DIR,
         self::CFG_SCRIPT_SETTINGS,
         self::CFG_OUTPUT_TYPES,
         self::CFG_PUB_DIR
@@ -58,14 +58,9 @@ class HeroScriptFilterConfig
         return isset($this->settings[$settingName]) ? $this->settings[$settingName] : $default;
     }
 
-    public function getJsCacheDir()
+    public function getCacheDir()
     {
-        return $this->get(self::CFG_JS_CACHE_DIR);
-    }
-
-    public function getCssCacheDir()
-    {
-        return $this->get(self::CFG_CSS_CACHE_DIR);
+        return $this->get(self::CFG_CACHE_DIR);
     }
 
     public function getSupportedOutputTypes()
@@ -90,51 +85,15 @@ class HeroScriptFilterConfig
         return $this->get(self::CFG_ENABLE_COMBINE, FALSE);
     }
 
-    public function getPackageDefinitions()
+    public function isCachingEnabled()
     {
-        $scriptsConfiguration = $this->get(self::CFG_SCRIPT_SETTINGS, array());
-        return $scriptsConfiguration['packages'];
-    }
-
-    public function getPackageNames()
-    {
-        $scriptsConfiguration = $this->get(self::CFG_SCRIPT_SETTINGS, array());
-        return array_keys($scriptsConfiguration['packages']);
-    }
-
-    public function packageExists($packageName)
-    {
-        $packages = $this->getPackageDefinitions();
-        return isset($packages[$packageName]);
-    }
-
-    public function getPackageData($packageName)
-    {
-        if (!$this->packageExists($packageName))
-        {
-            throw new Exception(
-                sprintf(
-                    "Encountered undefined script package: '%s'",
-                    $packageName
-                )
-            );
-        }
-
-        $packages = $this->getPackageDefinitions();
-        return $packages[$packageName];
-    }
-
-    public function getDeployments()
-    {
-        $scriptsConfiguration = $this->get(self::CFG_SCRIPT_SETTINGS);
-        return $scriptsConfiguration['deployments'];
+        return $this->get(self::CFG_ENABLE_CACHING, FALSE);
     }
 
     protected function hydrateParameters(array $parameters)
     {
         $required = array(
-            self::CFG_CSS_CACHE_DIR,
-            self::CFG_JS_CACHE_DIR,
+            self::CFG_CACHE_DIR,
             self::CFG_OUTPUT_TYPES
         );
 
@@ -148,19 +107,12 @@ class HeroScriptFilterConfig
             }
         }
 
-        $cssCacheDir = realpath($parameters[self::CFG_CSS_CACHE_DIR]);
-        if (! is_writable($cssCacheDir))
-        {
-            throw new AgaviConfigurationException(
-                "The given css cache directory '$cssCacheDir' is not writeable!"
-            );
-        }
 
-        $jsCacheDir = realpath($parameters[self::CFG_JS_CACHE_DIR]);
-        if (! is_writable($jsCacheDir))
+        $cacheDir = realpath($parameters[self::CFG_CACHE_DIR]);
+        if (! is_writable($cacheDir))
         {
             throw new AgaviConfigurationException(
-                "The given js cache directory '$jsCacheDir' is not writeable!"
+                "The given cache directory '$cacheDir' is not writeable!"
             );
         }
 
@@ -174,8 +126,7 @@ class HeroScriptFilterConfig
             $this->settings[self::CFG_OUTPUT_TYPES] = $outputTypes;
         }
 
-        $this->settings[self::CFG_JS_CACHE_DIR] = $jsCacheDir;
-        $this->settings[self::CFG_CSS_CACHE_DIR] = $cssCacheDir;
+        $this->settings[self::CFG_CACHE_DIR] = $cacheDir;
 
         $this->settings[self::CFG_ENABLE_COMBINE] = (
             isset($parameters[self::CFG_ENABLE_COMBINE])
@@ -191,5 +142,3 @@ class HeroScriptFilterConfig
         $this->settings[self::CFG_SCRIPT_SETTINGS] = include AgaviConfigCache::checkConfig($configFile);
     }
 }
-
-?>

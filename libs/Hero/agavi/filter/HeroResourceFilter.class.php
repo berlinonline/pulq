@@ -1,9 +1,9 @@
 <?php
 
 /**
- * The HeroScriptFilter is responseable for detecting required scripts and deploying them for your view.
+ * The HeroResourceFilter is responseable for detecting required scripts and deploying them for your view.
  *
- * @version         $Id: HeroScriptFilter.class.php 1065 2012-04-05 12:05:39Z tschmitt $
+ * @version         $Id: HeroResourceFilter.class.php 1065 2012-04-05 12:05:39Z tschmitt $
  * @copyright       BerlinOnline Stadtportal GmbH & Co. KG
  * @author          Thorsten Schmitt-Rink <tschmittrink@gmail.com>
  * @package         Hero
@@ -11,22 +11,11 @@
  *
  * @SuppressWarnings(PHPMD.TooManyMethods)
  */
-class HeroScriptFilter extends AgaviFilter implements AgaviIGlobalFilter
+class HeroResourceFilter extends AgaviFilter implements AgaviIGlobalFilter
 {
-    protected static $views2Deploy = array();
-
-    public static function addView($moduleName, $actionName, $viewName, $outputType)
+    public static function addModule($moduleName, $outputType)
     {
-        $viewHash = sha1($moduleName.$actionName.$viewName);
-        if (! isset(self::$views2Deploy[$viewHash]))
-        {
-            self::$views2Deploy[$viewHash] = array(
-                'module'     => $moduleName,
-                'action'     => $actionName,
-                'view'       => $viewName,
-                'outputType' => $outputType
-            );
-        }
+        static::$modules[$outputType][] = $moduleName;
     }
 
     /**
@@ -40,58 +29,16 @@ class HeroScriptFilter extends AgaviFilter implements AgaviIGlobalFilter
     const ENCODING_ISO_8859_1 = 'iso-8859-1';
 
     /**
-     * Holds an array of chars that have a special meaning when defining 'viewpaths'.
-     * This chars will be mutated before creating a regex from their surrounding string.
-     *
-     * @var array
+     * Hold the list of modules that have been used in the current request.
+     * Grouped by output_type.
      */
-    protected static $viewPathSearch = array('.', '*');
 
-    /**
-     * Holds the 'mutated' versions of our special 'viewpath' chars.
-     *
-     * @var array
-     */
-    protected static $viewPathReplace = array('\.', '.*');
-
-    /**
-     * @var DOMDocument Our (X)HTML document.
-     */
-    protected $doc;
-
-    /**
-     * Our XPath instance for the document.
-     *
-     * @var DOMXPath
-     */
-    protected $xpath;
-
-    /**
-     * The XML NS prefix we're working on with XPath, including
-     * a colon (or empty string if document has no NS).
-     *
-     * @var string
-     */
-    protected $xmlnsPrefix = '';
-
-    /**
-     * An array holding all scripts that have been loaded so far.
-     *
-     * @var array
-     */
-    protected $loadedScripts = array();
-
-    /**
-     * An array holding all packages that have been loaded so far.
-     *
-     * @var array
-     */
-    protected $loadedPackages = array();
+    protected static $modules = array();
 
     /**
      * Holds our config object.
      *
-     * @var HeroScriptFilterConfig
+     * @var HeroResourceFilterConfig
      */
     protected $config;
 
@@ -105,7 +52,7 @@ class HeroScriptFilter extends AgaviFilter implements AgaviIGlobalFilter
     {
         parent::initialize($context, $parameters);
 
-        $this->config = new HeroScriptFilterConfig($parameters);
+        $this->config = new HeroResourceFilterConfig($parameters);
     }
 
     /**
@@ -119,63 +66,49 @@ class HeroScriptFilter extends AgaviFilter implements AgaviIGlobalFilter
         $filterChain->execute($container);
         $response = $container->getResponse();
         $output = NULL;
-/*list($usec3, $sec3) = explode(" ",microtime());
-$r1 = ($usec3/1000 + $sec3*1000);*/
         if (! $response->isContentMutable() || ! ($output = $response->getContent()))
         {
             // throw exception? we cant really live without our scripts...
             return FALSE;
         }
 
-        $curOutputType = $response->getOutputType()->getName();
-        if (!$this->config->isOutputTypeSupported($curOutputType))
+        $this->curOutputType = $response->getOutputType()->getName();
+        if (!$this->config->isOutputTypeSupported($this->curOutputType))
         {
             // ot not supported, log to info or debug?
             return FALSE;
         }
 
-        list($javascripts, $stylesheets) = $this->loadScripts();
+        $packer = new HeroResourcePacker(self::$modules, $this->curOutputType, $this->config);
+        $packer->pack();
 
-        $jsString = '';
-        $cssString = '';
-        print_r($javascripts);
-        if ($this->config->isPackingEnabled())
+        die();
+
+        $scripts = array();
+        if ($config->isPackingEnabled())
         {
-            $jsString = $this->renderJavascripts(
-                $this->packJavascripts($javascripts)
-            );
-            $cssString = $this->renderStylesheets(
-                $this->packStylesheets($stylesheets)
-            );
+            $scripts = array();
+            foreach($modules as $module)
+            {
+                $scripts[] = $module . '.js';
+            }
+
+            $scripts[] = 'global.js';
         }
         else
         {
-            $cssString = $this->renderStylesheets($stylesheets);
-            $jsString = $this->renderJavascripts($javascripts);
-        }
-        // Find inline stuff and append to end.
-        $inlineJs = array();
-        if (preg_match('~<script type="text/javascript" (?:src=".+\.js")?>.*</script>~is', $output, $inlineJs))
-        {
-            foreach ($inlineJs as $inline)
-            {
-                $output = str_replace($inline, '', $output);
-                $jsString .= PHP_EOL . $inline;
-            }
+            $scripts = $packer->getCombinedFileName($modules);
         }
 
         $output = preg_replace('~</body>~', $jsString . '</body>', $output);
         $output = preg_replace('~</head>~', $cssString . '</head>', $output);
         $response->setContent($output);
-/*list($usec4, $sec4) = explode(" ",microtime());
-$r2 = ($usec4/1000 + $sec4*1000);
-error_log("<HeroScriptFilter>" . ($r2 - $r1) . "</HeroScriptFilter>");*/
     }
 
     /**
      * Returns our config object.
      *
-     * @return HeroScriptFilterConfig
+     * @return HeroResourceFilterConfig
      */
     public function getConfig()
     {
@@ -207,42 +140,49 @@ error_log("<HeroScriptFilter>" . ($r2 - $r1) . "</HeroScriptFilter>");*/
      *
      * @return array Where the first index is a js-script collection and the second a css collection.
      */
-    protected function loadScripts()
+    protected function loadResources()
     {
-        $deployments = array();
-        $javascripts = array();
-        $stylesheets = array();
+        $scripts = array();
+        $styles = array();
+        $binaries = array();
 
-        foreach(self::$views2Deploy as $executionData)
+        $directories = $this->getResourceDirectories();
+
+        foreach($directories as $dir)
         {
-            $viewPath = $this->buildViewPath($executionData);
-            $deployments[] = $this->loadDeployData($viewPath);
+            $scripts = array_merge($scripts, glob($dir.DIRECTORY_SEPARATOR.'scripts'.DIRECTORY_SEPARATOR.'*'));
+            $styles = array_merge($styles, glob($dir.DIRECTORY_SEPARATOR.'styles'.DIRECTORY_SEPARATOR.'*'));
+            $binaries = array_merge($binaries, glob($dir.DIRECTORY_SEPARATOR.'binaries'.DIRECTORY_SEPARATOR.'*'));
         }
 
-        foreach ($deployments as $deployment)
+    return array($scripts, $styles, $binaries);
+    }
+
+    /**
+     * Determines the directories from where resource files will be loaded.
+     *
+     * @return array A List of absolute directory paths
+     */
+    protected function getResourceDirectories()
+    {
+        $modulesDirectory = AgaviConfig::get('core.modules_dir');
+        $modules = array_unique(static::$modules[$this->curOutputType]);
+        $resourceDirectories = array();
+
+        foreach($modules as $module)
         {
-            foreach ($deployment['packages'] as $packageName)
-            {
-                $package = $this->config->getPackageData($packageName);
-                foreach ($package['javascripts'] as $javascript)
-                {
-                    if (! in_array($javascript, $javascripts))
-                    {
-                        $javascripts[] = $javascript;
-                    }
-                }
-                foreach ($package['stylesheets'] as $stylesheet)
-                {
-                    if (! in_array($stylesheet, $stylesheets))
-                    {
-                        $stylesheets[] = $stylesheet;
-                    }
-                }
-            }
-            $javascripts = $this->findFilePaths(array_merge($javascripts, $deployment['javascripts']));
-            $stylesheets = $this->findFilePaths(array_merge($stylesheets, $deployment['stylesheets']));
+            $resourceDirectories[] = $modulesDirectory
+                . DIRECTORY_SEPARATOR
+                . $module
+                . DIRECTORY_SEPARATOR
+                . 'resources';
         }
-        return array($javascripts, $stylesheets);
+
+        $resourceDirectories[] = AgaviConfig::get('core.app_dir')
+            . DIRECTORY_SEPARATOR
+            . 'resources';
+
+        return $resourceDirectories; 
     }
 
     /**
@@ -289,7 +229,7 @@ error_log("<HeroScriptFilter>" . ($r2 - $r1) . "</HeroScriptFilter>");*/
                 $global_path = $global_resources_dir . DIRECTORY_SEPARATOR . $file;
                 if (is_readable($global_path))
                 {
-                    $found_files[]
+                #    $found_files[]
                 }
 
             }
@@ -297,90 +237,6 @@ error_log("<HeroScriptFilter>" . ($r2 - $r1) . "</HeroScriptFilter>");*/
         }
 
         return $found_files;
-    }
-
-    /**
-     * Load the deploy data (packages, css- and js-script-files) for the given viewpath.
-     *
-     * @param string $viewpath
-     *
-     * @return array
-     */
-    protected function loadDeployData($viewpath)
-    {
-        $affectedPackages = array();
-        $affectedJavascripts = array();
-        $affectedStylesheets = array();
-        foreach ($this->config->getDeployments() as $curViewpath => $deploymentInfo)
-        {
-            $escapedPath = str_replace(
-                self::$viewPathSearch, self::$viewPathReplace, $curViewpath
-            );
-            $pattern = sprintf('#^%s$#is', $escapedPath);
-
-            if (preg_match($pattern, $viewpath))
-            {
-                foreach ($deploymentInfo['packages'] as $packageName)
-                {
-                    $this->loadPackage($packageName, $affectedPackages);
-                }
-
-                foreach ($deploymentInfo['javascripts'] as $javascript)
-                {
-                    if (! in_array($javascript, $affectedJavascripts))
-                    {
-                        $affectedJavascripts[] = $javascript;
-                    }
-                }
-
-                foreach ($deploymentInfo['stylesheets'] as $stylesheet)
-                {
-                    if (! in_array($stylesheet, $affectedStylesheets))
-                    {
-                        $affectedStylesheets[] = $stylesheet;
-                    }
-                }
-            }
-        }
-
-        $deployData = array(
-            'javascripts' => $affectedJavascripts,
-            'stylesheets' => $affectedStylesheets,
-            'packages'    => array()
-        );
-        /**
-         * Make sure we have our loaded packages in the exact same order
-         * as defined inside our scripts.xml config.
-         */
-        foreach ($this->config->getPackageNames() as $packageName)
-        {
-            if (in_array($packageName, $affectedPackages))
-            {
-                $deployData['packages'][] = $packageName;
-            }
-        }
-        return $deployData;
-    }
-
-    /**
-     * Load the given package by name.
-     * The package is added to the passed list of $loadedPackages.
-     *
-     * @param string $packageName
-     * @param array $loadedPackages
-     */
-    protected function loadPackage($packageName, array & $loadedPackages)
-    {
-        if (! in_array($packageName, $loadedPackages))
-        {
-            $package = $this->config->getPackageData($packageName);
-            $loadedPackages[] = $packageName;
-
-            foreach ($package['deps'] as $depPackage)
-            {
-                $this->loadPackage($depPackage, $loadedPackages);
-            }
-        }
     }
 
     /**
@@ -392,24 +248,16 @@ error_log("<HeroScriptFilter>" . ($r2 - $r1) . "</HeroScriptFilter>");*/
      */
     protected function packJavascripts(array $scripts)
     {
-#        var_dump($scripts);die();
-/* list($usec3, $sec3) = explode(" ",microtime());
-$r1 = ($usec3/1000 + $sec3*1000);*/
         $deployHash = $this->calculateDeployHash($scripts);
-        $pubDir = $this->config->get(HeroScriptFilterConfig::CFG_PUB_DIR);
+        $pubDir = $this->config->get(HeroResourceFilterConfig::CFG_PUB_DIR);
         $deployPath = $this->config->getJsCacheDir() . DIRECTORY_SEPARATOR . $deployHash . '.js';
         $pubPath = substr(str_replace($pubDir, '', $deployPath), 1);
 
         if (!file_exists($deployPath))
         {
-            $script_packer = new HeroScriptPacker();
+            $script_packer = new HeroScriptPacker($this->config);
             $packedJs = $script_packer->pack($scripts, 'js', $pubDir);
-            //array_map("unlink", glob($this->config->getJsCacheDir() . '/*.js')); // remove all prev caches
-#            file_put_contents($deployPath, $packedJs);
         }
-/*list($usec4, $sec4) = explode(" ",microtime());
-$r2 = ($usec4/1000 + $sec4*1000);
-error_log("<JAVASCRIPT PACKING>" . ($r2 - $r1) . "</JAVASCRIPT PACKING>"); */
         return array($pubPath);
     }
 
@@ -422,10 +270,8 @@ error_log("<JAVASCRIPT PACKING>" . ($r2 - $r1) . "</JAVASCRIPT PACKING>"); */
      */
     protected function packStylesheets(array $scripts)
     {
-/*list($usec3, $sec3) = explode(" ",microtime());
-$r1 = ($usec3/1000 + $sec3*1000);*/
         $deployHash = $this->calculateDeployHash($scripts);
-        $pubDir = $this->config->get(HeroScriptFilterConfig::CFG_PUB_DIR);
+        $pubDir = $this->config->get(HeroResourceFilterConfig::CFG_PUB_DIR);
         $deployPath = $this->config->getCssCacheDir() . DIRECTORY_SEPARATOR . $deployHash . '.css';
         $pubPath = substr(str_replace($pubDir, '', $deployPath), 1);
 
@@ -435,12 +281,8 @@ $r1 = ($usec3/1000 + $sec3*1000);*/
             $packedCss = $script_packer->pack(
                 $this->adjustRelativeCssPaths($scripts), 'css'
             );
-            //array_map("unlink", glob($this->config->getCssCacheDir() . '/*.css')); // remove all prev caches
             file_put_contents($deployPath, $packedCss);
         }
-/*list($usec4, $sec4) = explode(" ",microtime());
-$r2 = ($usec4/1000 + $sec4*1000);
-error_log("<CSS PACKING>" . ($r2 - $r1) . "</CSS PACKING>");*/
         return array($pubPath);
     }
 
@@ -454,7 +296,7 @@ error_log("<CSS PACKING>" . ($r2 - $r1) . "</CSS PACKING>");*/
      */
     protected function adjustRelativeCssPaths(array $cssFiles)
     {
-        $pubDir = $this->config->get(HeroScriptFilterConfig::CFG_PUB_DIR);
+        $pubDir = $this->config->get(HeroResourceFilterConfig::CFG_PUB_DIR);
         $cacheDir = realpath($this->config->getCssCacheDir()) . DIRECTORY_SEPARATOR;
         $cacheRelPath = substr(str_replace($pubDir, '', $cacheDir), 1);
         $stylesheets = array();
@@ -486,7 +328,7 @@ error_log("<CSS PACKING>" . ($r2 - $r1) . "</CSS PACKING>");*/
                 }
                 return sprintf("url('%s')", $newPath);
             };
-            // @todo replace all possible @import and possible urls.
+
             $adjustedCss = preg_replace_callback(
                 '#url\([\'"](?!http|/|data)(.*?)[\'"]\)#i',
                 $replaceCallback,
@@ -510,11 +352,9 @@ error_log("<CSS PACKING>" . ($r2 - $r1) . "</CSS PACKING>");*/
     {
         $lastModified = 0;
         $hashBase = '';
-/*list($usec, $sec) = explode(" ",microtime());
-$now = ($usec/1000 + $sec*1000);*/
         foreach ($scripts as $script)
         {
-            $pubDir = $this->config->get(HeroScriptFilterConfig::CFG_PUB_DIR);
+            $pubDir = $this->config->get(HeroResourceFilterConfig::CFG_PUB_DIR);
             $mTime = filemtime($pubDir . DIRECTORY_SEPARATOR . $script);
             $hashBase .= $script;
 
@@ -523,9 +363,6 @@ $now = ($usec/1000 + $sec*1000);*/
                 $lastModified = $mTime;
             }
         }
-/*list($usec, $sec) = explode(" ",microtime());
-$then = ($usec/1000 + $sec*1000);
-error_log("<HashCalculation Hash='".sha1($hashBase . $lastModified)."'>" . ($then - $now) . "</HASH Calculation>");*/
         return sha1($hashBase . $lastModified);
     }
 

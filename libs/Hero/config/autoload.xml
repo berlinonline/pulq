@@ -19,9 +19,9 @@
 
             <autoload name="HeroLanguageRoutingCallback">%core.app_dir%/../libs/Hero/agavi/routing/HeroLanguageRoutingCallback.class.php</autoload>
 
-            <autoload name="HeroScriptFilter">%core.app_dir%/../libs/Hero/agavi/filter/HeroScriptFilter.class.php</autoload>
+            <autoload name="HeroResourceFilter">%core.app_dir%/../libs/Hero/agavi/filter/HeroResourceFilter.class.php</autoload>
             <autoload name="HeroExecutionFilter">%core.app_dir%/../libs/Hero/agavi/filter/HeroExecutionFilter.class.php</autoload>
-            <autoload name="HeroScriptFilterConfig">%core.app_dir%/../libs/Hero/agavi/filter/HeroScriptFilterConfig.class.php</autoload>
+            <autoload name="HeroResourceFilterConfig">%core.app_dir%/../libs/Hero/agavi/filter/HeroResourceFilterConfig.class.php</autoload>
             <autoload name="HeroScriptsConfigHandler">%core.app_dir%/../libs/Hero/agavi/config_handler/HeroScriptsConfigHandler.class.php</autoload>
             <autoload name="HeroAclConfigHandler">%core.app_dir%/../libs/Hero/agavi/config_handler/HeroAclConfigHandler.class.php</autoload>
 
@@ -43,9 +43,9 @@
 
             <autoload name="ProjectLanguageRoutingCallback">%core.lib_dir%/agavi/routing/ProjectLanguageRoutingCallback.class.php</autoload>
 
-            <autoload name="ProjectScriptFilter">%core.lib_dir%/agavi/filter/ProjectScriptFilter.class.php</autoload>
+            <autoload name="ProjectResourceFilter">%core.lib_dir%/agavi/filter/ProjectResourceFilter.class.php</autoload>
             <autoload name="ProjectExecutionFilter">%core.lib_dir%/agavi/filter/ProjectExecutionFilter.class.php</autoload>
-            <autoload name="ProjectScriptFilterConfig">%core.lib_dir%/agavi/filter/ProjectScriptFilterConfig.class.php</autoload>
+            <autoload name="ProjectResourceFilterConfig">%core.lib_dir%/agavi/filter/ProjectResourceFilterConfig.class.php</autoload>
             <autoload name="ProjectScriptsConfigHandler">%core.lib_dir%/agavi/config_handler/ProjectScriptsConfigHandler.class.php</autoload>
             <autoload name="ProjectAclConfigHandler">%core.lib_dir%/agavi/config_handler/ProjectAclConfigHandler.class.php</autoload>
 
@@ -77,7 +77,7 @@
             <!-- /Database -->
 
             <!-- Deployment -->
-            <autoload name="HeroScriptPacker">%core.app_dir%/../libs/Hero/deployment/HeroScriptPacker.class.php</autoload>
+            <autoload name="HeroResourcePacker">%core.app_dir%/../libs/Hero/agavi/filter/HeroResourcePacker.class.php</autoload>
             <!-- /Deployment -->
 
             <!-- Iterator -->
