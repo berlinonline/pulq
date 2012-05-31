@@ -116,16 +116,29 @@ class HeroResourcePacker
 
     protected function packStyles($from, $to)
     {
-        $scriptFiles = glob($from.DIRECTORY_SEPARATOR.'*');
-        $scripts = array();
+        $lesscPath = str_replace('/', DIRECTORY_SEPARATOR, AgaviConfig::get('core.app_dir').'/../libs/node_modules/less/bin/lessc');
+        $styleFiles = glob($from.DIRECTORY_SEPARATOR.'*');
+        $styles = array();
 
-        foreach ($scriptFiles as $file)
+        foreach ($styleFiles as $file)
         {
-            $scripts[$file] = file_get_contents($file);
+            if (preg_match('#.less$#', $file))
+            {
+                if (preg_match('#\.import\.less$#', $file))
+                {
+                    continue;
+                }
+                $fileContents = shell_exec($lesscPath.' '.$file);
+            }
+            else
+            {
+                $fileContents = file_get_contents($file);
+            }
+            $styles[$file] = $fileContents;
         }
 
         $this->ensureDirectoryExists($to);
-        file_put_contents($to . DIRECTORY_SEPARATOR . 'combined.css', $this->concatParts($scripts));
+        file_put_contents($to . DIRECTORY_SEPARATOR . 'combined.css', $this->concatParts($styles));
     }
 
     protected function copyResources($from, $to)
