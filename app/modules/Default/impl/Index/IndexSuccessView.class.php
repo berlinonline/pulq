@@ -37,51 +37,7 @@ class Default_Index_IndexSuccessView extends DefaultBaseView
         $this->setupHtml($parameters);
 
         // set the title
-        $this->setAttribute('_title', $this->translationManager->_('Welcome to the ContentWorker web frontend.'));
+        $this->setAttribute('_title', $this->translationManager->_('Welcome to a Hero based web frontend.'));
 
-        $this->setBreadcrumb();
-    }
-
-    protected function setBreadcrumb()
-    {
-        $this->getContext()->getUser()->setAttribute('breadcrumbs', array(), 'midas.breadcrumbs');
-        $this->getContext()->getUser()->setAttribute('modulecrumb', NULL, 'midas.breadcrumbs');
-    }
-    
-    /**
-     * Prepares and sets our json data on our webresponse.
-     * 
-     * @param       AgaviRequestDataHolder $parameters 
-     * 
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
-     * @codingStandardsIgnoreStart
-     */
-    public function executeJson(AgaviRequestDataHolder $parameters) // @codingStandardsIgnoreEnd
-    {
-        $this->getContainer()->getResponse()->setContent(
-            json_encode(
-                array(
-                    'result' => 'error',
-                    'message' => 'Welcome to the ContentWorker JSON API.'
-                )
-            )
-        );
-    }
-
-    /**
-     * Prepares and sets our json data on our console response.
-     * 
-     * @param       AgaviRequestDataHolder $parameters 
-     * 
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
-     * @codingStandardsIgnoreStart
-     */
-    public function executeText(AgaviRequestDataHolder $parameters) // @codingStandardsIgnoreEnd
-    {
-        $msg = 'Welcome to the ContentWorker CLI Interface.' . PHP_EOL;
-
-        $this->getResponse()->setContent($msg);
     }
 }
-
-?>

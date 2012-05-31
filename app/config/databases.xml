@@ -7,7 +7,7 @@
     ####################
     -->
     <ae:configuration>
-        <databases default="News.Write">
+        <databases default="Assets.Write">
             <!-- ASSETS MODULE COUCH(write) AND ELASTICSEARCH(read) SETTINGS -->
             <database name="Assets.Write" class="CouchDatabase">
                 <ae:parameter name="url">http://127.0.0.1:5984/</ae:parameter>
@@ -31,79 +31,6 @@
                     <ae:parameter name="assets_river">
                         <ae:parameter name="config">asset.river</ae:parameter>
                         <ae:parameter name="db">assets</ae:parameter>
-                    </ae:parameter>
-                </ae:parameter>
-            </database>
-
-            <!-- NEWS MODULE COUCH(write) AND ELASTICSEARCH(read) SETTINGS -->
-            <database name="News.Write" class="CouchDatabase">
-                <ae:parameter name="url">http://127.0.0.1:5984/</ae:parameter>
-                <ae:parameter name="database">midas_news</ae:parameter>
-                <ae:parameter name="setup">NewsDatabaseSetup</ae:parameter>
-            </database>
-
-            <database name="News.Read" class="ElasticSearchDatabase">
-                <ae:parameter name="host">127.0.0.1</ae:parameter>
-                <ae:parameter name="port">9200</ae:parameter>
-                <ae:parameter name="transport">Http</ae:parameter>
-                <ae:parameter name="index">
-                    <ae:parameter name="name">midas_news</ae:parameter>
-                    <ae:parameter name="setup_class">NewsIndexSetup</ae:parameter>
-                    <ae:parameter name="types">
-                        <ae:parameter>news-item</ae:parameter>
-                        <ae:parameter>news-ticket</ae:parameter>
-                    </ae:parameter>
-                </ae:parameter>
-                <ae:parameter name="rivers">
-                    <ae:parameter name="news_river">
-                        <ae:parameter name="config">news-item.river</ae:parameter>
-                        <ae:parameter name="db">midas_news</ae:parameter>
-                    </ae:parameter>
-                    <ae:parameter name="tickets_river">
-                        <ae:parameter name="config">news-ticket.river</ae:parameter>
-                        <ae:parameter name="db">midas_news</ae:parameter>
-                    </ae:parameter>
-                </ae:parameter>
-            </database>
-
-            <!-- SHOFI MODULE COUCH(write) AND ELASTICSEARCH(read) SETTINGS -->
-            <database name="Shofi.Write" class="CouchDatabase">
-                <ae:parameter name="url">http://127.0.0.1:5984/</ae:parameter>
-                <ae:parameter name="database">midas_shofi</ae:parameter>
-                <ae:parameter name="setup">ShofiDatabaseSetup</ae:parameter>
-            </database>
-
-            <database name="Shofi.Read" class="ElasticSearchDatabase">
-                <ae:parameter name="host">127.0.0.1</ae:parameter>
-                <ae:parameter name="port">9200</ae:parameter>
-                <ae:parameter name="transport">Http</ae:parameter>
-                <ae:parameter name="index">
-                    <ae:parameter name="name">midas_shofi</ae:parameter>
-                    <ae:parameter name="setup_class">ElasticSearchIndexSetup</ae:parameter>
-                    <ae:parameter name="setup_dir">%core.modules_dir%/Shofi/config/elasticsearch/</ae:parameter>
-                    <ae:parameter name="types">
-                        <ae:parameter>shofi-ticket</ae:parameter>
-                        <ae:parameter>shofi-place</ae:parameter>
-                        <ae:parameter>shofi-category</ae:parameter>
-                        <ae:parameter>shofi-vertical</ae:parameter>
-                    </ae:parameter>
-                </ae:parameter>
-                <ae:parameter name="rivers">
-                    <ae:parameter name="places_river">
-                        <ae:parameter name="config">shofi-place.river</ae:parameter>
-                        <ae:parameter name="db">midas_shofi</ae:parameter>
-                    </ae:parameter>
-                    <ae:parameter name="categories_river">
-                        <ae:parameter name="config">shofi-category.river</ae:parameter>
-                        <ae:parameter name="db">midas_shofi</ae:parameter>
-                    </ae:parameter>
-                    <ae:parameter name="tickets_river">
-                        <ae:parameter name="config">shofi-ticket.river</ae:parameter>
-                        <ae:parameter name="db">midas_shofi</ae:parameter>
-                    </ae:parameter>
-                     <ae:parameter name="vertical_river">
-                        <ae:parameter name="config">shofi-vertical.river</ae:parameter>
-                        <ae:parameter name="db">midas_shofi</ae:parameter>
                     </ae:parameter>
                 </ae:parameter>
             </database>
@@ -144,120 +71,6 @@
                 </ae:parameter>
             </database>
 
-            <!-- NEWS MODULE COUCH(write) AND ELASTICSEARCH(read) SETTINGS -->
-            <database name="News.Write" class="CouchDatabase">
-                <ae:parameter name="url">http://127.0.0.1:5984/</ae:parameter>
-                <ae:parameter name="database">testing-midas_news</ae:parameter>
-                <ae:parameter name="setup">NewsDatabaseSetup</ae:parameter>
-            </database>
-
-            <database name="News.Read" class="ElasticSearchDatabase">
-                <ae:parameter name="host">127.0.0.1</ae:parameter>
-                <ae:parameter name="port">9200</ae:parameter>
-                <ae:parameter name="transport">Http</ae:parameter>
-                <ae:parameter name="index">
-                    <ae:parameter name="name">testing-midas_news</ae:parameter>
-                    <ae:parameter name="setup_class">NewsIndexSetup</ae:parameter>
-                    <ae:parameter name="types">
-                        <ae:parameter>news-item</ae:parameter>
-                        <ae:parameter>news-ticket</ae:parameter>
-                    </ae:parameter>
-                </ae:parameter>
-                <ae:parameter name="rivers">
-                    <ae:parameter name="testing-news_river">
-                        <ae:parameter name="config">news-item.river</ae:parameter>
-                        <ae:parameter name="db">testing-midas_news</ae:parameter>
-                    </ae:parameter>
-                    <ae:parameter name="tickets_river">
-                        <ae:parameter name="config">news-ticket.river</ae:parameter>
-                        <ae:parameter name="db">testing-midas_news</ae:parameter>
-                    </ae:parameter>
-                </ae:parameter>
-            </database>
-
-            <!-- SHOFI MODULE COUCH(write) AND ELASTICSEARCH(read) SETTINGS -->
-            <database name="Shofi.Write" class="CouchDatabase">
-                <ae:parameter name="url">http://127.0.0.1:5984/</ae:parameter>
-                <ae:parameter name="database">testing-midas_shofi</ae:parameter>
-                <ae:parameter name="setup">ShofiDatabaseSetup</ae:parameter>
-            </database>
-
-            <database name="Shofi.Read" class="ElasticSearchDatabase">
-                <ae:parameter name="host">127.0.0.1</ae:parameter>
-                <ae:parameter name="port">9200</ae:parameter>
-                <ae:parameter name="transport">Http</ae:parameter>
-                <ae:parameter name="index">
-                    <ae:parameter name="name">testing-midas_shofi</ae:parameter>
-                    <ae:parameter name="setup_class">ElasticSearchIndexSetup</ae:parameter>
-                    <ae:parameter name="setup_dir">%core.modules_dir%/Shofi/config/elasticsearch/</ae:parameter>
-                    <ae:parameter name="types">
-                        <ae:parameter>shofi-ticket</ae:parameter>
-                        <ae:parameter>shofi-place</ae:parameter>
-                        <ae:parameter>shofi-category</ae:parameter>
-                    </ae:parameter>
-                </ae:parameter>
-                <ae:parameter name="rivers">
-                    <ae:parameter name="testing-places_river">
-                        <ae:parameter name="config">shofi-place.river</ae:parameter>
-                        <ae:parameter name="db">testing-midas_shofi</ae:parameter>
-                    </ae:parameter>
-                    <ae:parameter name="testing-categories_river">
-                        <ae:parameter name="config">shofi-category.river</ae:parameter>
-                        <ae:parameter name="db">testing-midas_shofi</ae:parameter>
-                    </ae:parameter>
-                    <ae:parameter name="testing-tickets_river">
-                        <ae:parameter name="config">shofi-ticket.river</ae:parameter>
-                        <ae:parameter name="db">testing-midas_shofi</ae:parameter>
-                    </ae:parameter>
-                </ae:parameter>
-            </database>
-
-            <!--
-            ########################
-            NEWS FIXTURES - TESTING ONLY DATABASES
-            These settings are for fixtures that are used for readonly tests,
-            which need a large dataset to work on.
-            ########################
-            -->
-            <database name="News.WriteFixtures" class="CouchDatabase">
-                <ae:parameter name="url">http://127.0.0.1:5984/</ae:parameter>
-                <ae:parameter name="database">fixtures-midas_news</ae:parameter>
-                <ae:parameter name="setup">NewsDatabaseSetup</ae:parameter>
-            </database>
-
-            <database name="News.ReadFixtures" class="ElasticSearchDatabase">
-                <ae:parameter name="host">127.0.0.1</ae:parameter>
-                <ae:parameter name="port">9200</ae:parameter>
-                <ae:parameter name="transport">Http</ae:parameter>
-                <ae:parameter name="index">
-                    <ae:parameter name="name">fixtures-midas_news</ae:parameter>
-                    <ae:parameter name="setup_class">NewsIndexSetup</ae:parameter>
-                    <ae:parameter name="types">
-                        <ae:parameter>news-item</ae:parameter>
-                        <ae:parameter>news-ticket</ae:parameter>
-                    </ae:parameter>
-                </ae:parameter>
-                <ae:parameter name="rivers">
-                    <ae:parameter name="fixtures-news_river">
-                        <ae:parameter name="config">news-item.river</ae:parameter>
-                        <ae:parameter name="db">fixtures-midas_news</ae:parameter>
-                    </ae:parameter>
-                    <ae:parameter name="fixtures-tickets_river">
-                        <ae:parameter name="config">news-ticket.river</ae:parameter>
-                        <ae:parameter name="db">fixtures-midas_news</ae:parameter>
-                    </ae:parameter>
-                </ae:parameter>
-            </database>
-
-            <!--
-                This database connection is used to test the CouchDbDataImport,
-                which is currently not integrated into any prod relevant code.
-                The Import/RunActionTest relies on this connection to exist.
-            -->
-            <database name="CouchImport" class="CouchDatabase">
-                <ae:parameter name="url">http://127.0.0.1:5984/</ae:parameter>
-                <ae:parameter name="database">couch_import_testing</ae:parameter>
-            </database>
         </databases>
     </ae:configuration>
 

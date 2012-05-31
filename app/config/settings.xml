@@ -35,7 +35,7 @@
         </system_actions>
 
         <settings>
-            <setting name="app_name">Midas - Content Refining Middleware</setting>
+            <setting name="app_name">HeroApplication</setting>
             <setting name="available">true</setting>
             <setting name="debug">false</setting>
             <setting name="use_database">true</setting>

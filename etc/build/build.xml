@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<project name="ContentWorker" basedir="." default="cc">
+<project name="HeroApplication" basedir="." default="cc">
 
     <property name="project.directory" value="${application.startdir}" />
     <property name="project.directory.etc" value="${application.startdir}/etc" />
@@ -28,13 +28,6 @@
         <run command="/bin/rm -rf etc/integration/build/api/serverside" dir="${project.directory}"/>
         <run command="/bin/mkdir -p etc/integration/build/api/serverside" dir="${project.directory}"/>
         <run command="nice bin/phpdoc -c ${project.directory}/app/config/docblox.xml" dir="${project.directory}" />
-    </target>
-
-    <target name="jsdoc" description="Generate Clientside API documentation using jsdoc-toolkit." depends="cc">
-        <echo message="Generating the clientside API documentation."/>
-        <run command="/bin/rm -rf etc/integration/build/api/clientside" dir="${project.directory}"/>
-        <run command="/bin/mkdir -p etc/integration/build/api/clientside" dir="${project.directory}"/>
-        <run command="bin/jsdoc.sh pub/js/midas/* pub/js/midas/items/edit/*" dir="${project.directory}"/>
     </target>
 
     <target name="js-xunit" description="Running client side tests with xunit output." depends="cc">

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <docblox>
 
-    <title>Midas - your content broker of choice</title>
+    <title>HeroApplication</title>
 
     <parser>
-        <default-package-name>midas</default-package-name>
+        <default-package-name>hero</default-package-name>
         <target>etc/integration/build/api/serverside</target>
         <markers>
             <item>TODO</item>

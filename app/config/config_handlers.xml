@@ -13,10 +13,6 @@
                 <transformation>%core.agavi_dir%/config/xsl/caching.xsl</transformation>
             </handler>
 
-            <handler pattern="%core.config_dir%/scripts.xml" class="ProjectScriptsConfigHandler">
-                <validation>%core.config_dir%/xsd/scripts.xsd</validation>
-            </handler>
-
             <handler pattern="%core.config_dir%/access_control.xml" class="ProjectAclConfigHandler">
                 <validation>%core.config_dir%/xsd/access_control.xsd</validation>
             </handler>

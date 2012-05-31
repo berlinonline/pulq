@@ -1,7 +1,7 @@
 <?php
 
 /**
- * The HeroResourceFilterConfig provides access to the scripts.xml settings.
+ * The HeroResourceFilterConfig provides access to the resource filter settings.
  *
  * @version         $Id: HeroResourceFilterConfig.class.php 1010 2012-03-02 20:08:23Z tschmitt $
  * @copyright       BerlinOnline Stadtportal GmbH & Co. KG
@@ -137,8 +137,5 @@ class HeroResourceFilterConfig
         $this->settings[self::CFG_PUB_DIR] = realpath(
             dirname(AgaviConfig::get('core.app_dir')) . DIRECTORY_SEPARATOR . 'pub'
         );
-
-        $configFile = AgaviConfig::get('core.config_dir') . DIRECTORY_SEPARATOR . 'scripts.xml';
-        $this->settings[self::CFG_SCRIPT_SETTINGS] = include AgaviConfigCache::checkConfig($configFile);
     }
 }
