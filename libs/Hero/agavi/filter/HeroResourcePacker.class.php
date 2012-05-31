@@ -102,12 +102,13 @@ class HeroResourcePacker
 
     protected function packScripts($from, $to)
     {
+        $uglifyPath = str_replace('/', DIRECTORY_SEPARATOR, AgaviConfig::get('core.app_dir').'/../libs/node_modules/uglifyjs/bin/uglifyjs');
         $scriptFiles = glob($from.DIRECTORY_SEPARATOR.'*');
         $scripts = array();
 
         foreach ($scriptFiles as $file)
         {
-            $scripts[$file] = file_get_contents($file);
+            $scripts[$file] = shell_exec($uglifyPath.' '.$file);
         }
 
         $this->ensureDirectoryExists($to);
