@@ -19,3 +19,6 @@
 [submodule "libs/phpDocumentor2"]
 	path = libs/phpDocumentor2
 	url = https://github.com/phpDocumentor/phpDocumentor2.git
+[submodule "libs/node_modules/uglifyjs"]
+	path = libs/node_modules/uglifyjs
+	url = https://github.com/mishoo/UglifyJS.git
