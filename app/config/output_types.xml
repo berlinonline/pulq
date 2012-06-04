@@ -11,7 +11,19 @@
         <output_types default="html">
 
             <output_type name="html">
-                <renderers default="php">
+                <renderers default="twig">
+                    <renderer name="twig" class="AgaviTwigRenderer">
+                        <ae:parameter name="assigns">
+                            <ae:parameter name="routing">ro</ae:parameter>
+                            <!-- default assigns of Agavi omitted -->
+                        </ae:parameter>
+                        <ae:parameter name="default_extension">.twig</ae:parameter>
+                        <ae:parameter name="extract_vars">true</ae:parameter>
+                        <ae:parameter name="options">
+                            <ae:parameter name="auto_escape">true</ae:parameter>
+                            <ae:parameter name="auto_reload">true</ae:parameter>
+                        </ae:parameter>
+                    </renderer>
                     <renderer name="php" class="AgaviPhpRenderer">
                         <ae:parameter name="assigns">
                             <ae:parameter name="routing">ro</ae:parameter>

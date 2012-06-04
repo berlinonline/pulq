@@ -1,7 +1,3 @@
-<?php
-$locale = $tm->getCurrentLocale();
-$dir = (($locale->getCharacterOrientation() == 'right-to-left') ? 'rtl' : 'ltr');
-?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -56,8 +52,7 @@ $dir = (($locale->getCharacterOrientation() == 'right-to-left') ? 'rtl' : 'ltr')
     </div>
 
     <div class="container">
-        <?php echo $inner; ?>
-
+        {{ inner|raw }}
     </div> <!-- /container -->
 
     <!-- %%JAVASCRIPTS%% -->

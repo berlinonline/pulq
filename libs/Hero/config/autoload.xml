@@ -33,6 +33,9 @@
             <autoload name="UserIsItemOwnerAssertion">%core.app_dir%/../libs/Hero/agavi/user/assertions/UserIsItemOwnerAssertion.class.php</autoload>
             <!-- /Hero: Agavi Integration -->
 
+            <!-- Twig -->
+            <autoload name="Twig_Autoloader">%core.app_dir%/../libs/Twig/lib/Twig/Autoloader.php</autoload>
+            <!-- /Twig -->
 
             <!-- Project: Agavi Integration -->
             <autoload name="ProjectBaseAction">%core.lib_dir%/agavi/action/ProjectBaseAction.class.php</autoload>
