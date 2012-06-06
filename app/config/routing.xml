@@ -3,38 +3,13 @@
 
     <ae:configuration context="web">
         <routes>
-            <!-- matches "/de" or "/en" at the beginning of the URL and uses either value to set the locale,
-                 with British Pounds Sterling as the currency. Execution will not stop if this route matches.
-                 If it matches, the matched fragment will be stripped from the input URL for the following routes.
-                 This route has the "imply" flag, which means that it will be included in generated routes even if the gen()
-                 call does not explicitly mention it. The matched "language" parameter will not be available
-                 as a request parameter in the code, because it's "ignore"d
-            -->
-            <route pattern="^/({locale:[a-z]{2}(_[A-Z]{2})?})" stop="false" imply="true" cut="true" locale="${locale}">
-                <callbacks>
-                    <callback class="ProjectLanguageRoutingCallback" />
-                </callbacks>
-                <ignores>
-                    <ignore>locale</ignore>
-                </ignores>
+            <!-- Project routes -->
+            <route name="localnews" pattern="^localnews" module="Localnews">
+                <route name=".districtlist" pattern="^/districtlist$" action="Districtlist" />
+                <route name=".index" pattern="^$" action="Index" />
             </route>
 
-            <!--
-                If the HTTP Accept: header contains "application/json"
-                (i.e. if you do an XMLHTTPRequest with one of the usual JS frameworks),
-                set the output type to "json". Look at output_types.xml for the declaration of that output type.
-                Execution will not stop if this route matches. This is nice for making XMLHTTPRequest calls.
-            -->
-            <route pattern="application/json" source="_SERVER[HTTP_ACCEPT]" output_type="json" stop="false" />
-            <route pattern="application/xml" source="_SERVER[HTTP_ACCEPT]" output_type="xml" stop="false" />
-            <route pattern="text/html" source="_SERVER[HTTP_ACCEPT]" output_type="html" stop="false" />
-            <route pattern="application/xhtml+xml" source="_SERVER[HTTP_ACCEPT]" output_type="html" stop="false" />
-
-            <route name="disabled" pattern="^/disabled$" module="Disabled" action="Index" />
-
-            <route name="auth" pattern="^/auth" module="Auth">
-                <route name=".logout" pattern="^/logout" action="Logout"/>
-            </route>
+            <!-- /Project routes -->
 
             <!-- The last route in case the input URL is just "/". -->
             <route name="index" pattern="^/$" module="%actions.default_module%" action="%actions.default_action%" />

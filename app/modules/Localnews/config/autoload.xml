@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ae:configurations 
+	xmlns="http://agavi.org/agavi/config/parts/autoload/1.1" 
+	xmlns:ae="http://agavi.org/agavi/config/global/envelope/1.1">
+	<ae:configuration>
+		<autoload name="ProjectLocalnewsBaseAction">%core.module_dir%/Localnews/lib/base/ProjectLocalnewsBaseAction.class.php</autoload>
+		<autoload name="ProjectLocalnewsBaseModel">%core.module_dir%/Localnews/lib/base/ProjectLocalnewsBaseModel.class.php</autoload>
+		<autoload name="ProjectLocalnewsBaseView">%core.module_dir%/Localnews/lib/base/ProjectLocalnewsBaseView.class.php</autoload>
+	</ae:configuration>
+</ae:configurations>
