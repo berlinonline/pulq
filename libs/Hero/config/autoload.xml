@@ -56,7 +56,10 @@
             <!-- /Project: Agavi Integration -->
 
 
-
+            <!-- Services -->
+            <autoload name="ProjectBaseService">%core.app_dir%/lib/services/ProjectBaseService.class.php</autoload>
+            <autoload name="HeroBaseService">%core.app_dir%/../libs/Hero/services/HeroBaseService.class.php</autoload>
+            <!-- /Services -->
 
             <!-- DataObject -->
             <autoload name="IComparable">%core.app_dir%/../libs/Hero/data_object/IComparable.iface.php</autoload>

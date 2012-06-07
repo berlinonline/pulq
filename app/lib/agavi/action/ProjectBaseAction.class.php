@@ -11,5 +11,8 @@
  */
 class ProjectBaseAction extends HeroBaseAction
 {
-
+    public function executeRead(AgaviRequestDataHolder $rd)
+    {
+        return 'Success';
+    }
 }

@@ -1,6 +1,6 @@
 <?php
 
-class Localnews_Districtlist_DistrictlistSuccessView extends ProjectLocalnewsBaseView
+class Localnews_ByDistrict_ByDistrictSuccessView extends ProjectLocalnewsBaseView
 {
 	
 
@@ -16,11 +16,14 @@ class Localnews_Districtlist_DistrictlistSuccessView extends ProjectLocalnewsBas
 	 */
 	public function executeHtml(AgaviRequestDataHolder $rd)
 	{
-		$this->setupHtml($rd, 'slot');
+		$this->setupHtml($rd);
 
-        $districtService = new LocalnewsDistrictService();
+		$this->setAttribute('_title', 'ByDistrict');
 
-        $this->setAttribute('districts', $districtService->getDistricts());
+        $district = $rd->getParameter('district');
+
+        $this->setAttribute('district', $district);
 	}
-
 }
+
+?>

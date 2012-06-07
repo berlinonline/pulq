@@ -1,0 +1,96 @@
+Index: agavi/config/AgaviAutoloadConfigHandler.class.php
+===================================================================
+--- agavi/config/AgaviAutoloadConfigHandler.class.php	(revision 2930)
++++ agavi/config/AgaviAutoloadConfigHandler.class.php	(working copy)
+@@ -57,11 +57,35 @@
+ 		$data = array();
+ 		
+ 		foreach($document->getConfigurationElements() as $configuration) {
+-			if(!$configuration->has('autoloads')) {
++			if(!$configuration->has('autoloads') && !$configuration->has('autoload_folders')) {
+ 				continue;
+ 			}
+ 			
+ 			// let's do our fancy work
++
++			// autoload_folders are recursive autoload entries. Each file matching the
++			// pattern, represents an autoload entry
++			foreach($configuration->get('autoload_folders') as $autoload_folder) {
++				$folder = AgaviToolkit::expandDirectives($autoload_folder->getValue());
++				
++				$it = new RecursiveDirectoryIterator($folder);
++				$it = new RecursiveIteratorIterator($it, RecursiveIteratorIterator::SELF_FIRST);
++				$it = new RegexIterator(
++					$it,
++					$autoload_folder->getAttribute('pattern'),
++					RecursiveRegexIterator::GET_MATCH
++				);
++				
++				foreach($it as $source_file)
++				{
++					$file_name = $source_file[0];
++					$class_name = $source_file[1];
++					
++					$data[$class_name] = realpath($file_name);
++				}
++			}
++				
++			// autoloads are just simple name => file path autoload entries	
+ 			foreach($configuration->get('autoloads') as $autoload) {
+ 				// we can have variables in the filename
+ 				$file = AgaviToolkit::expandDirectives($autoload->getValue());
+@@ -100,4 +124,4 @@
+ 	}
+ }
+ 
+-?>
+\ No newline at end of file
++?>
+Index: agavi/config/xsd/parts/autoload.xsd
+===================================================================
+--- agavi/config/xsd/parts/autoload.xsd	(revision 2930)
++++ agavi/config/xsd/parts/autoload.xsd	(working copy)
+@@ -14,19 +14,37 @@
+ 		<xs:attribute name="name" type="types_1_0:php_class" use="required" />
+ 	</xs:complexType>
+ 
++	<xs:complexType name="autoload_folder" mixed="true">
++		<xs:attribute name="pattern" type="xs:string" use="required" />
++	</xs:complexType>
++
+ 	<xs:complexType name="autoloads">
+ 		<xs:sequence>
+ 			<xs:element name="autoload" type="autoload" maxOccurs="unbounded" />
+ 		</xs:sequence>
+ 	</xs:complexType>
+ 
++	<xs:complexType name="autoload_folders">
++		<xs:sequence>
++			<xs:element name="autoload_folder" type="autoload_folder" maxOccurs="unbounded" />
++		</xs:sequence>
++	</xs:complexType>
++
+ 	<xs:group name="configuration">
+-		<xs:choice>
+-			<xs:element name="autoloads" type="autoloads"
+-			            minOccurs="0" maxOccurs="1" />
+-			<xs:element name="autoload" type="autoload"
+-			            minOccurs="0" maxOccurs="unbounded"/>
+-		</xs:choice>
++		<xs:sequence>
++			<xs:choice maxOccurs="unbounded" minOccurs="0">
++				<xs:element name="autoloads" type="autoloads"
++							minOccurs="0" maxOccurs="1" />
++				<xs:element name="autoload" type="autoload"
++							minOccurs="0" maxOccurs="unbounded" />
++			</xs:choice>
++			<xs:choice maxOccurs="unbounded" minOccurs="0">
++				<xs:element name="autoload_folders" type="autoload_folders"
++							minOccurs="0" maxOccurs="1" />
++				<xs:element name="autoload_folder" type="autoload_folder"
++							minOccurs="0" maxOccurs="unbounded" />
++			</xs:choice>
++		</xs:sequence>
+ 	</xs:group>
+ 
+ </xs:schema>

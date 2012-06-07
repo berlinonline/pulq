@@ -4,11 +4,9 @@
     <ae:configuration context="web">
         <routes>
             <!-- Project routes -->
-            <route name="localnews" pattern="^localnews" module="Localnews">
-                <route name=".districtlist" pattern="^/districtlist$" action="Districtlist" />
-                <route name=".index" pattern="^$" action="Index" />
-            </route>
-
+            <xi:include href="%core.app_dir%/modules/Localnews/config/routing.xml"
+                xpointer="xmlns(ae=http://agavi.org/agavi/config/global/envelope/1.1) xpointer(/ae:configurations/*)">
+            </xi:include>
             <!-- /Project routes -->
 
             <!-- The last route in case the input URL is just "/". -->

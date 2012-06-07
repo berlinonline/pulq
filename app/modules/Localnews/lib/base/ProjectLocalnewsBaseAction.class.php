@@ -9,5 +9,4 @@ class ProjectLocalnewsBaseAction extends ProjectBaseAction
     {
         return false;
     }
-
 }
