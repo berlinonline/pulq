@@ -2,6 +2,17 @@
 
 class LocalnewsDistrictService extends ProjectBaseService
 {
+    public function __construct()
+    {
+        $ro = AgaviContext::getInstance()->getRouting();
+        foreach($this->districts as $key => $value)
+        {
+            $this->districts[$key]['url'] = $ro->gen('localnews.bydistrict', array(
+                'district' => $key,
+            ));
+        }
+    }
+
     /**
      * Generates some dummy data as long as there's no working model layer.
      */

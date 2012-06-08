@@ -23,6 +23,10 @@ class Localnews_ByDistrict_ByDistrictSuccessView extends ProjectLocalnewsBaseVie
         $district = $rd->getParameter('district');
 
         $this->setAttribute('district', $district);
+
+
+        $newsService = new LocalnewsService();
+        $this->setAttribute('newsitems', $newsService->getNewsByDistrict($district));
 	}
 }
 

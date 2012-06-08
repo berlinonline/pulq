@@ -409,7 +409,7 @@ class AgaviWebRouting extends AgaviRouting
 				// given scheme plus "://"
 				$scheme = $scheme . '://';
 			}
-			
+
 			$retval = $scheme . $authority . $retval;
 		}
 

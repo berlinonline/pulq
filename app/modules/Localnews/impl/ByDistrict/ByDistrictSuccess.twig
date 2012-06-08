@@ -1,2 +1,8 @@
 <h2>News für {{ district['full_name'] }}</h2>
-{{ foobar }}
+
+{% for newsitem in newsitems %}
+    <h3>{{ newsitem.headline }}</h3>
+    <p>
+        {{ newsitem.body }}
+    </p>
+{% endfor %}

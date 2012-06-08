@@ -21,6 +21,8 @@ class Localnews_Districtlist_DistrictlistSuccessView extends ProjectLocalnewsBas
         $districtService = new LocalnewsDistrictService();
 
         $this->setAttribute('districts', $districtService->getDistricts());
+
+        $this->setAttribute('menuId', uniqid());
 	}
 
 }

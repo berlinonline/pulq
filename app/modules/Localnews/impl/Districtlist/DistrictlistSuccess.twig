@@ -1,7 +1,12 @@
-<h2>Bezirke</h2>
-<ul>
+<div class="dropdown" id="{{ menuId }}">
+<a class="dropdown-toggle" data-toggle="dropdown" href="#{{ menuId }}">
+Bezirk
+<b class="caret"></b>
+</a>
+<ul class="dropdown-menu">
 {% for district in districts %}
-<li>{{ district["full_name"] }}</li>
+<li><a href="{{ district.url }}">{{ district.full_name }}</a></li>
 {% endfor %}
 </ul>
+</div>
 
