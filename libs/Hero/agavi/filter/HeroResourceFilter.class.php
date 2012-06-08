@@ -15,6 +15,10 @@ class HeroResourceFilter extends AgaviFilter implements AgaviIGlobalFilter
 {
     public static function addModule($moduleName, $outputType)
     {
+        if (isset(static::$modules[$outputType]) && in_array($moduleName, static::$modules[$outputType]))
+        {
+            return;
+        }
         static::$modules[$outputType][] = $moduleName;
     }
 
