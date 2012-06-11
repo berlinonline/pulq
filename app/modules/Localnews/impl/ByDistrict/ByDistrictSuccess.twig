@@ -1,8 +1,4 @@
-<h2>News für {{ district['full_name'] }}</h2>
+<h2>News für {{ district.name }}</h2>
 
-{% for newsitem in newsitems %}
-    <h3>{{ newsitem.headline }}</h3>
-    <p>
-        {{ newsitem.body }}
-    </p>
-{% endfor %}
+{{ slots.newslist|raw }}
+

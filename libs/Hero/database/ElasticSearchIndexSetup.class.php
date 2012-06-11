@@ -10,8 +10,7 @@ class ElasticSearchIndexSetup implements IDatabaseSetup
     public function __construct($connectionName)
     {
         $this->database = AgaviContext::getInstance()->getDatabaseManager()->getDatabase(
-            $connectionName,
-            ShofiFinder::getElasticSearchDatabaseName() //@todo legacy support, find-refactor-remove ^^
+            $connectionName
         );
     }
 
@@ -70,7 +69,12 @@ class ElasticSearchIndexSetup implements IDatabaseSetup
                         'type' => 'custom',
                         "tokenizer" => "whitespace",
                         "filter" => array('lowercase', "snowball", "icu_folding", "autocomplete")
-                    )
+                    ),
+                    'rawData' => array(
+                        'type' => 'custom',
+                        'tokenizer' => 'icu_tokenizer',
+                        'filter' => array('lowercase')
+                    ),
                 ),
                 'filter' => array(
                     'snowball' => array(
@@ -84,7 +88,7 @@ class ElasticSearchIndexSetup implements IDatabaseSetup
                         'side' => 'front'
                     )
                 )
-            )
+            ),
         ), $tearDownFirst);
     }
 

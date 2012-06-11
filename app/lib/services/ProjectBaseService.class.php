@@ -2,5 +2,4 @@
 
 abstract class ProjectBaseService extends HeroBaseService
 {
-
 }

@@ -3,7 +3,7 @@
     <ae:configuration context="web">
         <routes>
             <route name=".districtlist" pattern="^/districtlist$" action="Districtlist" />
-            <route name=".bydistrict" pattern="^/(district:\w+)$" action="ByDistrict" />
+            <route name=".bydistrict" pattern="^/(district:[A-Za-z0-9]+)$" action="ByDistrict" />
             <route name=".index" pattern="^$" action="Index" />
         </routes>
     </ae:configuration>

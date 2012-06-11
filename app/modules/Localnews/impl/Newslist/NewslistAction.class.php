@@ -20,6 +20,11 @@ class Localnews_NewslistAction extends ProjectLocalnewsBaseAction
 	{
 		return 'Success';
 	}
+
+    public function isSimple()
+    {
+        return true;
+    }
 }
 
 ?>

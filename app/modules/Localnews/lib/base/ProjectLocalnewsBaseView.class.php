@@ -5,4 +5,8 @@
  */
 class ProjectLocalnewsBaseView extends ProjectBaseView
 {
+    public function setupHtml(AgaviRequestDataHolder $rd, $layout = 'localnews')
+    {
+        parent::setupHtml($rd, $layout);
+    }
 }

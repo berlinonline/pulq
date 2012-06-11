@@ -2,44 +2,72 @@
 
 class LocalnewsService extends ProjectBaseService
 {
-    protected $dummyTexts = array();
+    protected $index = null;
 
-    public function getDummyTexts()
+    public function __construct()
     {
-        if (empty($this->dummyTexts))
-        {
-            $lorem = file_get_contents('http://lorem-ipsum.me/api/text');
+        $this->index = AgaviContext::getInstance()->getDatabaseManager()->getDatabase('News.Read')->getResource();
 
-            $this->dummyTexts = preg_split('/[\n\r]+/', $lorem);
-        }
+    }
 
-        return $this->dummyTexts;
+    public function getLatestNews($limit =50)
+    {
+        $newsitems = array();
+
+        $query = $this->getBaseNewsQuery($limit);
+        $esType = $this->index->getType('localnews-newsitem');
+        $resultData = $esType->search($query);
+
+        return $this->extractNewsitemsFromResultSet($resultData);
+    }
+
+    protected function getBaseNewsQuery($limit = 5)
+    {
+
+        $query = Elastica_Query::create(
+            new Elastica_Query_MatchAll()
+        );
+        $query->setLimit($limit);
+        $query->setSort(array(
+            'publishDate' => array('order' => 'desc')
+        ));
+    
+        return $query;
     }
 
     public function getNewsByDistrict($district, $limit = 5)
     {
-        $items = array();
+        $newsitems = array();
 
-        for ($i = 0; $i < $limit; $i++)
+        $query = $this->getBaseNewsQuery($limit);
+        $query->setFilter(
+            new Elastica_Filter_Term(
+                array('location.district.raw' => $district['name'])
+            )
+        );
+        $esType = $this->index->getType('localnews-newsitem');
+        $resultData = $esType->search($query);
+
+        return $this->extractNewsitemsFromResultSet($resultData);
+    }
+
+    protected function extractNewsitemsFromResultSet(Elastica_ResultSet $resultSet)
+    {
+        $newsitems = array();
+
+        foreach($resultSet->getResults() as $result)
         {
-            $items[] = $this->generateDummyNewsItem();
+            $data = $result->getData();
+
+            $newsitems[] = array(
+                'title' => $data['title'],
+                'teaser' => $data['teaser'],
+                'text' => $data['text'],
+                'publishDate' => date_format(new DateTime($data['publishDate']), 'd.m.Y - H:i') . ' Uhr',
+            );
         }
 
-        return $items;
+        return $newsitems;
+    
     }
-
-    protected function generateDummyNewsItem()
-    {
-
-        $dummyTexts = $this->getDummyTexts();
-        $item = $dummyTexts[array_rand($dummyTexts)];
-
-        $headline = strtok($item, ' ') . ' ' . strtok(' ');
-
-        return array(
-            'headline' => $headline,
-            'body' => $item,
-        );
-    }
-
 }

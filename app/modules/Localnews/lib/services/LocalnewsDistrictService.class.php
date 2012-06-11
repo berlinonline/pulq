@@ -2,15 +2,11 @@
 
 class LocalnewsDistrictService extends ProjectBaseService
 {
+
     public function __construct()
     {
-        $ro = AgaviContext::getInstance()->getRouting();
-        foreach($this->districts as $key => $value)
-        {
-            $this->districts[$key]['url'] = $ro->gen('localnews.bydistrict', array(
-                'district' => $key,
-            ));
-        }
+        $this->index = AgaviContext::getInstance()->getDatabaseManager()->getDatabase('News.Read')->getResource();
+
     }
 
     /**
@@ -18,69 +14,48 @@ class LocalnewsDistrictService extends ProjectBaseService
      */
     public function getDistricts()
     {
-        return $this->districts;
+        $ro = AgaviContext::getInstance()->getRouting();
+
+        $query = Elastica_Query::create(null);
+        $facetname = 'district-facet';
+        $facet = new Elastica_Facet_Terms($facetname);
+        $facet->setFields(array(
+            'location.district.raw',
+        ));
+        $facet->setSize(2000);
+        $query->addFacet($facet);
+        $esType = $this->index->getType('localnews-newsitem');
+        $resultData = $esType->search($query);
+        $districtFacets = $resultData->getFacets();
+
+        $districts = array();
+
+        foreach($districtFacets['district-facet']['terms'] as $term)
+        {
+            $name = $term['term'];
+            $districts[] = array(
+                'name' => $name,
+                'url' => $ro->gen('localnews.bydistrict', array(
+                    'district' => $name,
+                ))
+            );
+        }
+
+        return $districts;
     }
 
-    protected $districts = array(
-        "charlottenburg_wilmerdorf" => array(
-            "full_name" => "Charlottenburg - Wilmersdorf",
-        ),
-
-        "friedrichshain_kreuzberg" => array(
-            "full_name" => "Friedrichshain - Kreuzberg",
-        ),
-
-        "lichtenberg" => array(
-            "full_name" => "Lichtenberg",
-        ),
-
-        "marzahn_hellersdorf" => array(
-            "full_name" => "Marzahn - Hellersdorf",
-        ),
-
-        "mitte" => array(
-            "full_name" => "Mitte",
-        ),
-
-        "neukoelln" => array(
-            "full_name" => "Neukölln",
-        ),
-
-        "pankow" => array(
-            "full_name" => "Pankow",
-        ),
-
-        "reinickendorf" => array(
-            "full_name" => "Reinickendorf",
-        ),
-
-        "spandau" => array(
-            "full_name" => "Spandau",
-        ),
-
-        "steglitz_zehlendorf" => array(
-            "full_name" => "Steglitz - Zehlendorf",
-        ),
-
-        "tempelhof_schoeneberg" => array(
-            "full_name" => "Tempelhof - Schöneberg",
-        ),
-
-        "treptow_koepenick" => array(
-            "full_name" => "Treptow - Köpenick",
-        ),
-    );
     
     public function getDistrictByName($name)
     {
-        if (isset($this->districts[$name]))
+        foreach($this->getDistricts() as $district)
         {
-            return $this->districts[$name];
+            if ($district['name'] === $name)
+            {
+                return $district;
+            }
         }
-        else
-        {
-            throw new DistrictNotFoundException($name);
-        }
+
+        throw new DistrictNotFoundException();
     }
 
 }

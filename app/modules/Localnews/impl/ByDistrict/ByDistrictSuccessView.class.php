@@ -24,9 +24,16 @@ class Localnews_ByDistrict_ByDistrictSuccessView extends ProjectLocalnewsBaseVie
 
         $this->setAttribute('district', $district);
 
-
         $newsService = new LocalnewsService();
-        $this->setAttribute('newsitems', $newsService->getNewsByDistrict($district));
+
+        $this->getLayer('content')->setSlot('newslist', $this->createSlotContainer(
+            'Localnews',
+            'Newslist',
+            array(
+                'newsitems' => $newsService->getNewsByDistrict($district),
+            ),
+            'html'
+        ));
 	}
 }
 

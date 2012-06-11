@@ -19,16 +19,14 @@ class Localnews_Index_IndexSuccessView extends ProjectLocalnewsBaseView
 
 		$this->setAttribute('_title', 'Index');
 
-        $this->getLayer('content')->setSlot('districtlist', $this->createSlotContainer(
-            'Localnews',
-            'Districtlist',
-            array(),
-            'html'
-        ));
+        $newsService = new LocalnewsService();
+
         $this->getLayer('content')->setSlot('newslist', $this->createSlotContainer(
             'Localnews',
             'Newslist',
-            array(),
+            array(
+                'newsitems' => $newsService->getLatestNews(),
+            ),
             'html'
         ));
 	}

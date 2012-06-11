@@ -1,77 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ae:configurations xmlns="http://agavi.org/agavi/config/parts/databases/1.1" xmlns:ae="http://agavi.org/agavi/config/global/envelope/1.1">
+<ae:configurations xmlns="http://agavi.org/agavi/config/parts/databases/1.1" xmlns:ae="http://agavi.org/agavi/config/global/envelope/1.1" xmlns:xi="http://www.w3.org/2001/XInclude">
 
-    <!--
-    ####################
-    DEFAULT DATABASE SETTINGS
-    ####################
-    -->
-    <ae:configuration>
-        <databases default="Assets.Write">
-            <!-- ASSETS MODULE COUCH(write) AND ELASTICSEARCH(read) SETTINGS -->
-            <database name="Assets.Write" class="CouchDatabase">
-                <ae:parameter name="url">http://127.0.0.1:5984/</ae:parameter>
-                <ae:parameter name="database">assets</ae:parameter>  <!-- @todo rename to midas_assets -->
-                <ae:parameter name="setup">AssetDatabaseSetup</ae:parameter>
-            </database>
-
-            <database name="Assets.Read" class="ElasticSearchDatabase">
-                <ae:parameter name="host">127.0.0.1</ae:parameter>
-                <ae:parameter name="port">9200</ae:parameter>
-                <ae:parameter name="transport">Http</ae:parameter>
-                <ae:parameter name="index">
-                    <ae:parameter name="name">midas_assets</ae:parameter>
-                    <ae:parameter name="setup_class">ElasticSearchIndexSetup</ae:parameter>
-                    <ae:parameter name="setup_dir">%core.modules_dir%/Asset/config/elasticsearch/</ae:parameter>
-                    <ae:parameter name="types">
-                        <ae:parameter>asset</ae:parameter>
-                    </ae:parameter>
-                </ae:parameter>
-                <ae:parameter name="rivers">
-                    <ae:parameter name="assets_river">
-                        <ae:parameter name="config">asset.river</ae:parameter>
-                        <ae:parameter name="db">assets</ae:parameter>
-                    </ae:parameter>
-                </ae:parameter>
-            </database>
-        </databases>
-    </ae:configuration>
-
-    <!--
-    ####################
-    TESTING DATABASE SETTINGS
-    ####################
-    -->
-    <ae:configuration environment="testing.*">
-        <databases default="News.Read">
-            <!-- ASSETS MODULE COUCH(write) AND ELASTICSEARCH(read) SETTINGS -->
-            <database name="Assets.Write" class="CouchDatabase">
-                <ae:parameter name="url">http://127.0.0.1:5984/</ae:parameter>
-                <ae:parameter name="database">testing-midas_assets</ae:parameter>  <!-- @todo rename to midas_assets -->
-                <ae:parameter name="setup">AssetDatabaseSetup</ae:parameter>
-            </database>
-
-            <database name="Assets.Read" class="ElasticSearchDatabase">
-                <ae:parameter name="host">127.0.0.1</ae:parameter>
-                <ae:parameter name="port">9200</ae:parameter>
-                <ae:parameter name="transport">Http</ae:parameter>
-                <ae:parameter name="index">
-                    <ae:parameter name="name">testing-midas_assets</ae:parameter>
-                    <ae:parameter name="setup_class">ElasticSearchIndexSetup</ae:parameter>
-                    <ae:parameter name="setup_dir">%core.modules_dir%/Asset/config/elasticsearch/</ae:parameter>
-                    <ae:parameter name="types">
-                        <ae:parameter>asset</ae:parameter>
-                    </ae:parameter>
-                </ae:parameter>
-                <ae:parameter name="rivers">
-                    <ae:parameter name="testing-assets_river">
-                        <ae:parameter name="config">asset.river</ae:parameter>
-                        <ae:parameter name="db">testing-midas_assets</ae:parameter>
-                    </ae:parameter>
-                </ae:parameter>
-            </database>
-
-        </databases>
-    </ae:configuration>
+    <xi:include href="%core.module_dir%/Localnews/config/databases.xml"
+        xpointer="xmlns(ae=http://agavi.org/agavi/config/global/envelope/1.1) xpointer(/ae:configurations/*)">
+    </xi:include>
 
 </ae:configurations>

@@ -16,9 +16,9 @@ class Localnews_Newslist_NewslistSuccessView extends ProjectLocalnewsBaseView
 	 */
 	public function executeHtml(AgaviRequestDataHolder $rd)
 	{
-		$this->setupHtml($rd);
+		$this->setupHtml($rd, 'slot');
 
-		$this->setAttribute('_title', 'Newslist');
+        $this->setAttribute('newsitems', $rd->getParameter('newsitems'));
 	}
 }
 
