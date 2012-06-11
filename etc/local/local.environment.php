@@ -12,6 +12,6 @@
 
 return array (
   'php' => '/usr/bin/php',
-  'environment' => 'development.vagrant.leon',
-  'base_href' => 'http://localhost:8080/',
+  'environment' => 'development.vagrant',
+  'base_href' => 'http://berlinonline.dev',
 );
