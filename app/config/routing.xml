@@ -3,10 +3,14 @@
 
     <ae:configuration context="web">
         <routes>
+            
             <!-- Project routes -->
-            <xi:include href="%core.app_dir%/modules/Localnews/config/routing.xml"
-                xpointer="xmlns(ae=http://agavi.org/agavi/config/global/envelope/1.1) xpointer(/ae:configurations/*)">
-            </xi:include>
+            <route name="localnews" pattern="^/localnews" module="Localnews">
+                <xi:include href="%core.app_dir%/modules/Localnews/config/routing.xml"
+                    xpointer="xmlns(ae=http://agavi.org/agavi/config/global/envelope/1.1)
+                        xmlns(r=http://agavi.org/agavi/config/parts/routing/1.0)
+                        xpointer(//ae:configuration[@context='web']/r:routes/r:route)/" />
+            </route>
             <!-- /Project routes -->
 
             <!-- The last route in case the input URL is just "/". -->
