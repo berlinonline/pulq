@@ -41,15 +41,6 @@
     </ae:configuration>
 
     <ae:configuration environment="development.vagrant.*">
-        
-        <request class="AgaviWebRequest">
-            <ae:parameters>
-                <ae:parameter name="sources">
-                    <ae:parameter name="SERVER_NAME">localhost</ae:parameter>
-                    <ae:parameter name="SERVER_PORT">8080</ae:parameter>
-                </ae:parameter>
-            </ae:parameters>
-        </request>
 
     </ae:configuration>
 
