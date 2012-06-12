@@ -1,7 +1,11 @@
 {% for newsitem in newsitems %}
 <div class="newsitem">
     <h3>{{ newsitem.title }}</h3>
-    <p class="newsitem-date"> {{ newsitem.publishDate }} </p>
+    <p class="newsitem-meta">
+    <span class="newsitem-location">{{ newsitem.district }}</span>
+    <span class="newsitem-date">{{ newsitem.publishDate }}</span>
+    
+    </p>
     <p class="newsitem-teaser">
         {{ newsitem.teaser }}
     </p>

@@ -64,6 +64,7 @@ class LocalnewsService extends ProjectBaseService
                 'teaser' => $data['teaser'],
                 'text' => $data['text'],
                 'publishDate' => date_format(new DateTime($data['publishDate']), 'd.m.Y - H:i') . ' Uhr',
+                'district' => $data['location']['district'],
             );
         }
 
