@@ -100,10 +100,37 @@ class HeroResourcePacker
         return $resourcesDir;
     }
 
+    protected function checkForOutdatedPacking($sourceFiles, $targetFile)
+    {
+        if(file_exists($targetFile))
+        {
+            $targetMTime = filemtime($targetFile);
+
+            foreach($sourceFiles as $sourceFile)
+            {
+                if (filemtime($sourceFile) > $targetMTime)
+                {
+                    return true; //refreshed file found!
+                }
+            }
+
+            return false; //source files are not newer than target
+        }
+
+        return true; //target doesn't exist so it's considered outdated
+    }
+
     protected function packScripts($from, $to)
     {
         $uglifyPath = str_replace('/', DIRECTORY_SEPARATOR, AgaviConfig::get('core.app_dir').'/../libs/node_modules/uglifyjs/bin/uglifyjs');
         $scriptFiles = glob($from.DIRECTORY_SEPARATOR.'*');
+        $outputPath = $to . DIRECTORY_SEPARATOR . 'combined.js';
+        
+        if (!$this->checkForOutdatedPacking($scriptFiles, $outputPath))
+        {
+            return;
+        }
+
         $scripts = array();
 
         foreach ($scriptFiles as $file)
@@ -112,13 +139,20 @@ class HeroResourcePacker
         }
 
         $this->ensureDirectoryExists($to);
-        file_put_contents($to . DIRECTORY_SEPARATOR . 'combined.js', $this->concatParts($scripts));
+        file_put_contents($outputPath, $this->concatParts($scripts));
     }
 
     protected function packStyles($from, $to)
     {
         $lesscPath = str_replace('/', DIRECTORY_SEPARATOR, AgaviConfig::get('core.app_dir').'/../libs/node_modules/less/bin/lessc');
         $styleFiles = glob($from.DIRECTORY_SEPARATOR.'*');
+        $outputPath = $to . DIRECTORY_SEPARATOR . 'combined.css';
+        
+        if (!$this->checkForOutdatedPacking($styleFiles, $outputPath))
+        {
+            return;
+        }
+
         $styles = array();
 
         foreach ($styleFiles as $file)
@@ -139,7 +173,7 @@ class HeroResourcePacker
         }
 
         $this->ensureDirectoryExists($to);
-        file_put_contents($to . DIRECTORY_SEPARATOR . 'combined.css', $this->concatParts($styles));
+        file_put_contents($outputPath, $this->concatParts($styles));
     }
 
     protected function copyResources($from, $to)
@@ -154,8 +188,13 @@ class HeroResourcePacker
 
     protected function recursiveCopy($from, $to)
     {
-        if(!is_dir($from))
+        if(!is_dir($from) )
         {
+            if (filemtime($from) > filemtime($to))
+            {
+                return true;
+            }
+
             return copy($from, $to);
         }
 
