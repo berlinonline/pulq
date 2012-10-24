@@ -22,7 +22,9 @@
 
             <autoload name="PulqLanguageRoutingCallback">%core.app_dir%/../libs/Pulq/agavi/routing/PulqLanguageRoutingCallback.class.php</autoload>
 
+            <autoload name="PulqEsiFilter">%core.app_dir%/../libs/Pulq/agavi/filter/PulqEsiFilter.class.php</autoload>
             <autoload name="PulqResourceFilter">%core.app_dir%/../libs/Pulq/agavi/filter/PulqResourceFilter.class.php</autoload>
+            <autoload name="PulqFixEsiAfterFpfFilter">%core.app_dir%/../libs/Pulq/agavi/filter/PulqFixEsiAfterFpfFilter.class.php</autoload>
             <autoload name="PulqExecutionFilter">%core.app_dir%/../libs/Pulq/agavi/filter/PulqExecutionFilter.class.php</autoload>
             <autoload name="PulqResourceFilterConfig">%core.app_dir%/../libs/Pulq/agavi/filter/PulqResourceFilterConfig.class.php</autoload>
             <autoload name="PulqScriptsConfigHandler">%core.app_dir%/../libs/Pulq/agavi/config_handler/PulqScriptsConfigHandler.class.php</autoload>
