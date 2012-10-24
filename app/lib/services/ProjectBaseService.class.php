@@ -1,5 +1,5 @@
 <?php
 
-abstract class ProjectBaseService extends HeroBaseService
+abstract class ProjectBaseService extends PulqBaseService
 {
 }

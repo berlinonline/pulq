@@ -11,6 +11,6 @@
  *
  * @SuppressWarnings(PHPMD.TooManyMethods)
  */
-class ProjectResourceFilter extends HeroResourceFilter
+class ProjectResourceFilter extends PulqResourceFilter
 {
 }

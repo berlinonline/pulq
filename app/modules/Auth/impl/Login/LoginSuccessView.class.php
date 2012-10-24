@@ -84,9 +84,9 @@ class Auth_Login_LoginSuccessView extends AuthBaseView
      * Create a forward container for the that was intentionally called before the login was executed.
      *
      * @return      AgaviExecutionContainer A new execution container instance,
-	 *                                      fully initialized.
-	 *
-	 * @see         AgaviExecutionContainer::createExecutionContainer()
+     *                                      fully initialized.
+     *
+     * @see         AgaviExecutionContainer::createExecutionContainer()
      */
     protected function attemptForward()
     {

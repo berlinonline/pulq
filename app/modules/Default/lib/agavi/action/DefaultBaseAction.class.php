@@ -30,7 +30,7 @@ class DefaultBaseAction extends ProjectBaseAction
      */
     public function isSecure()
     {
-        return false;
+        return FALSE;
     }
 }
 

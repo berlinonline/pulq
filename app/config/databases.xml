@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ae:configurations xmlns="http://agavi.org/agavi/config/parts/databases/1.1" xmlns:ae="http://agavi.org/agavi/config/global/envelope/1.1" xmlns:xi="http://www.w3.org/2001/XInclude">
+<ae:configurations xmlns="http://agavi.org/agavi/config/parts/databases/1.1" xmlns:ae="http://agavi.org/agavi/config/global/envelope/1.1"
+    xmlns:xi="http://www.w3.org/2001/XInclude">
 
-    <xi:include href="%core.module_dir%/Localnews/config/databases.xml"
-        xpointer="xmlns(ae=http://agavi.org/agavi/config/global/envelope/1.1) xpointer(/ae:configurations/*)">
-    </xi:include>
+<!--     <xi:include href="%core.module_dir%/Localnews/config/databases.xml" -->
+<!--         xpointer="xmlns(ae=http://agavi.org/agavi/config/global/envelope/1.1) xpointer(/ae:configurations/*)"> -->
+<!--     </xi:include> -->
 
 </ae:configurations>

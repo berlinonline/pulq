@@ -16,12 +16,12 @@
        <translators default_domain="date_formats">
            <translator domain="date_formats">
                 <translator domain="datetime">
-                        <date_formatter>
-                            <ae:parameters>
-                                <ae:parameter name="type">datetime</ae:parameter>
-                                <ae:parameter name="format">yyyy-MM-dd HH:mm:ss</ae:parameter>
-                            </ae:parameters>
-                        </date_formatter>
+                    <date_formatter>
+                        <ae:parameters>
+                            <ae:parameter name="type">datetime</ae:parameter>
+                            <ae:parameter name="format">yyyy-MM-dd HH:mm:ss</ae:parameter>
+                        </ae:parameters>
+                    </date_formatter>
                 </translator>
             </translator>
        </translators>

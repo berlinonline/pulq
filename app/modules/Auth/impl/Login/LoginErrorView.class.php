@@ -12,6 +12,14 @@
  */
 class Auth_Login_LoginErrorView extends AuthBaseView
 {
+    /**
+     * Execute any binary related presentation logic.
+     *
+     * @param       AgaviRequestDataHolder $parameters
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     * @codingStandardsIgnoreStart
+     */
     public function executeBinary(AgaviRequestDataHolder $parameters) // @codingStandardsIgnoreEnd
     {
         // @easter-egg Return 'I am a teapot' for people,

@@ -1,4 +1,4 @@
 <?php
-class ProjectAclConfigHandler extends HeroAclConfigHandler
+class ProjectAclConfigHandler extends PulqAclConfigHandler
 {
 }

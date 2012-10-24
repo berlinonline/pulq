@@ -7,3 +7,7 @@ Thumbs.db
 
 app/cache/*
 app/log/*
+/.settings
+/.buildpath
+/.project
+/.externalToolBuilders

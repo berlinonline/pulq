@@ -1,0 +1,14 @@
+{
+    "name": "phpdocumentor/unified-asset-installer",
+    "description": "Asset installer for phpDocumentor",
+    "type": "composer-installer",
+    "keywords": ["assets", "installer", "templates", "plugins"],
+    "homepage": "http://www.phpdoc.org",
+    "license": "MIT",
+    "autoload": {
+        "psr-0": {"phpDocumentor\\Composer": "src/"}
+    },
+    "extra": {
+        "class": "\\phpDocumentor\\Composer\\UnifiedAssetInstaller"
+    }
+}

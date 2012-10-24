@@ -12,6 +12,10 @@
  */
 class Auth_Login_LoginInputView extends AuthBaseView
 {
+    /**
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     */
     public function executeBinary(AgaviRequestDataHolder $parameters) // @codingStandardsIgnoreEnd
     {
         $this->memoizeLocationForLaterRedirect();

@@ -1,5 +1,5 @@
 <?php
 
-class ProjectScriptsConfigHandler extends HeroScriptsConfigHandler
+class ProjectScriptsConfigHandler extends PulqScriptsConfigHandler
 {
 }

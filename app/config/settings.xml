@@ -35,10 +35,10 @@
         </system_actions>
 
         <settings>
-            <setting name="app_name">HeroApplication</setting>
+            <setting name="app_name">PulqApplication</setting>
             <setting name="available">true</setting>
             <setting name="debug">false</setting>
-            <setting name="use_database">true</setting>
+            <setting name="use_database">false</setting>
             <setting name="use_logging">true</setting>
             <setting name="use_security">true</setting>
             <setting name="use_translation">true</setting>
@@ -75,14 +75,7 @@
             <exception_template>%core.agavi_dir%/exception/templates/shiny.php</exception_template>
             <exception_template context="console">%core.agavi_dir%/exception/templates/plaintext.php</exception_template>
         </exception_templates>
-    </ae:configuration>
 
-    <!--
-    ####################
-    PRODUCTION
-    ####################
-    -->
-    <ae:configuration environment="production-hetzner">
     </ae:configuration>
 
     <!--
@@ -99,31 +92,11 @@
     DEVELOPMENT COMMONS
     ####################
     -->
-    <ae:configuration environment="development*">
+    <ae:configuration environment="development.*">
         <settings>
             <setting name="debug">true</setting>
         </settings>
     </ae:configuration>
-
-    <ae:configuration environment="development.vagrant.*">
-        <settings>
-            <setting name="auth_provider">SimpleAuthProvider</setting>
-            <setting name="simple_logins">
-                <ae:parameters>
-                    <ae:parameter name="shrink0r">
-                        <ae:parameter name="pwd">shrink0r</ae:parameter>
-                        <ae:parameter name="attributes">
-                            <ae:parameter name="acl_role">news-editor</ae:parameter>
-                            <ae:parameter name="login">shrink0r</ae:parameter>
-                            <ae:parameter name="name">General Gaff</ae:parameter>
-                            <ae:parameter name="email">general@null.ly</ae:parameter>
-                        </ae:parameter>
-                    </ae:parameter>
-                </ae:parameters>
-            </setting>
-        </settings>
-    </ae:configuration>
-
 
     <!--
     ####################
@@ -131,45 +104,9 @@
     ####################
     -->
     <ae:configuration environment="testing.*">
-        <settings prefix="assets.">
-            <setting name="mime_database">/usr/share/misc/magic.mgc</setting>
-            <setting name="base_dir">%core.app_dir%/../data/testing/assets</setting>
-        </settings>
-
-        <settings prefix="curl.">
-            <setting name="timeout">10</setting>
-        </settings>
-
         <settings>
-            <setting name="default_context">web</setting>
-            <!-- @todo Nest the logins as auth provider parameters -->
-            <setting name="auth_provider">SimpleAuthProvider</setting>
-            <setting name="simple_logins">
-                <ae:parameters>
-                    <ae:parameter name="general_g">
-                        <ae:parameter name="pwd">n0tf0und</ae:parameter>
-                        <ae:parameter name="attributes">
-                            <ae:parameter name="acl_role">news-editor</ae:parameter>
-                            <ae:parameter name="login">general</ae:parameter>
-                            <ae:parameter name="name">General Gaff</ae:parameter>
-                            <ae:parameter name="email">general@null.ly</ae:parameter>
-                        </ae:parameter>
-                    </ae:parameter>
-                </ae:parameters>
-            </setting>
-        </settings>
-
-    </ae:configuration>
-
-    <ae:configuration environment="testing.development-shrink-work">
-
-         <settings prefix="curl.">
-            <setting name="proxy">proxy2:3128</setting>
-        </settings>
-
-        <settings prefix="shofi.">
-            <setting name="cm_export_url">http://localhost/contentmachine/fe/index.php/adressen/midas-import</setting>
-        </settings>
+            <setting name="debug">true</setting>
+        </settings>        
     </ae:configuration>
 
 </ae:configurations>

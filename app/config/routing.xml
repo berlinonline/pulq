@@ -1,20 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ae:configurations xmlns:ae="http://agavi.org/agavi/config/global/envelope/1.1" xmlns="http://agavi.org/agavi/config/parts/routing/1.0" xmlns:xi="http://www.w3.org/2001/XInclude">
+<ae:configurations xmlns:ae="http://agavi.org/agavi/config/global/envelope/1.1" xmlns="http://agavi.org/agavi/config/parts/routing/1.0"
+    xmlns:xi="http://www.w3.org/2001/XInclude">
 
     <ae:configuration context="web">
         <routes>
-            
-            <!-- Project routes -->
-            <route name="localnews" pattern="^/localnews" module="Localnews">
-                <xi:include href="%core.app_dir%/modules/Localnews/config/routing.xml"
-                    xpointer="xmlns(ae=http://agavi.org/agavi/config/global/envelope/1.1)
-                        xmlns(r=http://agavi.org/agavi/config/parts/routing/1.0)
-                        xpointer(//ae:configuration[@context='web']/r:routes/r:route)/" />
+
+            <!--  extract output types -->            
+            <route name="output_ajax" pattern="XMLHttpRequest" source="_SERVER[HTTP_X_REQUESTED_WITH]" output_type="xml" stop="false" />
+            <route name="output_text" pattern="^text/plain" stop="false" source="HEADER[Content-Type]" output_type="text" />            
+            <route name="output_xml" pattern="^text/xml" stop="false" source="HEADER[Content-Type]" output_type="xml" />
+            <route name="output_json" pattern="^application/json" stop="false" source="HEADER[Content-Type]" output_type="json" />
+
+            <route name="accept_xml" pattern="^(text|application)/xml" stop="false" source="_SERVER[HTTP_ACCEPT]" output_type="xml" />
+            <route name="accept_json" pattern="^application/json" source="_SERVER[HTTP_ACCEPT]" output_type="json" stop="false" />
+            <route name="accept_html" pattern="^(text/html|application/xhtml)" source="_SERVER[HTTP_ACCEPT]" output_type="html" stop="false" />
+
+            <route name="xml" pattern=".xml$" stop="false" cut="true" output_type="xml" />
+            <route name="json" pattern=".json$" stop="false" cut="true" output_type="json" />
+            <route name="html" pattern=".html$" stop="false" cut="true" output_type="html" />
+
+            <!-- Lokale matching for multi language support -->
+            <route name="locale" pattern=".({locale:[a-z]{2}(?:_[A-Z]{2})?})$" stop="false" locale="${locale}" cut="true">
+                <callback class="PulqLanguageRoutingCallback"/>
+                <default for="locale">de_DE</default>
             </route>
-            <!-- /Project routes -->
+
+
+            <!-- Layout element routes -->
+<!--             <route name="berlinonline" pattern="^/bo" module="BerlinOnline"> -->
+<!--                 <xi:include href="%core.app_dir%/modules/BerlinOnline/config/routing.xml" -->
+<!--                     xpointer="xmlns(ae=http://agavi.org/agavi/config/global/envelope/1.1) -->
+<!--                         xmlns(r=http://agavi.org/agavi/config/parts/routing/1.0) -->
+<!--                         xpointer(//ae:configuration[@context='web']/r:routes/r:route)/" /> -->
+<!--             </route> -->
+            <!-- /Layout element routes -->
 
             <!-- The last route in case the input URL is just "/". -->
-            <route name="index" pattern="^/$" module="%actions.default_module%" action="%actions.default_action%" />
+            <route name="index" pattern="^/$" module="%actions.default_module%" action="%actions.default_action%"/>
 
         <!--
             If no route matched here, the 404 action will be used.

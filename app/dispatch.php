@@ -8,8 +8,10 @@ $libsDir = $rootDir . '/libs';
 $ezComponentsDir = $libsDir . '/ezc';
 $phpUnitDir = $libsDir . '/PHPUnit';
 $zend = $libsDir . '/Zend';
+$phpDocumentor2 = $libsDir . '/phpDocumentor2/src';
+$swiftDir = $libsDir . '/Swift/lib';
 
-$includes = array($libsDir, $ezComponentsDir, $phpUnitDir, $zend);
+$includes = array($libsDir, $ezComponentsDir, $phpUnitDir, $zend, $phpDocumentor2);
 set_include_path(implode(PATH_SEPARATOR, $includes).PATH_SEPARATOR.get_include_path());
 
 // make generated files group writeable for easy switch between web/console
@@ -29,6 +31,12 @@ if (isset($testingEnabled))
 // +---------------------------------------------------------------------------+
 require $ezComponentsDir . '/Base/src/ezc_bootstrap.php';
 spl_autoload_register(array('ezcBase', 'autoload'));
+
+// +---------------------------------------------------------------------------+
+// | Setup Swift Mailer autoloading.                                           |
+// +---------------------------------------------------------------------------+
+require $swiftDir . '/swift_required.php';
+
 // +---------------------------------------------------------------------------+
 // | An absolute filesystem path to our environment config provider.           |
 // +---------------------------------------------------------------------------+

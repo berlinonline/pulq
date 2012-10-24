@@ -3,7 +3,9 @@
 
     <ae:configuration>
 
-        <controller class="AgaviController" />
+        <controller class="AgaviController" >
+            <ae:parameter name="max_executions">50</ae:parameter>
+    </controller>
 
         <database_manager class="AgaviDatabaseManager" />
 

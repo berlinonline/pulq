@@ -22,13 +22,13 @@
  * @package         Default
  * @subpackage      Mvc
  */
-class Default_Index_IndexSuccessView extends DefaultBaseView 
+class Default_Index_IndexSuccessView extends DefaultBaseView
 {
     /**
      * Execute any html related presentation logic and sets up our template attributes.
-     * 
-     * @param       AgaviRequestDataHolder $parameters 
-     * 
+     *
+     * @param       AgaviRequestDataHolder $parameters
+     *
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      * @codingStandardsIgnoreStart
      */
@@ -37,7 +37,35 @@ class Default_Index_IndexSuccessView extends DefaultBaseView
         $this->setupHtml($parameters);
 
         // set the title
-        $this->setAttribute('_title', $this->translationManager->_('Welcome to a Hero based web frontend.'));
+        $this->setAttribute('_title', $this->translationManager->_('Welcome to a Pulq based web frontend.'));
+    }
 
+    /**
+     * (non-PHPdoc)
+     * @see PulqBaseView::executeJson()
+     */
+    public function executeJson(AgaviRequestDataHolder $parameters) // @codingStandardsIgnoreEnd
+    {
+        return json_encode(array('_title' => $this->translationManager->_('Welcome to a Pulq based web frontend.')));
+    }
+
+
+    /**
+     * Execute any XML related presentation logic and sets up our template attributes.
+     *
+     * @param       AgaviRequestDataHolder $parameters
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     * @codingStandardsIgnoreStart
+     */
+    public function executeXml(AgaviRequestDataHolder $parameters) // @codingStandardsIgnoreEnd
+    {
+        $title = $this->translationManager->_('Welcome to a Pulq based web frontend.');
+        return <<<EOT
+<?xml version="1.0" encoding="UTF-8" ?>
+<pulq>
+<title>$title</title>
+</pulq>
+EOT;
     }
 }

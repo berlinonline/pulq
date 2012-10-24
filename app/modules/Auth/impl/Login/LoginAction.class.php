@@ -18,6 +18,7 @@ class Auth_LoginAction extends AuthBaseAction
      * @param AgaviParameterHolder $parameters
      *
      * @return string The name of the view to execute.
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function executeRead(AgaviParameterHolder $parameters)
     {

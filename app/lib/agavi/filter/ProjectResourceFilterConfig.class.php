@@ -1,5 +1,5 @@
 <?php
 
-class ProjectResourceFilterConfig extend HeroResourceFilterConfig
+class ProjectResourceFilterConfig extends PulqResourceFilterConfig
 {
 }

@@ -17,5 +17,6 @@ if (test -z "$PHP_COMMAND") ; then
   exit 0
 fi
 
-echo "[Executing] `which rlwrap` $PHP_COMMAND -d html_errors=off -f $PROJECT/libs/docblox/bin/docblox.php -- $@"
-PHP_COMMAND=$PHP_COMMAND `which rlwrap` $PHP_COMMAND -d error_reporting=1 -d html_errors=off -f $PROJECT/libs/docblox/bin/docblox.php -- $@
+echo "[Executing] `which rlwrap` $PHP_COMMAND -d html_errors=off -f $PROJECT/libs/phpDocumentor/bin/phpdoc.php -- $@"
+
+PHP_COMMAND=$PHP_COMMAND `which rlwrap` $PHP_COMMAND -d error_reporting=1 -d html_errors=off -f $PROJECT/libs/phpDocumentor/bin/phpdoc.php -- -t $PROJECT/etc/integration/build/api/serverside $@

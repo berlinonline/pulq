@@ -11,6 +11,6 @@
  *
  * @SuppressWarnings(PHPMD.NumberOfChildren)
  */
-class ProjectBaseView extends HeroBaseView
+class ProjectBaseView extends PulqBaseView
 {
 }

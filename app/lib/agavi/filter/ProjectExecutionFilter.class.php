@@ -9,6 +9,6 @@
  * @package         Project
  * @subpackage      Agavi/Filter
  */
-class ProjectExecutionFilter extends HeroExecutionFilter
+class ProjectExecutionFilter extends PulqExecutionFilter
 {
 }

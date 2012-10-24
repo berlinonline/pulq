@@ -1,5 +1,5 @@
 <?php
 
-class ProjectArrayValidator extends HeroArrayValidator
+class ProjectArrayValidator extends PulqArrayValidator
 {
 }

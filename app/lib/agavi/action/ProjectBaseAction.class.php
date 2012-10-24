@@ -9,10 +9,19 @@
  * @package         Project
  * @subpackage      Agavi/Action
  */
-class ProjectBaseAction extends HeroBaseAction
+class ProjectBaseAction extends PulqBaseAction
 {
+    /**
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     */
     public function executeRead(AgaviRequestDataHolder $rd)
     {
         return 'Success';
+    }
+
+    public function isSecure()
+    {
+        return FALSE;
     }
 }
