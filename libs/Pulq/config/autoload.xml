@@ -17,7 +17,7 @@
 
             <autoload name="PulqArrayValidator">%core.app_dir%/../libs/Pulq/agavi/validator/PulqArrayValidator.class.php</autoload>
             <autoload name="PulqJsonFileValidator">%core.app_dir%/../libs/Pulq/agavi/validator/PulqJsonFileValidator.class.php</autoload>
-            <autoload name="PulqJsonValidator.class.php">%core.app_dir%/../libs/Pulq/agavi/validator/PulqJsonValidator.class.php</autoload>
+            <autoload name="PulqJsonValidator">%core.app_dir%/../libs/Pulq/agavi/validator/PulqJsonValidator.class.php</autoload>
             <autoload name="PulqPaginationValidator">%core.app_dir%/../libs/Pulq/agavi/validator/PulqPaginationValidator.class.php</autoload>
 
             <autoload name="PulqLanguageRoutingCallback">%core.app_dir%/../libs/Pulq/agavi/routing/PulqLanguageRoutingCallback.class.php</autoload>
