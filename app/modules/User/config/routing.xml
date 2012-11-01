@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ae:configurations xmlns:ae="http://agavi.org/agavi/config/global/envelope/1.1" xmlns="http://agavi.org/agavi/config/parts/routing/1.0" xmlns:xi="http://www.w3.org/2001/XInclude">
+    <ae:configuration context="web">
+        <routes>
+            <route name=".login" pattern="^/login/$" module="User" action="Login" />
+            <route name=".create" pattern="^/create/$" module="User" action="Create" />
+            <route name=".read" pattern="^/({user_id:[^/]+})/$" module="User" action="Read" />
+            <route name=".update" pattern="^/({user_id:[^/]+})/update/$" module="User" action="Update" />
+            <route name=".delete" pattern="^/({user_id:[^/]+})/delete/$" module="User" action="Delete" />
+        </routes>
+    </ae:configuration>
+</ae:configurations>

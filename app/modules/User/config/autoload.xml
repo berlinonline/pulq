@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ae:configurations
+	xmlns="http://agavi.org/agavi/config/parts/autoload/1.1"
+	xmlns:ae="http://agavi.org/agavi/config/global/envelope/1.1">
+	<ae:configuration>
+		<autoload name="UserBaseAction">%core.module_dir%/User/lib/base/UserBaseAction.class.php</autoload>
+		<autoload name="UserBaseView">%core.module_dir%/User/lib/base/UserBaseView.class.php</autoload>
+        <autoload name="UserValidator">%core.module_dir%/User/lib/validator/UserValidator.class.php</autoload>
+	</ae:configuration>
+</ae:configurations>

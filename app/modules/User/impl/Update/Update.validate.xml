@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ae:configurations xmlns="http://agavi.org/agavi/config/parts/validators/1.1" xmlns:ae="http://agavi.org/agavi/config/global/envelope/1.1" parent="%core.module_dir%/User/config/validators.xml">
+  <ae:configuration>
+    <validators>
+      <validator class="number" name="user_id" required="true">
+        <arguments>
+          <argument>user_id</argument>
+        </arguments>
+        <errors>
+          <error>The parameter user_id has to be a number</error>
+        </errors>
+      </validator>
+      <validator class="PulqJsonFileValidator" name="post_file" required="true">
+        <arguments>
+          <argument>post_file</argument>
+        </arguments>
+        <errors>
+          <error>Invalid content, the HTTP-body has to contain JSON-data</error>
+          <error for="required">Request is required of content type application/json</error>
+          <error for="mime_type">Request should be of content type application/json</error>
+          <error for="min_size">Content too short</error>
+          <error for="upload_failed">Upload failed</error>
+          <error for="argument_wrong_type">argument_wrong_type</error>
+          <error for="invalid_json">Could not decode JSON</error>
+        </errors>
+        <ae:parameters>
+          <ae:parameter name="min_size">2</ae:parameter>
+<!--
+Cannot use it, cause agavi does not respect content-type on uploaded files and does not identifies json
+          <ae:parameter name="mime_type">(application|\*)\/(json|\*)</ae:parameter>
+-->
+        </ae:parameters>
+      </validator>
+    </validators>
+  </ae:configuration>
+</ae:configurations>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ae:configurations xmlns="http://agavi.org/agavi/config/parts/validators/1.1" xmlns:ae="http://agavi.org/agavi/config/global/envelope/1.1" parent="%core.module_dir%/User/config/validators.xml">
+  <ae:configuration>
+    <validators>
+      <validator class="string" name="loginname" required="true">
+        <arguments>
+          <argument>loginname</argument>
+        </arguments>
+        <errors>
+          <error>The parameter loginname must not be shorter than 3 and longer than 255 chars</error>
+        </errors>
+        <ae:parameters>
+          <ae:parameter name="min">3</ae:parameter>
+          <ae:parameter name="max">255</ae:parameter>
+        </ae:parameters>
+      </validator>
+      <validator class="email" name="email" required="true">
+        <arguments>
+          <argument>email</argument>
+        </arguments>
+        <errors>
+          <error>A valid E-Mail-Address is required</error>
+        </errors>
+        <ae:parameters>
+          <ae:parameter name="min">3</ae:parameter>
+          <ae:parameter name="max">255</ae:parameter>
+        </ae:parameters>
+      </validator>
+      <validator class="string" name="password" required="true">
+        <arguments>
+          <argument>password</argument>
+        </arguments>
+        <errors>
+          <error>The parameter password must not be shorter than 8 chars</error>
+        </errors>
+        <ae:parameters>
+          <ae:parameter name="min">8</ae:parameter>
+        </ae:parameters>
+      </validator>
+      <validator class="string" name="realname" required="false">
+        <arguments>
+          <argument>realname</argument>
+        </arguments>
+        <errors>
+          <error>The parameter loginname must not be longer than 255 chars</error>
+        </errors>
+        <ae:parameters>
+          <ae:parameter name="max">255</ae:parameter>
+        </ae:parameters>
+      </validator>
+      <validator class="string" name="comment" required="false">
+        <arguments>
+          <argument>comment</argument>
+        </arguments>
+        <errors>
+          <error>The parameter loginname must not be longer than 65535 chars</error>
+        </errors>
+        <ae:parameters>
+          <ae:parameter name="max">65535</ae:parameter>
+        </ae:parameters>
+      </validator>
+    </validators>
+  </ae:configuration>
+</ae:configurations>

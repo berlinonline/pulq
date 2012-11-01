@@ -5,6 +5,8 @@
 
             <autoload name="Image">%core.app_dir%/lib/data_object/Image.class.php</autoload>
             <autoload name="Route">%core.app_dir%/lib/data_object/Route.class.php</autoload>
+            
+            <autoload name="UserserviceTestSuite">modules/User/test/unit/UserserviceTestSuite.class.php</autoload>
         </autoloads>
     </ae:configuration>
 

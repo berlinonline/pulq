@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ae:configurations xmlns="http://agavi.org/agavi/config/parts/validators/1.1" xmlns:ae="http://agavi.org/agavi/config/global/envelope/1.1" parent="%core.module_dir%/User/config/validators.xml">
+  <ae:configuration>
+    <validators>
+      <validator class="string" name="auth" required="true">
+        <arguments>
+          <argument>auth</argument>
+        </arguments>
+        <errors>
+          <error for="required">auth required</error>
+          <error>An auth string is required, could be of type ID, loginname or email</error>
+        </errors>
+      </validator>
+      <validator class="string" name="password" required="false">
+        <arguments>
+          <argument>password</argument>
+        </arguments>
+        <errors>
+          <error for="required">password required</error>
+          <error>The parameter password must not be shorter than 8 chars</error>
+        </errors>
+        <ae:parameters>
+          <ae:parameter name="min">8</ae:parameter>
+        </ae:parameters>
+      </validator>
+    </validators>
+  </ae:configuration>
+</ae:configurations>

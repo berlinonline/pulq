@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ae:configurations xmlns="http://agavi.org/agavi/config/parts/validators/1.1" xmlns:ae="http://agavi.org/agavi/config/global/envelope/1.1" parent="%core.module_dir%/User/config/validators.xml">
+  <ae:configuration>
+    <validators>
+      <validator class="number" name="user_id" required="true">
+        <arguments>
+          <argument>user_id</argument>
+        </arguments>
+        <errors>
+          <error>The parameter user_id has to be a number</error>
+        </errors>
+      </validator>
+    </validators>
+  </ae:configuration>
+</ae:configurations>

@@ -4,9 +4,28 @@
         <suites>
             <suite name="Pulq">
                 <testfiles>
-                    <testfile></testfile>
+<!--                     <testfile></testfile> -->
                 </testfiles>
             </suite>
+            
+            <suite name="UserServiceFlow" class="UserserviceTestSuite">
+                <testfiles>
+                    <testfile>flow/User/LoginTest.class.php</testfile>
+                    <testfile>flow/User/LockTest.class.php</testfile>
+                    <testfile>flow/User/CreateTest.class.php</testfile>
+                    <testfile>flow/User/ReadTest.class.php</testfile>
+                    <testfile>flow/User/UpdateTest.class.php</testfile>
+                    <testfile>flow/User/DeleteTest.class.php</testfile>
+                </testfiles>
+            </suite>
+            <suite name="UserServiceInterface" class="UserserviceTestSuite">
+                <testfiles>
+                    <testfile>unit/User/GroupTest.php</testfile>
+                    <testfile>unit/User/UserTest.php</testfile>
+                    <testfile>unit/User/DatabaseTest.php</testfile>
+                </testfiles>
+            </suite>
+            
         </suites>
     </ae:configuration>
 </ae:configurations>
