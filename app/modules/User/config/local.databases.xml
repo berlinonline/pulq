@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ae:configurations xmlns="http://agavi.org/agavi/config/parts/databases/1.1" xmlns:ae="http://agavi.org/agavi/config/global/envelope/1.1">
+<!--
+
+    Sample database configuration for the userservice
+    
+    This file should be copied and merged to /etc/local/local.databases.xml
+      
+ -->
+  <ae:configuration>
+    <databases default="UserServiceDB">
+      <database name="UserServiceDB" class="AgaviPdoDatabase">
+        <ae:parameter name="dsn">mysql:dbname=user_service_reger;charset=utf8;host=devel1.bo.intern</ae:parameter>
+        <ae:parameter name="username">user_service</ae:parameter>
+        <ae:parameter name="password">XXXXXXXXXXXX</ae:parameter>
+      </database>
+    </databases>
+  </ae:configuration>
+  
+  <ae:configuration environment="testing.*">
+    <databases default="UserServiceDB">
+      <database name="UserServiceDB" class="AgaviPdoDatabase">
+        <ae:parameter name="dsn">mysql:dbname=user_service_reger;charset=utf8;host=devel1.bo.intern</ae:parameter>
+        <ae:parameter name="username">user_service_testing</ae:parameter>
+        <ae:parameter name="password">XXXXXXXXXXXX</ae:parameter>
+      </database>
+    </databases>
+  </ae:configuration>
+  
+</ae:configurations>
