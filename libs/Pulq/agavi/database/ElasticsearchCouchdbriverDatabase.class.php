@@ -40,7 +40,8 @@ class ElasticsearchCouchdbriverDatabase extends ElasticSearchDatabase
      *
      * <ul>
      * <li> index_definition_file - path to elasticsearch mapping definition as JSON
-     * <li> river_script - river script
+     * <li> river_script - river script (javascript usable for running inside elasticsearch)
+     * <li> couchdb - name of agavi database config (source database for the river)
      * </ul>
      *
      * used parameters in couchdb client database config
@@ -53,11 +54,18 @@ class ElasticsearchCouchdbriverDatabase extends ElasticSearchDatabase
      *
      * The couchdb client connection is needed to read the sequence number for the syncing.
      *
-     * @param CouchDatabase $couchDb couchdb database definition to use for river source
      * @throws AgaviDatabaseException
      */
     public function createIndexAndRiver(CouchDatabase $couchDb)
     {
+        $couchdbConfigName = $this->getParameter('couchdb', 'couchdb');
+        $couchDb = $this->getDatabaseManager()->getDatabase($this->getParameter('couchdb'));
+        if (! $couchDb instanceof CouchDatabase)
+        {
+            throw new AgaviDatabaseException(
+                    'Parameter "couchdb" must point to a database config using class "CouchDatabase"');
+        }
+
         $idxFileName = $this->getParameter('index_definition_file');
         $idxFile = file_get_contents($idxFileName);
         $idxDef = json_decode($idxFile, TRUE);
