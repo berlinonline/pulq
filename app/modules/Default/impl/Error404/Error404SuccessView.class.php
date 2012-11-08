@@ -57,10 +57,30 @@ class Default_Error404_Error404SuccessView extends DefaultBaseView
      */
     public function executeText(AgaviRequestDataHolder $parameters) // @codingStandardsIgnoreEnd
     {
-        $tpl404 = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'action.list';
-        $content404 = print_r($this->toArray(),1) . file_get_contents($tpl404);
+        $this->executeCommon($parameters);
 
-        $this->getResponse()->setContent($content404);
+        error_log("\n" . $this->getAttribute('_title') . "\n");
+        error_log("Module: ". $this->getAttribute('_module', 'unknown'));
+        error_log("Action: ". $this->getAttribute('_action', 'unknown'));
+        error_log("Method: ". $this->getAttribute('method', 'unknown'));
+
+        if ($this->hasAttribute('errors'))
+        {
+            error_log("\nParameter errors:\n");
+            foreach ($this->getAttribute('errors', array()) as $ave)
+            {
+                /* @var $ave AgaviValidationError */
+                error_log('-' . join(', -', $ave->getFields()) . ': ' . $ave->getMessage());
+            }
+        }
+
+        if ($this->hasAttribute('exception'))
+        {
+            /* @var $exception Exception */
+            $exception = $this->getAttribute('exception');
+            error_log("\n" . $exception->__toString());
+        }
+        exit(1);
     }
 
     /**
@@ -137,7 +157,11 @@ class Default_Error404_Error404SuccessView extends DefaultBaseView
 
         $this->findRelatedAction();
 
-        $this->container->getResponse()->setHttpStatusCode($this->getAttribute('status', 404));
+        $response = $this->container->getResponse();
+        if ($response instanceof AgaviWebResponse)
+        {
+            $response->setHttpStatusCode($this->getAttribute('status', 404));
+        }
     }
 
     /**

@@ -45,4 +45,13 @@
         </routes>
     </ae:configuration>
 
+    <ae:configuration context="console">
+        <routes>
+            <route name="pulq" pattern="^pulq" module="Default">
+                <route name=".setup" pattern="^.database$" action="SetupDatabase" method="Console"/>
+            </route>
+             <route name="index" pattern="." module="%actions.default_module%" action="%actions.default_action%"/>
+        </routes>
+    </ae:configuration>
+
 </ae:configurations>

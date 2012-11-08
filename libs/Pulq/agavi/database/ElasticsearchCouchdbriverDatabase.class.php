@@ -19,7 +19,7 @@ class ElasticsearchCouchdbriverDatabase extends ElasticSearchDatabase
      */
     public function createIndex()
     {
-        throw new AgaviDatabaseException('Use method ' . __CLASS_ . '::createIndexAndRiver() for creating a new index');
+        //throw new AgaviDatabaseException('Use method ' . __CLASS__ . '::createIndexAndRiver() for creating a new index');
     }
 
 
@@ -41,6 +41,7 @@ class ElasticsearchCouchdbriverDatabase extends ElasticSearchDatabase
      * <ul>
      * <li> index_definition_file - path to elasticsearch mapping definition as JSON
      * <li> river_script - river script (javascript usable for running inside elasticsearch)
+     * <li> river_url - URL to couchdb in cluster environment (do not use localhost)
      * <li> couchdb - name of agavi database config (source database for the river)
      * </ul>
      *
@@ -48,7 +49,6 @@ class ElasticsearchCouchdbriverDatabase extends ElasticSearchDatabase
      *
      * <ul>
      * <li> database - name of couchdb database
-     * <li> river_url - URL to couchdb in cluster environment (do not use localhost)
      * <li> url - URL used in our client; only used in absence of 'river_url'
      * </ul>
      *
@@ -56,7 +56,7 @@ class ElasticsearchCouchdbriverDatabase extends ElasticSearchDatabase
      *
      * @throws AgaviDatabaseException
      */
-    public function createIndexAndRiver(CouchDatabase $couchDb)
+    public function createIndexAndRiver()
     {
         $couchdbConfigName = $this->getParameter('couchdb', 'couchdb');
         $couchDb = $this->getDatabaseManager()->getDatabase($this->getParameter('couchdb'));
@@ -66,6 +66,7 @@ class ElasticsearchCouchdbriverDatabase extends ElasticSearchDatabase
                     'Parameter "couchdb" must point to a database config using class "CouchDatabase"');
         }
 
+        $esIndexName = $this->getParameter('index') . date('-ymd-Hi');
         $idxFileName = $this->getParameter('index_definition_file');
         $idxFile = file_get_contents($idxFileName);
         $idxDef = json_decode($idxFile, TRUE);
@@ -74,9 +75,8 @@ class ElasticsearchCouchdbriverDatabase extends ElasticSearchDatabase
             throw new Exception('Invalid JSON: ' . $idxFileName);
         }
 
-        $esIndexName = $this->getIndexName();
         echo "Create new elasticsearch index: '$esIndexName' …\n";
-        $esIndex = $this->resource
+        $esIndex = $this->getConnection()
                 ->getIndex($esIndexName);
         $response = $esIndex->create($idxDef);
 
@@ -88,7 +88,6 @@ class ElasticsearchCouchdbriverDatabase extends ElasticSearchDatabase
         echo "Create couchdb river…\n";
 
         $couchDbClient = $couchDb->getConnection($couchDb);
-        $esIndexName = $this->connection->getName() . date('-ymd-Hi');
         $dbUrl =
             parse_url(
                 $this->getParameter('river_url', $couchDb->getParameter('url', ExtendedCouchDbClient::DEFAULT_URL)));
@@ -107,7 +106,7 @@ class ElasticsearchCouchdbriverDatabase extends ElasticSearchDatabase
                 )
             );
 
-        $response = $this->resource
+        $response = $this->getConnection()
                 ->request("/_river/${esIndexName}_river/_meta", 'PUT', $river);
         if ($response->hasError())
         {
@@ -125,7 +124,7 @@ class ElasticsearchCouchdbriverDatabase extends ElasticSearchDatabase
                 throw new AgaviDatabaseException("Can not get couchdb database info!");
             }
             $couchSeq = $dbInfo['committed_update_seq'];
-            $response = $this->resource
+            $response = $this->getConnection()
                     ->request("/_river/${esIndexName}_river/_seq", 'GET');
             if ($response->hasError())
             {
@@ -166,8 +165,8 @@ class ElasticsearchCouchdbriverDatabase extends ElasticSearchDatabase
      */
     public function deleteIndex()
     {
-        $alias = $this->connection->getName();
-        $indexNames = $this->resource
+        $alias = $this->getParameter('index');
+        $indexNames = $this->getConnection()
                 ->getStatus()
                 ->getIndexNames();
 
@@ -183,7 +182,7 @@ class ElasticsearchCouchdbriverDatabase extends ElasticSearchDatabase
         foreach ($indexNames as $iname)
         {
             echo "Check index '$iname' for active alias '$alias'\n";
-            $index = $this->resource
+            $index = $this->getConnection()
                     ->getIndex($iname);
             if (!$index->getStatus()
                 ->hasAlias($alias))
@@ -205,10 +204,10 @@ class ElasticsearchCouchdbriverDatabase extends ElasticSearchDatabase
      * @param AgaviRequestDataHolder $rd
      * @throws AgaviDatabaseException
      */
-    public function executeIndexSwitch(AgaviRequestDataHolder $rd)
+    public function switchIndex()
     {
-        $alias = $this->connection->getName();
-        $indexNames = $this->resource
+        $alias = $this->getParameter('index');
+        $indexNames = $this->getConnection()
                 ->getStatus()
                 ->getIndexNames();
 
@@ -231,7 +230,7 @@ class ElasticsearchCouchdbriverDatabase extends ElasticSearchDatabase
         $idxName = $indexNames[0];
         echo "Switch alias '$alias' to index '$idxName'\n";
 
-        $response = $this->resource
+        $response = $this->getConnection()
                 ->getIndex($idxName)
                 ->addAlias($alias, TRUE);
         if ($response->hasError())
