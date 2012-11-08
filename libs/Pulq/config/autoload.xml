@@ -97,6 +97,7 @@
             <autoload name="CouchdbClientException">%core.app_dir%/../libs/Pulq/database/couchdb/CouchdbClientException.class.php</autoload>
             <autoload name="BaseCouchDatabaseSetup">%core.app_dir%/../libs/Pulq/database/couchdb/BaseCouchDatabaseSetup.class.php</autoload>
             <autoload name="ElasticSearchIndexSetup">%core.app_dir%/../libs/Pulq/database/ElasticSearchIndexSetup.class.php</autoload>
+            <autoload name="ElasticsearchCouchdbriverDatabase">%core.app_dir%/../libs/Pulq/agavi/database/ElasticsearchCouchdbriverDatabase.class.php</autoload>
             <!-- /Database -->
 
             <!-- Deployment -->
