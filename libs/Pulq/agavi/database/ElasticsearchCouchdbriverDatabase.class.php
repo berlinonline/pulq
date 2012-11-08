@@ -36,6 +36,23 @@ class ElasticsearchCouchdbriverDatabase extends ElasticSearchDatabase
      * <li> delete old unused index
      * </ul>
      *
+     * used parameters in our database config:
+     *
+     * <ul>
+     * <li> index_definition_file - path to elasticsearch mapping definition as JSON
+     * <li> river_script - river script
+     * </ul>
+     *
+     * used parameters in couchdb client database config
+     *
+     * <ul>
+     * <li> database - name of couchdb database
+     * <li> river_url - URL to couchdb in cluster environment (do not use localhost)
+     * <li> url - URL used in our client; only used in absence of 'river_url'
+     * </ul>
+     *
+     * The couchdb client connection is needed to read the sequence number for the syncing.
+     *
      * @param CouchDatabase $couchDb couchdb database definition to use for river source
      * @throws AgaviDatabaseException
      */
@@ -135,7 +152,7 @@ class ElasticsearchCouchdbriverDatabase extends ElasticSearchDatabase
     }
 
     /**
-     * Delete oldest index without alias
+     * Delete oldest unused index (index without alias)
      *
      * @throws Exception
      */
@@ -178,7 +195,7 @@ class ElasticsearchCouchdbriverDatabase extends ElasticSearchDatabase
      * Switch alias to newest index
      *
      * @param AgaviRequestDataHolder $rd
-     * @throws Exception
+     * @throws AgaviDatabaseException
      */
     public function executeIndexSwitch(AgaviRequestDataHolder $rd)
     {
@@ -211,7 +228,7 @@ class ElasticsearchCouchdbriverDatabase extends ElasticSearchDatabase
                 ->addAlias($alias, TRUE);
         if ($response->hasError())
         {
-            throw new Exception($response->getError());
+            throw new AgaviDatabaseException($response->getError());
         }
         echo "OK\n";
     }
