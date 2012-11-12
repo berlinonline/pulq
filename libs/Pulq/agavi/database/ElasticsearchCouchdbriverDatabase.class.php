@@ -66,14 +66,22 @@ class ElasticsearchCouchdbriverDatabase extends ElasticSearchDatabase
                     'Parameter "couchdb" must point to a database config using class "CouchDatabase"');
         }
 
-        $esIndexName = $this->getParameter('index') . date('-ymd-Hi');
-        $idxFileName = $this->getParameter('index_definition_file');
+        $indexParams = $this->getParameter('index');
+        $esIndexName = $indexParams['name'] . date('-ymd-Hi');
+        $setupDir = $indexParams['setup_dir'];
+        $idxFileName = realpath($setupDir . '/' . $indexParams['name'] . '.index.json');
         $idxFile = file_get_contents($idxFileName);
         $idxDef = json_decode($idxFile, TRUE);
         if (!is_array($idxDef) || JSON_ERROR_NONE != json_last_error())
         {
             throw new Exception('Invalid JSON: ' . $idxFileName);
         }
+
+        if (!isset($idxDef['mappings']))
+        {
+            $idxDef['mappings'] = array();
+        }
+        $idxDef['mappings'] = array_merge($idxDef['mappings'], $this->getTypeDefinitions());
 
         echo "Create new elasticsearch index: '$esIndexName' …\n";
         $esIndex = $this->getConnection()
@@ -99,7 +107,7 @@ class ElasticsearchCouchdbriverDatabase extends ElasticSearchDatabase
                     "host" => $dbUrl['host'],
                     "port" => $dbUrl['port'],
                     "db" => $couchDb->getParameter('database'),
-                    "script" => $this->getParameter('river_script', '')
+                    "script" => $this->getRiverScript()
                 ),
                 "index" => array(
                     "index" => $esIndexName, "bulk_size" => "1000", "bulk_timeout" => "1s"
@@ -157,6 +165,52 @@ class ElasticsearchCouchdbriverDatabase extends ElasticSearchDatabase
             }
         }
     }
+    
+    protected function getRiverScript()
+    {
+        $indexParams = $this->getParameter('index');
+        $setupDir = $indexParams['setup_dir'];
+        $riverScriptParam = $this->getParameter('river_script', '');
+        $scriptFilePath = realpath($setupDir . '/' . $riverScriptParam);
+        if (is_readable($scriptFilePath))
+        {
+            $uglifyPath = str_replace('/', DIRECTORY_SEPARATOR, AgaviConfig::get('core.app_dir').'/../libs/node_modules/uglifyjs/bin/uglifyjs');
+
+            $script = shell_exec($uglifyPath . ' -nm -nc ' . $scriptFilePath);
+            return $script;
+        }
+        else
+        {
+            return $riverScriptParam;
+        }
+    }
+
+    /**
+     * Get the mapping description from the appropriate json files
+     *
+     */
+    protected function getTypeDefinitions()
+    {
+        $idxParams = $this->getParameter('index');
+        $typeNames = $idxParams['types'];
+        $typeDefs = array();
+
+        foreach ($typeNames as $typeName)
+        {
+            $mappingFilePath = realpath($idxParams['setup_dir'] . '/' . $typeName . '.mapping.json');
+            $mappingDef = json_decode(file_get_contents($mappingFilePath), TRUE);
+
+            if (!is_array($mappingDef) || JSON_ERROR_NONE != json_last_error())
+            {
+                throw new Exception('Invalid JSON in file ' . $mappingFilePath);
+            }
+
+            $typeDefs[$typeName] = $mappingDef;
+
+        }
+
+        return $typeDefs;
+    }
 
     /**
      * Delete oldest unused index (index without alias)
@@ -165,7 +219,8 @@ class ElasticsearchCouchdbriverDatabase extends ElasticSearchDatabase
      */
     public function deleteIndex()
     {
-        $alias = $this->getParameter('index');
+        $idxParams = $this->getParameter('index');
+        $alias = $idxParams['name'];
         $indexNames = $this->getConnection()
                 ->getStatus()
                 ->getIndexNames();
@@ -182,17 +237,30 @@ class ElasticsearchCouchdbriverDatabase extends ElasticSearchDatabase
         foreach ($indexNames as $iname)
         {
             echo "Check index '$iname' for active alias '$alias'\n";
-            $index = $this->getConnection()
-                    ->getIndex($iname);
-            if (!$index->getStatus()
-                ->hasAlias($alias))
+            $index = $this->getConnection()->getIndex($iname);
+            if (!$index->getStatus()->hasAlias($alias))
             {
-                echo "Delete river '${iname}_river'\n";
-                $index->getClient()
-                    ->request("/_river/${iname}_river", "DELETE");
-                echo "Delete index '$iname'\n";
-                $index->delete();
-                break;
+                try
+                {
+                    echo "Delete river '${iname}_river'\n";
+                    $index->getClient()->request("/_river/${iname}_river", "DELETE");
+                }
+                catch (Exception $exception)
+                {
+                    echo "Deleting corresponding _river failed: " . $exception->getMessage() . PHP_EOL;
+                }
+
+                try
+                {
+                    echo "Delete index '$iname'\n";
+                    $index->delete();
+                }
+                catch (Exception $exception)
+                {
+                    echo "Deleting index failed: " . $exception->getMessage() . PHP_EOL;
+                }
+
+                break; //only delete the one index. usually there should only be one to delete.
             }
         }
     }
@@ -206,7 +274,8 @@ class ElasticsearchCouchdbriverDatabase extends ElasticSearchDatabase
      */
     public function switchIndex()
     {
-        $alias = $this->getParameter('index');
+        $idxParams = $this->getParameter('index');
+        $alias = $idxParams['name'];
         $indexNames = $this->getConnection()
                 ->getStatus()
                 ->getIndexNames();
