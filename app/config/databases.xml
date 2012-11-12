@@ -26,12 +26,21 @@
                 <ae:parameter name="host">127.0.0.1</ae:parameter>
                 <ae:parameter name="port">9200</ae:parameter>
                 <ae:parameter name="transport">Http</ae:parameter>
-                <ae:parameter name="index">mydb</ae:parameter>
+                <ae:parameter name="index">
+                    <!-- An <index-name>.index.json file is expected to be in the setup_dir -->
+                    <ae:parameter name="name">mydb</ae:parameter>
+                    <ae:parameter name="setup_dir">%core.modules_dir%/MyModule/config/elasticsearch/</ae:parameter>
+                    <ae:parameter name="types">
+                        <!-- type names are expcted to result in <type-name>.mapping.json files in the index' setup_dir -->
+                        <ae:parameter>mydb-sometype</ae:parameter>
+                        <ae:parameter>mydb-othertype-</ae:parameter>
+                    </ae:parameter>
+                </ae:parameter>
 
                 <ae:parameter name="couchdb">mydb_couch</ae:parameter>
                 <ae:parameter name="river_url">http://mydb.world.net:5984/</ae:parameter>
-                <ae:parameter name="river_script">ctx._type = ctx.id.replace(/:.*$/,"");</ae:parameter>
-                <ae:parameter name="index_definition_file">%core.config_dir%/esShofiIndex.json</ae:parameter>
+                <!-- the script file is expected to be in the setup_dir. if not, the content of this tag is used as the script string directly -->
+                <ae:parameter name="river_script">mydb-river-script.js</ae:parameter>
             </database>
         </databases>
     </ae:configuration>
