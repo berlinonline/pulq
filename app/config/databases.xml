@@ -7,6 +7,13 @@
 <!--         <xi:fallback/> -->
     </xi:include>
 
+    
+    <xi:include href="../modules/Geo/config/databases.xml"
+        xpointer="xmlns(ae=http://agavi.org/agavi/config/global/envelope/1.1) xpointer(/ae:configurations/*)">
+<!--             <xi:fallback/> -->
+    </xi:include>
+    
+
     <ae:configuration environment="sample_config_for_ElasticsearchCouchdbriverDatabase">
         <databases default="mydb_couch">
             <database name="mydb_couch" class="CouchDatabase">

@@ -2,13 +2,12 @@
 /**
  * Provide elastic search database connection handle
  *
- * @author tay
- * @version $Id: ElasticSearchDatabase.class.php 1218 2012-05-20 23:20:11Z tschmitt $
+ * @author tay, tschmitt
  * @since 10.10.2011
  * @package Pulq
  * @subpackage Agavi/Database
  */
-class ElasticSearchDatabase extends AgaviDatabase
+class ElasticSearchDatabase extends AgaviDatabase implements IDatabaseSetup
 {
     /**
      * The client used to talk to elastic search.
@@ -46,22 +45,6 @@ class ElasticSearchDatabase extends AgaviDatabase
         {
             throw new AgaviDatabaseException($e->getMessage(), $e->getCode(), $e);
         }
-
-        try
-        {
-            $this->resource->getStatus();
-        }
-        catch (Elastica_Exception_Response $e)
-        {
-            if (FALSE !== strpos($e->getMessage(), 'IndexMissingException'))
-            {
-                $this->createIndex();
-            }
-            else
-            {
-                throw new AgaviDatabaseException($e->getMessage(), $e->getCode(), $e);
-            }
-        }
     }
 
     public function shutdown()
@@ -78,6 +61,10 @@ class ElasticSearchDatabase extends AgaviDatabase
             $this->resource->create();
             return;
         }
+        if (isset($indexDef['module']))
+        {
+            $this->getDatabaseManager()->getContext()->getController()->initializeModule($indexDef['module']);
+        }
         $setupClass = $indexDef['setup_class'];
         if (! class_exists($setupClass))
         {
@@ -90,6 +77,17 @@ class ElasticSearchDatabase extends AgaviDatabase
         }
         $indexSetup->setup();
     }
+
+
+    /**
+     * (non-PHPdoc)
+     * @see IDatabaseSetup::setup()
+     */
+    public function setup($tearDownFirst = FALSE)
+    {
+        $this->createIndex();
+    }
+
 
     protected function registerAutoload()
     {
