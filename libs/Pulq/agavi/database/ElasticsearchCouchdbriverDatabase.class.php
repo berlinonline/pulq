@@ -42,6 +42,7 @@ class ElasticsearchCouchdbriverDatabase extends ElasticSearchDatabase
      * <li> index_definition_file - path to elasticsearch mapping definition as JSON
      * <li> river_script - river script (javascript usable for running inside elasticsearch)
      * <li> river_url - URL to couchdb in cluster environment (do not use localhost)
+     * <li> river_settings - associative settings array for the 'index' section in elasticsearch river definition
      * <li> couchdb - name of agavi database config (source database for the river)
      * </ul>
      *
@@ -104,14 +105,18 @@ class ElasticsearchCouchdbriverDatabase extends ElasticSearchDatabase
             array(
                 "type" => "couchdb",
                 "couchdb" => array(
-                    "host" => $dbUrl['host'],
-                    "port" => $dbUrl['port'],
-                    "db" => $couchDb->getParameter('database'),
-                    "script" => $this->getRiverScript()
+                        "host" => $dbUrl['host'],
+                        "port" => $dbUrl['port'],
+                        "db" => $couchDb->getParameter('database'),
+                        "script" => $this->getRiverScript()
                 ),
-                "index" => array(
-                    "index" => $esIndexName, "bulk_size" => "1000", "bulk_timeout" => "1s"
-                )
+                "index" => array_merge(
+                        array(
+                                "bulk_size" => "1000", "bulk_timeout" => "1s"
+                        ), $this->getParameter('river_settings', array()),
+                        array(
+                                "index" => $esIndexName
+                        ))
             );
 
         $response = $this->getConnection()
@@ -165,7 +170,7 @@ class ElasticsearchCouchdbriverDatabase extends ElasticSearchDatabase
             }
         }
     }
-    
+
     protected function getRiverScript()
     {
         $indexParams = $this->getParameter('index');
