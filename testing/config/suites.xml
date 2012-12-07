@@ -8,6 +8,12 @@
                 </testfiles>
             </suite>
             
+            <suite name="GeoUnit">
+                <testfiles>
+                    <testfile>unit/Geo/GeoResponseTest.php</testfile>
+                </testfiles>
+            </suite>
+            
             <suite name="UserServiceFlow" class="UserserviceTestSuite">
                 <testfiles>
                     <testfile>flow/User/LoginTest.class.php</testfile>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ae:configurations 
+	xmlns="http://agavi.org/agavi/config/parts/autoload/1.1" 
+	xmlns:ae="http://agavi.org/agavi/config/global/envelope/1.1">
+	<ae:configuration>
+		<autoload name="ProjectGeoBaseAction">%core.module_dir%/Geo/lib/base/ProjectGeoBaseAction.class.php</autoload>
+		<autoload name="ProjectGeoBaseModel">%core.module_dir%/Geo/lib/base/ProjectGeoBaseModel.class.php</autoload>
+		<autoload name="ProjectGeoBaseView">%core.module_dir%/Geo/lib/base/ProjectGeoBaseView.class.php</autoload>
+    
+        <autoload name="HaKoDeSetup">modules/Geo/lib/HaKoDe/HaKoDeSetup.class.php</autoload>
+        <autoload name="gPoint">modules/Geo/lib/gPoint/gPoint.php</autoload>
+        
+        <autoload name="AddressParser">modules/Geo/lib/AddressParser.class.php</autoload>
+        <autoload name="GeoBackendBase">modules/Geo/lib/GeoBackendBase.class.php</autoload>
+        <autoload name="GeoBackendGoogle">modules/Geo/lib/GeoBackendGoogle.class.php</autoload>
+        <autoload name="GeoBackendHaKoDe">modules/Geo/lib/GeoBackendHaKoDe.class.php</autoload>
+        <autoload name="GeoBackendYahoo">modules/Geo/lib/GeoBackendYahoo.class.php</autoload>
+        <autoload name="GeoCache">modules/Geo/lib/GeoCache.class.php</autoload>
+        <autoload name="GeoException">modules/Geo/lib/GeoException.class.php</autoload>
+        <autoload name="GeoRequest">modules/Geo/lib/GeoRequest.class.php</autoload>
+        <autoload name="GeoResponse">modules/Geo/lib/GeoResponse.class.php</autoload>
+	</ae:configuration>
+</ae:configurations>

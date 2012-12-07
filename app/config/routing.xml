@@ -34,6 +34,14 @@
                         xpointer(//ae:configuration[@context='web']/r:routes/r:route)/"/>
             </route>
 
+            <route name="user" pattern="^/geo" module="Geo">
+                <xi:include
+                    href="%core.app_dir%/modules/Geo/config/routing.xml"
+                    xpointer="xmlns(ae=http://agavi.org/agavi/config/global/envelope/1.1)
+                        xmlns(r=http://agavi.org/agavi/config/parts/routing/1.0)
+                        xpointer(//ae:configuration[@context='web']/r:routes/r:route)/"/>
+            </route>
+
             <!-- Layout element routes -->
 <!--             <route name="berlinonline" pattern="^/bo" module="BerlinOnline"> -->
 <!--                 <xi:include href="%core.app_dir%/modules/BerlinOnline/config/routing.xml" -->

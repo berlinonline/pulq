@@ -1,0 +1,570 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>gPoint Class Documentation</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta name="description" content="Documentation for the gPoint class written in PHP. This class is used to convert between Latitude & Longitude coordinates to/from UTM (Universal Transverse Mercator).">
+<meta name="keywords" content="Conversion, PHP class, latitude, longitude, UTM, Universal Transverse Mercator, Lambert Conformal Conic">
+<style type="text/css">
+<!--
+.header {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 16pt;
+	font-style: normal;
+	line-height: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	color: #000000;
+}
+.subheader {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 14pt;
+	font-style: normal;
+	line-height: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	color: #000000;
+}
+.normal {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10pt;
+	font-style: normal;
+	line-height: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	list-style-position: inside;
+	list-style-image: none;
+	list-style-type: circle;
+}
+.code {
+	font-family: "Courier New", Courier, mono;
+	font-size: 10pt;
+	font-style: normal;
+	line-height: normal;
+	font-weight: bold;
+	font-variant: normal;
+	text-transform: none;
+	background-color: #DDDDDD;
+	color: #000099;
+	text-align: left;
+}
+-->
+</style>
+<style type="text/css">
+<!--
+.small {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 9pt;
+	font-style: normal;
+	line-height: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	text-align: justify;
+}
+-->
+</style>
+<style type="text/css">
+<!--
+.table {
+	font-family: "Courier New", Courier, mono;
+	font-size: 12pt;
+	font-style: normal;
+	line-height: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+}
+-->
+</style>
+</head>
+
+<body>
+<table width="100%" border="0" cellspacing="1" cellpadding="1">
+  <tr> 
+    <td><div align="left"><span class="header">gPoint Class v1.2 Documentation</span><br>
+        <span class="normal">Copyright &copy; 2006, 2007 Brenor Brophy</span></div></td>
+  </tr>
+  <tr> 
+    <td class="normal"><hr>
+      The source code included in this package is free software; you can redistribute 
+      it and/or modify it under the terms of the <a href="http://www.opensource.org/licenses/gpl-license.php">GNU 
+      General Public License</a> as published by the Free Software Foundation.<br> 
+      <br>
+      This program is distributed in the hope that it will be useful, but WITHOUT 
+      ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS 
+      FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details. 
+      <hr> </td>
+  </tr>
+  <tr> 
+    <td class="normal"><p class="subheader">Contents</p>
+      <ul class="normal">
+        <li>&nbsp;<a href="#about">About this Class</a></li>
+        <li>&nbsp;<a href="#use">Class Methods</a></li>
+        <li>&nbsp;<a href="#example">Code Examples</a></li>
+        <li>&nbsp;<a href="#rev">Revision History</a><br>
+        </li>
+      </ul></td>
+  </tr>
+  <tr> 
+    <td valign="top" class="normal"><p class="subheader"><a name="about"></a>About 
+        the gPoint Class</p>
+      <p>A gPoint object is a point on the Earth's surface. Its location is defined 
+        by a Longitude and a Latitude coordinate. These coordinates define a point 
+        on the surface of a sphere. However, computer screens like paper are flat 
+        surfaces and so we face a problem if we wish to represent data whose location 
+        is defined by Lat/Longs onto a such a surface. For example, you have an 
+        array of Lat/Long points that you want to plot on an image of a map. So 
+        how do you calculate the X/Y pixel on the image to plot your point? What 
+        you need is a transformation from a Lat/Long coordinate to an X/Y coordinate. 
+        This is called a map projection. There are many different types of projection. 
+        This class provides functions for working with two of the most useful; 
+        Universal Transverse Mercator (UTM) and Lambert Conformal Conic. The class 
+        also supports a variant of UTM, that I call Local Transverse Mercator. 
+        It is very useful when you just need to plot a few points on an arbitrary 
+        image that covers a modest amount of the Earth (10x10 degrees) and you 
+        don't have to deal with UTM zones.</p>
+      <p> At a high level converting a Long/Lat coordinate in degrees thru a projection 
+        will return an Easting/Northing coordinate in meters. That is meters measured 
+        on the 'flat' ground that you can convert to pixels and plot on an image. 
+        Broadly speaking Transverse Mercator (and UTM) is useful for modest sized 
+        areas of about 10x10degrees or less. Lambert is useful for large areas 
+        in the mid latitudes (Like the whole USA or Europe for example). Neither 
+        projection works well for areas near the poles.</p>
+      <p>&nbsp;</p></td>
+  </tr>
+  <tr> 
+    <td class="subheader"><p><a name="use"></a>gPoint Class Methods<br>
+        &nbsp; </p></td>
+  </tr>
+  <tr> 
+    <td><table width="80%" border="0" align="center" cellpadding="1">
+        <tr> 
+          <td class="code">$pt =&amp; <font color="#006600">new</font> gPoint([&quot;DATUM&quot;]);</td>
+        </tr>
+        <tr> 
+          <td class="small"><p>Creates a new gPoint object. The DATUM parameter 
+              may be one of the following:</p>
+            <blockquote> 
+              <p> &quot;Airy&quot;<br>
+                &quot;Australian National&quot;<br>
+                &quot;Bessel 1841&quot;<br>
+                &quot;Bessel 1841 Nambia&quot;<br>
+                &quot;Clarke 1866&quot;<br>
+                &quot;Clarke 1880&quot;<br>
+                &quot;Everest&quot;<br>
+                &quot;Fischer 1960 Mercury&quot;<br>
+                &quot;Fischer 1968&quot;<br>
+                &quot;GRS 1967&quot;<br>
+                &quot;GRS 1980&quot;<br>
+                &quot;Helmert 1906&quot;<br>
+                &quot;Hough&quot;<br>
+                &quot;International&quot;<br>
+                &quot;Krassovsky&quot;<br>
+                &quot;Modified Airy&quot;<br>
+                &quot;Modified Everest&quot;<br>
+                &quot;Modified Fischer 1960&quot;<br>
+                &quot;South American 1969&quot;<br>
+                &quot;WGS 60&quot;<br>
+                &quot;WGS 66&quot;<br>
+                &quot;WGS 72&quot;<br>
+                &quot;WGS 84&quot;</p>
+            </blockquote>
+            <p>If left empty, then the default DATUM is &quot;WGS 84&quot;. The 
+              datum reference ellipsoids were derived from <a href="http://www.pdana.com/">Peter 
+              Dana's web page</a> (now moved to) at <a href="http://www.colorado.edu/geography/gcraft/notes/datum/datum_f.html">http://www.colorado.edu/geography/gcraft/notes/datum/datum_f.html</a>. 
+              According to the original source this data is from Defense Mapping 
+              Agency. 1987b. DMA Technical Report: Supplement to Department of 
+              Defense World Geodetic System 1984 Technical Report. Part I and 
+              II. Washington, DC: Defense Mapping Agency.<br>
+              <br>
+            </p></td>
+        </tr>
+        <tr> 
+          <td class="code">$pt-&gt;setLongLat($long, $lat);</td>
+        </tr>
+        <tr> 
+          <td class="small"><p>Method to set the latitude and longitude of the 
+              gPoint object. Longitudes east of the prime meridian (i.e. east 
+              of Greenwich) are positive, longitudes west of the prime meridian 
+              are negative. North latitudes are positive, South latitudes are 
+              negative. $long and $lat should be in decimal degrees.<br>
+              <br>
+            </p></td>
+        </tr>
+        <tr> 
+          <td class="code">$long = $pt-&gt;Long(); $lat = $pt-&gt;Lat();</td>
+        </tr>
+        <tr> 
+          <td class="small"><p>Methods to get the values of the Long and Lat properties.<br>
+              <br>
+            </p></td>
+        </tr>
+        <tr> 
+          <td class="code">$pt-&gt;printLatLong();</td>
+        </tr>
+        <tr> 
+          <td class="small"><p>Method to print out the current values of the Long 
+              and Lat properties.<br>
+              <br>
+            </p></td>
+        </tr>
+        <tr> 
+          <td class="code">$pt-&gt;setUTM($easting, $northing, [$zone]);</td>
+        </tr>
+        <tr> 
+          <td class="small"><p>Method to set the easting, northing and optionally 
+              the zone properties of the gPoint. Easting and northing are in decimal 
+              meters. Zone is in ASCII, for example &quot;10S&quot;. If zone is 
+              left out then only &quot;local&quot; TM mapping can be performed.<br>
+              <br>
+            </p></td>
+        </tr>
+        <tr> 
+          <td class="code">$easting = $pt-&gt;E(); $northing = $pt-&gt;N(); $zone 
+            = $pt-&gt;Z();</td>
+        </tr>
+        <tr> 
+          <td class="small"><p>Methods to get the values of the Northing, Easting 
+              and Zone properties.<br>
+              <br>
+            </p></td>
+        </tr>
+        <tr> 
+          <td class="code">$pt-&gt;printUTM();</td>
+        </tr>
+        <tr> 
+          <td class="small"><p>Method to print out the current values of the Northing, 
+              Easting and Zone properties.<br>
+              <br>
+            </p></td>
+        </tr>
+        <tr> 
+          <td class="code">$pt-&gt;setLambert($northing, $easting);</td>
+        </tr>
+        <tr> 
+          <td class="small"><p>Method to set the easting and northing properties 
+              of the gPoint for the Lambert projection. Easting and northing are 
+              in decimal meters.<br>
+              <br>
+            </p></td>
+        </tr>
+        <tr> 
+          <td class="code">$easting = $pt-&gt;lccE(); $northing = $pt-&gt;lccN();</td>
+        </tr>
+        <tr> 
+          <td class="small"><p>Methods to get the values of the Lambert Northing 
+              and Easting properties.<br>
+              <br>
+            </p></td>
+        </tr>
+        <tr> 
+          <td class="code">$pt-&gt;printLambert()</td>
+        </tr>
+        <tr> 
+          <td class="small"><p>Method to print out the current values of the Lambert 
+              Northing and Easting properties.<br>
+              <br>
+            </p></td>
+        </tr>
+        <tr> 
+          <td valign="top" class="code"> $pt-&gt;configLambertProjection ($falseEasting, 
+            $falseNorthing, $longOfOrigin, $latOfOrigin, $firstStdParallel, $secondStdParallel);</td>
+        </tr>
+        <tr> 
+          <td class="small"><p>This function sets up a number of important parameters 
+              needed to define and calculate a particular Lambert Projection. 
+              $falseEasting &amp; $falseNorthing are just an offset in meters 
+              added to the final coordinate calculated. $longOfOrigin &amp; $LatOfOrigin 
+              are the &quot;center&quot; latitude and longitude of the area being 
+              projected. All coordinates will be calculated in meters relative 
+              to this point on the earth. $firstStdParallel &amp; $secondStdParallel 
+              are the two lines of longitude (that is they run east-west) that 
+              define where the &quot;cone&quot; intersects the earth. Simply put 
+              they should bracket the area being projected.<br>
+              <br>
+            </p></td>
+        </tr>
+        <tr> 
+          <td class="code">$pt-&gt;convertLLtoTM([$LongOrigin]);</td>
+        </tr>
+        <tr> 
+          <td class="small"><p>This method converts Longitude/Latitude values 
+              to UTM. The equations used are from from USGS Bulletin 1532. The 
+              original code upon which this method is based was written in C by 
+              Chuck Gantz- chuck.gantz@globalstar.com and is available at<a href="http://www.gpsy.com/gpsinfo/geotoutm/"> 
+              http://www.gpsy.com/gpsinfo/geotoutm/</a> along with much additional 
+              useful information. </p>
+            <p>UTM coordinates are useful when dealing with paper maps. Basically 
+              the map will can cover a single UTM zone which is 6 degrees on longitude. 
+              So you really don't care about an object crossing two zones. You 
+              just get a second map of the other zone. However, if you happen 
+              to live in a place that straddles two zones (For example the Santa 
+              Barbara area in CA straddles zone 10 and zone 11) Then it can become 
+              a real pain having to have two maps all the time. So relatively 
+              small parts of the world (like say California) create their own 
+              version of UTM coordinates that are adjusted to convert the whole 
+              area of interest on a single map. These are called state grids. 
+              The projection system is the usually same as UTM (i.e. Transverse 
+              Mercator), but the central meridian aka Longitude of Origin is selected 
+              to suit the longitude of the area being mapped (like being moved 
+              to the central meridian of the area) and the grid may cover more 
+              than the 6 degrees of longitude found on a UTM map. Areas that are 
+              wide rather than long - think Montana as an example. May still have 
+              to have a couple of maps to cover the whole state because TM projection 
+              looses accuracy as you move further away from the Longitude of Origin, 
+              15 degrees is usually the limit.</p>
+            <p> Now, in the case where we want to generate electronic maps that 
+              may be placed pretty much anywhere on the globe we really don't 
+              to deal with the issue of UTM zones in our coordinate system. We 
+              would really just like a grid that is fully contiguous over the 
+              area of the map we are drawing. Similar to the state grid, but local 
+              to the area we are interested in. I call this Local Transverse Mercator 
+              and I have modified the function below to also make this conversion. 
+              If you pass the optional Longitude value to the function as $LongOrigin 
+              then that is the Longitude of Origin that will be used for the projection. 
+              Easting coordinates will be returned (in meters) relative to that 
+              line of longitude - So an Easting coordinate for a point located 
+              East of the longitude of origin will be a positive value in meters, 
+              an Easting coordinate for a point West of the longitude of Origin 
+              will have a negative value in meters. Northings will always be returned 
+              in meters from the equator same as the UTM system. The UTMZone value 
+              will be valid for Long/Lat given - thought it is not meaningful 
+              in the context of Local TM. If a NULL value is passed for $LongOrigin 
+              then the standard UTM coordinates are calculated.<br>
+              <br>
+            </p></td>
+        </tr>
+        <tr> 
+          <td class="code">$pt-&gt;convertTMtoLL([$longOrigin]);</td>
+        </tr>
+        <tr> 
+          <td class="small"><p>If a value is passed for $longOrigin then the method 
+              assumes that a Local (to the Longitude of Origin passed in) Transverse 
+              Mercator coordinates is to be converted - not a UTM coordinate. 
+              This is the complementary method to the previous one. The function 
+              cannot tell if a set of Northing/Easting coordinates are in the 
+              North or South hemisphere - they just give distance from the equator 
+              not direction - so only northern hemisphere lat/long coordinates 
+              are returned. If you live south of the equator there is a note later 
+              in the code explaining how to have it just return southern hemisphere 
+              lat/longs.<br>
+              <br>
+            </p></td>
+        </tr>
+        <tr> 
+          <td class="code">$pt-&gt;convertLLtoLCC();</td>
+        </tr>
+        <tr> 
+          <td class="small"><p>This method will convert a Latitude/Longitude coordinate 
+              to an Northing/Easting coordinate on a Lambert Conic Projection. 
+              The configLambertProjection() method should have been called prior 
+              to this one to setup the specific parameters for the projection. 
+              The Northing/Easting parameters calculated are in meters (because 
+              the datum used is in meters) and are relative to the falseNorthing/falseEasting 
+              coordinate. Which in turn is relative to the Lat/Long of origin 
+              The formula were obtained from URL: <a href="http://www.ihsenergy.com/epsg/guid7_2.html">http://www.ihsenergy.com/epsg/guid7_2.html</a> 
+              but appear to be no longer available at that URL.<br>
+              <br>
+            </p></td>
+        </tr>
+        <tr> 
+          <td class="code">$pt-&gt;convertLCCtoLL();</td>
+        </tr>
+        <tr> 
+          <td class="small"><p>The inverse to the previous method.<br>
+              <br>
+            </p></td>
+        </tr>
+        <tr> 
+          <td class="code">$dist = $pt-&gt;distanceFrom($lon1, $lat1);</td>
+        </tr>
+        <tr> 
+          <td class="small"><p>This is a useful method that returns the Great 
+              Circle distance from the gPoint to another Long/Lat coordinate<br>
+              <br>
+            </p></td>
+        </tr>
+        <tr> 
+          <td class="code">$dist = $pt-&gt;distanceFromTM(&amp;$pt);</td>
+        </tr>
+        <tr> 
+          <td class="small"><p>This method also calculates the distance between 
+              this point and another gPoint object. In this case it just uses 
+              Pythagoras's theorem using TM coordinates.<br>
+              <br>
+            </p></td>
+        </tr>
+        <tr> 
+          <td class="code">$pt-&gt;gRef($rX, $rY, $rE, $rN, $Scale, $LongOrigin);</td>
+        </tr>
+        <tr> 
+          <td class="small"><p>This method geo-references a gPoint to a given 
+              map. This means that it calculates the x,y pixel coordinate on the 
+              map that corresponds to the Lat/Long value of the gPoint. A map 
+              is of course just an image file like a jpeg or gif. This method 
+              is quite limited. It assumes that the scale of map is identical 
+              in both X &amp; Y directions; that the map is in the northern hemisphere 
+              and that the 0,0 pixel coordinate is the top left corner of the 
+              image.</p>
+            <p>You need to know two things about your map image in order to use 
+              this method. First you must know the scale of the map. The scale 
+              is a number in meters per pixel. For example, if your image is 200 
+              pixels wide and the distance it covers is 1000km, then the scale 
+              is (1000x1000)/200 = 5000 meters per pixel. That is, every little 
+              pixel on your image represents a patch of ground 5000 meters wide 
+              and 5000 meters long. The second thing you need is a reference point 
+              on the image. This is a point for which you know both the pixel 
+              coordinate and the latitude/longitude. </p>
+            <p>First you need to convert the Lat/Long of your reference point 
+              to a Easting/Northing coordinate in a local TM projection. I suggest 
+              you use the Longitude of the reference point as you $LongOrigin 
+              parameter. If you do this then the Easting value of the reference 
+              point will be zero.</p>
+            <p> The parameters $rX &amp; $rY are the pixel coordinates of the 
+              reference point, these correspond to the parameters $rE &amp; $rN 
+              which are the Northing/Easting coordinate of the same point. The 
+              $Scale parameter is the scale of the map in meters/pixel. The $LongOrigin 
+              parameter is whatever value was used to convert the reference point.<br>
+            </p></td>
+        </tr>
+      </table>
+      <p>&nbsp;</p></td>
+  </tr>
+  <tr> 
+    <td class="subheader"><p><a name="example"></a>Code Examples<br>
+        &nbsp; </p></td>
+  </tr>
+  <tr> 
+    <td><table width="80%" border="0" align="center" cellpadding="1">
+        <tr> 
+          <td class="small">Create a new gPoint and set its Longitude and Latitude</td>
+        </tr>
+        <tr> 
+          <td class="code"><p>$myHome =&amp; <font color="#006600">new</font> 
+              gPoint(); <font color="#FF9900">// Create an empty point with the 
+              default datum</font><br>
+              //<br>
+              // Set the point's Longitude &amp; Latitude. <br>
+              //<br>
+              $myHome-&gt;setLongLat(<font color="#FF0000">-121.85831</font>, 
+              <font color="#FF0000">37.42104</font>); <font color="#FF9900">// 
+              I live in sunny California :-)</font><br>
+              echo &quot;<font color="#990033">I live at: </font>&quot;; $myHome-&gt;printLatLong(); 
+              echo &quot;<font color="#990033">&lt;br&gt;</font>&quot;;</p></td>
+        </tr>
+        <tr> 
+          <td class="small"><br>
+            Calculate the coordinates of the point in a UTM projection</td>
+        </tr>
+        <tr> 
+          <td class="code"><p>$myHome-&gt;convertLLtoTM();<br>
+              <font color="#006600">echo</font> &quot;<font color="#990033">Which 
+              in a UTM projection is: </font>&quot;; $myHome-&gt;printUTM(); <font color="#006600">echo</font> 
+              &quot;<font color="#990033">&lt;br&gt;</font>&quot;;</p></td>
+        </tr>
+        <tr> 
+          <td class="small"><br>
+            Set the UTM coordinates of the point to check the reverse conversion</td>
+        </tr>
+        <tr> 
+          <td class="code">$myHome-&gt;setUTM( <font color="#FF0000">601034</font>, 
+            <font color="#FF0000">4142188</font>, &quot;<font color="#990033">10S</font>&quot;); 
+            <font color="#FF9900">// Easting/Northing from a GPS</font><br> <font color="#006600">echo</font> 
+            &quot;<font color="#990033">My GPS says it is this: </font>&quot;; 
+            $myHome-&gt;printUTM(); <font color="#006600">echo</font> &quot;<font color="#990033">&lt;br&gt;</font>&quot;;</td>
+        </tr>
+        <tr> 
+          <td class="small">Calculate the Longitude Latitude of the point</td>
+        </tr>
+        <tr> 
+          <td class="code">$myHome-&gt;convertTMtoLL();<br> <font color="#006600">echo</font> 
+            &quot;<font color="#990033">Which converts back to: </font>&quot;; 
+            $myHome-&gt;printLatLong(); <font color="#006600">echo</font> &quot;<font color="#990033">&lt;br&gt;</font>&quot;;</td>
+        </tr>
+        <tr> 
+          <td class="small"><br>
+            Now lets try the same conversion, only this time we will user a &quot;Local&quot; 
+            Transverse Mercator projection. -122 degrees longitude is close to 
+            the area of interest so lets use that as our Longitude of Origin</td>
+        </tr>
+        <tr> 
+          <td class="code"> $longOrigin = <font color="#FF0000">-122</font>;<br>
+            $myHome-&gt;convertLLtoTM($longOrigin);<br> <font color="#006600">echo</font> 
+            &quot;<font color="#990033">In a Local TM projection centered at longitude 
+            $longOrigin it is: </font>&quot;; $myHome-&gt;printUTM(); <font color="#006600">echo</font> 
+            &quot;<font color="#990033">&lt;br&gt;</font>&quot;;<br> <font color="#FF9900">//<br>
+            // Now check the reverse conversion<br>
+            //</font><br>
+            $myHome-&gt;convertTMtoLL($longOrigin);<br> <font color="#006600">echo</font> 
+            &quot;<font color="#990033">Converting back gives us: </font>&quot;; 
+            $myHome-&gt;printLatLong(); <font color="#006600">echo</font> &quot;<font color="#990033">&lt;br&gt;</font>&quot;;</td>
+        </tr>
+        <tr> 
+          <td class="small"><br>
+            Setup a Lambert Conformal Conic projection for Northern California<br> 
+            <br>
+            falseEasting = 20000000, falseNorthing = 0<br>
+            Longitude of origin = -122, Latitude of origin 35 30',<br>
+            First Standard Parallel = 33 20', Second Standard Parallel = 38 40'</td>
+        </tr>
+        <tr> 
+          <td class="code"> $myHome-&gt;configLambertProjection(<font color="#FF0000">2000000</font>, 
+            <font color="#FF0000">0</font>, <font color="#FF0000">-122</font>, 
+            <font color="#FF0000">35.5</font>, <font color="#FF0000">33.33333</font>, 
+            <font color="#FF0000">38.6666</font>);<br>
+            $myHome-&gt;convertLLtoLCC();<br> <font color="#006600">echo</font> 
+            &quot;<font color="#990033">In a Lambert Projection: </font>&quot;; 
+            $myHome-&gt;printLambert(); <font color="#006600">echo</font> &quot;<font color="#990033">&lt;br&gt;</font>&quot;;<br> 
+            <font color="#FF9900">//<br>
+            // And convert back to Longitude / Latitude<br>
+            //</font><br>
+            $myHome-&gt;convertLCCtoLL();<br> <font color="#006600">echo</font> 
+            &quot;<font color="#990033">And is still: </font>&quot;; $myHome-&gt;printLatLong(); 
+            <font color="#006600">echo</font> &quot;<font color="#990033">&lt;br&gt;</font>&quot;;</td>
+        </tr>
+      </table>
+      <p>&nbsp;</p></td>
+  </tr>
+  <tr> 
+    <td class="subheader"><a name="rev"></a>Revision History<br> &nbsp; </td>
+  </tr>
+  <tr> 
+    <td><table width="100%" border="0" align="center" cellpadding="1" class="normal">
+        <tr> 
+          <td width="8%" valign="top"><strong>Revison</strong></td>
+          <td width="17%" valign="top"><strong>Date</strong></td>
+          <td width="75%" valign="top"><strong>Details</strong></td>
+        </tr>
+        <tr> 
+          <td valign="top">1.0</td>
+          <td valign="top">25th August, 2005</td>
+          <td valign="top">Initial Release.</td>
+        </tr>
+        <tr> 
+          <td valign="top">1.1</td>
+          <td valign="top">15th May, 2006</td>
+          <td valign="top">Added software license language to header comments 
+            Fixed an error in the convertTMtoLL() method. The latitude calculation 
+            had a bunch of variables without $ symbols. Fixed an error in convertLLtoTM() 
+            method, The $this-&gt; was missing in front of a couple of variables. 
+            Thanks to Bob Robins of Maryland for catching the bugs. Also created 
+            this readme file to improve the documentation.</td>
+        </tr>
+        <tr> 
+          <td valign="top">1.2</td>
+          <td valign="top">18th May, 2007</td>
+          <td valign="top">Added default of NULL to $LongOrigin arguement in convertTMtoLL() 
+            and convertLLtoTM() to eliminate warning messages when the methods 
+            are called without a value for $LongOrigin.</td>
+        </tr>
+      </table></td>
+  </tr>
+</table>
+<p>&nbsp;</p>
+
+</body>
+</html>

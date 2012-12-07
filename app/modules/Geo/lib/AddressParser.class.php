@@ -1,0 +1,309 @@
+<?php
+
+/**
+ *
+ *
+ * @author Aljosha Brell, tay
+ * @since 14.11.2012
+ *
+ */
+class AddressParser
+{
+
+    protected static $_pregStopWords =
+        '#^((bildungsweg|sponsoring|ehering|müntefering|anstieg|arbeitsweg|lebensweg|fußweg|vorweg|der|die|das|den|des|dem|ein|eine|einer|eines|einem|gleich[^\s]+|offener|zu(r|m))[^\w])|((park|sport|stell|spiel|liege)platz)|((geh|heim|schul)weg)|((autobahn|fußgänger)brücke)|((getränke|super|elektrofach)markt)#iu';
+
+    protected static $_pregCities =
+        array(
+            0 => array(
+                'alt tucheband',
+                'barnim',
+                'berlin',
+                'bernau',
+                'dahme',
+                'elsterwerda',
+                'falkensee',
+                '(frankfurt\s*(\/|\()(o|o\.|oder).)',
+                'grieben',
+                'großräschen',
+                'gumtow',
+                'hamburg',
+                'hammelspring',
+                'königs wusterhausen',
+                'meuro',
+                'Oberhavel',
+                'potsdam',
+                'Premnitz',
+                'schlieben',
+                'Schwedt',
+                'templin',
+                'uckermark',
+                'werben',
+                'wildau',
+                'Wittenberge',
+                'Wittstock',
+            ),
+            1 => array(
+                '(bee|wand)litz',
+                '(wuste)witz',
+                '(staak|rhin|telt|briesk|Rathen)ow(-[^\s]+)?',
+                '(fürsten|babels)berg',
+                '(blanken|oranien)burg',
+                '([^\s]+)münde',
+                '([^\s]+)walde',
+                '(nenn)hausen',
+                #'([^\s]+)felde',
+                #'([^\s]+)dorf',
+            )
+        );
+    protected static $_pregStreets =
+        array(
+            0 => array(
+                'adlergestell',
+                'alt-\w+',
+                'brandenburger\stor',
+                'köllnische\sheide',
+                'priesterstege',
+                'siegmunds\shof',
+                'straße\sdes\s17\.\sjuni',
+                'trabrennbahn',
+                'unter\den\eichen',
+                // hamburg
+                'hamburger\berg',
+                'horner\srampe',
+                'käkenflur',
+                'reeperbahn',
+            ),
+            1 => array(
+                '(straße|platz) (der|des) [^\s]+',
+                '\w+\s*stra(ss|ß)e',
+                '\w+\s*str\.?',
+                '\w+\s*ring',
+                '\w+\s*allee',
+                '\w+\s*damm',
+                '\w+\s*chaussee',
+                '\w+\s*gasse',
+                '\w+\s*boulevard',
+                '\w+\s*promenade',
+                '\w+weg',
+                '\w+steg',
+                '\w+stieg',
+                '\w+twiete',
+                '\w+twete',
+            ),
+            2 => array(
+                '\S+\s*platz',
+                '\S+\s*markt',
+                '\S+\s*kamp',
+                '\S+\s*ufer',
+                '\S+h(e|a)ide',
+                '\S+\s*deich',
+                '\S+\s*plaza',
+            ),
+            3 => array(
+                '(charlotten|rummels)burg',
+                '(schöne|prenzlauer\s|lichten|kreuz)berg',
+                '\w+dorf',
+                '\w+horst',
+                '\w+schöneweide',
+                '\w+see',
+                'adlershof',
+                'dahlem',
+                'dreilinden',
+                'friedrichshain',
+                'funkturm',
+                'gesundbrunnen',
+                'grünau',
+                'hohenschönhausen',
+                'johannisthal',
+                'köpenick',
+                'marzahn',
+                'mitte',
+                'moabit',
+                'neukölln',
+                'pankow',
+                'spandau',
+                'steglitz',
+                'tegel',
+                'tempelhof',
+                'tiergarten',
+                'treptow',
+                'wedding',
+                'weißensee',
+                'westend',
+                'zehlendorf',
+                // hamburg
+                'altstadt',
+                'altstadt',
+                'bahrenfeld',
+                'bahrenfeld',
+                'bergedorf',
+                'bergstedt',
+                'bramfeld',
+                'eidelstedt',
+                'fuhlsbüttel',
+                'hamm',
+                'harburg',
+                'lokstedt',
+                'marmstorf',
+                'niendorf',
+                'poppenbüttel',
+                'reinbek',
+                'sternschanze',
+                'st\.\s*pauli',
+                'volksdorf',
+            ),
+            4 => array(
+                '([^\s]+)\s*park',
+                '([^\s]+)\s*weg',
+                '([^\s]+)\s*tunnel',
+                '([^\s]+)\s*bahnhof',
+                '([^\s]+)\s*brücke',
+                '([^\s]+)\s*see',
+            ),
+        );
+
+
+    protected static $_pregCitiesReplace =
+        array(
+            '/wunschstadtMatch/' => 'Wunschstadt', '/frankfurt \(o.\)/' => 'Frankfurt (Oder)',
+        );
+
+
+    protected static $_defaultConfig =
+        array(
+            'city' => 'Berlin', 'latitude' => '52.51628', 'longitude' => '13.3776'
+        );
+
+    /**
+     *
+     *
+     * @param string $description
+     */
+    public static function parse($description)
+    {
+        $result = array();
+        $street = self::extractStreet($description);
+        if ($street)
+        {
+            $house = self::extractHouse($description, $street);
+            $postal = self::extractZip($description, $street);
+            return compact('street', 'house', 'postal');
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+
+    /**
+     *
+     *
+     * @param string $description
+     */
+    public static function extractHouse($description, $street)
+    {
+        $result = array();
+        if ($street)
+        {
+            $street = str_replace(')', '', $street);
+            $street = str_replace('(', '', $street);
+            preg_match_all('/' . preg_quote($street) . '(.{0,20})/sim', $description, $match);
+            foreach ($match[1] as $extractedItem)
+            {
+                preg_match('/(\d[\d\w\-]?+\s*(\w\s)?)/sim', $extractedItem, $tmp);
+                if ($tmp)
+                    array_push($result, $tmp[0]);
+            }
+            if (!empty($result))
+            {
+                $result = array_unique($result);
+                return trim($result[0]);
+            }
+        }
+        return false;
+    }
+
+
+    /**
+     *
+     *
+     * @param string $description
+     */
+    public static function extractZip($description, $street)
+    {
+        $result = array();
+        if ($street)
+        {
+            $street = str_replace(')', '', $street);
+            $street = str_replace('(', '', $street);
+            preg_match_all('/.{0,50}' . preg_quote($street) . '.{0,50}/sim', $description, $match);
+            foreach ($match[0] as $extractedItem)
+            {
+                preg_match('/\d{5}/sim', $extractedItem, $tmp);
+                if (!empty($tmp[0]))
+                {
+                    array_push($result, $tmp[0]);
+                }
+            }
+            if (!empty($result))
+            {
+                $result = array_unique($result);
+                return trim($result[0]);
+            }
+        }
+        return false;
+    }
+
+    /**
+     *
+     *
+     * @param unknown_type $description
+     */
+    public static function extractStreet($description)
+    {
+        foreach (self::$_pregStreets as $precision => $regs)
+        {
+            $preg = '#\b(' . implode('|', $regs) . ')\b#isu';
+            if (preg_match($preg, $description, $matches))
+            {
+                $place = $matches[1];
+                if (!preg_match(self::$_pregStopWords, $place))
+                {
+                    return $place;
+                }
+            }
+        }
+    }
+
+
+    /**
+     *
+     *
+     * @param unknown_type $description
+     */
+    public static function extractCity($description)
+    {
+        $geo_scope = NULL;
+
+        if (isset(self::$_pregCitiesReplace) && is_array(self::$_pregCitiesReplace) && count(self::$_pregCitiesReplace))
+        {
+            $haystack = array_keys(self::$_pregCitiesReplace);
+            $needle = array_values(self::$_pregCitiesReplace);
+            $description = preg_replace($haystack, $needle, $description);
+        }
+
+        foreach (self::$_pregCities as $precision => $regs)
+        {
+            $preg = '#\b(' . implode('|', $regs) . ')\b#is';
+            if (preg_match($preg, $description, $matches))
+            {
+                $geo_scope = $matches[2];
+                break;
+            }
+        }
+
+        return $geo_scope;
+    }
+}

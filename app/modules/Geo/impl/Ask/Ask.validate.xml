@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ae:configurations xmlns="http://agavi.org/agavi/config/parts/validators/1.1" xmlns:ae="http://agavi.org/agavi/config/global/envelope/1.1"
+    parent="%core.module_dir%/Geo/config/validators.xml">
+
+    <ae:configuration>
+
+        <validators>
+        
+            <validator class="number" required="false">
+                <argument>api</argument>
+                <ae:parameter name="type">int</ae:parameter>
+                <ae:parameter name="min">1</ae:parameter>
+                <error>Parameter 'api' must be a positive number greater 0.</error>
+            </validator>
+            
+            <validator class="number" required="false">
+                <argument>max-age</argument>
+                <ae:parameter name="type">int</ae:parameter>
+                <ae:parameter name="min">0</ae:parameter>
+                <error>Parameter 'max-age' must be a positive number greater equal 0. </error>
+            </validator>
+            
+            <validator class="or">
+                <validators>
+                    <validator class="string">
+                        <argument>q</argument>
+                        <error>Parameter 'q' must be a string.</error>
+                        <ae:parameter name="trim">TRUE</ae:parameter>
+                    </validator>
+
+                    <validator class="string">
+                        <argument>country</argument>
+                        <error>Parameter 'country' must be a string.</error>
+                        <ae:parameter name="trim">TRUE</ae:parameter>
+                    </validator>
+
+                    <validator class="string">
+                        <argument>city</argument>
+                        <error>Parameter 'city' must be a string.</error>
+                        <ae:parameter name="trim">TRUE</ae:parameter>
+                    </validator>
+
+                    <validator class="string">
+                        <argument>street</argument>
+                        <error>Parameter 'street' must be a string.</error>
+                        <ae:parameter name="trim">TRUE</ae:parameter>
+                    </validator>
+
+                    <validator class="string">
+                        <argument>postal</argument>
+                        <error>Parameter 'postal' must be a string.</error>
+                        <ae:parameter name="trim">TRUE</ae:parameter>
+                    </validator>
+                </validators>
+            </validator>
+        </validators>
+
+    </ae:configuration>
+
+</ae:configurations>

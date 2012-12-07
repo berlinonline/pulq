@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ae:configurations xmlns="http://agavi.org/agavi/config/parts/module/1.1" xmlns:ae="http://agavi.org/agavi/config/global/envelope/1.1">
+    <ae:configuration>
+        <module enabled="true">
+            <settings>
+                <setting name="title">Geo Module</setting>
+				<!--
+					use impl file system layout 
+					@see http://www.mivesto.de/agavi/agavi-faq.html#general_99
+				-->
+                <!-- nicer filesystem structure -->
+                <setting name="agavi.action.path">%core.module_dir%/${moduleName}/impl/${actionName}/${actionName}Action.class.php
+                </setting>
+                <setting name="agavi.cache.path">%core.module_dir%/${moduleName}/impl/${actionName}/${actionName}.cache.xml
+                </setting>
+                <setting name="agavi.template.directory">%core.module_dir%/${module}/impl/</setting>
+                <setting name="agavi.validate.path">%core.module_dir%/${moduleName}/impl/${actionName}/${actionName}.validate.xml
+                </setting>
+                <setting name="agavi.view.path">%core.module_dir%/${moduleName}/impl/${viewName}View.class.php</setting>
+                <setting name="agavi.view.name">${actionName}/${actionName}${viewName}</setting>
+
+                <setting name="districts">
+                    <ae:parameter name="Berlin">
+                        <ae:parameter name="Gesundbrunnen">Wedding</ae:parameter>
+                        <ae:parameter name="Hansaviertel">Tiergarten</ae:parameter>
+                        <ae:parameter name="Mitte">Mitte</ae:parameter>
+                        <ae:parameter name="Moabit">Tiergarten</ae:parameter>
+                        <ae:parameter name="Tiergarten">Tiergarten</ae:parameter>
+                        <ae:parameter name="Wedding">Wedding</ae:parameter>
+                        <ae:parameter name="Friedrichshain">Friedrichshain</ae:parameter>
+                        <ae:parameter name="Kreuzberg">Kreuzberg</ae:parameter>
+                        <ae:parameter name="Blankenburg">Weißensee</ae:parameter>
+                        <ae:parameter name="Blankenfelde">Pankow</ae:parameter>
+                        <ae:parameter name="Buch">Pankow</ae:parameter>
+                        <ae:parameter name="FranzösischBuchholz">Pankow</ae:parameter>
+                        <ae:parameter name="Heinersdorf">Weißensee</ae:parameter>
+                        <ae:parameter name="Karow">Weißensee</ae:parameter>
+                        <ae:parameter name="Niederschönhausen">Pankow</ae:parameter>
+                        <ae:parameter name="Pankow">Pankow</ae:parameter>
+                        <ae:parameter name="PrenzlauerBerg">PrenzlauerBerg</ae:parameter>
+                        <ae:parameter name="Rosenthal">Pankow</ae:parameter>
+                        <ae:parameter name="Stadtrandsiedlung Malchow">Pankow</ae:parameter>
+                        <ae:parameter name="Weißensee">Weißensee</ae:parameter>
+                        <ae:parameter name="Wilhelmsruh">Pankow</ae:parameter>
+                        <ae:parameter name="Charlottenburg">Charlottenburg</ae:parameter>
+                        <ae:parameter name="Charlottenburg-Nord">Charlottenburg</ae:parameter>
+                        <ae:parameter name="Grunewald">Wilmersdorf</ae:parameter>
+                        <ae:parameter name="Halensee">Wilmersdorf</ae:parameter>
+                        <ae:parameter name="Schmargendorf">Wilmersdorf</ae:parameter>
+                        <ae:parameter name="Westend">Charlottenburg</ae:parameter>
+                        <ae:parameter name="Wilmersdorf">Wilmersdorf</ae:parameter>
+                        <ae:parameter name="Falkenhagener Feld">Spandau</ae:parameter>
+                        <ae:parameter name="Gatow">Spandau</ae:parameter>
+                        <ae:parameter name="Hakenfelde">Spandau</ae:parameter>
+                        <ae:parameter name="Haselhorst">Spandau</ae:parameter>
+                        <ae:parameter name="Kladow">Spandau</ae:parameter>
+                        <ae:parameter name="Siemensstadt">Spandau</ae:parameter>
+                        <ae:parameter name="Spandau">Spandau</ae:parameter>
+                        <ae:parameter name="Staaken">Spandau</ae:parameter>
+                        <ae:parameter name="Wilhelmstadt">Spandau</ae:parameter>
+                        <ae:parameter name="Dahlem">Zehlendorf</ae:parameter>
+                        <ae:parameter name="Lankwitz">Steglitz</ae:parameter>
+                        <ae:parameter name="Lichterfelde">Steglitz</ae:parameter>
+                        <ae:parameter name="Nikolassee">Zehlendorf</ae:parameter>
+                        <ae:parameter name="Steglitz">Steglitz</ae:parameter>
+                        <ae:parameter name="Wannsee">Zehlendorf</ae:parameter>
+                        <ae:parameter name="Zehlendorf">Zehlendorf</ae:parameter>
+                        <ae:parameter name="Friedenau">Schöneberg</ae:parameter>
+                        <ae:parameter name="Lichtenrade">Tempelhof</ae:parameter>
+                        <ae:parameter name="Mariendorf">Tempelhof</ae:parameter>
+                        <ae:parameter name="Marienfelde">Tempelhof</ae:parameter>
+                        <ae:parameter name="Schöneberg">Schöneberg</ae:parameter>
+                        <ae:parameter name="Tempelhof">Tempelhof</ae:parameter>
+                        <ae:parameter name="Britz">Neukölln</ae:parameter>
+                        <ae:parameter name="Buckow">Neukölln</ae:parameter>
+                        <ae:parameter name="Gropiusstadt">Neukölln</ae:parameter>
+                        <ae:parameter name="Neukölln">Neukölln</ae:parameter>
+                        <ae:parameter name="Rudow">Neukölln</ae:parameter>
+                        <ae:parameter name="Adlershof">Treptow</ae:parameter>
+                        <ae:parameter name="Alt-Treptow">Treptow</ae:parameter>
+                        <ae:parameter name="Altglienicke">Treptow</ae:parameter>
+                        <ae:parameter name="Baumschulenweg">Treptow</ae:parameter>
+                        <ae:parameter name="Bohnsdorf">Treptow</ae:parameter>
+                        <ae:parameter name="Friedrichshagen">Köpenick</ae:parameter>
+                        <ae:parameter name="Grünau">Köpenick</ae:parameter>
+                        <ae:parameter name="Johannisthal">Treptow</ae:parameter>
+                        <ae:parameter name="Köpenick">Köpenick</ae:parameter>
+                        <ae:parameter name="Müggelheim">Köpenick</ae:parameter>
+                        <ae:parameter name="Niederschöneweide"></ae:parameter>
+                        <ae:parameter name="Oberschöneweide">Köpenick</ae:parameter>
+                        <ae:parameter name="Plänterwald">Treptow</ae:parameter>
+                        <ae:parameter name="Rahnsdorf">Köpenick</ae:parameter>
+                        <ae:parameter name="Schmöckwitz"></ae:parameter>
+                        <ae:parameter name="Biesdorf">Marzahn</ae:parameter>
+                        <ae:parameter name="Hellersdorf">Hellersdorf</ae:parameter>
+                        <ae:parameter name="Kaulsdorf">Hellersdorf</ae:parameter>
+                        <ae:parameter name="Mahlsdorf">Hellersdorf</ae:parameter>
+                        <ae:parameter name="Marzahn">Marzahn</ae:parameter>
+                        <ae:parameter name="Alt-Hohenschönhausen">Hohenschönhausen</ae:parameter>
+                        <ae:parameter name="Falkenberg">Hohenschönhausen</ae:parameter>
+                        <ae:parameter name="Fennpfuhl">Lichtenberg</ae:parameter>
+                        <ae:parameter name="Friedrichsfelde">Lichtenberg</ae:parameter>
+                        <ae:parameter name="Karlshorst">Lichtenberg</ae:parameter>
+                        <ae:parameter name="Lichtenberg">Lichtenberg</ae:parameter>
+                        <ae:parameter name="Malchow">Hohenschönhausen</ae:parameter>
+                        <ae:parameter name="Neu-Hohenschönhausen">Hohenschönhausen</ae:parameter>
+                        <ae:parameter name="Rummelsburg">Lichtenberg</ae:parameter>
+                        <ae:parameter name="Wartenberg">Hohenschönhausen</ae:parameter>
+                        <ae:parameter name="Frohnau">Reinickendorf</ae:parameter>
+                        <ae:parameter name="Heiligensee">Reinickendorf</ae:parameter>
+                        <ae:parameter name="Hermsdorf">Reinickendorf</ae:parameter>
+                        <ae:parameter name="Konradshöhe">Reinickendorf</ae:parameter>
+                        <ae:parameter name="Lübars">Reinickendorf</ae:parameter>
+                        <ae:parameter name="MärkischesViertel">Reinickendorf</ae:parameter>
+                        <ae:parameter name="Reinickendorf">Reinickendorf</ae:parameter>
+                        <ae:parameter name="Tegel">Reinickendorf</ae:parameter>
+                        <ae:parameter name="Waidmannslust">Reinickendorf</ae:parameter>
+                        <ae:parameter name="Wittenau">Reinickendorf</ae:parameter>
+                    </ae:parameter>
+                </setting>
+                <setting name="administrative-districts">
+                    <ae:parameter name="Berlin">
+                        <ae:parameter name="Mitte">Mitte</ae:parameter>
+                        <ae:parameter name="Moabit">Mitte</ae:parameter>
+                        <ae:parameter name="Hansaviertel">Mitte</ae:parameter>
+                        <ae:parameter name="Tiergarten">Mitte</ae:parameter>
+                        <ae:parameter name="Wedding">Mitte</ae:parameter>
+                        <ae:parameter name="Gesundbrunnen">Mitte</ae:parameter>
+                        <ae:parameter name="Friedrichshain">Friedrichshain-Kreuzberg</ae:parameter>
+                        <ae:parameter name="Kreuzberg">Friedrichshain-Kreuzberg</ae:parameter>
+                        <ae:parameter name="Prenzlauer Berg">Pankow</ae:parameter>
+                        <ae:parameter name="Weißensee">Pankow</ae:parameter>
+                        <ae:parameter name="Blankenburg">Pankow</ae:parameter>
+                        <ae:parameter name="Heinersdorf">Pankow</ae:parameter>
+                        <ae:parameter name="Karow">Pankow</ae:parameter>
+                        <ae:parameter name="Stadtrandsiedlung Malchow">Pankow</ae:parameter>
+                        <ae:parameter name="Pankow">Pankow</ae:parameter>
+                        <ae:parameter name="Blankenfelde">Pankow</ae:parameter>
+                        <ae:parameter name="Buch">Pankow</ae:parameter>
+                        <ae:parameter name="Französisch Buchholz">Pankow</ae:parameter>
+                        <ae:parameter name="Niederschönhausen">Pankow</ae:parameter>
+                        <ae:parameter name="Rosenthal">Pankow</ae:parameter>
+                        <ae:parameter name="Wilhelmsruh">Pankow</ae:parameter>
+                        <ae:parameter name="Charlottenburg">Charlottenburg-Wilmersdorf</ae:parameter>
+                        <ae:parameter name="Wilmersdorf">Charlottenburg-Wilmersdorf</ae:parameter>
+                        <ae:parameter name="Schmargendorf">Charlottenburg-Wilmersdorf</ae:parameter>
+                        <ae:parameter name="Grunewald">Charlottenburg-Wilmersdorf</ae:parameter>
+                        <ae:parameter name="Westend">Charlottenburg-Wilmersdorf</ae:parameter>
+                        <ae:parameter name="Charlottenburg-Nord">Charlottenburg-Wilmersdorf</ae:parameter>
+                        <ae:parameter name="Halensee">Charlottenburg-Wilmersdorf</ae:parameter>
+                        <ae:parameter name="Spandau">Spandau</ae:parameter>
+                        <ae:parameter name="Haselhorst">Spandau</ae:parameter>
+                        <ae:parameter name="Siemensstadt">Spandau</ae:parameter>
+                        <ae:parameter name="Staaken">Spandau</ae:parameter>
+                        <ae:parameter name="Gatow">Spandau</ae:parameter>
+                        <ae:parameter name="Kladow">Spandau</ae:parameter>
+                        <ae:parameter name="Hakenfelde">Spandau</ae:parameter>
+                        <ae:parameter name="Falkenhagener Feld">Spandau</ae:parameter>
+                        <ae:parameter name="Wilhelmstadt">Spandau</ae:parameter>
+                        <ae:parameter name="Steglitz">Steglitz-Zehlendorf</ae:parameter>
+                        <ae:parameter name="Lichterfelde">Steglitz-Zehlendorf</ae:parameter>
+                        <ae:parameter name="Lankwitz">Steglitz-Zehlendorf</ae:parameter>
+                        <ae:parameter name="Zehlendorf">Steglitz-Zehlendorf</ae:parameter>
+                        <ae:parameter name="Dahlem">Steglitz-Zehlendorf</ae:parameter>
+                        <ae:parameter name="Nikolassee">Steglitz-Zehlendorf</ae:parameter>
+                        <ae:parameter name="Wannsee">Steglitz-Zehlendorf</ae:parameter>
+                        <ae:parameter name="Schöneberg">Tempelhof-Schöneberg</ae:parameter>
+                        <ae:parameter name="Friedenau">Tempelhof-Schöneberg</ae:parameter>
+                        <ae:parameter name="Tempelhof">Tempelhof-Schöneberg</ae:parameter>
+                        <ae:parameter name="Mariendorf">Tempelhof-Schöneberg</ae:parameter>
+                        <ae:parameter name="Marienfelde">Tempelhof-Schöneberg</ae:parameter>
+                        <ae:parameter name="Lichtenrade">Tempelhof-Schöneberg</ae:parameter>
+                        <ae:parameter name="Neukölln">Neukölln</ae:parameter>
+                        <ae:parameter name="Britz">Neukölln</ae:parameter>
+                        <ae:parameter name="Buckow ">Neukölln</ae:parameter>
+                        <ae:parameter name="Rudow">Neukölln</ae:parameter>
+                        <ae:parameter name="Gropiusstadt">Neukölln</ae:parameter>
+                        <ae:parameter name="Alt-Treptow">Treptow-Köpenick</ae:parameter>
+                        <ae:parameter name="Plänterwald">Treptow-Köpenick</ae:parameter>
+                        <ae:parameter name="Baumschulenweg">Treptow-Köpenick</ae:parameter>
+                        <ae:parameter name="Johannisthal">Treptow-Köpenick</ae:parameter>
+                        <ae:parameter name="Niederschöneweide">Treptow-Köpenick</ae:parameter>
+                        <ae:parameter name="Altglienicke">Treptow-Köpenick</ae:parameter>
+                        <ae:parameter name="Adlershof">Treptow-Köpenick</ae:parameter>
+                        <ae:parameter name="Bohnsdorf">Treptow-Köpenick</ae:parameter>
+                        <ae:parameter name="Oberschöneweide">Treptow-Köpenick</ae:parameter>
+                        <ae:parameter name="Köpenick">Treptow-Köpenick</ae:parameter>
+                        <ae:parameter name="Friedrichshagen">Treptow-Köpenick</ae:parameter>
+                        <ae:parameter name="Rahnsdorf">Treptow-Köpenick</ae:parameter>
+                        <ae:parameter name="Grünau">Treptow-Köpenick</ae:parameter>
+                        <ae:parameter name="Müggelheim">Treptow-Köpenick</ae:parameter>
+                        <ae:parameter name="Schmöckwitz">Treptow-Köpenick</ae:parameter>
+                        <ae:parameter name="Marzahn">Marzahn-Hellersdorf</ae:parameter>
+                        <ae:parameter name="Biesdorf">Marzahn-Hellersdorf</ae:parameter>
+                        <ae:parameter name="Kaulsdorf">Marzahn-Hellersdorf</ae:parameter>
+                        <ae:parameter name="Mahlsdorf">Marzahn-Hellersdorf</ae:parameter>
+                        <ae:parameter name="Hellersdorf">Marzahn-Hellersdorf</ae:parameter>
+                        <ae:parameter name="Friedrichsfelde">Lichtenberg</ae:parameter>
+                        <ae:parameter name="Karlshorst">Lichtenberg</ae:parameter>
+                        <ae:parameter name="Lichtenberg">Lichtenberg</ae:parameter>
+                        <ae:parameter name="Falkenberg">Lichtenberg</ae:parameter>
+                        <ae:parameter name="Malchow">Lichtenberg</ae:parameter>
+                        <ae:parameter name="Wartenberg">Lichtenberg</ae:parameter>
+                        <ae:parameter name="Neu-Hohenschönhausen">Lichtenberg</ae:parameter>
+                        <ae:parameter name="Alt-Hohenschönhausen">Lichtenberg</ae:parameter>
+                        <ae:parameter name="Fennpfuhl">Lichtenberg</ae:parameter>
+                        <ae:parameter name="Rummelsburg">Lichtenberg</ae:parameter>
+                        <ae:parameter name="Reinickendorf">Reinickendorf</ae:parameter>
+                        <ae:parameter name="Tegel">Reinickendorf</ae:parameter>
+                        <ae:parameter name="Konradshöhe">Reinickendorf</ae:parameter>
+                        <ae:parameter name="Heiligensee">Reinickendorf</ae:parameter>
+                        <ae:parameter name="Frohnau">Reinickendorf</ae:parameter>
+                        <ae:parameter name="Hermsdorf">Reinickendorf</ae:parameter>
+                        <ae:parameter name="Waidmannslust">Reinickendorf</ae:parameter>
+                        <ae:parameter name="Lübars">Reinickendorf</ae:parameter>
+                        <ae:parameter name="Wittenau">Reinickendorf</ae:parameter>
+                        <ae:parameter name="Märkisches Viertel">Reinickendorf</ae:parameter>
+                        <ae:parameter name="Borsigwalde">Reinickendorf</ae:parameter>
+                    </ae:parameter>
+                </setting>
+            </settings>
+        </module>
+    </ae:configuration>
+</ae:configurations>

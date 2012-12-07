@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ae:configurations xmlns="http://agavi.org/agavi/config/parts/databases/1.1" xmlns:ae="http://agavi.org/agavi/config/global/envelope/1.1"
+    xmlns:xi="http://www.w3.org/2001/XInclude">
+
+    <ae:configuration>
+        <databases default="HaKoDe">
+            <database name="HaKoDe" class="ElasticSearchDatabase">
+                <ae:parameter name="host">127.0.0.1</ae:parameter>
+                <ae:parameter name="port">9200</ae:parameter>
+                <ae:parameter name="transport">Http</ae:parameter>
+                <ae:parameter name="index">
+                    <ae:parameter name="name">hakode</ae:parameter>
+                    <ae:parameter name="module">Geo</ae:parameter>
+                    <ae:parameter name="setup_class">HaKoDeSetup</ae:parameter>
+                </ae:parameter>
+                <!-- unzipped CSV File from SenStadt -->
+                <ae:parameter name="hakode_file">%core.app_dir%/../etc/local/HKO_BerlinonlineETRS89_120413.txt_plusPOST</ae:parameter>
+            </database>
+        </databases>
+    </ae:configuration>
+
+</ae:configurations>
