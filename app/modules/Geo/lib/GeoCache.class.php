@@ -7,7 +7,7 @@
  * @since 26.11.2012
  *
  */
-class GeoCache
+class GeoCache implements IDatabaseSetup
 {
     const ES_TYPE = 'cache';
 
@@ -22,15 +22,15 @@ class GeoCache
         $elastica = $this->getEsIndex();
         try
         {
-            $cache = $elastica->getType(ES_TYPE)
+            $cache = $elastica->getType(self::ES_TYPE)
                     ->getDocument($req->hash());
             $data = $cache->getData();
             /* @todo Remove debug code GeoCache.class.php from 04.12.2012 */
-            $__logger=AgaviContext::getInstance()->getLoggerManager();
-            $__logger->log(__METHOD__.":".__LINE__." : ".__FILE__,AgaviILogger::DEBUG);
-            $__logger->log(print_r($data,1),AgaviILogger::DEBUG);
+            $__logger = AgaviContext::getInstance()->getLoggerManager();
+            $__logger->log(__METHOD__ . ":" . __LINE__ . " : " . __FILE__, AgaviILogger::DEBUG);
+            $__logger->log(print_r($data, 1), AgaviILogger::DEBUG);
 
-            $response = GeoResponse::getInstanceForResult($data);
+            $response = GeoResponse::getInstanceForResult($data['response']);
             return $response;
         }
         catch (Elastica_Exception_NotFound $e)
@@ -55,7 +55,7 @@ class GeoCache
         $doc = new Elastica_Document($req->hash(), $data);
 
         $elastica = $this->getEsIndex();
-        $cache = $elastica->getType(ES_TYPE)
+        $cache = $elastica->getType(self::ES_TYPE)
                 ->addDocument($doc);
     }
 
@@ -66,12 +66,48 @@ class GeoCache
      */
     public function setup($tearDownFirst = FALSE)
     {
-        $elastica = $this->getEsIndex();
+        $db = AgaviContext::getInstance()->getDatabaseManager()
+                ->getDatabase('geocache');
+
+        $elastica = $db->getResource();
         $esIndexName = $elastica->getName() . date('-ymd-Hi');
         $esIndex = $this->createIndex($elastica->getClient(), $esIndexName);
 
-        $esType = $esIndex->getType(ES_TYPE);
-        $esIndex->addAlias($elastica->getName(), TRUE);
+        $esType = $esIndex->getType(self::ES_TYPE);
+        $alias = $elastica->getName();
+        $esIndex->addAlias($alias, TRUE);
+
+        $indexNames = $db->getConnection()->getStatus()
+                ->getIndexNames();
+
+        $indexNames =
+            array_filter($indexNames,
+                function ($idx) use ($alias)
+                {
+                    return preg_replace('/-\d{6}-\d{4}$/', '', $idx) == $alias;
+                });
+
+        sort($indexNames);
+
+        foreach ($indexNames as $iname)
+        {
+            echo "Check index '$iname' for active alias '$alias'\n";
+            $index = $db->getConnection()
+                    ->getIndex($iname);
+            if (!$index->getStatus()
+                ->hasAlias($alias))
+            {
+                try
+                {
+                    echo "Delete index '$iname'\n";
+                    $index->delete();
+                }
+                catch (Exception $exception)
+                {
+                    echo "Deleting index failed: " . $exception->getMessage() . PHP_EOL;
+                }
+            }
+        }
 
         return AgaviView::NONE;
     }
@@ -137,7 +173,7 @@ class GeoCache
                         )
                     ),
                     "mappings" => array(
-                        ES_TYPE => array(
+                        self::ES_TYPE => array(
                             "dynamic" => false,
                             "_all" => array(
                                 "enabled" => true, "analyzer" => "german2"
@@ -153,8 +189,8 @@ class GeoCache
                                     "enabled" => true
                                 ),
                                 "request" => array(
-                                    "type" => "multifield",
-                                    "fields" => array(
+                                    "type" => "object",
+                                    "properties" => array(
                                         "query" => array(
                                             "type" => "string", "index" => "not_analyzed"
                                         ),
@@ -176,19 +212,16 @@ class GeoCache
                                     )
                                 ),
                                 "response" => array(
-                                    "type" => "multifield",
-                                    "fields" => array(
-                                        "r_source" => array(
+                                    "type" => "object",
+                                    "properties" => array(
+                                        "source" => array(
                                             "type" => "string", "index" => "not_analyzed"
                                         ),
-                                        "r_formatted" => array(
+                                        "formatted" => array(
                                             "type" => "string", "index" => "not_analyzed"
                                         ),
-                                        "r_location" => array(
+                                        "location" => array(
                                             "type" => "geo_point"
-                                        ),
-                                        "r_bbox" => array(
-                                            "type" => "envelope"
                                         )
                                     )
                                 )

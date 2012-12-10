@@ -1,4 +1,5 @@
 <?php
+
 /**
  *
  *
@@ -6,7 +7,7 @@
  * @since 14.11.2012
  *
  */
-class GoogleGeoBackend extends GeoBackendBase
+class GeoBackendGoogle extends GeoBackendBase
 {
 
     protected $data = NULL;
@@ -25,12 +26,9 @@ class GoogleGeoBackend extends GeoBackendBase
 
     protected $componentsMap =
         array(
-                'country' => 'country',
-                'city' => 'locality',
-                'postal' => 'postal_code',
-                'street' => 'route',
-                // 'house' => FALSE
-                );
+            'country' => 'country', 'city' => 'locality', 'postal' => 'postal_code', 'street' => 'route',
+        // 'house' => FALSE
+        );
 
     protected $accuracyMap =
         array(
@@ -49,35 +47,26 @@ class GoogleGeoBackend extends GeoBackendBase
      *
      * Fetch response with {@see fillResponse()} after successful call
      *
-     * @param string $query
-     * @param array $filter supported keys are country, city, postal, street
-     *
+     * @param GeoRequest $req
      * @return TRUE
      *
      * @throws GeoException
      */
-    public function query($query, array $filter = array())
+    public function query(GeoRequest $req)
     {
         $this->data = NULL;
 
-        $params = array(
-                'sensor' => 'false', 'language' => 'de_DE', 'address' => $query
+        $params =
+            array(
+                'sensor' => 'false', 'language' => 'de_DE', 'address' => $req->get('query')
             );
 
-        if (!empty($filter))
+        $components = array();
+        foreach ($req->toArray() as $key => $value)
         {
-            $components = array();
-            foreach ($filter as $key => $value)
+            if (isset($this->componentsMap[$key]) && !empty($value))
             {
-                if (!preg_match('/^(?:country|city|postal|street|house)$/', $key))
-                {
-                    throw new GeoException('Not supported components filter: ' . $key,
-                        GeoException::GOOGLE_COMPONENTS_FORMAT);
-                }
-                if (isset($this->componentsMap[$key]))
-                {
-                    $components[] = $this->componentsMap[$key] . ":$value";
-                }
+                $components[] = $this->componentsMap[$key] . ":$value";
             }
             $params['components'] = join('|', $components);
         }
@@ -100,6 +89,7 @@ class GoogleGeoBackend extends GeoBackendBase
         }
 
         curl_close($ch);
+
         $data = json_decode($resp, TRUE);
         if (!is_array($data) || json_last_error() != JSON_ERROR_NONE)
         {
@@ -132,19 +122,19 @@ class GoogleGeoBackend extends GeoBackendBase
      */
     public function fillResponse(GeoResponse $response)
     {
-        if (!is_array($this->data))
+        if (!is_array($this->data) || empty($this->data['results'][0]))
         {
-            throw new GeoException('Empty response', GeoException::INTERNAL_ERROR);
+            return FALSE;
         }
+        $data = $this->data['results'][0];
 
         $response->setValue('meta.source', 'google');
         $response->setValue('meta.timestamp', time() * 1000);
         $response->setValue('meta.date', date(DATE_ISO8601));
-        $response->setValue('meta.cache', FALSE);
 
-        if (!empty($this->data['address_components']))
+        if (!empty($data['address_components']))
         {
-            foreach ($this->data['address_components'] as $part)
+            foreach ($data['address_components'] as $part)
             {
                 if (empty($part['types']) || empty($part['long_name']))
                 {
@@ -153,36 +143,41 @@ class GoogleGeoBackend extends GeoBackendBase
                 $type = join('.', $part['types']);
                 if (array_key_exists($type, $this->addressMap))
                 {
-                    $response->setValue($field, $part['long_name']);
+                    $response->setValue($this->addressMap[$type], $part['long_name']);
                 }
             }
         }
 
-        if (!empty($this->data['formatted_address']))
+        if (!empty($data['formatted_address']))
         {
-            $response->setValue('address.formated', $this->data['formatted_address']);
-            $response->setValue('meta.description', $this->data['formatted_address']);
+            $response->setValue('address.formatted', $data['formatted_address']);
+            $response->setValue('meta.description', $data['formatted_address']);
         }
 
-        if (!empty($this->data['geometry']['location_type']))
+        if (!empty($data['geometry']['location_type']))
         {
             $response->setValue('location.accuracy',
-                    array_key_exists($this->data['geometry']['location_type'], $this->accuracyMap)
-                        ? $this->accuracyMap[$this->data['geometry']['location_type']]
+                    array_key_exists($data['geometry']['location_type'], $this->accuracyMap)
+                        ? $this->accuracyMap[$data['geometry']['location_type']]
                         : GeoResponse::ACCURACY_CRAP);
         }
 
-        if (!empty($this->data['geometry']['location']))
+        if (!empty($data['geometry']['location']))
         {
             $response->setValue('location.wgs84',
-                    $response->buildCoordinates($this->data['geometry']['location']['lng'],
-                            $this->data['geometry']['location']['lat']));
+                    $response->buildCoordinates($data['geometry']['location']['lng'],
+                            $data['geometry']['location']['lat']));
         }
 
-        if (!empty($this->data['geometry']['bounds']))
+        if (!empty($data['geometry']['bounds']))
         {
+            $bounds = $data['geometry']['bounds'];
             $response->setValue('location.bbox',
-                    $response->buildBoundingBox($nw_longitude, $nw_latitude, $se_longitude, $se_latitude));
+                    $response->buildBoundingBox($bounds['southwest']['lng'], $bounds['northeast']['lat'],
+                            $bounds['northeast']['lng'], $bounds['southwest']['lat']));
         }
+
+        return TRUE;
     }
+
 }

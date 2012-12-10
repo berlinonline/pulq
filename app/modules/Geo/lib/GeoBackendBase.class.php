@@ -54,6 +54,7 @@ abstract class GeoBackendBase
      * get last response
      *
      * @param GeoResponse $response
+     * @return boolean
      * @throws GeoException
      */
     abstract public function fillResponse(GeoResponse $response);

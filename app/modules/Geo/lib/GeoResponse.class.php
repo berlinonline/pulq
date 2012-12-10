@@ -106,6 +106,11 @@ class GeoResponse
      */
     static public function getInstanceForResult(array $result)
     {
+        /* @todo Remove debug code GeoResponse.class.php from 10.12.2012 */
+        $__logger=AgaviContext::getInstance()->getLoggerManager();
+        $__logger->log(__METHOD__.":".__LINE__." : ".__FILE__,AgaviILogger::DEBUG);
+        $__logger->log(print_r($result,1),AgaviILogger::DEBUG);
+
         $class = $result['meta']['class'];
         $response = new $class();
         $response->setRawResult($result);
@@ -155,11 +160,23 @@ class GeoResponse
         {
             throw new GeoException($message, GeoException::INVALID_RESULT_VALUE);
         }
-        $this->result[$base][$part] = $value;
+        if (! empty($value))
+        {
+            $this->result[$base][$part] = $value;
+        }
         return TRUE;
     }
 
 
+    /**
+     *
+     *
+     * @return boolean
+     */
+    public function isFilled()
+    {
+        return $this->result['location']['wgs84']['lat'] != 0 || $this->result['location']['wgs84']['lon'] != 0;
+    }
 
     /**
      * set value in result
@@ -191,6 +208,7 @@ class GeoResponse
     public function toArray()
     {
         $this->result['meta']['class'] = get_class($this);
+        $this->result['meta']['cached'] = TRUE;
         return $this->result;
     }
 

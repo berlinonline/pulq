@@ -7,7 +7,7 @@
  * @since 14.11.2012
  *
  */
-class YahooGeoBackend extends GeoBackendBase
+class GeoBackendYahoo extends GeoBackendBase
 {
     protected $data = NULL;
 
@@ -27,14 +27,12 @@ class YahooGeoBackend extends GeoBackendBase
      *
      * Fetch response with {@see fillResponse()} after successful call
      *
-     * @param string $query
-     * @param array $filter
-     *
+     * @param GeoRequest $request
      * @return TRUE
      *
      * @throws GeoException
      */
-    public function query($query, array $filter = array())
+    public function query(GeoRequest $request)
     {
         $this->data = NULL;
 
@@ -47,18 +45,13 @@ class YahooGeoBackend extends GeoBackendBase
                 'appid' => 'dVmSc4_V34GNxrz4T2P0uWeOH0EuWJUD.SA.lTdBBGf1PHDUFdmFzYubKAmw6TigU6rjX1PhxWLUsu1xlwYipVlYeVk_BB0-',
                 'country' => 'DE',
                 'city' => 'Berlin',
-                'q' => preg_replace('/str\.?\b/i', 'straße', $query)
+                'q' => preg_replace('/str\.?\b/i', 'straße', $request->get('query'))
             );
 
-        if (!empty($filter))
+        foreach ($req->toArray() as $key => $value)
         {
-            $components = array();
-            foreach ($filter as $key => $value)
+            if (preg_match('/^(?:country|city|postal|street|house)$/', $key) && !empty($value))
             {
-                if (!preg_match('/^(?:country|city|postal|street|house)$/', $key))
-                {
-                    throw new GeoException('Not supported filter: ' . $key, GeoException::GOOGLE_COMPONENTS_FORMAT);
-                }
                 $params[$key] = $value;
             }
         }

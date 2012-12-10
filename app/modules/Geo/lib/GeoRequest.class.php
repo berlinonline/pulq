@@ -9,8 +9,18 @@
  */
 class GeoRequest
 {
+    /**
+     *
+     * our API version; overwrite class to implement newer API levels
+     */
     protected $apiVersion = 1;
+
+    /**
+     *
+     * @var main request data
+     */
     protected $req = array();
+
 
     /**
      *
@@ -50,8 +60,9 @@ class GeoRequest
      */
     protected function resetAll()
     {
-        $this->req = array(
-                'query' => NULL, 'country' => NULL, 'city' => NULL, 'street' => NULL, 'postal' => NULL
+        $this->req =
+            array(
+                'query' => '', 'country' => '', 'city' => '', 'street' => '', 'house' => '', 'postal' => ''
             );
     }
 
@@ -94,7 +105,7 @@ class GeoRequest
      */
     public function has($key)
     {
-        return ! empty($this->req[$key]);
+        return !empty($this->req[$key]);
     }
 
     /**
@@ -108,12 +119,28 @@ class GeoRequest
         return array_key_exists($key, $this->req) ? $this->req[$key] : FALSE;
     }
 
+
+    /**
+     *
+     *
+     * @return boolean
+     */
+    public function isParsed()
+    {
+        $rdata = $this->req;
+        unset($rdata['query']);
+        return '' !== implode('', $rdata);
+    }
+
+
     /**
      *
      */
     public function hash()
     {
-        return sha1(serialize(array('api' => $this->apiVersion) + $this->req));
+        return sha1(serialize(array(
+            'api' => $this->apiVersion
+        ) + $this->req));
     }
 
     /**

@@ -55,16 +55,50 @@ class Geo_AskAction extends ProjectGeoBaseAction
             }
         }
 
-        /* @todo Remove debug code AskAction.class.php from 07.12.2012 */
+        /* @todo Remove debug code AskAction.class.php from 10.12.2012 */
         $__logger=AgaviContext::getInstance()->getLoggerManager();
         $__logger->log(__METHOD__.":".__LINE__." : ".__FILE__,AgaviILogger::DEBUG);
-        $__logger->log(print_r($request,1),AgaviILogger::DEBUG);
+        $__logger->log(print_r($request->toArray(),1),AgaviILogger::DEBUG);
 
-        $response = GeoResponse::getInstanceForApi($rd->getParameter('api', 1));
+        $cache = new GeoCache();
+        $cacheRequest = clone $request;
+        $response = $cache->fetch($cacheRequest);
+        if (! $response)
+        {
+            $response = GeoResponse::getInstanceForApi($rd->getParameter('api', 1));
+            if (! $request->isParsed())
+            {
+                $google = new GeoBackendGoogle();
+                $google->query($request);
+                $google->fillResponse($response);
+
+                // refine the actual request for the HaKaDe query
+                $request->set('query', '');
+                $request->set('country', $response->getValue('address.country'));
+                $request->set('city', $response->getValue('address.municipality'));
+                $request->set('postal', $response->getValue('address.postal-code'));
+                $request->set('street', $response->getValue('address.street'));
+                $request->set('house', $response->getValue('address.house'));
+            }
+        }
+
+        /* @todo Remove debug code AskAction.class.php from 10.12.2012 */
+        $__logger=AgaviContext::getInstance()->getLoggerManager();
+        $__logger->log(__METHOD__.":".__LINE__." : ".__FILE__,AgaviILogger::DEBUG);
+        $__logger->log(print_r($request->toArray(),1),AgaviILogger::DEBUG);
 
         $backend = new GeoBackendHaKoDe();
         $backend->query($request);
         $backend->fillResponse($response);
+
+        if (! $response->isFilled())
+        {
+            $yahoo = new GeoBackendYahoo();
+            $yahoo->query($request);
+            $yahoo->fillResponse($response);
+        }
+
+        $cache->put($cacheRequest, $response);
 
         $this->setAttribute('response', $response);
 

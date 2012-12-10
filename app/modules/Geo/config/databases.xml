@@ -4,6 +4,7 @@
 
     <ae:configuration>
         <databases default="HaKoDe">
+        
             <database name="HaKoDe" class="ElasticSearchDatabase">
                 <ae:parameter name="host">127.0.0.1</ae:parameter>
                 <ae:parameter name="port">9200</ae:parameter>
@@ -16,7 +17,18 @@
                 <!-- unzipped CSV File from SenStadt -->
                 <ae:parameter name="hakode_file">%core.app_dir%/../etc/local/HKO_BerlinonlineETRS89_120413.txt_plusPOST</ae:parameter>
             </database>
+        
+            <database name="geocache" class="ElasticSearchDatabase">
+                <ae:parameter name="host">127.0.0.1</ae:parameter>
+                <ae:parameter name="port">9200</ae:parameter>
+                <ae:parameter name="transport">Http</ae:parameter>
+                <ae:parameter name="index">
+                    <ae:parameter name="name">geocache</ae:parameter>
+                    <ae:parameter name="module">Geo</ae:parameter>
+                    <ae:parameter name="setup_class">GeoCache</ae:parameter>
+                </ae:parameter>
+            </database>
+            
         </databases>
     </ae:configuration>
-
 </ae:configurations>

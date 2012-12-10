@@ -40,20 +40,6 @@ class GeoBackendHaKoDe extends GeoBackendBase
             $type = 'house';
         }
 
-        if ($request->has('street'))
-        {
-            $where = mb_strtolower($request->get('street'), 'UTF-8');
-            $search = new Elastica_Query_Text();
-            $search->setFieldQuery('stn', preg_replace('/str(asse|\.)?\b/i', 'straße', $where));
-            $search->setFieldParam('stn', 'fuzziness', 0.9);
-            $search->setFieldParam('stn', 'operator', 'and');
-            $boolQuery->addMust($search);
-            if (empty($type))
-            {
-                $type = 'street';
-            }
-        }
-
         if ($request->has('house'))
         {
             $where = mb_strtolower($request->get('house'), 'UTF-8');
@@ -76,6 +62,20 @@ class GeoBackendHaKoDe extends GeoBackendBase
             if (empty($type))
             {
                 $type = 'house';
+            }
+        }
+
+        if ($request->has('street'))
+        {
+            $where = mb_strtolower($request->get('street'), 'UTF-8');
+            $search = new Elastica_Query_Text();
+            $search->setFieldQuery('stn', preg_replace('/str(asse|\.)?\b/i', 'straße', $where));
+            $search->setFieldParam('stn', 'fuzziness', 0.9);
+            $search->setFieldParam('stn', 'operator', 'and');
+            $boolQuery->addMust($search);
+            if (empty($type))
+            {
+                $type = 'street';
             }
         }
 
@@ -149,6 +149,10 @@ class GeoBackendHaKoDe extends GeoBackendBase
      */
     public function fillResponse(GeoResponse $response)
     {
+        if (empty($this->data['list'][0]['_source']))
+        {
+            return FALSE;
+        }
         $itemOne = $this->data['list'][0]['_source'];
 
         $response->setValue('meta.source', self::BACKEND);
@@ -200,6 +204,8 @@ class GeoBackendHaKoDe extends GeoBackendBase
             $response->setValue('location.accuracy', GeoResponse::ACCURACY_FINE);
             break;
         }
+
+        return TRUE;
     }
 
 
