@@ -10,6 +10,7 @@
             
             <suite name="GeoUnit">
                 <testfiles>
+                    <testfile>unit/Geo/AddressParserTest.php</testfile>
                     <testfile>unit/Geo/GeoResponseTest.php</testfile>
                 </testfiles>
             </suite>

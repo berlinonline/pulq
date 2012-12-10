@@ -10,8 +10,26 @@
 class AddressParser
 {
 
-    protected static $_pregStopWords =
-        '#^((bildungsweg|sponsoring|ehering|müntefering|anstieg|arbeitsweg|lebensweg|fußweg|vorweg|der|die|das|den|des|dem|ein|eine|einer|eines|einem|gleich[^\s]+|offener|zu(r|m))[^\w])|((park|sport|stell|spiel|liege)platz)|((geh|heim|schul)weg)|((autobahn|fußgänger)brücke)|((getränke|super|elektrofach)markt)#iu';
+    protected static $stopWords =
+        array(
+            '(arbeits|bildungs|fuß|geh|heim|lebens|schul|vor)weg',
+            '(sponsor|ehe|müntefe)ring',
+            'anstieg',
+            'der',
+            'die',
+            'das',
+            'den',
+            'des',
+            'dem',
+            'eine?',
+            'eine(r|s|m)',
+            'gleich',
+            'offener',
+            'zu(r|m)',
+            '(park|sport|stell|spiel|liege)platz',
+            '(autobahn|fußgänger)brücke',
+            '(getränke|super|elektrofach)markt'
+        );
 
     protected static $_pregCities =
         array(
@@ -52,8 +70,8 @@ class AddressParser
                 '([^\s]+)münde',
                 '([^\s]+)walde',
                 '(nenn)hausen',
-                #'([^\s]+)felde',
-                #'([^\s]+)dorf',
+            #'([^\s]+)felde',
+            #'([^\s]+)dorf',
             )
         );
     protected static $_pregStreets =
@@ -75,7 +93,7 @@ class AddressParser
                 'reeperbahn',
             ),
             1 => array(
-                '(straße|platz) (der|des) [^\s]+',
+                '(straße|platz)\s+(der|des)\s+\w+',
                 '\w+\s*stra(ss|ß)e',
                 '\w+\s*str\.?',
                 '\w+\s*ring',
@@ -92,13 +110,7 @@ class AddressParser
                 '\w+twete',
             ),
             2 => array(
-                '\S+\s*platz',
-                '\S+\s*markt',
-                '\S+\s*kamp',
-                '\S+\s*ufer',
-                '\S+h(e|a)ide',
-                '\S+\s*deich',
-                '\S+\s*plaza',
+                '\S+\s*platz', '\S+\s*markt', '\S+\s*kamp', '\S+\s*ufer', '\S+h(e|a)ide', '\S+\s*deich', '\S+\s*plaza',
             ),
             3 => array(
                 '(charlotten|rummels)burg',
@@ -154,19 +166,14 @@ class AddressParser
                 'volksdorf',
             ),
             4 => array(
-                '([^\s]+)\s*park',
-                '([^\s]+)\s*weg',
-                '([^\s]+)\s*tunnel',
-                '([^\s]+)\s*bahnhof',
-                '([^\s]+)\s*brücke',
-                '([^\s]+)\s*see',
+                '\w+\s*park', '\w+\s*weg', '\w+\s*tunnel', '\w+\s*bahnhof', '\w+\s*brücke', '\w+\s*see',
             ),
         );
 
 
     protected static $_pregCitiesReplace =
         array(
-            '/wunschstadtMatch/' => 'Wunschstadt', '/frankfurt \(o.\)/' => 'Frankfurt (Oder)',
+            '/wunschstadtMatch/' => 'Wunschstadt', '/frankfurt\s*\(o.\)/' => 'Frankfurt (Oder)',
         );
 
 
@@ -238,19 +245,13 @@ class AddressParser
         {
             $street = str_replace(')', '', $street);
             $street = str_replace('(', '', $street);
-            preg_match_all('/.{0,50}' . preg_quote($street) . '.{0,50}/sim', $description, $match);
+            preg_match_all('/.{0,30}' . preg_quote($street) . '.{0,30}/sim', $description, $match);
             foreach ($match[0] as $extractedItem)
             {
-                preg_match('/\d{5}/sim', $extractedItem, $tmp);
-                if (!empty($tmp[0]))
+                if (preg_match('/\d{5}/sim', $extractedItem, $tmp))
                 {
-                    array_push($result, $tmp[0]);
+                    return $tmp[0];
                 }
-            }
-            if (!empty($result))
-            {
-                $result = array_unique($result);
-                return trim($result[0]);
             }
         }
         return false;
@@ -263,15 +264,18 @@ class AddressParser
      */
     public static function extractStreet($description)
     {
+        $pregStopWords = '/^(' . join('|', self::$stopWords) . ')\b/uis';
         foreach (self::$_pregStreets as $precision => $regs)
         {
             $preg = '#\b(' . implode('|', $regs) . ')\b#isu';
-            if (preg_match($preg, $description, $matches))
+            if (preg_match_all($preg, $description, $matches, PREG_PATTERN_ORDER))
             {
-                $place = $matches[1];
-                if (!preg_match(self::$_pregStopWords, $place))
+                foreach ($matches[1] as $candidate)
                 {
-                    return $place;
+                    if (!preg_match($pregStopWords, $candidate))
+                    {
+                        return $candidate;
+                    }
                 }
             }
         }
