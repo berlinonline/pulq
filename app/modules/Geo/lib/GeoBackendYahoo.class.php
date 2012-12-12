@@ -9,8 +9,18 @@
  */
 class GeoBackendYahoo extends GeoBackendBase
 {
+    const BACKEND = 'yahoo';
+
+    /**
+     *
+     * @var array current yahoo api response
+     */
     protected $data = NULL;
 
+    /**
+     *
+     * @var array translation map between yahoo api fields and georesponse fields
+     */
     protected $addressMap =
         array(
             'house' => 'address.house',
@@ -48,7 +58,7 @@ class GeoBackendYahoo extends GeoBackendBase
                 'q' => preg_replace('/str\.?\b/i', 'straße', $request->get('query'))
             );
 
-        foreach ($req->toArray() as $key => $value)
+        foreach ($request->toArray() as $key => $value)
         {
             if (preg_match('/^(?:country|city|postal|street|house)$/', $key) && !empty($value))
             {
@@ -76,7 +86,7 @@ class GeoBackendYahoo extends GeoBackendBase
 
         curl_close($ch);
         $data = json_decode($resp, TRUE);
-        if (!is_array($data) || json_last_error() != JSON_ERROR_NONE)
+        if (!isset($data['ResultSet']) || json_last_error() != JSON_ERROR_NONE)
         {
             $__logger = AgaviContext::getInstance()->getLoggerManager();
             $__logger->log(__METHOD__ . ":" . __LINE__ . " : " . __FILE__, AgaviILogger::ERROR);
@@ -85,7 +95,8 @@ class GeoBackendYahoo extends GeoBackendBase
             throw new GeoException('No valid json response from yahoo api!', GeoException::INVALID_BACKEND_RESPONSE);
         }
 
-        if (!array_key_exists('Error', $data) || $data['Error'] !== 0)
+        $resultSet = $data['ResultSet'];
+        if (!array_key_exists('Error', $resultSet) || $resultSet['Error'] !== 0)
         {
             $__logger = AgaviContext::getInstance()->getLoggerManager();
             $__logger->log(__METHOD__ . ":" . __LINE__ . " : " . __FILE__, AgaviILogger::ERROR);
@@ -103,7 +114,7 @@ class GeoBackendYahoo extends GeoBackendBase
             throw new GeoException('No valid json response from yahoo api!', GeoException::INVALID_BACKEND_RESPONSE);
         }
 
-        $this->data = $data;
+        $this->data = $resultSet;
         return TRUE;
     }
 
@@ -121,9 +132,14 @@ class GeoBackendYahoo extends GeoBackendBase
             throw new GeoException('Empty response', GeoException::INTERNAL_ERROR);
         }
 
+        if (empty($this->data['Results']))
+        {
+            return FALSE;
+        }
+
         $result = $this->data['Results'][0];
 
-        $response->setValue('meta.source', 'yahoo');
+        $response->setValue('meta.source', self::BACKEND);
         $response->setValue('meta.timestamp', time() * 1000);
         $response->setValue('meta.date', date(DATE_ISO8601));
         $response->setValue('meta.cache', FALSE);

@@ -9,26 +9,35 @@
  */
 class GeoCache implements IDatabaseSetup
 {
+    const DEFAULT_MAX_AGE = 2592000;
+
     const ES_TYPE = 'cache';
 
     /**
      * try to get response from cache
      *
      * @param GeoRequest $req
+     * @param int $max_age maximum age of cached response in seconds
      * @return GeoResponse
      */
-    public function fetch(GeoRequest $req)
+    public function fetch(GeoRequest $req, $max_age = self::DEFAULT_MAX_AGE)
     {
+        if ($max_age <= 0)
+        {
+            return NULL;
+        }
+
         $elastica = $this->getEsIndex();
         try
         {
             $cache = $elastica->getType(self::ES_TYPE)
                     ->getDocument($req->hash());
             $data = $cache->getData();
-            /* @todo Remove debug code GeoCache.class.php from 04.12.2012 */
-            $__logger = AgaviContext::getInstance()->getLoggerManager();
-            $__logger->log(__METHOD__ . ":" . __LINE__ . " : " . __FILE__, AgaviILogger::DEBUG);
-            $__logger->log(print_r($data, 1), AgaviILogger::DEBUG);
+            if (!isset($data['response']['meta']['timestamp'])
+                || ($data['response']['meta']['timestamp'] / 1000) < (time() - $max_age))
+            {
+                return NULL;
+            }
 
             $response = GeoResponse::getInstanceForResult($data['response']);
             return $response;
@@ -48,9 +57,8 @@ class GeoCache implements IDatabaseSetup
      */
     public function put(GeoRequest $req, GeoResponse $resp)
     {
-        $data =
-            array(
-                'id' => $req->hash(), 'request' => $req->toArray(), 'response' => $resp->toArray()
+        $data = array(
+                'request' => $req->toArray(), 'response' => $resp->toArray()
             );
         $doc = new Elastica_Document($req->hash(), $data);
 
@@ -77,7 +85,8 @@ class GeoCache implements IDatabaseSetup
         $alias = $elastica->getName();
         $esIndex->addAlias($alias, TRUE);
 
-        $indexNames = $db->getConnection()->getStatus()
+        $indexNames = $db->getConnection()
+                ->getStatus()
                 ->getIndexNames();
 
         $indexNames =
@@ -181,13 +190,10 @@ class GeoCache implements IDatabaseSetup
                             "_source" => array(
                                 "enabled" => true
                             ),
+                            "_timestamp" => array(
+                                "enabled" => true, "path" => "response.meta.date"
+                            ),
                             "properties" => array(
-                                "id" => array(
-                                    "type" => "string", "index" => "not_analyzed"
-                                ),
-                                "_timestamp" => array(
-                                    "enabled" => true
-                                ),
                                 "request" => array(
                                     "type" => "object",
                                     "properties" => array(
@@ -214,14 +220,24 @@ class GeoCache implements IDatabaseSetup
                                 "response" => array(
                                     "type" => "object",
                                     "properties" => array(
-                                        "source" => array(
-                                            "type" => "string", "index" => "not_analyzed"
-                                        ),
-                                        "formatted" => array(
-                                            "type" => "string", "index" => "not_analyzed"
-                                        ),
                                         "location" => array(
-                                            "type" => "geo_point"
+                                            "type" => "object",
+                                            "properties" => array(
+                                                "wgs84" => array(
+                                                    "type" => "geo_point"
+                                                )
+                                            )
+                                        ),
+                                        "meta" => array(
+                                            "type" => "object",
+                                            "properties" => array(
+                                                "source" => array(
+                                                    "type" => "string", "index" => "not_analyzed"
+                                                ),
+                                                "date" => array(
+                                                    "type" => "date"
+                                                ),
+                                            )
                                         )
                                     )
                                 )

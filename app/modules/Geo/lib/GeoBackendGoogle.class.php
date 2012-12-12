@@ -9,9 +9,18 @@
  */
 class GeoBackendGoogle extends GeoBackendBase
 {
+    const BACKEND = "google";
 
+    /**
+     *
+     * @var array current google api response
+     */
     protected $data = NULL;
 
+    /**
+     *
+     * @var array translation table between google api response type names and georesponse field names
+     */
     protected $addressMap =
         array(
             'street_number' => 'address.house',
@@ -24,10 +33,13 @@ class GeoBackendGoogle extends GeoBackendBase
             'postal_code' => 'address.postal-code'
         );
 
+    /**
+     *
+     * @var unknown_type
+     */
     protected $componentsMap =
         array(
             'country' => 'country', 'city' => 'locality', 'postal' => 'postal_code', 'street' => 'route',
-        // 'house' => FALSE
         );
 
     protected $accuracyMap =
@@ -68,8 +80,8 @@ class GeoBackendGoogle extends GeoBackendBase
             {
                 $components[] = $this->componentsMap[$key] . ":$value";
             }
-            $params['components'] = join('|', $components);
         }
+        $params['components'] = join('|', $components);
 
         $url = 'http://maps.googleapis.com/maps/api/geocode/json?' . http_build_query($params);
         $ch = $this->curl_init($url);
@@ -88,6 +100,11 @@ class GeoBackendGoogle extends GeoBackendBase
             throw new GeoException($error, GeoException::NETWORK_ERROR);
         }
 
+        $__logger = AgaviContext::getInstance()->getLoggerManager();
+        $__logger->log(__METHOD__ . ":" . __LINE__ . " : " . __FILE__, AgaviILogger::DEBUG);
+        $__logger->log($url, AgaviILogger::DEBUG);
+        $__logger->log($resp, AgaviILogger::DEBUG);
+
         curl_close($ch);
 
         $data = json_decode($resp, TRUE);
@@ -100,7 +117,7 @@ class GeoBackendGoogle extends GeoBackendBase
             throw new GeoException('No valid json response from google api!', GeoException::INVALID_BACKEND_RESPONSE);
         }
 
-        if (!array_key_exists('status', $data) || $data['status'] != 'OK')
+        if (!array_key_exists('status', $data) || ($data['status'] != 'OK' && $data['status'] != 'ZERO_RESULTS'))
         {
             $__logger = AgaviContext::getInstance()->getLoggerManager();
             $__logger->log(__METHOD__ . ":" . __LINE__ . " : " . __FILE__, AgaviILogger::ERROR);
@@ -128,7 +145,7 @@ class GeoBackendGoogle extends GeoBackendBase
         }
         $data = $this->data['results'][0];
 
-        $response->setValue('meta.source', 'google');
+        $response->setValue('meta.source', self::BACKEND);
         $response->setValue('meta.timestamp', time() * 1000);
         $response->setValue('meta.date', date(DATE_ISO8601));
 

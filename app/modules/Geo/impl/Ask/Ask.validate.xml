@@ -5,21 +5,21 @@
     <ae:configuration>
 
         <validators>
-        
+
             <validator class="number" required="false">
                 <argument>api</argument>
                 <ae:parameter name="type">int</ae:parameter>
                 <ae:parameter name="min">1</ae:parameter>
                 <error>Parameter 'api' must be a positive number greater 0.</error>
             </validator>
-            
+
             <validator class="number" required="false">
                 <argument>max-age</argument>
                 <ae:parameter name="type">int</ae:parameter>
                 <ae:parameter name="min">0</ae:parameter>
                 <error>Parameter 'max-age' must be a positive number greater equal 0. </error>
             </validator>
-            
+
             <validator class="or">
                 <validators>
                     <validator class="string">
@@ -52,6 +52,12 @@
                         <ae:parameter name="trim">TRUE</ae:parameter>
                     </validator>
                 </validators>
+            </validator>
+
+            <validator class="regex" required="FALSE">
+                <argument>backends</argument>
+                <error>Parameter 'backends' must contain filter expression: (!)source,…</error>
+                <ae:parameter name="pattern">/^\!?(google|yahoo|hakode)(,\!?(google|yahoo|hakode))*$/</ae:parameter>
             </validator>
         </validators>
 

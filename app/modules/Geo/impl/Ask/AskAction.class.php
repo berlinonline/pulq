@@ -10,6 +10,10 @@
 class Geo_AskAction extends ProjectGeoBaseAction
 {
 
+    protected $validBackends =
+        array(
+            GeoBackendGoogle::BACKEND => TRUE, GeoBackendYahoo::BACKEND => TRUE, GeoBackendHaKoDe::BACKEND => TRUE
+        );
 
     /**
      * Handles the Read request method.
@@ -27,75 +31,99 @@ class Geo_AskAction extends ProjectGeoBaseAction
     public function executeRead(AgaviRequestDataHolder $rd)
     {
         /* @todo Remove debug code AskAction.class.php from 07.12.2012 */
-        $__logger=AgaviContext::getInstance()->getLoggerManager();
-        $__logger->log(__METHOD__.":".__LINE__." : ".__FILE__,AgaviILogger::DEBUG);
-        $__logger->log(print_r($rd->getParameters(),1),AgaviILogger::DEBUG);
+        $__logger = AgaviContext::getInstance()->getLoggerManager();
+        $__logger->log(__METHOD__ . ":" . __LINE__ . " : " . __FILE__, AgaviILogger::DEBUG);
+        $__logger->log(print_r($rd->getParameters(), 1), AgaviILogger::DEBUG);
 
-        if ($rd->hasParameter('q'))
-        {
-            $parsed = AddressParser::parse($rd->getParameter('q'));
-            if (is_array($parsed))
-            {
-                $request = GeoRequest::getInstanceForApi($parsed, $rd->getParameter('api', 1));
-            }
-            else
-            {
-                $request =
-                    GeoRequest::getInstanceForApi(array(
-                        'query' => $rd->getParameter('q')
-                    ), $rd->getParameter('api', 1));
-            }
-        }
-
-        foreach (array('country', 'city', 'street', 'house') as $pkey)
-        {
-            if ($rd->hasParameter($pkey))
-            {
-                $request->set($pkey, $rd->getParameter($pkey));
-            }
-        }
-
-        /* @todo Remove debug code AskAction.class.php from 10.12.2012 */
-        $__logger=AgaviContext::getInstance()->getLoggerManager();
-        $__logger->log(__METHOD__.":".__LINE__." : ".__FILE__,AgaviILogger::DEBUG);
-        $__logger->log(print_r($request->toArray(),1),AgaviILogger::DEBUG);
+        $this->prepareValidBackends($rd);
+        $request = $this->buildRequest($rd);
 
         $cache = new GeoCache();
         $cacheRequest = clone $request;
-        $response = $cache->fetch($cacheRequest);
-        if (! $response)
+        $response = $cache->fetch($cacheRequest, $rd->getParameter('max-age', GeoCache::DEFAULT_MAX_AGE));
+        if ($response)
         {
-            $response = GeoResponse::getInstanceForApi($rd->getParameter('api', 1));
-            if (! $request->isParsed())
+            $this->setAttribute('response', $response);
+            return 'Success';
+        }
+
+        $response = GeoResponse::getInstanceForApi($rd->getParameter('api', 1));
+        if (!$request->isParsed() && $this->validBackends[GeoBackendGoogle::BACKEND])
+        {
+            try
             {
                 $google = new GeoBackendGoogle();
                 $google->query($request);
                 $google->fillResponse($response);
-
-                // refine the actual request for the HaKaDe query
-                $request->set('query', '');
-                $request->set('country', $response->getValue('address.country'));
-                $request->set('city', $response->getValue('address.municipality'));
-                $request->set('postal', $response->getValue('address.postal-code'));
-                $request->set('street', $response->getValue('address.street'));
-                $request->set('house', $response->getValue('address.house'));
             }
+            catch (GeoException $e)
+            {
+                $__logger = AgaviContext::getInstance()->getLoggerManager();
+                $__logger->log(__METHOD__ . ":" . __LINE__ . " : " . __FILE__, AgaviILogger::ERROR);
+                $__logger->log(print_r($e, 1), AgaviILogger::ERROR);
+            }
+
+            // refine the actual request for the HaKaDe query
+            $request->set('query', '');
+            $request->set('country', $response->getValue('address.country'));
+            $request->set('city', $response->getValue('address.municipality'));
+            $request->set('postal', $response->getValue('address.postal-code'));
+            $request->set('street', $response->getValue('address.street'));
+            $request->set('house', $response->getValue('address.house'));
         }
 
         /* @todo Remove debug code AskAction.class.php from 10.12.2012 */
-        $__logger=AgaviContext::getInstance()->getLoggerManager();
-        $__logger->log(__METHOD__.":".__LINE__." : ".__FILE__,AgaviILogger::DEBUG);
-        $__logger->log(print_r($request->toArray(),1),AgaviILogger::DEBUG);
+        $__logger = AgaviContext::getInstance()->getLoggerManager();
+        $__logger->log(__METHOD__ . ":" . __LINE__ . " : " . __FILE__, AgaviILogger::DEBUG);
+        $__logger->log(print_r($request->toArray(), 1), AgaviILogger::DEBUG);
 
-        $backend = new GeoBackendHaKoDe();
-        $backend->query($request);
-        $backend->fillResponse($response);
-
-        if (! $response->isFilled())
+        if (('' == $request->get('city') || 'Berlin' == $request->get('city')
+            || preg_match('/\bBerlin\b/i', $request->get('query'))) && $this->validBackends[GeoBackendHaKoDe::BACKEND])
         {
-            $yahoo = new GeoBackendYahoo();
-            $yahoo->query($request);
-            $yahoo->fillResponse($response);
+            try
+            {
+                $backend = new GeoBackendHaKoDe();
+                $backend->query($request);
+                $backend->fillResponse($response);
+            }
+            catch (GeoException $e)
+            {
+                $__logger = AgaviContext::getInstance()->getLoggerManager();
+                $__logger->log(__METHOD__ . ":" . __LINE__ . " : " . __FILE__, AgaviILogger::ERROR);
+                $__logger->log($e->__toString(), AgaviILogger::ERROR);
+            }
+        }
+
+        if (!$response->isFilled() && $this->validBackends[GeoBackendGoogle::BACKEND])
+        {
+            try
+            {
+                $google = new GeoBackendGoogle();
+                $google->query($request);
+                $google->fillResponse($response);
+            }
+            catch (GeoException $e)
+            {
+                $__logger = AgaviContext::getInstance()->getLoggerManager();
+                $__logger->log(__METHOD__ . ":" . __LINE__ . " : " . __FILE__, AgaviILogger::ERROR);
+                $__logger->log($e->__toString(), AgaviILogger::ERROR);
+            }
+        }
+
+        if (!$response->isFilled() && $this->validBackends[GeoBackendYahoo::BACKEND])
+        {
+            try
+            {
+                $yahoo = new GeoBackendYahoo();
+                $yahoo->query($request);
+                $yahoo->fillResponse($response);
+            }
+            catch (GeoException $e)
+            {
+                $__logger = AgaviContext::getInstance()->getLoggerManager();
+                $__logger->log(__METHOD__ . ":" . __LINE__ . " : " . __FILE__, AgaviILogger::ERROR);
+                $__logger->log($e->__toString(), AgaviILogger::ERROR);
+            }
         }
 
         $cache->put($cacheRequest, $response);
@@ -120,7 +148,88 @@ class Geo_AskAction extends ProjectGeoBaseAction
      */
     public function executeWrite(AgaviRequestDataHolder $rd)
     {
-        return 'Success';
+        $this->executeRead($rd);
+    }
+
+
+    /**
+     *
+     *
+     * @param AgaviRequestDataHolder $rd
+     */
+    protected function buildRequest(AgaviRequestDataHolder $rd)
+    {
+        $request = NULL;
+        if ($rd->hasParameter('q'))
+        {
+            $parsed = AddressParser::parse($rd->getParameter('q'));
+            if (is_array($parsed))
+            {
+                $request =
+                    GeoRequest::getInstanceForApi(
+                        array_merge(
+                            array(
+                                'query' => $rd->getParameter('q')
+                            ), $parsed), $rd->getParameter('api', 1));
+            }
+        }
+
+        if (!$request)
+        {
+            $request =
+                GeoRequest::getInstanceForApi(
+                    array(
+                        'query' => $rd->getParameter('q')
+                    ), $rd->getParameter('api', 1));
+        }
+
+        foreach (array(
+            'country', 'city', 'street', 'house'
+        ) as $pkey)
+        {
+            if ($rd->hasParameter($pkey))
+            {
+                $request->set($pkey, $rd->getParameter($pkey));
+            }
+        }
+
+        /* @todo Remove debug code AskAction.class.php from 10.12.2012 */
+        $__logger = AgaviContext::getInstance()->getLoggerManager();
+        $__logger->log(__METHOD__ . ":" . __LINE__ . " : " . __FILE__, AgaviILogger::DEBUG);
+        $__logger->log(print_r($request->toArray(), 1), AgaviILogger::DEBUG);
+
+        return $request;
+    }
+
+
+    /**
+     *
+     *
+     * @param AgaviRequestDataHolder $rd
+     */
+    protected function prepareValidBackends(AgaviRequestDataHolder $rd)
+    {
+        if ($rd->hasParameter('backends'))
+        {
+            $white = array();
+            $black = array();
+            foreach (explode(',', $rd->getParameter('backends')) as $def)
+            {
+                if ($def[0] == '!')
+                {
+                    $black[substr($def, 1)] = FALSE;
+                }
+                else
+                {
+                    $white[$def] = TRUE;
+                }
+            }
+            if (empty($white))
+            {
+                $white = $this->validBackends;
+            }
+            $this->validBackends = array_merge($white, $black);
+        }
     }
 }
 
