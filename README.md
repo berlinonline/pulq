@@ -16,12 +16,14 @@ Dependencies
 
 * MySQL - for the user service 
 * elasticsearch - for geo service 
+* etc/local/HKO_BerlinonlineETRS89_120413.txt_plusPOST - Haus-Koordinaten-Deutschland data for Berlin
 
 Setup 
 ----- 
 
 	bin/configure-env --init 
 	bin/cli pulq.database -db geocache -action create 
+	bin/cli pulq.database -db HaKoDe -action create
 
 Apache Konfiguration 
 -------------------- 
