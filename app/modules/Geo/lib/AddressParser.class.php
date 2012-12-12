@@ -267,7 +267,7 @@ class AddressParser
         $pregStopWords = '/^(' . join('|', self::$stopWords) . ')\b/uis';
         foreach (self::$_pregStreets as $precision => $regs)
         {
-            $preg = '#\b(' . implode('|', $regs) . ')\b#isu';
+            $preg = '#\b(' . implode('|', $regs) . ')(\b|(?= )|$)#isu';
             if (preg_match_all($preg, $description, $matches, PREG_PATTERN_ORDER))
             {
                 foreach ($matches[1] as $candidate)

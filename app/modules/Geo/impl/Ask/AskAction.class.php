@@ -30,11 +30,6 @@ class Geo_AskAction extends ProjectGeoBaseAction
      */
     public function executeRead(AgaviRequestDataHolder $rd)
     {
-        /* @todo Remove debug code AskAction.class.php from 07.12.2012 */
-        $__logger = AgaviContext::getInstance()->getLoggerManager();
-        $__logger->log(__METHOD__ . ":" . __LINE__ . " : " . __FILE__, AgaviILogger::DEBUG);
-        $__logger->log(print_r($rd->getParameters(), 1), AgaviILogger::DEBUG);
-
         $this->prepareValidBackends($rd);
         $request = $this->buildRequest($rd);
 
@@ -71,11 +66,6 @@ class Geo_AskAction extends ProjectGeoBaseAction
             $request->set('street', $response->getValue('address.street'));
             $request->set('house', $response->getValue('address.house'));
         }
-
-        /* @todo Remove debug code AskAction.class.php from 10.12.2012 */
-        $__logger = AgaviContext::getInstance()->getLoggerManager();
-        $__logger->log(__METHOD__ . ":" . __LINE__ . " : " . __FILE__, AgaviILogger::DEBUG);
-        $__logger->log(print_r($request->toArray(), 1), AgaviILogger::DEBUG);
 
         if (('' == $request->get('city') || 'Berlin' == $request->get('city')
             || preg_match('/\bBerlin\b/i', $request->get('query'))) && $this->validBackends[GeoBackendHaKoDe::BACKEND])
@@ -126,7 +116,10 @@ class Geo_AskAction extends ProjectGeoBaseAction
             }
         }
 
-        $cache->put($cacheRequest, $response);
+        if ($response->isFilled())
+        {
+            $cache->put($cacheRequest, $response);
+        }
 
         $this->setAttribute('response', $response);
 
@@ -192,11 +185,6 @@ class Geo_AskAction extends ProjectGeoBaseAction
                 $request->set($pkey, $rd->getParameter($pkey));
             }
         }
-
-        /* @todo Remove debug code AskAction.class.php from 10.12.2012 */
-        $__logger = AgaviContext::getInstance()->getLoggerManager();
-        $__logger->log(__METHOD__ . ":" . __LINE__ . " : " . __FILE__, AgaviILogger::DEBUG);
-        $__logger->log(print_r($request->toArray(), 1), AgaviILogger::DEBUG);
 
         return $request;
     }

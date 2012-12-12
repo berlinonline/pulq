@@ -96,21 +96,12 @@ class GeoBackendYahoo extends GeoBackendBase
         }
 
         $resultSet = $data['ResultSet'];
-        if (!array_key_exists('Error', $resultSet) || $resultSet['Error'] !== 0)
+        if (!array_key_exists('Error', $resultSet) || $resultSet['Error'] != 0)
         {
             $__logger = AgaviContext::getInstance()->getLoggerManager();
             $__logger->log(__METHOD__ . ":" . __LINE__ . " : " . __FILE__, AgaviILogger::ERROR);
             $__logger->log($url, AgaviILogger::ERROR);
-            $__logger->log(print_r($data, 1), AgaviILogger::ERROR);
-            throw new GeoException('No valid json response from yahoo api!', GeoException::INVALID_BACKEND_RESPONSE);
-        }
-
-        if (empty($this->data['Results'][0]))
-        {
-            $__logger = AgaviContext::getInstance()->getLoggerManager();
-            $__logger->log(__METHOD__ . ":" . __LINE__ . " : " . __FILE__, AgaviILogger::ERROR);
-            $__logger->log($url, AgaviILogger::ERROR);
-            $__logger->log(print_r($data, 1), AgaviILogger::ERROR);
+            $__logger->log(var_export($resultSet, 1), AgaviILogger::ERROR);
             throw new GeoException('No valid json response from yahoo api!', GeoException::INVALID_BACKEND_RESPONSE);
         }
 
@@ -142,7 +133,7 @@ class GeoBackendYahoo extends GeoBackendBase
         $response->setValue('meta.source', self::BACKEND);
         $response->setValue('meta.timestamp', time() * 1000);
         $response->setValue('meta.date', date(DATE_ISO8601));
-        $response->setValue('meta.cache', FALSE);
+        $response->setValue('meta.cached', FALSE);
 
         foreach ($this->data['Results'][0] as $key => $value)
         {
@@ -155,7 +146,7 @@ class GeoBackendYahoo extends GeoBackendBase
         $formatted =
             preg_replace('/,\s*,\s*/', ', ',
                 ($result['line1'] . ', ' . $result['line2'] . ', ' . $result['line3'] . ', ' . $result['line4']));
-        $response->setValue('address.formated', $formatted);
+        $response->setValue('address.formatted', $formatted);
         $response->setValue('meta.description', $formatted);
 
         if (($result['radius']/$result['quality']) < 6)

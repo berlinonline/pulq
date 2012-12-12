@@ -68,20 +68,24 @@ class GeoBackendGoogle extends GeoBackendBase
     {
         $this->data = NULL;
 
-        $params =
-            array(
-                'sensor' => 'false', 'language' => 'de_DE', 'address' => $req->get('query')
-            );
-
         $components = array();
+        $query = $req->get('query');
         foreach ($req->toArray() as $key => $value)
         {
             if (isset($this->componentsMap[$key]) && !empty($value))
             {
                 $components[] = $this->componentsMap[$key] . ":$value";
+                $query = str_ireplace($value, '', $query);
             }
         }
-        $params['components'] = join('|', $components);
+
+        $params =
+            array(
+                'sensor' => 'false',
+                'language' => 'de_DE',
+                'address' => trim($query),
+                'components' => join('|', $components)
+            );
 
         $url = 'http://maps.googleapis.com/maps/api/geocode/json?' . http_build_query($params);
         $ch = $this->curl_init($url);
@@ -103,7 +107,7 @@ class GeoBackendGoogle extends GeoBackendBase
         $__logger = AgaviContext::getInstance()->getLoggerManager();
         $__logger->log(__METHOD__ . ":" . __LINE__ . " : " . __FILE__, AgaviILogger::DEBUG);
         $__logger->log($url, AgaviILogger::DEBUG);
-        $__logger->log($resp, AgaviILogger::DEBUG);
+        //         $__logger->log($resp, AgaviILogger::DEBUG);
 
         curl_close($ch);
 

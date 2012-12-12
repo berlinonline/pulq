@@ -60,6 +60,12 @@ class GeoCache implements IDatabaseSetup
         $data = array(
                 'request' => $req->toArray(), 'response' => $resp->toArray()
             );
+
+        /* @todo Remove debug code GeoCache.class.php from 12.12.2012 */
+        $__logger=AgaviContext::getInstance()->getLoggerManager();
+        $__logger->log(__METHOD__.":".__LINE__." : ".__FILE__,AgaviILogger::DEBUG);
+        $__logger->log(print_r($data,1),AgaviILogger::DEBUG);
+
         $doc = new Elastica_Document($req->hash(), $data);
 
         $elastica = $this->getEsIndex();
