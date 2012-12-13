@@ -73,12 +73,7 @@ class GeoBackendGoogle extends GeoBackendBase
         $query = $req->get('query');
         foreach ($req->toArray() as $key => $value)
         {
-            if (isset($this->componentsMap[$key]) && !empty($value))
-            {
-                $components[] = $this->componentsMap[$key] . ":$value";
-                $query = str_ireplace($value, '', $query);
-            }
-            else if (!empty ($value) && FALSE === strpos($query, $value))
+            if (!empty ($value) && FALSE === strpos($query, $value))
             {
                 $query .= ', ' . $value;
             }
