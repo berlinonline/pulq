@@ -26,43 +26,24 @@ class GeoBackendHaKoDe extends GeoBackendBase
         $esIndex = $db->getResource();
 
         $boolQuery = new Elastica_Query_Bool();
-        $boolFilter = new Elastica_Filter_Bool();
         $type = NULL;
-
-        if ($request->has('query'))
-        {
-            $where = mb_strtolower($request->get('query'), 'UTF-8');
-            $search = new Elastica_Query_Text();
-            $search->setFieldQuery('_all', preg_replace('/str\.?\b/i', 'straße', $where));
-            $search->setFieldParam('_all', 'fuzziness', 0.9);
-            $search->setFieldParam('_all', 'operator', 'and');
-            $boolQuery->addMust($search);
-            $type = 'house';
-        }
 
         if ($request->has('house'))
         {
             $where = mb_strtolower($request->get('house'), 'UTF-8');
             if (preg_match('/(\d+)\s*(\w*)/', $where, $m))
             {
-                $boolFilter->addMust(
-                        new Elastica_Filter_Term(
-                            array(
-                                'hnr' => $m[1]
-                            )));
+                $boolQuery->addMust(new Elastica_Query_Term(array(
+                        'hnr' => $m[1]
+                    )));
                 if (!empty($m[2]))
                 {
-                    $boolFilter->addMust(
-                            new Elastica_Filter_Term(
-                                array(
-                                    'adz' => $m[2]
-                                )));
+                    $boolQuery->addMust(new Elastica_Query_Term(array(
+                            'adz' => $m[2]
+                        )));
                 }
             }
-            if (empty($type))
-            {
-                $type = 'house';
-            }
+            $type = 'house';
         }
 
         if ($request->has('street'))
@@ -82,9 +63,10 @@ class GeoBackendHaKoDe extends GeoBackendBase
         if ($request->has('postal'))
         {
             $where = mb_strtolower($request->get('postal'), 'UTF-8');
-            $boolFilter->addMust(new Elastica_Filter_Term(array(
+            $search = new Elastica_Query_Term(array(
                     'plz' => $where
-                )));
+                ));
+            $boolQuery->addMust($search);
             if (empty($type))
             {
                 $type = 'plz';
@@ -94,13 +76,27 @@ class GeoBackendHaKoDe extends GeoBackendBase
         if ($request->has('district'))
         {
             $where = mb_strtolower($request->get('pot'), 'UTF-8');
-            $boolFilter->addMust(new Elastica_Filter_Term(array(
-                    'pot' => $where
-                )));
+            $search = new Elastica_Query_Text();
+            $search->setFieldQuery('pot', $where);
+            $search->setFieldParam('pot', 'fuzziness', 0.9);
+            $search->setFieldParam('pot', 'operator', 'and');
+            $boolQuery->addMust($search);
             if (empty($type))
             {
                 $type = 'pot';
             }
+        }
+
+        if ($request->has('query'))
+        {
+            $where = mb_strtolower($request->get('query'), 'UTF-8');
+            $search = new Elastica_Query_Text();
+            $search->setFieldQuery('_all', preg_replace('/str\.?\b/i', 'straße', $where));
+            $search->setFieldParam('_all', 'fuzziness', 0.9);
+            // if any structured query use 'or' to better match text queries
+            $search->setFieldParam('_all', 'operator', ($type ? 'or' : 'and'));
+            $boolQuery->addMust($search);
+            $type = 'house';
         }
 
         $boolQuery->addMust(new Elastica_Query_Term(array(
@@ -110,11 +106,6 @@ class GeoBackendHaKoDe extends GeoBackendBase
         $query = new Elastica_Query($boolQuery);
         $query->setMinScore(0.99);
         $query->setSize(1);
-        $bfArray = $boolFilter->toArray();
-        if (!empty($bfArray['bool']))
-        {
-            $query->setFilter($boolFilter);
-        }
 
         $list = array();
         try

@@ -2,6 +2,7 @@
 
 /**
  *
+ * Documentation at: https://developers.google.com/maps/documentation/geocoding/#GeocodingRequests
  *
  * @author tay
  * @since 14.11.2012
@@ -39,7 +40,7 @@ class GeoBackendGoogle extends GeoBackendBase
      */
     protected $componentsMap =
         array(
-            'country' => 'country', 'city' => 'locality', 'postal' => 'postal_code', 'street' => 'route',
+            'country' => 'country', 'city' => 'locality', 'postal' => 'postal_code'
         );
 
     protected $accuracyMap =
@@ -76,6 +77,10 @@ class GeoBackendGoogle extends GeoBackendBase
             {
                 $components[] = $this->componentsMap[$key] . ":$value";
                 $query = str_ireplace($value, '', $query);
+            }
+            else if (!empty ($value) && FALSE === strpos($query, $value))
+            {
+                $query .= ', ' . $value;
             }
         }
 
