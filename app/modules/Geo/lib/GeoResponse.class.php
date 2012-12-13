@@ -201,14 +201,28 @@ class GeoResponse
     }
 
     /**
+     * get response data as array for storing ing in cache
      *
+     * This is not a public interface function!
+     * @see toArray()
      *
      * @return multitype:multitype: multitype:string
      */
-    public function toArray()
+    public function _forCache()
     {
-        $this->result['meta']['class'] = get_class($this);
-        $this->result['meta']['cached'] = TRUE;
+        $result = $this->result;
+        $result['meta']['class'] = get_class($this);
+        $result['meta']['cached'] = TRUE;
+        return $result;
+    }
+
+    /**
+     * get response data as array
+     *
+     * @return multitype:multitype: multitype:string
+     */
+    public function toArray($forCache = FALSE)
+    {
         return $this->result;
     }
 

@@ -58,7 +58,7 @@ class GeoCache implements IDatabaseSetup
     public function put(GeoRequest $req, GeoResponse $resp)
     {
         $data = array(
-                'request' => $req->toArray(), 'response' => $resp->toArray()
+                'request' => $req->_forCache(), 'response' => $resp->_forCache()
             );
 
         /* @todo Remove debug code GeoCache.class.php from 12.12.2012 */

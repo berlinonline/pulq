@@ -152,4 +152,14 @@ class GeoRequest
     {
         return $this->req;
     }
+
+    /**
+     *
+     *
+     * @return multitype:
+     */
+    public function _forCache()
+    {
+        return $this->req;
+    }
 }
