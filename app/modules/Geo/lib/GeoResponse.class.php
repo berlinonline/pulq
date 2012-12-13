@@ -247,7 +247,7 @@ class GeoResponse
     public function buildCoordinates($longitude, $latitude)
     {
         return array(
-            'lon' => $longitude, 'lat' => $latitude
+            'lon' => (float)$longitude, 'lat' => (float)$latitude
         );
     }
 
