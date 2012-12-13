@@ -9,8 +9,16 @@
  */
 class GeoCache implements IDatabaseSetup
 {
+    /**
+     *
+     * default TTL for a cached response (30 * 24 * 3600)
+     */
     const DEFAULT_MAX_AGE = 2592000;
 
+    /**
+     *
+     * Elasticsearch type for cache items
+     */
     const ES_TYPE = 'cache';
 
     /**
@@ -61,11 +69,6 @@ class GeoCache implements IDatabaseSetup
                 'request' => $req->_forCache(), 'response' => $resp->_forCache()
             );
 
-        /* @todo Remove debug code GeoCache.class.php from 12.12.2012 */
-        $__logger=AgaviContext::getInstance()->getLoggerManager();
-        $__logger->log(__METHOD__.":".__LINE__." : ".__FILE__,AgaviILogger::DEBUG);
-        $__logger->log(print_r($data,1),AgaviILogger::DEBUG);
-
         $doc = new Elastica_Document($req->hash(), $data);
 
         $elastica = $this->getEsIndex();
@@ -87,8 +90,8 @@ class GeoCache implements IDatabaseSetup
         $esIndexName = $elastica->getName() . date('-ymd-Hi');
         $esIndex = $this->createIndex($elastica->getClient(), $esIndexName);
 
-        $esType = $esIndex->getType(self::ES_TYPE);
         $alias = $elastica->getName();
+        $this->copyIndex($elastica->getClient(), $alias, $esIndexName);
         $esIndex->addAlias($alias, TRUE);
 
         $indexNames = $db->getConnection()
@@ -127,6 +130,61 @@ class GeoCache implements IDatabaseSetup
         return AgaviView::NONE;
     }
 
+    /**
+     * copy old in index to new index
+     *
+     * @param Elastica_Client $elastica
+     * @param string $fromName name of source index
+     * @param string $toName name of destination index
+     * @param int $batchSize number of documents to copy at once; defaults to 1000
+     */
+    protected function copyIndex(Elastica_Client $elastica, $fromName, $toName, $batchSize = 1000)
+    {
+        $fromIndex = $elastica->getIndex($fromName);
+        $toIndex = $elastica->getIndex($toName);
+
+        echo "Try to copy old index '$fromName' to '$toName'\n";
+        try
+        {
+            $query = new Elastica_Query();
+            $query->setSize($batchSize);
+            for ($from = 0; TRUE; $from += $batchSize)
+            {
+                $query->setFrom($from);
+                $result = $fromIndex->search($query);
+                $hits = $result->getResults();
+                if (empty($hits))
+                {
+                    break;
+                }
+                printf("\r… copy %d documents starting from %d (total: %d) ", count($hits), $from,
+                    $result->getTotalHits());
+                flush();
+                $batch = array();
+                foreach ($hits as $item)
+                {
+                    /* @var $item Elastica_Result */
+                    $doc = new Elastica_Document($item->getId(), $item->getSource(), $item->getType());
+                    $data = $item->getData();
+                    $doc->setTtl(empty($data['_ttl']) ? self::DEFAULT_MAX_AGE . 's' : $data['_ttl']);
+                    $batch[$item->getType()][] = $doc;
+                }
+                foreach ($batch as $type => $docs)
+                {
+                    $toIndex->getType($type)
+                        ->addDocuments($docs);
+                }
+            }
+            echo "\ndone.\n";
+        }
+        catch (Elastica_Exception_Response $e)
+        {
+            if (0 !== strpos($e->getMessage(), 'IndexMissingException'))
+            {
+                throw $e;
+            }
+        }
+    }
 
     /**
      *
@@ -199,9 +257,13 @@ class GeoCache implements IDatabaseSetup
                             "_timestamp" => array(
                                 "enabled" => true, "path" => "response.meta.date"
                             ),
+                            "_ttl" => array(
+                                "enabled" => true, "default" => self::DEFAULT_MAX_AGE . "s"
+                            ),
                             "properties" => array(
                                 "request" => array(
                                     "type" => "object",
+                                    "dynamic" => false,
                                     "properties" => array(
                                         "query" => array(
                                             "type" => "string", "index" => "not_analyzed"
@@ -225,6 +287,7 @@ class GeoCache implements IDatabaseSetup
                                 ),
                                 "response" => array(
                                     "type" => "object",
+                                    "dynamic" => false,
                                     "properties" => array(
                                         "location" => array(
                                             "type" => "object",
@@ -236,6 +299,7 @@ class GeoCache implements IDatabaseSetup
                                         ),
                                         "meta" => array(
                                             "type" => "object",
+                                            "dynamic" => false,
                                             "properties" => array(
                                                 "source" => array(
                                                     "type" => "string", "index" => "not_analyzed"
