@@ -30,17 +30,19 @@ class GeoBackendHaKoDe extends GeoBackendBase
 
         if ($request->has('house'))
         {
-            $where = mb_strtolower($request->get('house'), 'UTF-8');
-            if (preg_match('/(\d+)\s*(\w*)/', $where, $m))
+            if (preg_match('/(\d+)\s*(\w*)/', $this->prepareQueryValue($request->get('house')), $m))
             {
-                $boolQuery->addMust(new Elastica_Query_Term(array(
-                        'hnr' => $m[1]
-                    )));
+                $boolQuery->addMust(
+                        new Elastica_Query_Term(array(
+                            'hnr' => $m[1]
+                        )));
                 if (!empty($m[2]))
                 {
-                    $boolQuery->addMust(new Elastica_Query_Term(array(
-                            'adz' => $m[2]
-                        )));
+                    $boolQuery->addMust(
+                            new Elastica_Query_Term(
+                                array(
+                                    'adz' => $m[2]
+                                )));
                 }
             }
             $type = 'house';
@@ -48,9 +50,8 @@ class GeoBackendHaKoDe extends GeoBackendBase
 
         if ($request->has('street'))
         {
-            $where = mb_strtolower($request->get('street'), 'UTF-8');
             $search = new Elastica_Query_Text();
-            $search->setFieldQuery('stn', preg_replace('/str(asse|\.)?\b/i', 'straße', $where));
+            $search->setFieldQuery('stn', $this->prepareQueryValue($request->get('street')));
             $search->setFieldParam('stn', 'fuzziness', 0.9);
             $search->setFieldParam('stn', 'operator', 'and');
             $boolQuery->addMust($search);
@@ -75,9 +76,8 @@ class GeoBackendHaKoDe extends GeoBackendBase
 
         if ($request->has('district'))
         {
-            $where = mb_strtolower($request->get('pot'), 'UTF-8');
             $search = new Elastica_Query_Text();
-            $search->setFieldQuery('pot', $where);
+            $search->setFieldQuery('pot', $this->prepareQueryValue($request->get('pot')));
             $search->setFieldParam('pot', 'fuzziness', 0.9);
             $search->setFieldParam('pot', 'operator', 'and');
             $boolQuery->addMust($search);
@@ -89,9 +89,8 @@ class GeoBackendHaKoDe extends GeoBackendBase
 
         if ($request->has('query'))
         {
-            $where = mb_strtolower($request->get('query'), 'UTF-8');
             $search = new Elastica_Query_Text();
-            $search->setFieldQuery('_all', preg_replace('/str\.?\b/i', 'straße', $where));
+            $search->setFieldQuery('_all', $this->prepareQueryValue($request->get('query')));
             $search->setFieldParam('_all', 'fuzziness', 0.9);
             // if any structured query use 'or' to better match text queries
             $search->setFieldParam('_all', 'operator', ($type ? 'or' : 'and'));
@@ -207,7 +206,7 @@ class GeoBackendHaKoDe extends GeoBackendBase
      * @param string $district
      * @return string
      */
-    public function getAdministrativeDistrict($municipality, $district)
+    protected function getAdministrativeDistrict($municipality, $district)
     {
         $map = AgaviConfig::get('modules.geo.administrative-districts', array());
         return isset($map[$municipality][$district]) ? $map[$municipality][$district] : '';
@@ -220,9 +219,27 @@ class GeoBackendHaKoDe extends GeoBackendBase
      * @param string $district
      * @return string
      */
-    public function getDistrict($municipality, $district)
+    protected function getDistrict($municipality, $district)
     {
         $map = AgaviConfig::get('modules.geo.districts', array());
         return isset($map[$municipality][$district]) ? $map[$municipality][$district] : '';
+    }
+
+
+    /**
+     * normalize value for query
+     *
+     * @param string $value
+     * @return string
+     */
+    protected function prepareQueryValue($value)
+    {
+        $value =
+            preg_replace(array(
+                    '/str\.?(\b|$|(?= ))/', '/pl\.?(\b|$|(?= ))/'
+                ), array(
+                    'straße', 'platz'
+                ), mb_strtolower($value, 'UTF-8'));
+        return $value;
     }
 }
