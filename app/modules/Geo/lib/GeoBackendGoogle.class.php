@@ -79,6 +79,11 @@ class GeoBackendGoogle extends GeoBackendBase
             }
         }
 
+        if ('' == $req->get('country'))
+        {
+            $components[] = 'country:Deutschland';
+        }
+
         $params =
             array(
                 'sensor' => 'false',
