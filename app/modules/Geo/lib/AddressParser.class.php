@@ -41,7 +41,7 @@ class AddressParser
                 'dahme',
                 'elsterwerda',
                 'falkensee',
-                '(frankfurt\s*(\/|\()(o|o\.|oder).)',
+                'frankfurt\s*(/(o\.?|oder)|\((o\.?|oder)\))',
                 'grieben',
                 'großräschen',
                 'gumtow',
@@ -94,8 +94,7 @@ class AddressParser
             ),
             1 => array(
                 '(straße|platz)\s+(der|des)\s+\w+',
-                '\S+\s*stra(ss|ß)e',
-                '\S+\s*str\.?',
+                '\S+\s*str(asse|aße|\.?)',
                 '\S+\s*ring',
                 '\S+\s*allee',
                 '\S+\s*damm',
@@ -110,7 +109,13 @@ class AddressParser
                 '\S+twete',
             ),
             2 => array(
-                '\S+\s*platz', '\S+\s*markt', '\S+\s*kamp', '\S+\s*ufer', '\S+h(e|a)ide', '\S+\s*deich', '\S+\s*plaza',
+                '\S+\s*pl(atz|\.)',
+                '\S+\s*markt',
+                '\S+\s*kamp',
+                '\S+\s*ufer',
+                '\S+h(e|a)ide',
+                '\S+\s*deich',
+                '\S+\s*plaza',
             ),
             3 => array(
                 '(charlotten|rummels)burg',
@@ -177,11 +182,6 @@ class AddressParser
         );
 
 
-    protected static $_defaultConfig =
-        array(
-            'city' => 'Berlin', 'latitude' => '52.51628', 'longitude' => '13.3776'
-        );
-
     /**
      *
      *
@@ -195,7 +195,8 @@ class AddressParser
         {
             $house = self::extractHouse($description, $street);
             $postal = self::extractZip($description, $street);
-            return compact('street', 'house', 'postal');
+            $city = self::extractCity($description, $street);
+            return compact('street', 'house', 'postal', 'city');
         }
         else
         {
@@ -234,7 +235,7 @@ class AddressParser
 
 
     /**
-     *
+     * extract post_code
      *
      * @param string $description
      */
@@ -257,10 +258,11 @@ class AddressParser
         return false;
     }
 
+
     /**
      *
      *
-     * @param unknown_type $description
+     * @param string $description
      */
     public static function extractStreet($description)
     {
@@ -283,14 +285,14 @@ class AddressParser
 
 
     /**
+     * try to extract the city
      *
-     *
-     * @param unknown_type $description
+     * @param string $description
+     * @param string $street found street {@see extractStreet()}
+     * @return string
      */
-    public static function extractCity($description)
+    public static function extractCity($description, $street)
     {
-        $geo_scope = NULL;
-
         if (isset(self::$_pregCitiesReplace) && is_array(self::$_pregCitiesReplace) && count(self::$_pregCitiesReplace))
         {
             $haystack = array_keys(self::$_pregCitiesReplace);
@@ -298,16 +300,24 @@ class AddressParser
             $description = preg_replace($haystack, $needle, $description);
         }
 
-        foreach (self::$_pregCities as $precision => $regs)
+        if ($street)
         {
-            $preg = '#\b(' . implode('|', $regs) . ')\b#is';
-            if (preg_match($preg, $description, $matches))
+            $street = str_replace(')', '', $street);
+            $street = str_replace('(', '', $street);
+            preg_match_all('/.{0,40}' . preg_quote($street) . '.{0,40}/sim', $description, $match);
+            foreach ($match[0] as $extractedItem)
             {
-                $geo_scope = $matches[2];
-                break;
+                foreach (self::$_pregCities as $precision => $regs)
+                {
+                    $preg = '#\b(' . implode('|', $regs) . ')(\b|(?= )|$)#ius';
+                    if (preg_match($preg, $extractedItem, $m))
+                    {
+                        return $m[1];
+                    }
+                }
             }
         }
 
-        return $geo_scope;
+        return FALSE;
     }
 }
