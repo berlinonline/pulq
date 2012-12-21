@@ -57,7 +57,8 @@
 
         <routing class="AgaviConsoleRouting" />
 
-        <user class="ProjectZendAclSecurityUser" />
+        <user class="AgaviSecurityUser" />
+<!--         <user class="ProjectZendAclSecurityUser" /> -->
 
     </ae:configuration>
 

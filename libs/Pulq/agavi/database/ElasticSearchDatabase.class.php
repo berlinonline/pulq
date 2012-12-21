@@ -45,22 +45,6 @@ class ElasticSearchDatabase extends AgaviDatabase implements IDatabaseSetup
         {
             throw new AgaviDatabaseException($e->getMessage(), $e->getCode(), $e);
         }
-
-        try
-        {
-            $this->resource->getStatus();
-        }
-        catch (Elastica_Exception_Response $e)
-        {
-            if (FALSE !== strpos($e->getMessage(), 'IndexMissingException'))
-            {
-                $this->createIndex();
-            }
-            else
-            {
-                throw new AgaviDatabaseException($e->getMessage(), $e->getCode(), $e);
-            }
-        }
     }
 
     public function shutdown()
