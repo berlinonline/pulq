@@ -70,7 +70,7 @@ class ElasticsearchCouchdbriverDatabase extends ElasticSearchDatabase
         $indexParams = $this->getParameter('index');
         $esIndexName = $indexParams['name'] . date('-ymd-Hi');
         $setupDir = $indexParams['setup_dir'];
-        $idxFileName = realpath($setupDir . '/' . $indexParams['name'] . '.index.json');
+        $idxFileName = realpath($setupDir . '/' . $indexParams['definition_filename']);
         $idxFile = file_get_contents($idxFileName);
         $idxDef = json_decode($idxFile, TRUE);
         if (!is_array($idxDef) || JSON_ERROR_NONE != json_last_error())
