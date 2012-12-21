@@ -42,18 +42,6 @@ class Default_SetupDatabaseAction extends DefaultBaseAction
                     break;
             }
         }
-        elseif ($db instanceof ElasticSearchDatabase)
-        {
-            switch ($rd->getParameter('action'))
-            {
-                case 'create':
-                    $db->createIndex();
-                    break;
-                default:
-                    error_log(__METHOD__.":".__LINE__." :: Unsupported action: " . $rd->getParameter('action'));
-                    break;
-            }
-        }
         elseif ($db instanceof IDatabaseSetup)
         {
             switch ($rd->getParameter('action'))
