@@ -9,6 +9,56 @@
 class PulqToolkit
 {
 
+    /**
+     * simplyfy logging
+     *
+     * @param string $where code location to identify the logging component
+     * @param mixed $message string or Exception
+     * @param string $logger optional name of system logger; defaults to default logger
+     * @param int $severity optional severty of message
+     */
+    public static function log($where, $message, $logger = NULL, $severity = 0)
+    {
+        $lm = AgaviContext::getInstance()->getLoggerManager();
+        if (!$lm)
+        {
+            throw new AgaviLoggingException('Please enable setting "core.use_logging"!');
+        }
+
+        $msgClass = $lm->getDefaultMessageClass();
+        
+        if ($message instanceof Exception)
+        {
+            $message = $message->__toString();
+        }
+
+        switch ($logger)
+        {
+        case 'debug':
+            $logger = $lm->getLogger($logger);
+            $severity = $severity ? $severity : AgaviILogger::DEBUG;
+            break;
+        case 'error':
+            $logger = $lm->getLogger();
+            $severity = $severity ? $severity : AgaviILogger::ERROR;
+            $req = $lm->getContext()
+                    ->getRequest();
+            if ($req instanceof AgaviWebRequest)
+            {
+                $message .= ' URL: ' . $req->getRequestUri();
+            }
+            break;
+        case 'app':
+        default:
+            $logger = $lm->getLogger();
+            $severity = $severity ? $severity : AgaviILogger::INFO;
+            break;
+        }
+        /* @var $msg AgaviLoggerMessage */
+        $msg = new $msgClass("$where : $message", $severity);
+        $lm->log($msg, $logger);
+
+    }
 
     /**
      * translate a string to a xml id compatible string
