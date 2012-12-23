@@ -13,7 +13,7 @@
             <validator class="regex">
                 <argument>action</argument>
                 <error>One of "create", "switch" or "delete" must be given</error>
-                <ae:parameter name="pattern">/^(create|switch|delete)$/</ae:parameter>
+                <ae:parameter name="pattern">/^(create|create-tear-down|switch|delete)$/</ae:parameter>
                 <ae:parameter name="match">true</ae:parameter>
             </validator>
         </validators>

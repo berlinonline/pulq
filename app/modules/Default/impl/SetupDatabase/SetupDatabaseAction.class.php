@@ -1,9 +1,10 @@
 <?php
 /**
- *
+ * Setup a database from command line
+ * 
+ * Supported database classes must implement interface IDatabaseSetup
  *
  * @author tay
- * @version $Id:$
  * @since 08.11.2012
  *
  */
@@ -16,22 +17,23 @@ class Default_SetupDatabaseAction extends DefaultBaseAction
      *
      * @parameter  AgaviRequestDataHolder the (validated) request data
      *
-     * @return     mixed <ul>
-     *                     <li>A string containing the view name associated
-     *                     with this action; or</li>
-     *                     <li>An array with two indices: the parent module
-     *                     of the view to be executed and the view to be
-     *                     executed.</li>
-     *                   </ul>^
+     * @return     AgaviView::NONE
      */
     public function executeConsole(AgaviRequestDataHolder $rd)
     {
-        $db = $this->getContext()->getDatabaseManager()->getDatabase($rd->getParameter('db'));
+        $dbm = $this->getContext()->getDatabaseManager();
+        if (! $dbm)
+        {
+            throw new AgaviDatabaseException('Please enable setting "core.use_database"!');
+        }
+        
+        $db = $dbm->getDatabase($rd->getParameter('db'));
         if ($db instanceof ElasticsearchCouchdbriverDatabase)
         {
             switch ($rd->getParameter('action'))
             {
                 case 'create':
+                case 'create-tear-down':
                     $db->createIndexAndRiver();
                     break;
                 case 'switch':
@@ -40,6 +42,8 @@ class Default_SetupDatabaseAction extends DefaultBaseAction
                 case 'delete':
                     $db->deleteIndex();
                     break;
+                default:
+                    PulqToolkit::log(__METHOD__, "Unsupported action: " . $rd->getParameter('action'), 'error');
             }
         }
         elseif ($db instanceof IDatabaseSetup)
@@ -49,14 +53,19 @@ class Default_SetupDatabaseAction extends DefaultBaseAction
                 case 'create':
                     $db->setup(FALSE);
                     break;
+                case 'create-tear-down':
+                    $db->setup(TRUE);
+                    break;
                 default:
-                    error_log(__METHOD__.":".__LINE__." :: Unsupported action: " . $rd->getParameter('action'));
+                    PulqToolkit::log(__METHOD__, "Unsupported action: " . $rd->getParameter('action'), 'error');
                 break;
             }
+        }
+        else 
+        {
+            PulqToolkit::log(__METHOD__, "Could not find database config: " . $rd->getParameter('db'));
         }
         return AgaviView::NONE;
     }
 
 }
-
-?>
