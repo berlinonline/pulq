@@ -7,11 +7,13 @@ class ElasticSearchIndexSetup implements IDatabaseSetup
      */
     protected $database;
 
-    public function __construct($connectionName)
+    public function setDatabase(AgaviDatabase $database)
     {
-        $this->database = AgaviContext::getInstance()->getDatabaseManager()->getDatabase(
-            $connectionName
-        );
+        if (! $database instanceof ElasticSearchDatabase)
+        {
+            throw new AgaviDatabaseException('Argument must be instance of ElasticSearchDatabase');
+        }
+        $this->database = $database;
     }
 
     public function setup($tearDownFirst = FALSE)

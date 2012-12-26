@@ -12,6 +12,13 @@
 interface IDatabaseSetup
 {
     /**
+     * 
+     * Enter description here ...
+     * @param AgaviDatabase $database
+     */
+    public function setDatabase(AgaviDatabase $database);
+    
+    /**
      * Setup everything required to provide the functionality exposed by our module.
      * In this case setup a couchdb database and view for our asset idsequence.
      *

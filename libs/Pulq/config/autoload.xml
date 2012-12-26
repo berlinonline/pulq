@@ -33,6 +33,7 @@
             <autoload name="ElasticSearchDatabase">%core.app_dir%/../libs/Pulq/agavi/database/ElasticSearchDatabase.class.php</autoload>
             <autoload name="CouchDatabase">%core.app_dir%/../libs/Pulq/agavi/database/CouchDatabase.class.php</autoload>
             <autoload name="IDatabaseSetup">%core.app_dir%/../libs/Pulq/agavi/database/IDatabaseSetup.iface.php</autoload>
+            <autoload name="IDatabaseSetupAction">%core.app_dir%/../libs/Pulq/agavi/database/IDatabaseSetupAction.iface.php</autoload>
 
             <autoload name="PulqZendAclSecurityUser">%core.app_dir%/../libs/Pulq/agavi/user/PulqZendAclSecurityUser.class.php</autoload>
             <autoload name="UserIsItemOwnerAssertion">%core.app_dir%/../libs/Pulq/agavi/user/assertions/UserIsItemOwnerAssertion.class.php</autoload>

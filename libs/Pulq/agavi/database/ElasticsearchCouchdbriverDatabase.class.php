@@ -8,7 +8,7 @@
  * @since 10.10.2011
  *
  */
-class ElasticsearchCouchdbriverDatabase extends ElasticSearchDatabase
+class ElasticsearchCouchdbriverDatabase extends ElasticSearchDatabase implements IDatabaseSetupAction
 {
     /**
      * method for impliciet creating of index
@@ -164,8 +164,8 @@ class ElasticsearchCouchdbriverDatabase extends ElasticSearchDatabase
             if ($esSeq >= $couchSeq)
             {
                 echo "\n";
-                $this->switchIndex();
-                $this->deleteIndex();
+                $this->actionEnable();
+                $this->actionDelete();
                 break;
             }
         }
@@ -217,100 +217,14 @@ class ElasticsearchCouchdbriverDatabase extends ElasticSearchDatabase
         return $typeDefs;
     }
 
+    
+    
     /**
-     * Delete oldest unused index (index without alias)
-     *
-     * @throws Exception
+     * (non-PHPdoc)
+     * @see ElasticSearchDatabase::actionCreate()
      */
-    public function deleteIndex()
+    public function actionCreate($tearDownFirst = FALSE)
     {
-        $idxParams = $this->getParameter('index');
-        $alias = $idxParams['name'];
-        $indexNames = $this->getConnection()
-                ->getStatus()
-                ->getIndexNames();
-
-        $indexNames =
-            array_filter($indexNames,
-                function ($idx) use ($alias)
-                {
-                    return preg_replace('/-\d{6}-\d{4}$/', '', $idx) == $alias;
-                });
-
-        sort($indexNames);
-
-        foreach ($indexNames as $iname)
-        {
-            echo "Check index '$iname' for active alias '$alias'\n";
-            $index = $this->getConnection()->getIndex($iname);
-            if (!$index->getStatus()->hasAlias($alias))
-            {
-                try
-                {
-                    echo "Delete river '${iname}_river'\n";
-                    $index->getClient()->request("/_river/${iname}_river", "DELETE");
-                }
-                catch (Exception $exception)
-                {
-                    echo "Deleting corresponding _river failed: " . $exception->getMessage() . PHP_EOL;
-                }
-
-                try
-                {
-                    echo "Delete index '$iname'\n";
-                    $index->delete();
-                }
-                catch (Exception $exception)
-                {
-                    echo "Deleting index failed: " . $exception->getMessage() . PHP_EOL;
-                }
-
-                break; //only delete the one index. usually there should only be one to delete.
-            }
-        }
-    }
-
-
-    /**
-     * Switch alias to newest index
-     *
-     * @param AgaviRequestDataHolder $rd
-     * @throws AgaviDatabaseException
-     */
-    public function switchIndex()
-    {
-        $idxParams = $this->getParameter('index');
-        $alias = $idxParams['name'];
-        $indexNames = $this->getConnection()
-                ->getStatus()
-                ->getIndexNames();
-
-        $indexNames =
-            array_filter($indexNames,
-                function ($idx) use ($alias)
-                {
-                    return preg_replace('/-\d{6}-\d{4}$/', '', $idx) == $alias;
-                });
-
-        rsort($indexNames);
-
-        if (empty($indexNames))
-        {
-            throw new Exception('No index found to switch to.');
-        }
-
-        echo "Available indexes: " . join(', ', $indexNames) . "\n";
-
-        $idxName = $indexNames[0];
-        echo "Switch alias '$alias' to index '$idxName'\n";
-
-        $response = $this->getConnection()
-                ->getIndex($idxName)
-                ->addAlias($alias, TRUE);
-        if ($response->hasError())
-        {
-            throw new AgaviDatabaseException($response->getError());
-        }
-        echo "OK\n";
+        $this->createIndexAndRiver();
     }
 }

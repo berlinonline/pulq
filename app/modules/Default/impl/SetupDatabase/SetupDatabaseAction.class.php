@@ -28,37 +28,24 @@ class Default_SetupDatabaseAction extends DefaultBaseAction
         }
         
         $db = $dbm->getDatabase($rd->getParameter('db'));
-        if ($db instanceof ElasticsearchCouchdbriverDatabase)
+        if ($db instanceof IDatabaseSetupAction)
         {
             switch ($rd->getParameter('action'))
             {
                 case 'create':
+                    $db->actionCreate();
+                    break;
                 case 'create-tear-down':
-                    $db->createIndexAndRiver();
+                    $db->actionCreate(TRUE);
                     break;
                 case 'switch':
-                    $db->executeIndexSwitch();
+                    $db->actionEnable();
                     break;
                 case 'delete':
-                    $db->deleteIndex();
+                    $db->actionDelete();
                     break;
                 default:
                     PulqToolkit::log(__METHOD__, "Unsupported action: " . $rd->getParameter('action'), 'error');
-            }
-        }
-        elseif ($db instanceof IDatabaseSetup)
-        {
-            switch ($rd->getParameter('action'))
-            {
-                case 'create':
-                    $db->setup(FALSE);
-                    break;
-                case 'create-tear-down':
-                    $db->setup(TRUE);
-                    break;
-                default:
-                    PulqToolkit::log(__METHOD__, "Unsupported action: " . $rd->getParameter('action'), 'error');
-                break;
             }
         }
         else 

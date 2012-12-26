@@ -8,7 +8,7 @@
  * @package Pulq
  * @subpackage Agavi/Database
  */
-class ElasticSearchDatabase extends AgaviDatabase implements IDatabaseSetup
+class ElasticSearchDatabase extends AgaviDatabase implements IDatabaseSetupAction
 {
     /**
      * The client used to talk to elastic search.
@@ -31,16 +31,17 @@ class ElasticSearchDatabase extends AgaviDatabase implements IDatabaseSetup
 
         try
         {
-            $this->connection = new Elastica_Client(
-                array(
-                    'host'      => $this->getParameter('host', 'localhost'),
-                    'port'      => $this->getParameter('port', 9200),
-                    'transport' => $this->getParameter('transport', 'Http')
-                )
-            );
+            $this->connection =
+                new Elastica_Client(
+                    array(
+                        'host' => $this->getParameter('host', 'localhost'),
+                        'port' => $this->getParameter('port', 9200),
+                        'transport' => $this->getParameter('transport', 'Http')
+                    ));
             $indexDef = $this->getParameter('index', array());
             $indexName = isset($indexDef['name']) ? $indexDef['name'] : NULL;
-            $this->resource = $this->connection->getIndex($indexName);
+            $this->resource = $this->connection
+                    ->getIndex($indexName);
         }
         catch (Exception $e)
         {
@@ -69,9 +70,10 @@ class ElasticSearchDatabase extends AgaviDatabase implements IDatabaseSetup
     protected function createIndex($tearDownFirst = FALSE)
     {
         $indexDef = $this->getParameter('index', array());
-        if (! isset($indexDef['setup_class']))
+        if (!isset($indexDef['setup_class']))
         {
-            $this->resource->create();
+            $this->resource
+                ->create();
             return;
         }
         if (isset($indexDef['module']))
@@ -82,26 +84,67 @@ class ElasticSearchDatabase extends AgaviDatabase implements IDatabaseSetup
                 ->initializeModule($indexDef['module']);
         }
         $setupClass = $indexDef['setup_class'];
-        if (! class_exists($setupClass))
+        if (!class_exists($setupClass))
         {
             throw new AgaviDatabaseException("Setup class '$setupClass' can not be found.");
         }
-        $indexSetup = new $setupClass($this->getName());
-        if (! ($indexSetup instanceof IDatabaseSetup))
+        $indexSetup = new $setupClass();
+        if (!($indexSetup instanceof IDatabaseSetup))
         {
-            throw new AgaviDatabaseException('Setup class does not implement IDatabaseSetup: '.$setupClass);
+            throw new AgaviDatabaseException('Setup class does not implement IDatabaseSetup: ' . $setupClass);
         }
+        $indexSetup->setDatabase($this);
         $indexSetup->setup($tearDownFirst);
     }
-
 
     /**
      * (non-PHPdoc)
      * @see IDatabaseSetup::setup()
      */
-    public function setup($tearDownFirst = FALSE)
+    public function actionCreate($tearDownFirst = FALSE)
     {
         $this->createIndex($tearDownFirst);
+    }
+
+    /**
+     * (non-PHPdoc)
+     * @see IDatabaseSetupAction::actionDelete()
+     */
+    public function actionDelete()
+    {
+        $this->deleteUnusedIndexes();
+    }
+
+
+    /**
+     * (non-PHPdoc)
+     * @see IDatabaseSetupAction::actionEnable()
+     */
+    public function actionEnable()
+    {
+        $indexDef = $this->getParameter('index', array());
+        $alias = (!$alias && isset($indexDef['name'])) ? $indexDef['name'] : NULL;
+
+        if (!$alias)
+        {
+            throw new AgaviDatabaseException('No alias name defined');
+        }
+        $indexNames = $this->connection
+                ->getStatus()
+                ->getIndexNames();
+
+        $indexNames =
+            array_filter($indexNames,
+                function ($idx) use ($alias)
+                {
+                    return preg_replace('/-\d{6}-\d{4}$/', '', $idx) == $alias;
+                });
+
+
+        rsort($indexNames);
+        $index = $this->connection
+                ->getIndex($indexNames[0]);
+        $index->addAlias($alias, TRUE);
     }
 
 
@@ -132,7 +175,6 @@ class ElasticSearchDatabase extends AgaviDatabase implements IDatabaseSetup
                 throw new AgaviDatabaseException('No alias name defined');
             }
         }
-
         $index->addAlias($alias, TRUE);
     }
 
@@ -151,6 +193,9 @@ class ElasticSearchDatabase extends AgaviDatabase implements IDatabaseSetup
         {
             throw new AgaviDatabaseException('No alias name defined');
         }
+
+        $riverIndex = $this->connection
+                ->getIndex('_river');
 
         $indexNames = $this->connection
                 ->getStatus()
@@ -171,6 +216,24 @@ class ElasticSearchDatabase extends AgaviDatabase implements IDatabaseSetup
             $index = $this->connection->getIndex($iname);
             if (!$index->getStatus()->hasAlias($alias))
             {
+                try
+                {
+                    if (0 < $riverIndex->getType($iname . '_river')->count())
+                    {
+                        PulqToolkit::log(__METHOD__, "Delete river '${iname}_river'");
+                        $this->connection->request("/_river/${iname}_river", Elastica_Request::DELETE);
+                    }
+                }
+                catch (Elastica_Exception_Response $e)
+                {
+                    // No river to delete
+                }
+                catch (Elastica_Exception_Client $exception)
+                {
+                    PulqToolkit::log(__METHOD__, "Deleting corresponding _river failed: " . $exception->getMessage(),
+                        'error');
+                }
+
                 try
                 {
                     PulqToolkit::log(__METHOD__, "Delete index '$iname'");
@@ -194,8 +257,10 @@ class ElasticSearchDatabase extends AgaviDatabase implements IDatabaseSetup
      */
     public function copyIndex($fromName, $toName, $batchSize = 1000)
     {
-        $fromIndex = $this->connection->getIndex($fromName);
-        $toIndex = $this->connection->getIndex($toName);
+        $fromIndex = $this->connection
+                ->getIndex($fromName);
+        $toIndex = $this->connection
+                ->getIndex($toName);
 
         PulqToolkit::log(__METHOD__, "Try to copy old index '$fromName' to '$toName'");
         try
