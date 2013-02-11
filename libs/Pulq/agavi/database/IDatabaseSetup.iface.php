@@ -12,8 +12,8 @@
 interface IDatabaseSetup
 {
     /**
+     * set database instance 
      * 
-     * Enter description here ...
      * @param AgaviDatabase $database
      */
     public function setDatabase(AgaviDatabase $database);

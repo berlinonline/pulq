@@ -8,7 +8,7 @@
  * @package Pulq
  * @subpackage Agavi/Database
  */
-class CouchDatabase extends AgaviDatabase
+class CouchDatabase extends AgaviDatabase implements IDatabaseSetupAction
 {
     /**
      * our database access handle instance
@@ -92,7 +92,7 @@ class CouchDatabase extends AgaviDatabase
      * @param string $class name of class that implements ICouchDatabaseSetup
      * @throws AgaviDatabaseException
      */
-    protected function setupDatabase($class)
+    protected function setupDatabase($class, $tearDownFirst = FALSE)
     {
         if (! class_exists($class))
         {
@@ -101,7 +101,8 @@ class CouchDatabase extends AgaviDatabase
         $setup = new $class();
         if ($setup instanceof IDatabaseSetup)
         {
-            $setup->setup();
+            $setup->setDatabase($this);
+            $setup->setup($tearDownFirst);
         }
         else
         {
@@ -132,8 +133,27 @@ class CouchDatabase extends AgaviDatabase
                 throw new AgaviDatabaseException($e->getMessage(), $e->getCode(), $e);
             }
         }
-
     }
-}
+    
+    
+    public function actionCreate($tearDownFirst = FALSE)
+    {    
+        if ($this->hasParameter('setup'))
+        {
+            $this->setupDatabase($this->getParameter('setup'), $tearDownFirst);
+        }
+    }
 
-?>
+    
+    public function actionDelete()
+    {
+        PulqToolkit::log(__METHOD__, "Not implemented", 'app');    
+    }
+
+    
+    public function actionEnable()
+    {
+        PulqToolkit::log(__METHOD__, "Not implemented", 'app');            
+    }
+    
+}

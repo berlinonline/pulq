@@ -87,9 +87,13 @@ abstract class BaseCouchDatabaseSetup implements IDatabaseSetup
      *
      * @param ExtendedCouchDbClient $client
      */
-    protected final function setDatabase(ExtendedCouchDbClient $client)
+    public final function setDatabase(AgaviDatabase $database)
     {
-        $this->client = $client;
+        if (! $database instanceof CouchDatabase)
+        {
+            throw new AgaviDatabaseException('Instance of CouchDatabase expected for parameter database');
+        }
+        $this->client = $database->getConnection();
     }
 
     /**

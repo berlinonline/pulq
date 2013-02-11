@@ -13,11 +13,12 @@ class ElasticsearchCouchdbriverDatabase extends ElasticSearchDatabase implements
     /**
      * method for impliciet creating of index
      *
+     * @param booelean $tearDownFirst optional flag to force creating the index from scratch
      * @throws AgavDatabaseException
      * @deprecated use createIndexAndRiver() instead
      * @see createIndexAndRiver()
      */
-    public function createIndex()
+    public function createIndex($tearDownFirst = FALSE)
     {
         //throw new AgaviDatabaseException('Use method ' . __CLASS__ . '::createIndexAndRiver() for creating a new index');
     }
@@ -108,7 +109,8 @@ class ElasticsearchCouchdbriverDatabase extends ElasticSearchDatabase implements
                         "host" => $dbUrl['host'],
                         "port" => $dbUrl['port'],
                         "db" => $couchDb->getParameter('database'),
-                        "script" => $this->getRiverScript()
+                        "script" => $this->getRiverScript(),
+                        "filter" => $this->getParameter('river_filter', '')
                 ),
                 "index" => array_merge(
                         array(
@@ -181,7 +183,7 @@ class ElasticsearchCouchdbriverDatabase extends ElasticSearchDatabase implements
         {
             $uglifyPath = str_replace('/', DIRECTORY_SEPARATOR, AgaviConfig::get('core.app_dir').'/../libs/node_modules/uglifyjs/bin/uglifyjs');
 
-            $script = shell_exec($uglifyPath . ' -nm -nc ' . $scriptFilePath);
+            $script = shell_exec($uglifyPath . ' -nm -nc -ns ' . $scriptFilePath);
             return $script;
         }
         else
