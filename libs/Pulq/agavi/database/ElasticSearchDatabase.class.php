@@ -123,7 +123,7 @@ class ElasticSearchDatabase extends AgaviDatabase implements IDatabaseSetupActio
     public function actionEnable()
     {
         $indexDef = $this->getParameter('index', array());
-        $alias = (!$alias && isset($indexDef['name'])) ? $indexDef['name'] : NULL;
+        $alias = isset($indexDef['name']) ? $indexDef['name'] : NULL;
 
         if (!$alias)
         {
