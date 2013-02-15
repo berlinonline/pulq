@@ -29,9 +29,17 @@
 // | You shouldn't have to change this usually since it's auto-determined.     |
 // | Agavi can't determine this automatically, so you always have to supply it.|
 // +---------------------------------------------------------------------------+
-AgaviConfig::set('core.app_dir', dirname(__FILE__));
-AgaviConfig::set('core.modules_dir', dirname(__FILE__) . DIRECTORY_SEPARATOR . 'modules');
-AgaviConfig::set('project.libs', dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . 'libs' . DIRECTORY_SEPARATOR);
+require(dirname(__DIR__) . '/vendor/autoload.php');
+require(dirname(__DIR__) . '/vendor/agavi/agavi/src/agavi.php');
+
+AgaviConfig::set('core.app_dir', __DIR__);
+AgaviConfig::set('core.modules_dir', __DIR__ . DIRECTORY_SEPARATOR . 'modules');
+AgaviConfig::set(
+    'core.agavi_dir', 
+    dirname(__DIR__) . str_replace(
+        '/', DIRECTORY_SEPARATOR, '/vendor/agavi/agavi/src/'
+    )
+);
 
 // +---------------------------------------------------------------------------+
 // | An absolute filesystem path to the directory where cache files will be    |
@@ -56,7 +64,3 @@ AgaviConfig::set('project.libs', dirname(dirname(__FILE__)) . DIRECTORY_SEPARATO
 // +---------------------------------------------------------------------------+
 
 date_default_timezone_set('Europe/Berlin');
-
-#require_once 'phar://' . AgaviConfig::get('project.libs') . 'imagine.phar';
-
-?>

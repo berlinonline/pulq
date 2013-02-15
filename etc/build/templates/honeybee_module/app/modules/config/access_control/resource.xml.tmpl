@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ae:configurations
+    xmlns="http://berlinonline.de/schemas/pulq/config/access_control/1.0" 
+    xmlns:env="http://berlinonline.de/schemas/pulq/config/envelope/definition/1.0" 
+    xmlns:ae="http://agavi.org/agavi/config/global/envelope/1.0">
+    <ae:configuration>
+        <!-- 
+            Defines all actions that shall be available upon the %%MODULE_PREFIX%% resource.
+
+            :INFO:
+            In opposite to the permissions file, which will probally vanish,
+            this file will serve as a source to the later rights gui,
+            allowing to show the available actions per resource/module.
+        -->
+        <resources>
+            <resource name="%%MODULE_PREFIX%%">
+                <description>Defines a resource that represents %%MODULE_PREFIX%% documents.</description>
+                <actions>
+                    <action>%%MODULE_PREFIX%%.edit::read</action>
+                    <action>%%MODULE_PREFIX%%.edit::write</action>
+
+                    <action>%%MODULE_PREFIX%%.publish::write</action>
+
+                    <action>%%MODULE_PREFIX%%.published::read</action>
+                    <action>%%MODULE_PREFIX%%.published::write</action>
+
+                    <action>%%MODULE_PREFIX%%.archive::write</action>
+
+                    <action>%%MODULE_PREFIX%%.archived::read</action>
+                    <action>%%MODULE_PREFIX%%.archived::write</action>
+
+                    <action>%%MODULE_PREFIX%%.delete::write</action>
+                    <action>%%MODULE_PREFIX%%.publish::write</action>
+                </actions>
+            </resource>
+        </resources>
+    </ae:configuration>
+</ae:configurations>

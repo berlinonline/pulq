@@ -1,0 +1,23 @@
+.navbar .upper-bar
+{
+    border-bottom: 1px solid rgb(212, 212, 212);
+}
+
+.navbar .breadcrumb
+{
+    margin-bottom: 0px;
+}
+
+.user-stats p
+{
+	padding: 10px 0px 10px 15px;
+	float: left;
+    margin-bottom: 0px;
+}
+
+.navbar .user-stats > li > a
+{
+	float: left;
+    padding: 10px 15px;
+    margin-bottom: 0px;
+}

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ae:configurations 
+    xmlns:ae="http://agavi.org/agavi/config/global/envelope/1.0" 
+    xmlns="http://agavi.org/agavi/config/parts/routing/1.0">
+    <ae:configuration context="web">
+        <routes>
+            <route name=".list" pattern="/list" action="List" method="read" />
+            <route name=".suggest" pattern="/suggest" action="Suggest" method="read" />
+            <route name=".edit" pattern="/edit" action="Edit" />
+            
+            <route name=".workflow" pattern="/workflow">
+                <route name=".checkout" pattern="/checkout" action="Workflow_Checkout" />
+                <route name=".execute" pattern="/execute" action="Workflow_Execute" />
+                <route name=".release" pattern="/release" action="Workflow_Release" />
+            </route>
+        </routes>
+    </ae:configuration>
+
+    <ae:configuration context="console">
+        <routes>
+            <route pattern="%%MODULE_PREFIX%%.export" module="%%MODULE_NAME%%" action="Export" method="write" />
+        </routes>
+    </ae:configuration>
+</ae:configurations>

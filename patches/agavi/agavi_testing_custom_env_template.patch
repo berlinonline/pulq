@@ -1,0 +1,14 @@
+Index: agavi/src/testing/AgaviPhpUnitTestCase.class.php
+===================================================================
+--- agavi/src/testing/AgaviPhpUnitTestCase.class.php	(revision 4918)
++++ agavi/src/testing/AgaviPhpUnitTestCase.class.php	(working copy)
+@@ -219,7 +219,8 @@
+ 	protected function getTemplateFile()
+ 	{
+ 		if($this->doBootstrap()) {
+-			return AgaviConfig::get('core.agavi_dir') . DIRECTORY_SEPARATOR . 'testing' . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . 'TestCaseMethod.tpl';
++            $defaultFile = AgaviConfig::get('core.agavi_dir') . DIRECTORY_SEPARATOR . 'testing' . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . 'TestCaseMethod.tpl';
++            return AgaviConfig::get('core.test_bootstrap_tpl', $defaultFile);
+ 		}
+ 		
+ 		return null;

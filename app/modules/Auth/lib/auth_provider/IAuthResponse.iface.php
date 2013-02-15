@@ -3,7 +3,7 @@
 /**
  * The IAuthResponse specifies how authentication attempts shall be answered by IAuthProviders.
  *
- * @version         $Id: IAuthResponse.iface.php 992 2012-02-27 23:21:47Z tschmitt $
+ * @version         $Id$
  * @copyright       BerlinOnline Stadtportal GmbH & Co. KG
  * @author          Thorsten Schmitt-Rink <thorsten.schmitt-rink@berlinonline.de>
  * @package         Auth

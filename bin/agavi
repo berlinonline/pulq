@@ -10,9 +10,8 @@
 # the directory that contains the `agavi.php' file.
 
 BASEDIR=`readlink -f "$( dirname $0 )/.."`
-AGAVI_SOURCE_DIRECTORY="${BASEDIR}/libs/agavi"
+AGAVI_SOURCE_DIRECTORY="${BASEDIR}/vendor/agavi/agavi/src"
 LOCAL_CONFIG_SH="${BASEDIR}/etc/local/local.config.sh"
-INCLUDE_PATH="${BASEDIR}/libs"
 
 if [ -f $LOCAL_CONFIG_SH ] ; then
   . $LOCAL_CONFIG_SH
@@ -107,5 +106,6 @@ until agavi_directory_exists; do
 done
 
 # Call build script.
-`which rlwrap` ${PHP_COMMAND} -d include_path=${INCLUDE_PATH} -d memory_limit=4294967295 -f "${AGAVI_SOURCE_DIRECTORY}/build/agavi/script/agavi.php" -- --agavi-source-directory "${AGAVI_SOURCE_DIRECTORY}" "$@"
+# @todo Remove the libs directory as soon as the mail and the imperia libs have been judged and handled.
+`which rlwrap` ${PHP_COMMAND} -d include_path=${BASEDIR}/vendor/phing/phing/classes/ -d memory_limit=4294967295 -f "${AGAVI_SOURCE_DIRECTORY}/build/agavi/script/agavi.php" -- --agavi-source-directory "${AGAVI_SOURCE_DIRECTORY}" "$@"
 

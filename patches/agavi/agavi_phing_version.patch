@@ -1,0 +1,13 @@
+Index: agavi/src/build/agavi/script/agavi.php
+===================================================================
+--- agavi/src/build/agavi/script/agavi.php	(revision 4918)
++++ agavi/src/build/agavi/script/agavi.php	(working copy)
+@@ -51,7 +51,7 @@
+ 	Phing::setProperty('phing.home', getenv('PHING_HOME'));
+ 	
+ 	try {
+-		if(!version_compare(preg_replace('/^Phing(?:\s*version)?\s*([0-9\.]+)/i', '$1', Phing::getPhingVersion()), MIN_PHING_VERSION, 'ge')) {
++		if('Phing DEV' !== Phing::getPhingVersion() && ! version_compare(preg_replace('/^Phing(?:\s*version)?\s*([0-9\.]+)/i', '$1', Phing::getPhingVersion()), MIN_PHING_VERSION, 'ge')) {
+ 			$GLOBALS['ERROR']->write(sprintf('Error: Phing version %s or later required', MIN_PHING_VERSION) . PHP_EOL);
+ 			exit(1);
+ 		}

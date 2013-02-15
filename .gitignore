@@ -11,3 +11,6 @@ app/log/*
 /.buildpath
 /.project
 /.externalToolBuilders
+vendor
+node_modules
+data

@@ -1,20 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ae:configurations xmlns:ae="http://agavi.org/agavi/config/global/envelope/1.1" xmlns="http://agavi.org/agavi/config/parts/filters/1.0">
-
+<ae:configurations 
+    xmlns:ae="http://agavi.org/agavi/config/global/envelope/1.0" 
+    xmlns="http://agavi.org/agavi/config/parts/filters/1.0">
     <ae:configuration context="web">
         <filters>
-
-            <filter name="ResourceFilter" class="ProjectResourceFilter">
+            <filter name="ResourceFilter" class="Honeybee\Agavi\Filter\ResourceFilter">
                 <ae:parameter name="output_types">
                     <ae:parameter>html</ae:parameter>
                 </ae:parameter>
-
-                <ae:parameter name="combine_scripts">on</ae:parameter>
+                <ae:parameter name="base_dir">%core.app_dir%/../pub/static/</ae:parameter>
+                <!-- 
+                    defines whether the deploy or the cache directory is used. 
+                    use true for development and false for production. 
+                    make sure to deploy and commit your latest scripts: `make deploy-resources`
+                -->
+                <ae:parameter name="use_caching">true</ae:parameter>
+                <ae:parameter name="combine_scripts">off</ae:parameter>
                 <ae:parameter name="compress_scripts">off</ae:parameter>
-                <ae:parameter name="cache_dir">%core.app_dir%/../pub/static/cache/</ae:parameter>
-                <ae:parameter name="use_caching">false</ae:parameter>
             </filter>
-
 
             <filter name="FormPopulationFilter" class="AgaviFormPopulationFilter">
                 <ae:parameter name="methods">
@@ -23,45 +26,37 @@
                 <ae:parameter name="output_types">
                     <ae:parameter>html</ae:parameter>
                 </ae:parameter>
-                <!--<ae:parameter name="force_output_mode">xhtml</ae:parameter>-->
+                <ae:parameter name="force_output_mode">xhtml</ae:parameter>
                 <!-- for all field error messages. errors that yield no match and those that have no corresponding field are inserted using rules defined in "error_messages". errors that belong to more than one field (e.g. date validator) can be handled using "multi_field_error_messages" -->
                 <ae:parameter name="field_error_messages">
                     <!-- ${htmlnsPrefix} is either empty (for HTML) or something like "html:" for XHTML documents with xmlns="..." notation. Always use this, makes your code more bullet proof. XPath needs the namespaces when the document is namespaced -->
-                    <ae:parameter name="parent::${htmlnsPrefix}div">
-						<!-- can be any of "before", "after" or "child" (to insert as prev, next sibling or last child) -->
-						<ae:parameter name="location">first-child</ae:parameter>
-						<!-- a container groups all errors for one element -->
-						<ae:parameter name="container"><![CDATA[<ul>${errorMessages}</ul>]]></ae:parameter>
-						<ae:parameter name="markup"><![CDATA[<li class="error">${errorMessage}</li>]]></ae:parameter>
-					</ae:parameter>
+                    <ae:parameter name="parent::${htmlnsPrefix}dd">
+                        <!-- can be any of "before", "after" or "child" (to insert as prev, next sibling or last child) -->
+                        <ae:parameter name="location">after</ae:parameter>
+                        <!-- a container groups all errors for one element -->
+                        <ae:parameter name="container"><![CDATA[<dd>${errorMessages}</dd>]]>
+                        </ae:parameter>
+                        <ae:parameter name="markup"><![CDATA[<p class="error">${errorMessage}</p>]]>
+                        </ae:parameter>
+                    </ae:parameter>
                     <!-- you could have more rules above, e.g. ${htmlnsPrefix}input[@type="checkbox"]... to have a rule that only applies to checkbox elements. first match is used. -->
                 </ae:parameter>
+                <ae:parameter name="savexml_options">LIBXML_NOEMPTYTAG</ae:parameter>
             </filter>
-            <!-- <filter name="TidyFilter" class="AgaviTidyFilter">
-                    <ae:parameter name="tidy_options">
-                            <ae:parameter name="output-xhtml">true</ae:parameter>
-                            <ae:parameter name="numeric-entities">true</ae:parameter>
-                    </ae:parameter>
-                    <ae:parameter name="tidy_encoding">utf8</ae:parameter>
-            </filter> -->
-
         </filters>
     </ae:configuration>
 
-    <ae:configuration environment="testing.*">
+    <ae:configuration context="web" environment="stage">
         <filters>
-
-            <filter name="ResourceFilter" class="ProjectResourceFilter">
+            <filter name="ResourceFilter" class="Honeybee\Agavi\Filter\ResourceFilter">
                 <ae:parameter name="output_types">
                     <ae:parameter>html</ae:parameter>
                 </ae:parameter>
-
-                <ae:parameter name="pack_scripts">on</ae:parameter>
-                <!-- @todo we porbally would want to a dedicated testing/cache/ directory here. -->
-                <ae:parameter name="js_cache">%core.app_dir%/../pub/js/_cache/</ae:parameter>
-                <ae:parameter name="css_cache">%core.app_dir%/../pub/css/_cache/</ae:parameter>
+                <ae:parameter name="base_dir">%core.app_dir%/../pub/static/</ae:parameter>
+                <ae:parameter name="use_caching">false</ae:parameter>
+                <ae:parameter name="combine_scripts">on</ae:parameter>
+                <ae:parameter name="compress_scripts">on</ae:parameter>
             </filter>
-
         </filters>
     </ae:configuration>
-</ae:configurations>
+</ae:configurations> 

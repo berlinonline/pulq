@@ -3,7 +3,7 @@
 /**
  * The Auth_LoginAction class provides login support.
  *
- * @version         $Id: LoginAction.class.php 1043 2012-03-13 15:38:25Z tschmitt $
+ * @version         $Id$
  * @copyright       BerlinOnline Stadtportal GmbH & Co. KG
  * @author          Tom Anheyer <Tom.Anheyer@BerlinOnline.de>
  * @author          Thorsten Schmitt-Rink <thorsten.schmitt-rink@berlinonline.de>
@@ -18,7 +18,6 @@ class Auth_LoginAction extends AuthBaseAction
      * @param AgaviParameterHolder $parameters
      *
      * @return string The name of the view to execute.
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function executeRead(AgaviParameterHolder $parameters)
     {

@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ae:configurations xmlns:ae="http://agavi.org/agavi/config/global/envelope/1.1" xmlns="http://agavi.org/agavi/config/parts/translation/1.0" xmlns:xi="http://www.w3.org/2001/XInclude">
+<ae:configurations 
+    xmlns:ae="http://agavi.org/agavi/config/global/envelope/1.0" 
+    xmlns="http://agavi.org/agavi/config/parts/translation/1.0" 
+    xmlns:xi="http://www.w3.org/2001/XInclude">
     <ae:configuration>
-
         <available_locales default_locale="de_DE">
 			<!-- German, Germany -->
             <available_locale identifier="de_DE">
@@ -16,24 +18,37 @@
        <translators default_domain="date_formats">
            <translator domain="date_formats">
                 <translator domain="datetime">
-                    <date_formatter>
-                        <ae:parameters>
-                            <ae:parameter name="type">datetime</ae:parameter>
-                            <ae:parameter name="format">yyyy-MM-dd HH:mm:ss</ae:parameter>
-                        </ae:parameters>
-                    </date_formatter>
+                        <date_formatter>
+                            <ae:parameters>
+                                <ae:parameter name="type">datetime</ae:parameter>
+                                <ae:parameter name="format">yyyy-MM-dd HH:mm:ss</ae:parameter>
+                            </ae:parameters>
+                        </date_formatter>
                 </translator>
             </translator>
        </translators>
-
     </ae:configuration>
 
-    <xi:include href="%core.module_dir%/Default/config/translation.xml"
-        xpointer="xmlns(ae=http://agavi.org/agavi/config/global/envelope/1.1) xpointer(/ae:configurations/*)">
-    </xi:include>
+    <ae:configuration>
+        <translators default_domain="modules.labels">
+            <translator domain="modules">
+                <message_translator class="AgaviSimpleTranslator">
+                
+                     <ae:parameter name="labels">
+                        <ae:parameter name="de">
+                            <ae:parameter name="Organization">Institutionen</ae:parameter>
+                            <ae:parameter name="Person">Personen</ae:parameter>
+                            <ae:parameter name="Category">Kategorien</ae:parameter>
+                        </ae:parameter>
+                    </ae:parameter>
 
-    <xi:include href="%core.module_dir%/Auth/config/translation.xml"
-        xpointer="xmlns(ae=http://agavi.org/agavi/config/global/envelope/1.1) xpointer(/ae:configurations/*)">
-    </xi:include>
+                </message_translator>
+            </translator>
+        </translators>
+    </ae:configuration>
 
+
+    <xi:include href="%core.app_dir%/config/includes/translation.xml"
+        xpointer="xmlns(ae=http://agavi.org/agavi/config/global/envelope/1.0) xpointer(/ae:configurations/*)">
+    </xi:include>
 </ae:configurations>

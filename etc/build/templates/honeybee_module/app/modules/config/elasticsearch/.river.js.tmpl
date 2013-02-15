@@ -1,0 +1,10 @@
+var idParts = ctx.doc._id.split('-');
+
+if (idParts.length > 1 && idParts[0] == '%%MODULE_PREFIX%%') 
+{
+    ctx._type = '%%MODULE_PREFIX%%';
+} 
+else 
+{
+    ctx.ignore = true;
+}

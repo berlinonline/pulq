@@ -1,0 +1,24 @@
+#!/bin/bash
+
+GIT_PATH=".git";
+BASEDIR=`readlink -f "$( dirname $0 )/.."`
+
+if [ -f "$GIT_PATH" ]; then
+    # the .git of the submodule is a file
+    # let's read the actual pat hof the .git directory from it.
+    GIT_PATH=`cat "$GIT_PATH" | sed "s/gitdir: //"`;
+fi
+
+INFO_DIR="$GIT_PATH/info";
+
+if [ ! -d "$INFO_DIR" ]; then
+   mkdir -p "$INFO_DIR";
+fi
+
+EXCLUDE_FILE_PATH="$INFO_DIR/exclude";
+
+(for x in `ls $BASEDIR/../project/modules/`; do echo "app/modules/$x"; done) > "$EXCLUDE_FILE_PATH"
+(cd $BASEDIR/app/modules/ && ln -s ../../../project/modules/* .)
+
+echo -e "\033[32mExluded from git in $EXCLUDE_FILE_PATH:\033[39m"
+echo "`cat $EXCLUDE_FILE_PATH`"

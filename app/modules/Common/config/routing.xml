@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ae:configurations 
+    xmlns:ae="http://agavi.org/agavi/config/global/envelope/1.0" 
+    xmlns="http://agavi.org/agavi/config/parts/routing/1.0">
+    <ae:configuration context="web">
+        <routes>
+            <route name=".service.localize" pattern="/service/localize" action="Service_Localize" method="read" />
+            <route name=".service.detect_face" pattern="/service/detect_face" action="Service_DetectFace" method="read" />
+        </routes>
+    </ae:configuration>
+
+    <ae:configuration context="console">
+        <routes>
+            <route pattern="empty" module="Empty" action="Empty" />
+        </routes>
+    </ae:configuration>
+</ae:configurations>

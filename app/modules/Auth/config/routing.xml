@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ae:configurations xmlns:ae="http://agavi.org/agavi/config/global/envelope/1.1" xmlns="http://agavi.org/agavi/config/parts/routing/1.0">
+<ae:configurations xmlns:ae="http://agavi.org/agavi/config/global/envelope/1.0" xmlns="http://agavi.org/agavi/config/parts/routing/1.0">
     <ae:configuration context="web">
         <routes>
-            <route name="login" pattern="^/login$" module="Auth" action="Login" />
-            <route name="logout" pattern="^/logout$" module="Disabled" action="Logout" />
+            <route name=".login" pattern="^/login$" module="Auth" action="Login" />
+            <route name=".logout" pattern="^/logout$" module="Auth" action="Logout" />
+        </routes>
+    </ae:configuration>
+
+    <ae:configuration context="console">
+        <routes>
+            <route pattern="default" module="Foo" action="Bar" method="notImplemented" />
         </routes>
     </ae:configuration>
 </ae:configurations>

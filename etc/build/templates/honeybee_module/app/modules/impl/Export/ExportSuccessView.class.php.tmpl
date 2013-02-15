@@ -1,0 +1,9 @@
+<?php
+
+class %%MODULE_NAME%%_Export_ExportSuccessView extends %%MODULE_NAME%%BaseView
+{
+    public function executeText(AgaviRequestDataHolder $parameters)
+    {
+        $this->getResponse()->setContent("Finished exporting ur %%MODULE_NAME%% documents.");
+    }
+}

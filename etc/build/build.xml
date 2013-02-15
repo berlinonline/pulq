@@ -1,45 +1,188 @@
 <?xml version="1.0" encoding="utf-8"?>
-<project name="BerlinOnline.de" basedir="." default="cc">
-
+<project name="Pulq" basedir="." default="cc">
+    <!-- 
+        project property definitions
+    -->
     <property name="project.directory" value="${application.startdir}" />
+    <property name="project.codegen.target" value="${application.startdir}/../project/modules" />
     <property name="project.directory.etc" value="${application.startdir}/etc" />
-
     <property userProperty="true" override="true" file="${project.directory.etc}/build/build.properties" />
-    <taskdef name="run" classname="PulqPhingRunTask" classpath="${project.directory}/libs/Pulq/phing"/>
+    <property name="module.directory.impl" value="impl" />
+    <property name="module.directory.resources" value="resources" />
 
-    <target name="cc" description="Clear the config cache.">
-        <echo message="Clearing the config cache." />
-        <run command="bin/clear-cache.sh" dir="${project.directory}"/>
+	<taskdef name="run" classname="PulqRunTask" classpath="${project.directory.etc}/build/tasks"/>
+
+    <!-- 
+        Custom module wizward target that builds full stack pulq modules along with 
+        framework boilerplate and default implementations.
+    -->
+    <target name="pulq-module-wizard" depends="project-locate" description="Creates a pulq module.">
+        <!--# Setup/Prompt Properties #-->
+        <agavi.input property="module.name" message="Module name" promptCharacter=":" failIfEmpty="true" ignoreIfSet="true" />
+        <property userProperty="true" name="module.name.input" value="${module.name}" override="true" />
+        <agavi.transform-string-to-identifier property="module.name" string="${module.name}" />
+        <if>
+            <not>
+                <equals arg1="${module.name}" arg2="${module.name.input}" />
+            </not>
+            <then>
+                <echo message="Module name ${module.name.input} is not a valid identifier; ${module.name} will be used instead" level="warning" />
+            </then>
+        </if>
+        <!-- @todo need a real impl for building module prefixes -->
+        <php expression="strtolower('${module.name}')" returnProperty="module.prefix"/>
+        <property userProperty="true" name="module.directory" value="${project.codegen.target}/${module.name}" override="true" />
+        <agavi.check-module property="module.available" path="${module.directory}" />
+        <fail if="module.available" message="Module ${module.name} already exists at ${module.directory}" />
+        <property userProperty="true" name="module.ln_target" value="${project.directory}/app/modules/${module.name}" override="true" />
+        <!--# Create Directories #-->
+        <mkdir dir="${module.directory}" />
+        <mkdir dir="${module.directory}/${module.directory.impl}" />
+        <mkdir dir="${module.directory}/${module.directory.config}" />
+        <mkdir dir="${module.directory}/${module.directory.lib}" />
+        <mkdir dir="${module.directory}/${module.directory.resources}" />
+        <mkdir dir="${module.directory}/${module.directory.lib}/export" />
+        <mkdir dir="${module.directory}/${module.directory.lib}/renderer" />
+
+        <!--# Create Library #-->
+        <agavi.select-path property="template.path" type="directory" path="${templates.directory.app.modules.lib}">
+            <from path="${templates.directory}" />
+        </agavi.select-path>
+        <copy todir="${module.directory}/${module.directory.lib}">
+            <mapper type="regexp" from="^(.+[\\\/])?(.+)\.tmpl$" to="\1/${module.name}\2" />
+            <fileset dir="${template.path}">
+                <include name="**/*.tmpl" />
+                <exclude name="**/workflow/plugin/*.tmpl" />
+            </fileset>
+            <filterchain>
+                <replacetokens begintoken="%%" endtoken="%%">
+                    <token key="MODULE_PREFIX" value="${module.prefix}" />
+                    <token key="PROJECT_LOCATION" value="${project.directory}" />
+                    <token key="PROJECT_PREFIX" value="${project.prefix}" />
+                    <token key="MODULE_NAME" value="${module.name}" />
+                </replacetokens>
+            </filterchain>
+        </copy>
+        <!-- Special naming convention for workflow plugins (should get rid of that). -->
+        <agavi.select-path property="template.path" type="directory" path="${templates.directory.app.modules.lib}/workflow/plugin">
+            <from path="${templates.directory}" />
+        </agavi.select-path>
+        <copy todir="${module.directory}/${module.directory.lib}/workflow/plugin">
+            <mapper type="regexp" from="^(.+[\\\/])?(.+)\.tmpl$" to="\1/Workflow${module.name}\2" />
+            <fileset dir="${template.path}">
+                <include name="**/*.tmpl" />
+            </fileset>
+            <filterchain>
+                <replacetokens begintoken="%%" endtoken="%%">
+                    <token key="MODULE_PREFIX" value="${module.prefix}" />
+                    <token key="PROJECT_LOCATION" value="${project.directory}" />
+                    <token key="PROJECT_PREFIX" value="${project.prefix}" />
+                    <token key="MODULE_NAME" value="${module.name}" />
+                </replacetokens>
+            </filterchain>
+        </copy>
+
+        <!--# Copy Configuration #-->
+        <agavi.select-path property="template.path" path="${templates.directory.app.modules.config}">
+            <from path="${templates.directory}" />
+        </agavi.select-path>
+        <!-- Start with xml files ... -->
+        <copy todir="${module.directory}/${module.directory.config}">
+            <mapper type="glob" from="*.xml.tmpl" to="*.xml" />
+            <fileset dir="${template.path}">
+                <include name="**/*.xml.tmpl" />
+            </fileset>
+            <filterchain>
+                <replacetokens begintoken="%%" endtoken="%%">
+                    <token key="DB_PREFIX" value="${project.db_prefix}" />
+                    <token key="MODULE_PREFIX" value="${module.prefix}" />
+                    <token key="PROJECT_LOCATION" value="${project.directory}" />
+                    <token key="PROJECT_PREFIX" value="${project.prefix}" />
+                    <token key="MODULE_NAME" value="${module.name}" />
+                </replacetokens>
+            </filterchain>
+        </copy>
+        <copy tofile="${module.directory}/${module.directory.config}/dat0r/codegen.ini" 
+              file="${template.path}/dat0r/codegen.ini.tmpl">
+            <filterchain>
+                <replacetokens begintoken="%%" endtoken="%%">
+                    <token key="MODULE_PREFIX" value="${module.prefix}" />
+                    <token key="PROJECT_LOCATION" value="${project.directory}" />
+                    <token key="PROJECT_PREFIX" value="${project.prefix}" />
+                    <token key="MODULE_NAME" value="${module.name}" />
+                </replacetokens>
+            </filterchain>
+        </copy>
+        <copy tofile="${module.directory}/${module.directory.config}/dat0r/.gitignore" 
+              file="${template.path}/dat0r/.gitignore.tmpl" />
+        <!-- ... then copy the couchdb and elasticsearch cfg files. -->
+        <copy todir="${module.directory}/${module.directory.config}">
+            <mapper type="regexp" from="^(.+[\\\/])?(.+)\.tmpl$" to="\1/${module.prefix}\2" />
+            <fileset dir="${template.path}">
+                <include name="**/*.js.tmpl" />
+                <include name="**/*.json.tmpl" />
+            </fileset>
+            <filterchain>
+                <replacetokens begintoken="%%" endtoken="%%">
+                    <token key="DB_PREFIX" value="${project.db_prefix}" />
+                    <token key="MODULE_PREFIX" value="${module.prefix}" />
+                    <token key="PROJECT_LOCATION" value="${project.directory}" />
+                    <token key="PROJECT_PREFIX" value="${project.prefix}" />
+                    <token key="MODULE_NAME" value="${module.name}" />
+                </replacetokens>
+            </filterchain>
+        </copy>
+
+        <!--# Copy Script Resources #-->
+        <agavi.select-path property="template.path" type="directory" path="${templates.directory.app.modules}/resources">
+            <from path="${templates.directory}" />
+        </agavi.select-path>
+        <copy todir="${module.directory}/${module.directory.resources}">
+            <mapper type="regexp" from="^(.+[\\\/])?(.+)\.tmpl$" to="\1/${module.prefix}\2" />
+            <fileset dir="${template.path}">
+                <include name="**/*.js.tmpl" />
+            </fileset>
+            <filterchain>
+                <replacetokens begintoken="%%" endtoken="%%">
+                    <token key="MODULE_PREFIX" value="${module.prefix}" />
+                    <token key="PROJECT_LOCATION" value="${project.directory}" />
+                    <token key="PROJECT_PREFIX" value="${project.prefix}" />
+                    <token key="MODULE_NAME" value="${module.name}" />
+                </replacetokens>
+            </filterchain>
+        </copy>
+        <copy toDir="${module.directory}/${module.directory.resources}/scripts/" 
+              file="${template.path}/scripts/.index">
+            <filterchain>
+                <replacetokens begintoken="%%" endtoken="%%">
+                    <token key="MODULE_PREFIX" value="${module.prefix}" />
+                    <token key="PROJECT_LOCATION" value="${project.directory}" />
+                    <token key="PROJECT_PREFIX" value="${project.prefix}" />
+                    <token key="MODULE_NAME" value="${module.name}" />
+                </replacetokens>
+            </filterchain>
+        </copy>
+
+        <!--# Create default actions (List, Edit, Suggest and Export) #-->
+        <agavi.select-path property="template.path" type="directory" path="${templates.directory.app.modules}/impl">
+            <from path="${templates.directory}" />
+        </agavi.select-path>
+        <copy todir="${module.directory}/${module.directory.impl}">
+            <mapper type="regexp" from="^(.+[\\\/])?(.+)\.tmpl$" to="\1\2" />
+            <fileset dir="${template.path}">
+                <include name="**/*.tmpl" />
+            </fileset>
+            <filterchain>
+                <replacetokens begintoken="%%" endtoken="%%">
+                    <token key="MODULE_PREFIX" value="${module.prefix}" />
+                    <token key="PROJECT_LOCATION" value="${project.directory}" />
+                    <token key="PROJECT_PREFIX" value="${project.prefix}" />
+                    <token key="MODULE_NAME" value="${module.name}" />
+                </replacetokens>
+            </filterchain>
+        </copy>
+
+        <run command="make link-project-modules" dir="${project.directory}" />
+        <run command="vendor/bin/dat0r.console generate ${module.ln_target}/config/dat0r/codegen.ini ${module.ln_target}/config/dat0r/module.xml gen+dep" dir="${project.directory}" />
     </target>
-
-    <target name="phpcs" description="Run the php codesniffer.">
-        <echo message="Running the php codesniffer (phpcs)." />
-        <run command="mkdir -p ${project.directory}/etc/integration/build/logs/" dir="${project.directory}" />
-        <run command="nice bin/phpcs --report=checkstyle --report-file=${project.directory}/etc/integration/build/logs/checkstyle.xml --standard=etc/integration/CheckStyle/ruleset.xml --ignore='app/cache*,*Success.php,*Input.php,*Error.php,app/templates/*,app/resources,app/modules/*/resources,*.twig' ${project.directory}/app" dir="${project.directory}" />
-    </target>
-
-    <target name="test" description="Run the project's testsuite.">
-        <echo message="Running the project's testsuite." />
-        <run command="nice bin/test --configuration testing/config/phpunit.xml" dir="${project.directory}" />
-    </target>
-
-    <target name="phpdoc" description="Generate API documentation using PHPDocumentor." depends="cc">
-        <echo message="Generating the API documentation using PHPDocumentor."/>
-        <run command="/bin/rm -rf etc/integration/build/api/serverside" dir="${project.directory}"/>
-        <run command="/bin/mkdir -p etc/integration/build/api/serverside" dir="${project.directory}"/>
-        <run command="nice bin/phpdoc -c ${project.directory}/app/config/docblox.xml" dir="${project.directory}" />
-    </target>
-
-    <target name="js-xunit" description="Running client side tests with xunit output." depends="cc">
-        <echo message="Running client side tests with xunit output."/>
-        <run command="/bin/rm -rf etc/integration/build/logs/clientside.xml" dir="${project.directory}"/>
-        <run command="/bin/mkdir -p etc/integration/build/logs" dir="${project.directory}"/>
-        <run command="bin/test-js --xunit | cat > etc/integration/build/logs/clientside.xml" dir="${project.directory}"/>
-    </target>
-
-    <target name="js-spec" description="Running client side tests with spec output." depends="cc">
-        <echo message="Running client side tests with spec output."/>
-        <run command="bin/test-js --spec" dir="${project.directory}"/>
-    </target>
-
 </project>

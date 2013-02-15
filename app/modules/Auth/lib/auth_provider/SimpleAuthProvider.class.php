@@ -4,7 +4,7 @@
  * The SimpleAuthProvider provides authentication against xml based account information.
  * The accounts used by te simple auth provider are configured inside the settings.xml.
  *
- * @version         $Id: SimpleAuthProvider.class.php 992 2012-02-27 23:21:47Z tschmitt $
+ * @version         $Id$
  * @copyright       BerlinOnline Stadtportal GmbH & Co. KG
  * @author          Thorsten Schmitt-Rink <thorsten.schmitt-rink@berlinonline.de>
  * @package         Auth

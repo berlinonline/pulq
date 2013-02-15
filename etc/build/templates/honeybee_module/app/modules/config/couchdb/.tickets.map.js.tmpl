@@ -1,0 +1,10 @@
+/**
+ * Access all %%MODULE_NAME%%WorkflowItem tickets by identifier.
+ */
+function(doc)
+{
+    if (doc.type && '%%MODULE_NAME%%WorkflowItem' === doc.type)
+    {
+        emit(doc._id, doc.ticket);
+    }
+}

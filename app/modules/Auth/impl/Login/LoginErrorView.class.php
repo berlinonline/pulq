@@ -4,7 +4,7 @@
  * The Auth_LoginLogin_ErrorView class handles error data presentation
  * for our various supported output types.
  *
- * @version         $Id: LoginErrorView.class.php 1166 2012-05-10 10:50:31Z tschmitt $
+ * @version         $Id$
  * @copyright       BerlinOnline Stadtportal GmbH & Co. KG
  * @author          Thorsten Schmitt-Rink <tschmittrink@gmail.com>
  * @package         Auth
@@ -12,14 +12,6 @@
  */
 class Auth_Login_LoginErrorView extends AuthBaseView
 {
-    /**
-     * Execute any binary related presentation logic.
-     *
-     * @param       AgaviRequestDataHolder $parameters
-     *
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
-     * @codingStandardsIgnoreStart
-     */
     public function executeBinary(AgaviRequestDataHolder $parameters) // @codingStandardsIgnoreEnd
     {
         // @easter-egg Return 'I am a teapot' for people,

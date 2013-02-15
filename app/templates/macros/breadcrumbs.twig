@@ -1,0 +1,18 @@
+{% macro breadcrumbs(breadcrumbs) %}
+    <ul class="breadcrumb">
+    {% for crumb in breadcrumbs %}
+        {% if not loop.last %}
+            <li>
+                <a href="{{crumb.link}}" title="{{crumb.info}}">
+                    <span class="{{crumb.icon}}">&nbsp;</span>{{crumb.text}}
+                </a>
+            </li>
+            <li>&#x2192;</li>
+        {% else %}
+            <li class="active">
+                <span class="{{crumb.icon}}">&nbsp;</span>{{crumb.text}}
+            </li>
+        {% endif %}
+    {% endfor %}
+    </ul>
+{% endmacro %}

@@ -1,0 +1,70 @@
+/**
+ * Layout common
+ */
+ html,
+ body
+ {
+    height: 100%;
+ }
+
+html
+{
+    background: url('../binaries/dashboard_bg.jpg') no-repeat bottom right fixed;
+}
+
+html.error-page
+{
+    background: url('../binaries/recovery.jpg') no-repeat bottom right fixed;
+}
+
+body
+{
+    padding: 0;
+    background: none;
+}
+
+h1
+{
+    font-size: 30px;
+    color: #555555;
+    margin-bottom: 1em;
+    margin-top: 70px;
+}
+
+p.info-paragraph
+{
+    font-size: 12pt;
+    margin-bottom: 1em;
+}
+
+p.tip-paragraph
+{
+    font-size: 12pt;
+}
+
+ul.dl-horizontal,
+.status-message
+{
+    list-style: none;
+    margin: 0;
+    overflow: hidden;
+    color: white;
+}
+
+ul.dl-horizontal li
+{
+    float: left;
+    margin-right: 1em;
+    color: #555555;
+}
+
+ul.dl-horizontal b.label
+{
+}
+
+.info-box
+{
+    margin-top: 5em;
+    width: 25em;
+    background-color: rgba(253, 253, 253, 0.6);
+}

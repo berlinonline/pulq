@@ -4,7 +4,7 @@
  * The Auth_Login_LoginInputView class handles input form presentation
  * for our various supported output types.
  *
- * @version         $Id: LoginInputView.class.php 1168 2012-05-10 11:30:39Z tschmitt $
+ * @version         $Id$
  * @copyright       BerlinOnline Stadtportal GmbH & Co. KG
  * @author          Thorsten Schmitt-Rink <tschmittrink@gmail.com>
  * @package         Auth
@@ -12,10 +12,6 @@
  */
 class Auth_Login_LoginInputView extends AuthBaseView
 {
-    /**
-     *
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
-     */
     public function executeBinary(AgaviRequestDataHolder $parameters) // @codingStandardsIgnoreEnd
     {
         $this->memoizeLocationForLaterRedirect();

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns="http://berlinonline.de/schemas/honeybee/config/dataimport/definition/1.0"
+    targetNamespace="http://berlinonline.de/schemas/honeybee/config/dataimport/definition/1.0"
+    elementFormDefault="qualified">
+
+    <xs:include schemaLocation="./settings_definition.xsd" />
+
+    <xs:complexType name="dataimports">
+        <xs:sequence>
+            <xs:element name="dataimport" type="dataimport" minOccurs="1" maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="dataimport">
+        <xs:sequence>
+            <xs:element name="description" type="xs:string" minOccurs="1" maxOccurs="1" />
+            <xs:element name="datasources" type="sources" minOccurs="1" maxOccurs="1" />
+            <xs:element name="settings" type="settings" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+        <xs:attribute name="class" type="xs:string" use="required" />
+        <xs:attribute name="name" type="xs:string" use="required" />
+    </xs:complexType>
+
+    <xs:complexType name="sources">
+        <xs:sequence>
+            <xs:element name="datasource" type="xs:string" minOccurs="1" maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:group name="configuration">
+        <xs:sequence>
+            <xs:element name="dataimports" type="dataimports" minOccurs="0" maxOccurs="1" />
+        </xs:sequence>
+    </xs:group>
+
+</xs:schema>

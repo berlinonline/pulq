@@ -1,21 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ae:configurations xmlns:ae="http://agavi.org/agavi/config/global/envelope/1.1" xmlns="http://agavi.org/agavi/config/parts/output_types/1.0"
+<ae:configurations 
+    xmlns:ae="http://agavi.org/agavi/config/global/envelope/1.0" 
+    xmlns="http://agavi.org/agavi/config/parts/output_types/1.0" 
     xmlns:xi="http://www.w3.org/2001/XInclude">
-
-    <!-- the sandbox. we can put anything in here. very useful for sharing stuff inside the document using XIncludes -->
+    <!-- 
+        the sandbox. we can put anything in here. very useful for sharing stuff inside the document using XIncludes 
+    -->
     <ae:sandbox>
+        <layers>
+            <layer name="content" />
+        </layers>
+
         <renderers default="proxy">
-            <renderer name="proxy" class="AgaviProxyRenderer">
+            <renderer name="proxy" class="Honeybee\Agavi\Renderer\ProxyRenderer">
                 <ae:parameter name="renderers">
                     <ae:parameter>twig</ae:parameter>
                     <ae:parameter>php</ae:parameter>
                 </ae:parameter>
             </renderer>
-            <renderer name="twig" class="PulqTwigRenderer">
+            <renderer name="twig" class="AgaviTwigRenderer">
                 <ae:parameter name="assigns">
-                    <!-- default assigns of Agavi omitted -->
                     <ae:parameter name="routing">ro</ae:parameter>
+                    <ae:parameter name="request">rq</ae:parameter>
+                    <ae:parameter name="controller">ct</ae:parameter>
+                    <ae:parameter name="user">us</ae:parameter>
                     <ae:parameter name="translation_manager">tm</ae:parameter>
+                    <ae:parameter name="request_data">rd</ae:parameter>
                 </ae:parameter>
                 <ae:parameter name="default_extension">.twig</ae:parameter>
                 <ae:parameter name="extract_vars">true</ae:parameter>
@@ -26,10 +36,11 @@
                 <ae:parameter name="template_dirs">
                     <ae:parameters>
                         <ae:parameter>%core.app_dir%/templates/macros</ae:parameter>
+                        <ae:parameter>%core.app_dir%/templates</ae:parameter>
                     </ae:parameters>
                 </ae:parameter>
             </renderer>
-            <renderer name="php" class="PulqPhpRenderer">
+            <renderer name="php" class="AgaviPhpRenderer">
                 <ae:parameter name="assigns">
                     <ae:parameter name="routing">ro</ae:parameter>
                     <ae:parameter name="request">rq</ae:parameter>
@@ -38,37 +49,35 @@
                     <ae:parameter name="translation_manager">tm</ae:parameter>
                     <ae:parameter name="request_data">rd</ae:parameter>
                 </ae:parameter>
-                        <!-- change the default template variables array name from $template to the more convenient $t -->
+                <!-- change the default template variables array name from $template to the more convenient $t -->
                 <ae:parameter name="var_name">t</ae:parameter>
             </renderer>
         </renderers>
-        
+
     </ae:sandbox>
 
     <ae:configuration context="web">
         <output_types default="html">
-
             <output_type name="html">
-                <xi:include xpointer="xmlns(ae=http://agavi.org/agavi/config/global/envelope/1.1) 
-                    xmlns(ot=http://agavi.org/agavi/config/parts/output_types/1.0) 
-                    xpointer(/ae:configurations/ae:sandbox/ot:renderers)" />
+                
+                <xi:include xpointer="xmlns(ae=http://agavi.org/agavi/config/global/envelope/1.0) xmlns(ot=http://agavi.org/agavi/config/parts/output_types/1.0) xpointer(/ae:configurations/ae:sandbox/ot:renderers)" />
+
                 <layouts default="default">
                     <layout name="default">
-                        <layer name="content" class="AgaviFileTemplateLayer" />
+                        <!-- include common layer definitions from the sandbox -->
+                        <xi:include xpointer="xmlns(ae=http://agavi.org/agavi/config/global/envelope/1.0) xmlns(ot=http://agavi.org/agavi/config/parts/output_types/1.0) xpointer(/ae:configurations/ae:sandbox/ot:layers/*)" />
+                        <!-- and then define those special tp this layout -->
                         <layer name="decorator">
                             <slots>
-<!--                                 <slot name="head" module="Default" action="Head" method="read" /> -->
-                                <slot name="top" module="Default" action="Top" method="read" />
-<!--                                 <slot name="breadcrumb" module="Default" action="Breadcrumb" method="read" /> -->
-                                <slot name="foot" module="Default" action="Foot" method="read" />
+                                <slot name="header" module="Common" action="Header" />
                             </slots>
                             <ae:parameter name="directory">%core.template_dir%</ae:parameter>
                             <ae:parameter name="template">Master</ae:parameter>
                         </layer>
                     </layout>
-
                     <layout name="slot">
-                        <layer name="content"/>
+                        <!-- include common layer definitions from the sandbox -->
+                        <xi:include xpointer="xmlns(ae=http://agavi.org/agavi/config/global/envelope/1.0) xmlns(ot=http://agavi.org/agavi/config/parts/output_types/1.0) xpointer(/ae:configurations/ae:sandbox/ot:layers/*)" />
                     </layout>
                 </layouts>
                 <ae:parameter name="http_headers">
@@ -79,12 +88,6 @@
             <output_type name="json">
                 <ae:parameter name="http_headers">
                     <ae:parameter name="Content-Type">application/json; charset=UTF-8</ae:parameter>
-                </ae:parameter>
-            </output_type>
-
-            <output_type name="xml">
-                <ae:parameter name="http_headers">
-                    <ae:parameter name="Content-Type">text/xml; charset=UTF-8</ae:parameter>
                 </ae:parameter>
             </output_type>
 
@@ -99,8 +102,7 @@
 
     <ae:configuration context="console">
         <output_types default="text">
-            <output_type name="text"/>
+            <output_type name="text" />
         </output_types>
     </ae:configuration>
-
 </ae:configurations>

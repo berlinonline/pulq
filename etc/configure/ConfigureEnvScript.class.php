@@ -10,8 +10,6 @@
  *
  * @author     Thorsten Schmitt-Rink <tschmittrink@gmail.com>
  * @copyright  BerlinOnline GmbH & Co. KG
- *
- * @version $Id: EnvironmentConfigurator.class.php 4182 2011-06-08 12:22:07Z tschmitt $
  */
 class ConfigureEnvScript
 {
@@ -155,7 +153,7 @@ class ConfigureEnvScript
 # Following up, you will be prompted for some important environment information,                         #
 # that we need to get the system up and running for you.                                                 #
 # If you provide an invalid value, you will be prompted as long as we are not satisfied by your answer.  #
-# If you don't know the answer, just abort the process and ask one of the guys from the cm-project team. #
+# If you don't know the answer, just abort the process and restart when you found out the missing infos. #
 #--------------------------------------------------------------------------------------------------------#
 
 MSG

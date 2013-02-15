@@ -1,5 +1,7 @@
 <?php
 
+use Pulq\Core\Environment;
+
 /**
  * EnvironmentConfigurator provides an simple api to update/initialize your environment and host configuration.
  * It is meant for command line usage and required user interaction in 3 of 4 public methods (@see self::importHosts).
@@ -9,8 +11,6 @@
  *
  * @author     Thorsten Schmitt-Rink <tschmittrink@gmail.com>
  * @copyright  BerlinOnline GmbH & Co. KG
- *
- * @version $Id: EnvironmentConfigurator.class.php 4182 2011-06-08 12:22:07Z tschmitt $
  */
 class EnvironmentConfigurator
 {
@@ -49,17 +49,18 @@ class EnvironmentConfigurator
         while (!($environment = $this->promptEnvironment()));
 
         $config = array(
-            ProjectEnvironmentConfig::CFG_PHP         => $php_path,
-            ProjectEnvironmentConfig::CFG_ENVIRONMENT => $environment,
-            ProjectEnvironmentConfig::CFG_BASE_HREF   => $base_href
+            Environment::CFG_PHP         => $php_path,
+            Environment::CFG_ENVIRONMENT => $environment,
+            Environment::CFG_BASE_HREF   => $base_href
         );
 
         $config_filepath = $this->getConfigFilePath();
         $config_settings = array();
 
-        if (is_readable($config_filepath))
+        $config_dir = dirname($config_filepath);
+        if (! is_dir($config_dir))
         {
-            $config_settings = include $config_filepath;
+            mkdir($config_dir, 0775, TRUE);
         }
 
         $this->generateConfig($config);
@@ -161,7 +162,7 @@ class EnvironmentConfigurator
     protected function generateTestingConfig(array $config)
     {
         $config_filepath = str_replace('/local.', '/local.testing.', $this->getConfigFilePath());
-        $config[ProjectEnvironmentConfig::CFG_ENVIRONMENT] = 'testing.'.$config[ProjectEnvironmentConfig::CFG_ENVIRONMENT];
+        $config[Environment::CFG_ENVIRONMENT] = 'testing.'.$config[Environment::CFG_ENVIRONMENT];
 
         $config_code = sprintf(
             $this->getConfigCodeTemplateString(),
@@ -183,9 +184,9 @@ class EnvironmentConfigurator
         {
             $config_code = sprintf(
                 $this->getLocalShConfigCode(),
-                $config[ProjectEnvironmentConfig::CFG_PHP],
-                $config[ProjectEnvironmentConfig::CFG_BASE_HREF],
-                $config[ProjectEnvironmentConfig::CFG_ENVIRONMENT]
+                $config[Environment::CFG_PHP],
+                $config[Environment::CFG_BASE_HREF],
+                $config[Environment::CFG_ENVIRONMENT]
             );
 
             if (FALSE === file_put_contents($sh_config_filepath, $config_code))
@@ -222,7 +223,7 @@ export PHP_COMMAND=%s
 export BASE_HREF="%s"
 
 if (test -z "\$AGAVI_ENVIRONMENT") ; then
-   export AGAVI_ENVIRONMENT=%s
+   export AGAVI_ENVIRONMENT="%s"
 fi
 
 # Project base path
@@ -230,12 +231,7 @@ cw_path="`dirname $0`/.."
 cw_path="`readlink -f \${cw_path}`"
 
 # Nodejs libraries:
-export PATH="\${cw_path}/libs/node_modules/vows/bin:\$PATH"
-# - less-compile devtool
-export NODE_PATH="\${cw_path}/dev/less-compile/node_modules/less/lib:\$NODE_PATH"
-# - clientside test foundation
-export NODE_PATH=\${cw_path}/libs/node_modules/vows/lib:\$NODE_PATH
-export NODE_PATH=\${cw_path}/libs/node_modules/zombie/lib:\$NODE_PATH
+export PATH="\${cw_path}/node_modules/.bin:\$PATH"
 SH_CODE;
     }
 
@@ -251,7 +247,7 @@ SH_CODE;
         $output = array();
         exec("$path -v", $output);
 
-        if (1 < count($output) && strstr($output[0], 'PHP 5.3'))
+        if (1 < count($output) && preg_match('/PHP 5\.[34]/', $output[0]))
         {
             return TRUE;
         }
@@ -286,8 +282,8 @@ SH_CODE;
         $local_dir = $this->getLocalSettingsBasePath();
 
         return $local_dir
-            . ProjectEnvironmentConfig::CONFIG_FILE_PREFIX
-            . ProjectEnvironmentConfig::CONFIG_FILE_NAME;
+            . Environment::CONFIG_FILE_PREFIX
+            . Environment::CONFIG_FILE_NAME;
     }
 
     protected function getLocalConfigShFilePath()

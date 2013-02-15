@@ -16,14 +16,52 @@
 /**
  * The Default_Error404Action class provides default 404 error handling.
  *
- * @version         $Id: Error404Action.class.php 199 2011-09-11 10:20:11Z tschmitt $
+ * @version         $Id$
  * @copyright       BerlinOnline Stadtportal GmbH & Co. KG
  * @author          Thorsten Schmitt-Rink <tschmittrink@gmail.com>
  * @package         Default
  * @subpackage      Mvc
  */
-class Default_Error404Action extends DefaultBaseAction
+class Default_Error404Action extends DefaultBaseAction 
 {
+    /**
+     * This Action does not yet serve any Request methods.
+     * When a request comes in and this Action is used, execution will be skipped
+     * and the View returned by getDefaultViewName() will be used.
+     *
+     * If an Action has an execute() method, this means it serves all methods.
+     * Alternatively, you can implement executeRead() and executeWrite() methods,
+     * because "read" and "write" are the default names for Web Request methods.
+     * Other request methods may be explicitely served via execcuteReqmethname().
+     *
+     * Keep in mind that if an Action serves a Request method, validation will be
+     * performed prior to execution.
+     *
+     * Usually, for example for an AddProduct form, your Action should only be run
+     * when a POST request comes in, which is mapped to the "write" method by
+     * default. Therefor, you'd only implement executeWrite() and put the logic to
+     * add the new product to the database there, while for GET (o.e. "read")
+     * requests, execution would be skipped, and the View name would be determined
+     * using getDefaultViewName().
+     *
+     * We strongly recommend to prefer specific executeWhatever() methods over the
+     * "catchall" execute().
+     *
+     * Besides execute() and execute*(), there are other methods that might either
+     * be generic or specific to a request method. These are:
+     * registerValidators() and register*Validators()
+     * validate() and validate*()
+     * handleError() and handle*Error()
+     *
+     * The execution of these methods is not dependent on the respective specific
+     * execute*() being present, e.g. for a "write" Request, validateWrite() will
+     * be run even if there is no executeWrite() method.
+     */
+//	public function execute(AgaviRequestDataHolder $rd)
+//	{
+//		return 'Success';
+//	}
+
     /**
      * This method returns the View name in case the Action doesn't serve the
      * current Request method.
@@ -37,7 +75,7 @@ class Default_Error404Action extends DefaultBaseAction
      *                     1. The view that will be executed.
      *
      */
-    public function getDefaultViewName()
+    public function getDefaultViewName() 
     {
         return 'Success';
     }

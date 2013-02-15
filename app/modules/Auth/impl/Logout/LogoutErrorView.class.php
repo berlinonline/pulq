@@ -4,7 +4,7 @@
  * The Auth_Logout_LogoutErrorView class handles error data presentation
  * for the various supported output types we want to support for our Auth_LogoutAction.
  *
- * @version         $Id: LogoutErrorView.class.php 199 2011-09-11 10:20:11Z tschmitt $
+ * @version         $Id$
  * @copyright       BerlinOnline Stadtportal GmbH & Co. KG
  * @author          Thorsten Schmitt-Rink <tschmittrink@gmail.com>
  * @package         Auth

@@ -3,7 +3,7 @@
 /**
  * The Auth_LogoutAction class provides standard logout functionality and ends any current session.
  *
- * @version         $Id: LogoutAction.class.php 199 2011-09-11 10:20:11Z tschmitt $
+ * @version         $Id$
  * @copyright       BerlinOnline Stadtportal GmbH & Co. KG
  * @author          Tom Anheyer <Tom.Anheyer@BerlinOnline.de>
  * @package         Auth

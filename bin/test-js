@@ -15,5 +15,5 @@ if (test -z "$VOWS_COMMAND") ; then
   echo "Have you run bin/configure-env.php allready?"
   exit 0
 fi
-
+echo "${VOWS_COMMAND} ${@} ${PROJECT}/testing/tests/behavioural/*"
 ${VOWS_COMMAND} ${@} ${PROJECT}/testing/tests/behavioural/*

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ae:configurations 
+	xmlns="http://agavi.org/agavi/config/parts/module/1.0" 
+	xmlns:ae="http://agavi.org/agavi/config/global/envelope/1.0">
+	<ae:configuration>
+		<module enabled="true">
+			<settings>
+				<setting name="title">%%MODULE_NAME%% Module</setting>
+				<!--
+					use impl file system layout 
+					@see http://www.mivesto.de/agavi/agavi-faq.html#general_99
+				-->
+                <!-- nicer filesystem structure -->
+                <setting name="agavi.action.path">%core.module_dir%/${moduleName}/impl/${actionName}/${actionName}Action.class.php</setting>
+                <setting name="agavi.cache.path">%core.module_dir%/${moduleName}/impl/${actionName}/${actionName}.cache.xml</setting>
+                <setting name="agavi.template.directory">%core.module_dir%/${module}/impl/</setting>
+                <setting name="agavi.validate.path">%core.module_dir%/${moduleName}/impl/${actionName}/${actionName}.validate.xml</setting>
+                <setting name="agavi.view.path">%core.module_dir%/${moduleName}/impl/${viewName}View.class.php</setting>
+                <setting name="agavi.view.name">${actionName}/${actionName}${viewName}</setting>
+			</settings>
+		</module>
+	</ae:configuration>
+</ae:configurations>

@@ -10,11 +10,9 @@ else
 exit 0
 fi
 BASE_DIR="`dirname $0`/.."
-LESS_BIN="`readlink -f ${BASE_DIR}`/dev/less-compile/bin/lessw.js"
 
-if (test -z "$LESS_BIN") ; then
-  echo "WARNING: executable not found at location: '$LESS_BIN'"
-  exit 1
+if [ "$3" = "-watch" ]; then
+    less-watcher -d @2
+else
+    lessc $@
 fi
-
-node $LESS_BIN "$@"

@@ -1,0 +1,37 @@
+#!/bin/bash
+
+cd `dirname $0`
+
+# Store the vendor directory
+cd ..
+
+if [ ! -d vendor ] ; then
+	echo "No vendor directory found, skipping patches.";
+	exit 1
+fi
+
+cd vendor
+vendor_directory=`pwd`
+
+# Store the patches directory
+cd ..
+cd patches
+patches_directory=`pwd`
+
+# For each patches directory (e.g. patches/agavi)
+ls | while read line
+do
+    # Enter the vendor directory (e.g. vendor/agavi)
+    echo " > Reading patches for $line ..."
+    cd $vendor_directory/$line
+
+    # Execute each patch for this vendor (e.g. patches/agavi/agavi_short_action_name.patch)
+    ls $patches_directory/$line | while read patch
+do
+    echo " > Patch found: $patch"
+    patch -p0 -i $patches_directory/$line/$patch
+done
+cd ..
+done
+
+exit 0

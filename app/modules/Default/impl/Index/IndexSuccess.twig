@@ -1,6 +1,15 @@
-<div class="container">
-{% block inner %}
-	<h1><strike>Bootstrap</strike> Pulq starter template</h1>
-	<p>Use this document as a way to quick start any new project.<br> All you get is this message and a barebones HTML document.</p>
-{% endblock %}
+<div class="container-fluid wrapper">
+	<div class="row-fluid">
+        <div class="span12">
+            <h1>Willkommen im Honeybee CMF</h1>
+            <hr />
+            <ul class="dl-horizontal">
+                <li><b class="label label-info">Datum</b>  {{ date()|date('d.m.Y') }}</li>
+                <li><b class="label label-info">Zeit</b>  {{ date()|date('H:i') }}</li>
+                <li><b class="label label-info">Status</b>  Bereit</li>
+            </ul>
+            <hr />
+        </div>
+	</div>
+    <div class="push"></div>
 </div>

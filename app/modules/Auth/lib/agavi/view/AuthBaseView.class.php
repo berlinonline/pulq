@@ -1,15 +1,17 @@
 <?php
 
+use Honeybee\Agavi\View\BaseView;
+
 /**
  * The AuthBaseAction serves as the base view to all views implemented inside of the Auth module.
  *
- * @version         $Id: AuthBaseView.class.php 1013 2012-03-02 21:28:23Z tschmitt $
+ * @version         $Id$
  * @copyright       BerlinOnline Stadtportal GmbH & Co. KG
  * @author          Thorsten Schmitt-Rink <tschmittrink@gmail.com>
  * @package         Auth
  * @subpackage      Agavi/View
  */
-class AuthBaseView extends ProjectBaseView
+class AuthBaseView extends BaseView
 {
     /*
       This is the base view all your module's views should extend. This way,
@@ -29,5 +31,3 @@ class AuthBaseView extends ProjectBaseView
       for specific modules in case you require this.
      */
 }
-
-?>

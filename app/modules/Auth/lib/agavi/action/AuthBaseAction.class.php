@@ -1,15 +1,16 @@
 <?php
 
+use \Honeybee\Agavi\Action\BaseAction;
+
 /**
  * The AuthBaseAction serves as the base action to all actions implemented inside of the Auth module.
  *
- * @version         $Id: AuthBaseAction.class.php 1013 2012-03-02 21:28:23Z tschmitt $
  * @copyright       BerlinOnline Stadtportal GmbH & Co. KG
  * @author          Thorsten Schmitt-Rink <tschmittrink@gmail.com>
  * @package         Auth
  * @subpackage      Agavi/Action
  */
-class AuthBaseAction extends ProjectBaseAction
+class AuthBaseAction extends BaseAction
 {
     /*
       This is the base action all your module's actions should extend. This way,
@@ -29,5 +30,3 @@ class AuthBaseAction extends ProjectBaseAction
       for specific modules in case you require this.
      */
 }
-
-?>

@@ -17,7 +17,7 @@
  * The Default_ModuleDisabled_ModuleDisabledSuccessView class handles the presentation logic
  * required for the %system_actions.module_disabled% action.
  *
- * @version         $Id: ModuleDisabledSuccessView.class.php 199 2011-09-11 10:20:11Z tschmitt $
+ * @version         $Id$
  * @copyright       BerlinOnline Stadtportal GmbH & Co. KG
  * @author          Thorsten Schmitt-Rink <tschmittrink@gmail.com>
  * @package         Default

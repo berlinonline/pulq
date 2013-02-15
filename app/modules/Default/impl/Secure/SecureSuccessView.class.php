@@ -17,7 +17,7 @@
  * The Default_SecureSuccess_SecureSuccessView class handles the presentation logic
  * required for the %system_actions.secure% action.
  *
- * @version         $Id: SecureSuccessView.class.php 199 2011-09-11 10:20:11Z tschmitt $
+ * @version         $Id$
  * @copyright       BerlinOnline Stadtportal GmbH & Co. KG
  * @author          Thorsten Schmitt-Rink <tschmittrink@gmail.com>
  * @package         Default

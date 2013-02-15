@@ -1,0 +1,50 @@
+<?php
+
+class %%MODULE_NAME%%_ExportAction extends %%MODULE_NAME%%BaseAction
+{
+    public function executeWrite(AgaviRequestDataHolder $parameters)
+    {
+        $finder = %%MODULE_NAME%%Finder::create(
+            ListConfig::fromArray(
+                AgaviConfig::get('%%MODULE_PREFIX%%.list_config')
+            )
+        );
+
+        $listState = ListState::fromArray(array('limit' => 100, 'offset' => 0));
+        
+        $entriesProcessed = 0;
+        $today = new DateTime();
+        $export = new %%MODULE_NAME%%FrontendExport();
+        while (($result = $finder->find($listState)) && 0 < $result->getItemsCount())
+        {
+            $this->printMemUsage();
+            echo "Exported " . $entriesProcessed . " documents." . PHP_EOL;
+            foreach ($result->getItems() as $item)
+            {
+                // @todo implement when we have a generic export core implementation.
+            }
+            $listState->setOffset(
+                $listState->getOffset() + $listState->getLimit()
+            );
+            $entriesProcessed += $listState->getLimit();
+        }
+        return 'Success';
+    }
+
+    protected function printMemUsage()
+    {
+        $mem_usage = memory_get_usage(true);
+        if ($mem_usage < 1024)
+            echo $mem_usage." bytes";
+        elseif ($mem_usage < 1048576)
+            echo round($mem_usage/1024,2)." kilobytes";
+        else
+            echo round($mem_usage/1048576,2)." megabytes";
+        echo PHP_EOL;
+    }
+
+    public function isSecure()
+    {
+        return FALSE;
+    }
+}

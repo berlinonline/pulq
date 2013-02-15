@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-    This buildfile is part of a Pulq projekt.
+    This buildfile is part of the Honeybee (CMF) projekt.
     It's purpose it to provide an entry point for testing how your current code integrates into the project,
     thereby providing xml based reports for various aspects of the code such as checkstyle, mess detection,
     unit testing, the resulting code coverage and a couple more.
@@ -13,14 +13,14 @@
 
     @see http://qualityassuranceinphpprojects.com/pages/tools.html
 -->
-<project name="BerlinOnline.de" default="build" basedir="../../">
+<project name="Honeybee" default="build" basedir="../../">
 
     <!--
         Project property definitions.
     -->
     <property name="source" value="${basedir}/app/"/>
     <property name="build_dir" value="${basedir}/etc/integration/build/"/>
-    <property name="project_bin" value="${basedir}/bin/agavi"/>
+    <property name="project_bin" value="${basedir}/bin/project"/>
     <property name="pub_dir" value="${basedir}/pub/"/>
     <property name="jslint_jar" value="${basedir}/dev/lint/jslint4java/jslint4java-2.0.0.jar"/>
 
@@ -92,14 +92,12 @@
     </target>
 
     <target name="phpmd" description="Generate pmd.xml using PHPMD">
-        <exec executable="bin/phpmd">
+        <exec executable="phpmd">
             <arg path="${source}" />
             <arg value="xml" />
-            <arg value="codesize,design,unusedcode,${basedir}/etc/integration/PMD/pmd_rules.xml" />
+            <arg value="codesize,design,naming,unusedcode" />
             <arg value="--reportfile" />
             <arg value="${build_dir}/logs/pmd.xml" />
-            <arg value="--exclude" />
-            <arg value="${source}/cache" />
         </exec>
     </target>
 
@@ -107,8 +105,6 @@
         <exec executable="phpcpd">
             <arg value="--log-pmd" />
             <arg value="${build_dir}/logs/pmd-cpd.xml" />
-            <arg value="--exclude" />
-            <arg value="${source}/cache" />
             <arg path="${source}" />
         </exec>
     </target>
@@ -163,6 +159,7 @@
             <antcall target="phpcs"/>
             <antcall target="phpdoc"/>
             <antcall target="phploc"/>
+            <antcall target="jsdoc"/>
         </parallel>
     </target>
 

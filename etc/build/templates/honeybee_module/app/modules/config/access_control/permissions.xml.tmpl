@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ae:configurations
+    xmlns="http://berlinonline.de/schemas/pulq/config/access_control/1.0" 
+    xmlns:env="http://berlinonline.de/schemas/pulq/config/envelope/definition/1.0" 
+    xmlns:ae="http://agavi.org/agavi/config/global/envelope/1.0">
+    <ae:configuration>
+        <roles>
+            <!-- 
+                Defines which resource actions actions may be executed by the default editor.
+                
+                :INFO: 
+                Atm this is restricted for providing permission to for the default role only.
+                This will change extremely when we reach the iterations,
+                that have their main focus on the acl configuration.
+                Most probally then this file will be removed in the favour of a db driven management
+                with a fancy UI.
+            -->
+            <role name="default-permissions">
+                <acl>
+                    <!-- edit state perms -->
+                    <grant>%%MODULE_PREFIX%%.edit::read</grant>
+                    <grant>%%MODULE_PREFIX%%.edit::write</grant>
+                    <!-- <grant if="user_is_item_owner">%%MODULE_PREFIX%%.edit::write</grant> -->
+                    
+                    <!-- publish state perms -->
+                    <grant>%%MODULE_PREFIX%%.publish::write</grant>
+
+                    <!-- published state perms -->
+                    <grant>%%MODULE_PREFIX%%.published::read</grant>
+                    <grant>%%MODULE_PREFIX%%.published::write</grant>
+                    <!-- <grant if="user_is_item_owner">%%MODULE_PREFIX%%.published::write</grant> -->
+
+                    <!-- archive state perms -->
+                    <grant>%%MODULE_PREFIX%%.archive::write</grant>
+
+                    <!-- archived state perms -->
+                    <grant>%%MODULE_PREFIX%%.archived::read</grant>
+                    <grant>%%MODULE_PREFIX%%.archived::write</grant>
+                    <!-- <grant if="user_is_item_owner">%%MODULE_PREFIX%%.archived::write</grant> -->
+                </acl>
+            </role>
+        </roles>
+    </ae:configuration>
+</ae:configurations>

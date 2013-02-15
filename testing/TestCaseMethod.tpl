@@ -1,4 +1,5 @@
 <?php
+
 function __phpunit_run_isolated_test()
 {
     $result = new PHPUnit_Framework_TestResult;
@@ -45,4 +46,3 @@ require_once AgaviConfig::get('core.app_dir') . DIRECTORY_SEPARATOR . 'config.ph
 require_once '{filename}';
 
 __phpunit_run_isolated_test()
-?>

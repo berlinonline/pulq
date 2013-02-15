@@ -4,7 +4,7 @@
  * The Auth_Login_LoginSuccessView class handles success data presentation
  * for our various supported output types.
  *
- * @version         $Id: LoginSuccessView.class.php 1165 2012-05-10 10:01:20Z tschmitt $
+ * @version         $Id$
  * @copyright       BerlinOnline Stadtportal GmbH & Co. KG
  * @author          Thorsten Schmitt-Rink <tschmittrink@gmail.com>
  * @package         Auth
@@ -84,9 +84,9 @@ class Auth_Login_LoginSuccessView extends AuthBaseView
      * Create a forward container for the that was intentionally called before the login was executed.
      *
      * @return      AgaviExecutionContainer A new execution container instance,
-     *                                      fully initialized.
-     *
-     * @see         AgaviExecutionContainer::createExecutionContainer()
+	 *                                      fully initialized.
+	 *
+	 * @see         AgaviExecutionContainer::createExecutionContainer()
      */
     protected function attemptForward()
     {

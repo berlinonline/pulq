@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ae:configurations xmlns:ae="http://agavi.org/agavi/config/global/envelope/1.1" xmlns="http://agavi.org/agavi/config/parts/settings/1.0"
-                   xmlns:xi="http://www.w3.org/2001/XInclude">
-    <!--
-    ####################
-    DEFAULT
-    ####################
-    -->
+<ae:configurations 
+    xmlns:ae="http://agavi.org/agavi/config/global/envelope/1.0" 
+    xmlns="http://agavi.org/agavi/config/parts/settings/1.0"
+    xmlns:xi="http://www.w3.org/2001/XInclude">
     <ae:configuration>
         <system_actions>
             <system_action name="default">
@@ -35,7 +32,7 @@
         </system_actions>
 
         <settings>
-            <setting name="app_name">PulqApplication</setting>
+            <setting name="app_name">Honeybee CMF</setting>
             <setting name="available">true</setting>
             <setting name="debug">false</setting>
             <setting name="use_database">true</setting>
@@ -44,6 +41,7 @@
             <setting name="use_translation">true</setting>
             <setting name="auth_provider">LdapAuthProvider</setting>
             <setting name="test_bootstrap_tpl">%core.app_dir%/../testing/TestCaseMethod.tpl</setting>
+            <setting name="gravatar_url_tpl">http://www.gravatar.com/avatar/{EMAIL_HASH}?s=41</setting>
         </settings>
 
         <settings prefix="ldap.">
@@ -59,7 +57,11 @@
             <setting name="group_member_attr">member</setting>
             <setting name="group_member_attr_is_dn">true</setting>
             <setting name="group_name_attr">cn</setting>
-            <setting name="group_required">midas.editor</setting>
+            <setting name="group_required">honeybee.editor</setting>
+        </settings>
+
+        <settings prefix="import.">
+            <setting name="config_dir">%core.modules_dir%/Import/config/</setting>
         </settings>
 
         <settings prefix="assets.">
@@ -67,34 +69,77 @@
             <setting name="base_dir">%core.app_dir%/../data/assets</setting>
         </settings>
 
-        <settings prefix="resources.">
-            <setting name="global_dir">%core.app_dir%/resources</setting>
+        <!-- @todo: Move to the concrete module directories and auto include somehow. -->
+        <settings prefix="workflow.">
+            <setting name="workflows">
+                <ae:parameter name="news">%core.module_dir%/News/config/workflow/standard.workflow.xml</ae:parameter>
+                <ae:parameter name="shofi_places">%core.module_dir%/Shofi/config/workflows.xml</ae:parameter>
+                <ae:parameter name="shofi_categories">%core.module_dir%/Shofi_Categories/config/workflows.xml</ae:parameter>
+                <ae:parameter name="shofi_verticals">%core.module_dir%/Shofi_Verticals/config/workflows.xml</ae:parameter>
+                <ae:parameter name="movies">%core.module_dir%/Movies/config/workflows.xml</ae:parameter>
+                <ae:parameter name="events">%core.module_dir%/Events/config/workflows.xml</ae:parameter>
+            </setting>
         </settings>
 
         <exception_templates>
             <exception_template>%core.agavi_dir%/exception/templates/shiny.php</exception_template>
             <exception_template context="console">%core.agavi_dir%/exception/templates/plaintext.php</exception_template>
         </exception_templates>
-
     </ae:configuration>
-
-    <!--
-    ####################
-    STAGE
-    ####################
-    -->
-    <ae:configuration environment="stage">
-    </ae:configuration>
-
 
     <!--
     ####################
     DEVELOPMENT COMMONS
     ####################
     -->
-    <ae:configuration environment="development.*">
+    <ae:configuration environment="development*">
         <settings>
             <setting name="debug">true</setting>
+        </settings>
+    </ae:configuration>
+
+
+    <ae:configuration environment="development-vagrant">
+        <settings prefix="curl.">
+            <setting name="timeout">2</setting>
+        </settings>
+        <settings>
+            <setting name="auth_provider">SimpleAuthProvider</setting>
+            <setting name="simple_logins">
+                <ae:parameters>
+                    <ae:parameter name="shrink0r">
+                        <ae:parameter name="pwd">shrink0r</ae:parameter>
+                        <ae:parameter name="attributes">
+                            <ae:parameter name="acl_role">honeybee-editor</ae:parameter>
+                            <ae:parameter name="login">shrink0r</ae:parameter>
+                            <ae:parameter name="name">General Gaff</ae:parameter>
+                            <ae:parameter name="email">Thorsten.Schmitt-Rink@berlinonline.de</ae:parameter>
+                        </ae:parameter>
+                    </ae:parameter>
+                </ae:parameters>
+            </setting>
+        </settings>
+    </ae:configuration>
+
+    <ae:configuration environment="development-leon">
+        <settings prefix="curl.">
+            <setting name="timeout">2</setting>
+        </settings>
+        <settings>
+            <setting name="auth_provider">SimpleAuthProvider</setting>
+            <setting name="simple_logins">
+                <ae:parameters>
+                    <ae:parameter name="leonweidauer">
+                        <ae:parameter name="pwd">leonweidauer</ae:parameter>
+                        <ae:parameter name="attributes">
+                            <ae:parameter name="acl_role">honeybee-editor</ae:parameter>
+                            <ae:parameter name="login">leonweidauer</ae:parameter>
+                            <ae:parameter name="name">Leon Weidauer</ae:parameter>
+                            <ae:parameter name="email">leon.weidauer@berlinonline.de</ae:parameter>
+                        </ae:parameter>
+                    </ae:parameter>
+                </ae:parameters>
+            </setting>
         </settings>
     </ae:configuration>
 
@@ -104,9 +149,66 @@
     ####################
     -->
     <ae:configuration environment="testing.*">
+        <settings prefix="assets.">
+            <setting name="mime_database">/usr/share/misc/magic.mgc</setting>
+            <setting name="base_dir">%core.app_dir%/../data/testing/assets</setting>
+        </settings>
+
+        <settings prefix="curl.">
+            <setting name="timeout">10</setting>
+        </settings>
+
         <settings>
-            <setting name="debug">true</setting>
-        </settings>        
+            <setting name="fixture_server_url">http://ci.berlinonline.de/fixtures</setting><!-- Testing only setting -->
+            <setting name="fixtures_dir">%core.app_dir%/../testing/fixtures/</setting><!-- Testing only setting -->
+            <setting name="default_context">web</setting>
+            <!-- @todo Nest the logins as auth provider parameters -->
+            <setting name="auth_provider">SimpleAuthProvider</setting>
+            <setting name="simple_logins">
+                <ae:parameters>
+                    <ae:parameter name="general_g">
+                        <ae:parameter name="pwd">n0tf0und</ae:parameter>
+                        <ae:parameter name="attributes">
+                            <ae:parameter name="acl_role">honeybee-editor</ae:parameter>
+                            <ae:parameter name="login">general</ae:parameter>
+                            <ae:parameter name="name">General Gaff</ae:parameter>
+                            <ae:parameter name="email">schmittrink@gmail.com</ae:parameter>
+                        </ae:parameter>
+                    </ae:parameter>
+                </ae:parameters>
+            </setting>
+        </settings>
+
+        <settings prefix="import.">
+            <setting name="config_dir">%core.app_dir%/../testing/fixtures/Import/config/</setting>
+        </settings>
+
+        <settings prefix="news.">
+            <setting name="import.newswire_dir">%core.app_dir%/../testing/fixtures/News/import/newswire/</setting>
+            <setting name="imperia.category_url"><!-- Testing only setting -->
+                https://imperia.berlinonline.de/cgi-bin/xml_export.pl?catid=/2/10/64/10935/
+            </setting>
+        </settings>
+
+        <settings prefix="shofi.">
+            <setting name="cm_export_enabled">off</setting>
+        </settings>
     </ae:configuration>
+
+    <ae:configuration environment="testing.development-shrink-work">
+
+         <settings prefix="curl.">
+            <setting name="proxy">proxy2:3128</setting>
+        </settings>
+
+        <settings prefix="shofi.">
+            <setting name="cm_export_url">http://localhost/contentmachine/fe/index.php/adressen/honeybee-import</setting>
+        </settings>
+    </ae:configuration>
+
+    <xi:include href="%core.app_dir%/config/includes/settings.xml"
+        xpointer="xmlns(ae=http://agavi.org/agavi/config/global/envelope/1.0) xpointer(/ae:configurations/*)">
+        <xi:fallback />
+    </xi:include>
 
 </ae:configurations>

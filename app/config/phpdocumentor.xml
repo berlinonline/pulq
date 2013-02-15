@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<phpdoc>
+  <title>Honeybee</title>
+  <parser>
+    <default-package-name>Honeybee</default-package-name>
+    <target>../../etc/integration/docs/serverside</target>
+    <markers>
+      <item>TODO</item>
+      <item>FIXME</item>
+    </markers>
+    <extensions>
+      <extension>php</extension>
+    </extensions>
+    <visibility></visibility>
+  </parser>
+  <transformer>
+    <target>../../etc/integration/docs/serverside</target>
+  </transformer>
+  <transformations>
+    <template name="../../data/templates/responsive" />
+  </transformations>
+  <files>
+    <directory>../lib/agavi</directory>
+    <ignore>*Success.php</ignore>
+    <ignore>*Error.php</ignore>
+    <ignore>*Input.php</ignore>
+    <ignore-hidden>on</ignore-hidden>
+    <ignore-symlinks>on</ignore-symlinks>
+  </files>
+</phpdoc>

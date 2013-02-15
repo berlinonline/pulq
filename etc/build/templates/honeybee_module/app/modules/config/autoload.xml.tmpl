@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ae:configurations 
+    xmlns="http://agavi.org/agavi/config/parts/autoload/1.0" 
+    xmlns:ae="http://agavi.org/agavi/config/global/envelope/1.0">
+    <ae:configuration>
+
+        <!-- Agavi -->
+        <autoload name="%%MODULE_NAME%%BaseAction">%core.module_dir%/%%MODULE_NAME%%/lib/agavi/action/%%MODULE_NAME%%BaseAction.class.php</autoload>
+        <autoload name="%%MODULE_NAME%%BaseView">%core.module_dir%/%%MODULE_NAME%%/lib/agavi/view/%%MODULE_NAME%%BaseView.class.php</autoload>
+        <autoload name="%%MODULE_NAME%%DocumentValidator">%core.module_dir%/%%MODULE_NAME%%/lib/agavi/validator/%%MODULE_NAME%%DocumentValidator.class.php</autoload>
+        
+        <!-- Import -->
+        <autoload name="%%MODULE_NAME%%DataImport">%core.module_dir%/%%MODULE_NAME%%/lib/import/%%MODULE_NAME%%DataImport.class.php</autoload>
+        <autoload name="%%MODULE_NAME%%DataImportConfig">%core.module_dir%/%%MODULE_NAME%%/lib/import/%%MODULE_NAME%%DataImportConfig.class.php</autoload>
+
+        <!-- Service -->
+        <autoload name="%%MODULE_NAME%%Service">%core.module_dir%/%%MODULE_NAME%%/lib/%%MODULE_NAME%%Service.class.php</autoload>
+
+        <!-- Repository -->
+        <autoload name="%%MODULE_NAME%%Finder">%core.module_dir%/%%MODULE_NAME%%/lib/repository/%%MODULE_NAME%%Finder.class.php</autoload>
+    </ae:configuration>
+</ae:configurations>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ae:configurations
+    xmlns="http://agavi.org/agavi/config/parts/validators/1.0"
+    xmlns:ae="http://agavi.org/agavi/config/global/envelope/1.0"
+    parent="%core.module_dir%/%%MODULE_NAME%%/config/validators.xml">
+    <ae:configuration>
+        <validators method="read">
+            <validator class="%%MODULE_NAME%%DocumentValidator" name="invalid_%%MODULE_PREFIX%%_" required="false">
+                <arguments>
+                    <argument>id</argument>
+                </arguments>
+            </validator>
+        </validators>
+
+        <validators method="write">
+            <validator class="%%MODULE_NAME%%DocumentValidator" name="invalid_%%MODULE_PREFIX%%" required="false">
+                <arguments>
+                    <argument>%%MODULE_PREFIX%%</argument>
+                </arguments>
+            </validator>
+        </validators>
+    </ae:configuration>
+</ae:configurations>

@@ -1,15 +1,16 @@
 <?php
 
+use \Honeybee\Agavi\Action\BaseAction;
+
 /**
  * The DefaultBaseAction serves as the base action to all actions implemented inside of the Default module.
  *
- * @version         $Id: DefaultBaseAction.class.php 1013 2012-03-02 21:28:23Z tschmitt $
  * @copyright       BerlinOnline Stadtportal GmbH & Co. KG
  * @author          Thorsten Schmitt-Rink <tschmittrink@gmail.com>
  * @package         Default
  * @subpackage      Agavi/Action
  */
-class DefaultBaseAction extends ProjectBaseAction
+class DefaultBaseAction extends BaseAction
 {
     /*
       This is the base action all your module's actions should extend. This way,
@@ -28,10 +29,4 @@ class DefaultBaseAction extends ProjectBaseAction
       build.properties settings. Also, keep in mind that you can define templates
       for specific modules in case you require this.
      */
-    public function isSecure()
-    {
-        return FALSE;
-    }
 }
-
-?>

@@ -1,0 +1,114 @@
+{
+    "name": "berlinonline/pulq",
+    "type": "library",
+    "description": "Agavi based framework for building frontend applications.",
+    "keywords": ["agavi", "mvc" , "frontend"],
+    "homepage": "https://github.com/berlinonline/pulq",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Leon Weidauer",
+            "name": "Tom Anheyer",
+            "name": "Thorsten Schmitt-Rink"
+        }
+    ],
+
+    "autoload": {
+        "psr-0": {"Pulq" : "app/lib" }
+    },
+
+    "minimum-stability": "dev",
+
+    "require": {
+        "php": ">=5.3.3",
+        "agavi/agavi": "1.0.*",
+        "twig/twig": "1.*",
+        "ruflin/Elastica": "dev-master",
+        "phpunit/phpunit": "3.7.*",
+        "zend/acl": "dev-master",
+        "phing/phing": "2.4.12",
+        "zerkalica/phpcs": "dev-master",
+        "PhpDebugToolbar/php-debug-toolbar": "1.5.*",
+        "jquery/jquery": "1.8.2",
+        "underscorejs/underscorejs": "1.4.2",
+        "twitter/bootstrap": "2.2.2",
+        "fortawesome/font-awesome": "2.0.0",
+        "phpdocumentor/phpdocumentor": "dev-master"
+    },
+
+    "repositories": [
+        {
+            "type": "package",
+            "package": {
+                "name": "agavi/agavi",
+                "version": "1.0.7",
+                "source": {
+                    "url": "http://svn.agavi.org/",
+                    "type": "svn",
+                    "reference": "tags/1.0.7/"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "PhpDebugToolbar/php-debug-toolbar",
+                "version": "1.5.0",
+                "source": {
+                    "url": "https://github.com/DracoBlue/PhpDebugToolbar.git",
+                    "type": "git",
+                    "reference": "8f829a838dc6dee69dbbc4a4af28295bf07abd0a"
+                },
+                "autoload": {
+                    "classmap": ["lib/agavi/", "PhpDebugToolbar.class.php"]
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "jquery/jquery",
+                "version": "1.8.2",
+                "dist": {
+                    "url": "http://code.jquery.com/jquery-1.8.2.min.js",
+                    "type": "file"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "twitter/bootstrap",
+                "version": "2.2.2",
+                "source": {
+                    "url": "https://github.com/twitter/bootstrap.git",
+                    "type": "git",
+                    "reference": "9376a7c221a64c2bf508d02ea2ccd85748d10fcc"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "fortawesome/font-awesome",
+                "version": "dev-master",
+                "source": {
+                    "url": "https://github.com/FortAwesome/Font-Awesome.git",
+                    "type": "git",
+                    "reference": "ee55c859d23af4a3d4825610815ed5926c417101"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "underscorejs/underscorejs",
+                "version": "1.4.2",
+                "dist": {
+                    "url": "http://underscorejs.org/underscore-min.js",
+                    "type": "file"
+                }
+            }
+        }
+    ]
+}

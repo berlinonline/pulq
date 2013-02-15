@@ -13,59 +13,87 @@
 // |   End:                                                                    |
 // +---------------------------------------------------------------------------+
 
+use Honeybee\Core\Dat0r\ModuleService;
+
 /**
  * The Default_Index_IndexSuccessView class provides presentation logic for the %system_actions.default% action.
  *
- * @version         $Id: IndexSuccessView.class.php 1181 2012-05-14 10:02:48Z tschmitt $
+ * @version         $Id$
  * @copyright       BerlinOnline Stadtportal GmbH & Co. KG
  * @author          Thorsten Schmitt-Rink <tschmittrink@gmail.com>
  * @package         Default
  * @subpackage      Mvc
  */
-class Default_Index_IndexSuccessView extends DefaultBaseView
+class Default_Index_IndexSuccessView extends DefaultBaseView 
 {
     /**
      * Execute any html related presentation logic and sets up our template attributes.
-     *
-     * @param       AgaviRequestDataHolder $parameters
-     *
+     * 
+     * @param       AgaviRequestDataHolder $parameters 
+     * 
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      * @codingStandardsIgnoreStart
      */
     public function executeHtml(AgaviRequestDataHolder $parameters) // @codingStandardsIgnoreEnd
     {
         $this->setupHtml($parameters);
+        $routing = $this->getContext()->getRouting();
+        $service = new ModuleService();
 
-        // set the title
-        $this->setAttribute('_title', $this->translationManager->_('Welcome to a Pulq based web frontend.'));
+        $modules = array();
+        foreach ($service->getModules() as $module)
+        {
+            $modules[$module->getName()] = array(
+                'list_link' => $routing->gen($module->getOption('prefix') . '.list')
+            );
+        }
+
+        $this->setAttribute('modules', $modules);
+        $this->setAttribute('_title', $this->translationManager->_('Welcome to the Honeybee web frontend.'));
+
+        $this->setBreadcrumb();
     }
 
-    /**
-     * (non-PHPdoc)
-     * @see PulqBaseView::executeJson()
-     */
-    public function executeJson(AgaviRequestDataHolder $parameters) // @codingStandardsIgnoreEnd
+    protected function setBreadcrumb()
     {
-        return json_encode(array('_title' => $this->translationManager->_('Welcome to a Pulq based web frontend.')));
+        $this->getContext()->getUser()->setAttribute('breadcrumbs', array(), 'honeybee.breadcrumbs');
+        $this->getContext()->getUser()->setAttribute('modulecrumb', NULL, 'honeybee.breadcrumbs');
     }
-
-
+    
     /**
-     * Execute any XML related presentation logic and sets up our template attributes.
-     *
-     * @param       AgaviRequestDataHolder $parameters
-     *
+     * Prepares and sets our json data on our webresponse.
+     * 
+     * @param       AgaviRequestDataHolder $parameters 
+     * 
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      * @codingStandardsIgnoreStart
      */
-    public function executeXml(AgaviRequestDataHolder $parameters) // @codingStandardsIgnoreEnd
+    public function executeJson(AgaviRequestDataHolder $parameters) // @codingStandardsIgnoreEnd
     {
-        $title = $this->translationManager->_('Welcome to a Pulq based web frontend.');
-        return <<<EOT
-<?xml version="1.0" encoding="UTF-8" ?>
-<pulq>
-<title>$title</title>
-</pulq>
-EOT;
+        $this->getContainer()->getResponse()->setContent(
+            json_encode(
+                array(
+                    'result' => 'error',
+                    'message' => 'Welcome to the Honeybee JSON API.'
+                )
+            )
+        );
+    }
+
+    /**
+     * Prepares and sets our json data on our console response.
+     * 
+     * @param       AgaviRequestDataHolder $parameters 
+     * 
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     * @codingStandardsIgnoreStart
+     */
+    public function executeText(AgaviRequestDataHolder $parameters) // @codingStandardsIgnoreEnd
+    {
+        $msg = 'Welcome to the Honeybee CLI Interface.' . PHP_EOL;
+
+        $this->getResponse()->setContent($msg);
     }
 }
+
+?>

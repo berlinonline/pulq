@@ -1,0 +1,25 @@
+<ae:configurations 
+    xmlns="http://agavi.org/agavi/config/parts/autoload/1.0" 
+    xmlns:ae="http://agavi.org/agavi/config/global/envelope/1.0" 
+    parent="%core.system_config_dir%/autoload.xml">
+    <ae:configuration>
+        <autoloads>
+            <autoload name="CommonBaseAction">%core.module_dir%/Common/lib/agavi/action/CommonBaseAction.class.php</autoload>
+            <autoload name="CommonBaseView">%core.module_dir%/Common/lib/agavi/view/CommonBaseView.class.php</autoload>
+            <autoload name="ListConfigValidator">%core.module_dir%/Common/lib/agavi/validator/ListConfigValidator.class.php</autoload>
+            <autoload name="ListStateValidator">%core.module_dir%/Common/lib/agavi/validator/ListStateValidator.class.php</autoload>
+
+            <autoload name="IListConfig">%core.module_dir%/Common/lib/list/IListConfig.iface.php</autoload>
+            <autoload name="IListField">%core.module_dir%/Common/lib/list/IListField.iface.php</autoload>
+            <autoload name="IListState">%core.module_dir%/Common/lib/list/IListState.iface.php</autoload>
+            <autoload name="ListConfig">%core.module_dir%/Common/lib/list/ListConfig.class.php</autoload>
+            <autoload name="ListField">%core.module_dir%/Common/lib/list/ListField.class.php</autoload>
+            <autoload name="ListState">%core.module_dir%/Common/lib/list/ListState.class.php</autoload>
+
+            <autoload name="IListValueRenderer">%core.module_dir%/Common/lib/renderer/IListValueRenderer.iface.php</autoload>
+            <autoload name="TicketOwnerListValueRenderer">%core.module_dir%/Common/lib/renderer/TicketOwnerListValueRenderer.class.php</autoload>
+            <autoload name="DefaultListValueRenderer">%core.module_dir%/Common/lib/renderer/DefaultListValueRenderer.class.php</autoload>
+            <autoload name="WorkflowStepListRenderer">%core.module_dir%/Common/lib/renderer/WorkflowStepListRenderer.class.php</autoload>
+        </autoloads>
+    </ae:configuration>
+</ae:configurations>

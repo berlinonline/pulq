@@ -1,0 +1,20 @@
+{
+    "name": "honeybee-node",
+    "description": "Defines the node dependencies for honeybee.",
+    "author": "Thorsten Schmitt-Rink <thorsten.schmitt-rink@berlinonline.de>",
+    "version": "0.0.1",
+    "dependencies": {
+        "vows": "0.6.x",
+        "kyuri": "0.2.x",
+        "coffee-script": "1.4.x",
+        "uglify-js": "1.3.x",
+        "less-watcher": "1.1.x",
+        "watcher_lib": "1.1.x",
+        "optimist": "0.3.x",
+        "ndoc": "2.0.x",
+        "connect": "2.6.x",
+        "recess": "1.1.x",
+        "jshint": "0.9.x"
+    },
+    "engine": "node >= 0.8.x"
+}
