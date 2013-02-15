@@ -167,43 +167,20 @@
             <setting name="simple_logins">
                 <ae:parameters>
                     <ae:parameter name="general_g">
-                        <ae:parameter name="pwd">n0tf0und</ae:parameter>
+                        <ae:parameter name="pwd">pulq</ae:parameter>
                         <ae:parameter name="attributes">
                             <ae:parameter name="acl_role">pulq-editor</ae:parameter>
-                            <ae:parameter name="login">general</ae:parameter>
-                            <ae:parameter name="name">General Gaff</ae:parameter>
-                            <ae:parameter name="email">schmittrink@gmail.com</ae:parameter>
+                            <ae:parameter name="login">pulq</ae:parameter>
+                            <ae:parameter name="name">Pulq</ae:parameter>
+                            <ae:parameter name="email">pulq@berlinonline.de</ae:parameter>
                         </ae:parameter>
                     </ae:parameter>
                 </ae:parameters>
             </setting>
         </settings>
-
-        <settings prefix="import.">
-            <setting name="config_dir">%core.app_dir%/../testing/fixtures/Import/config/</setting>
-        </settings>
-
-        <settings prefix="news.">
-            <setting name="import.newswire_dir">%core.app_dir%/../testing/fixtures/News/import/newswire/</setting>
-            <setting name="imperia.category_url"><!-- Testing only setting -->
-                https://imperia.berlinonline.de/cgi-bin/xml_export.pl?catid=/2/10/64/10935/
-            </setting>
-        </settings>
-
-        <settings prefix="shofi.">
-            <setting name="cm_export_enabled">off</setting>
-        </settings>
     </ae:configuration>
 
-    <ae:configuration environment="testing.development-shrink-work">
-
-         <settings prefix="curl.">
-            <setting name="proxy">proxy2:3128</setting>
-        </settings>
-
-        <settings prefix="shofi.">
-            <setting name="cm_export_url">http://localhost/contentmachine/fe/index.php/adressen/pulq-import</setting>
-        </settings>
+    <ae:configuration environment="testing">
     </ae:configuration>
 
     <xi:include href="%core.app_dir%/config/includes/settings.xml"

@@ -11,7 +11,7 @@
                             <ae:parameter name="Signin">Anmelden</ae:parameter>
                             <ae:parameter name="Username">Nutzername</ae:parameter>
                             <ae:parameter name="Password">Kennwort</ae:parameter>
-                            <ae:parameter name="Sign in using your company account">Melde dich mit deinem Verlagskonto an</ae:parameter>
+                            <ae:parameter name="Sign in with your account">Melde dich an</ae:parameter>
                         </ae:parameter>
                     </ae:parameter>
 

@@ -2,7 +2,7 @@
 <div class="container wrapper">
     <form class="well" action="{{ro.gen(NULL)}}" method="post" style="margin-top: 20%;">
         <fieldset>
-            <legend>{{tm._('Sign in using your company account','auth.ui')}}:</legend>
+            <legend>{{tm._('Sign in with your account','auth.ui')}}:</legend>
             {% if errors.auth is defined %}
                 <span style="display: inline-block; margin-bottom: 2em;" class="label label-important">{{ errors.auth }}</span>
             {% endif %}
