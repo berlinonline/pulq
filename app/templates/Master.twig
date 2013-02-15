@@ -13,19 +13,12 @@
         <base href="{{ ro.getBaseHref() }}" id="base_href"/>
         <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico" />
         <!-- GoogleMaps code - @todo get this sucker oughta here! -->
-        <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
-        <script type="text/javascript" src="static/ckeditor/ckeditor.js"></script>
         <!-- %%STYLESHEETS%% -->
     </head>
     <body>
         {{ slots.header|raw }}
         {{ inner|raw }}
-        <!-- @todo Move to a dedicated footer action. -->
-        <footer class="footer container-fluid">
-            <p>
-                Copyright &#169;2012 <a href="http://www.berlinonline.de">BerlinOnline</a> - Honeybee v3.0 Erato
-            </p>
-        </footer>
+
         <!-- %%JAVASCRIPTS%% -->
     </body>
 </html>

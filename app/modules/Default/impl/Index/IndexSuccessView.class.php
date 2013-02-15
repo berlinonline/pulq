@@ -13,7 +13,7 @@
 // |   End:                                                                    |
 // +---------------------------------------------------------------------------+
 
-use Honeybee\Core\Dat0r\ModuleService;
+use Pulq\Core\Dat0r\ModuleService;
 
 /**
  * The Default_Index_IndexSuccessView class provides presentation logic for the %system_actions.default% action.
@@ -49,15 +49,7 @@ class Default_Index_IndexSuccessView extends DefaultBaseView
         }
 
         $this->setAttribute('modules', $modules);
-        $this->setAttribute('_title', $this->translationManager->_('Welcome to the Honeybee web frontend.'));
-
-        $this->setBreadcrumb();
-    }
-
-    protected function setBreadcrumb()
-    {
-        $this->getContext()->getUser()->setAttribute('breadcrumbs', array(), 'honeybee.breadcrumbs');
-        $this->getContext()->getUser()->setAttribute('modulecrumb', NULL, 'honeybee.breadcrumbs');
+        $this->setAttribute('_title', $this->translationManager->_('Welcome to the Pulq web frontend.'));
     }
     
     /**
@@ -74,7 +66,7 @@ class Default_Index_IndexSuccessView extends DefaultBaseView
             json_encode(
                 array(
                     'result' => 'error',
-                    'message' => 'Welcome to the Honeybee JSON API.'
+                    'message' => 'Welcome to the Pulq JSON API.'
                 )
             )
         );
@@ -90,7 +82,7 @@ class Default_Index_IndexSuccessView extends DefaultBaseView
      */
     public function executeText(AgaviRequestDataHolder $parameters) // @codingStandardsIgnoreEnd
     {
-        $msg = 'Welcome to the Honeybee CLI Interface.' . PHP_EOL;
+        $msg = 'Welcome to the Pulq CLI Interface.' . PHP_EOL;
 
         $this->getResponse()->setContent($msg);
     }

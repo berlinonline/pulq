@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-    This buildfile is part of the Honeybee (CMF) projekt.
+    This buildfile is part of the Pulq framework projekt.
     It's purpose it to provide an entry point for testing how your current code integrates into the project,
     thereby providing xml based reports for various aspects of the code such as checkstyle, mess detection,
     unit testing, the resulting code coverage and a couple more.
@@ -13,7 +13,7 @@
 
     @see http://qualityassuranceinphpprojects.com/pages/tools.html
 -->
-<project name="Honeybee" default="build" basedir="../../">
+<project name="Pulq" default="build" basedir="../../">
 
     <!--
         Project property definitions.

@@ -16,7 +16,7 @@ require $rootDir . '/testing/config.php';
 require $vendorDir . '/agavi/agavi/src/testing.php';
 
 // load environment
-\Honeybee\Core\Environment::load(TRUE);
+\Pulq\Core\Environment::load(TRUE);
 
 // +---------------------------------------------------------------------------+
 // | Initialize the framework. You may pass an environment name to this method.|
@@ -24,8 +24,8 @@ require $vendorDir . '/agavi/agavi/src/testing.php';
 // | In debug mode among other things the cache is cleaned on every request.   |
 // +---------------------------------------------------------------------------+
 // @todo Atm this is needed to support routes that rely on the $_SERVER var for their source attribute.
-$_SERVER['AGAVI_ENVIRONMENT'] = \Honeybee\Core\Environment::toEnvString();
-AgaviTesting::bootstrap(\Honeybee\Core\Environment::toEnvString());
+$_SERVER['AGAVI_ENVIRONMENT'] = \Pulq\Core\Environment::toEnvString();
+AgaviTesting::bootstrap(\Pulq\Core\Environment::toEnvString());
 
 AgaviToolkit::clearCache();
 

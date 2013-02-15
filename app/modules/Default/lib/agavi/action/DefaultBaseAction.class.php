@@ -1,6 +1,6 @@
 <?php
 
-use \Honeybee\Agavi\Action\BaseAction;
+use \Pulq\Agavi\Action\BaseAction;
 
 /**
  * The DefaultBaseAction serves as the base action to all actions implemented inside of the Default module.

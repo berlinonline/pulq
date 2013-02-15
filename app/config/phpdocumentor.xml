@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <phpdoc>
-  <title>Honeybee</title>
+  <title>Pulq</title>
   <parser>
-    <default-package-name>Honeybee</default-package-name>
+    <default-package-name>Pulq</default-package-name>
     <target>../../etc/integration/docs/serverside</target>
     <markers>
       <item>TODO</item>

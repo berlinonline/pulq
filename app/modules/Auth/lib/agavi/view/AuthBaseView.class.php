@@ -1,6 +1,6 @@
 <?php
 
-use Honeybee\Agavi\View\BaseView;
+use Pulq\Agavi\View\BaseView;
 
 /**
  * The AuthBaseAction serves as the base view to all views implemented inside of the Auth module.

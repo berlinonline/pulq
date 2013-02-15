@@ -1,10 +1,9 @@
 <?php
 
-use \Honeybee\CodeGen\Config\ConfigurationScanner;
-use \Honeybee\CodeGen\Config\DefaultXmlConfigGenerator;
-use \Honeybee\CodeGen\Config\RoutingXmlConfigGenerator;
-use \Honeybee\CodeGen\Config\Dat0rAutoloadGenerator;
-use \Honeybee\CodeGen\Config\AccessControlXmlConfigGenerator;
+use \Pulq\CodeGen\Config\ConfigurationScanner;
+use \Pulq\CodeGen\Config\DefaultXmlConfigGenerator;
+use \Pulq\CodeGen\Config\RoutingXmlConfigGenerator;
+use \Pulq\CodeGen\Config\AccessControlXmlConfigGenerator;
 
 $rootDir = dirname(dirname(__FILE__));
 $default_context = 'web';
@@ -30,9 +29,6 @@ foreach ($scanner->scan() as $name => $files)
             $generator = new RoutingXmlConfigGenerator();
             break;
             
-        case 'dat0r';
-            $generator = new Dat0rAutoloadGenerator();
-            break;
         case 'access_control';
             $generator = new AccessControlXmlConfigGenerator();
             break;

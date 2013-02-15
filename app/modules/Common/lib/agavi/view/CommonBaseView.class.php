@@ -1,6 +1,6 @@
 <?php
 
-use Honeybee\Agavi\View\BaseView;
+use Pulq\Agavi\View\BaseView;
 
 /**
  * The base view from which all Common module views inherit.

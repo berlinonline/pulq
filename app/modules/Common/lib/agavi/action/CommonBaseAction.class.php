@@ -1,6 +1,6 @@
 <?php
 
-use \Honeybee\Agavi\Action\BaseAction;
+use \Pulq\Agavi\Action\BaseAction;
 
 /**
  * The base action from which all Common module actions inherit from.

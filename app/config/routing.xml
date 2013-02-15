@@ -14,7 +14,7 @@
             -->
             <route pattern="^/({locale:[a-z]{2}(_[A-Z]{2})?})" stop="false" imply="true" cut="true" locale="${locale}">
                 <callbacks>
-                    <callback class="Honeybee\Agavi\Routing\LanguageRoutingCallback" />
+                    <callback class="Pulq\Agavi\Routing\LanguageRoutingCallback" />
                 </callbacks>
                 <ignores>
                     <ignore>locale</ignore>

@@ -1,4 +1,4 @@
-honeybee
+pulq
 ========
 
-BerlinOnline Content Management Framework
+BerlinOnline Frontend Framework

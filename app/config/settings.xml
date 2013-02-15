@@ -32,7 +32,7 @@
         </system_actions>
 
         <settings>
-            <setting name="app_name">Honeybee CMF</setting>
+            <setting name="app_name">Pulq Framework</setting>
             <setting name="available">true</setting>
             <setting name="debug">false</setting>
             <setting name="use_database">true</setting>
@@ -57,7 +57,7 @@
             <setting name="group_member_attr">member</setting>
             <setting name="group_member_attr_is_dn">true</setting>
             <setting name="group_name_attr">cn</setting>
-            <setting name="group_required">honeybee.editor</setting>
+            <setting name="group_required">pulq.editor</setting>
         </settings>
 
         <settings prefix="import.">
@@ -110,7 +110,7 @@
                     <ae:parameter name="shrink0r">
                         <ae:parameter name="pwd">shrink0r</ae:parameter>
                         <ae:parameter name="attributes">
-                            <ae:parameter name="acl_role">honeybee-editor</ae:parameter>
+                            <ae:parameter name="acl_role">pulq-editor</ae:parameter>
                             <ae:parameter name="login">shrink0r</ae:parameter>
                             <ae:parameter name="name">General Gaff</ae:parameter>
                             <ae:parameter name="email">Thorsten.Schmitt-Rink@berlinonline.de</ae:parameter>
@@ -132,7 +132,7 @@
                     <ae:parameter name="leonweidauer">
                         <ae:parameter name="pwd">leonweidauer</ae:parameter>
                         <ae:parameter name="attributes">
-                            <ae:parameter name="acl_role">honeybee-editor</ae:parameter>
+                            <ae:parameter name="acl_role">pulq-editor</ae:parameter>
                             <ae:parameter name="login">leonweidauer</ae:parameter>
                             <ae:parameter name="name">Leon Weidauer</ae:parameter>
                             <ae:parameter name="email">leon.weidauer@berlinonline.de</ae:parameter>
@@ -169,7 +169,7 @@
                     <ae:parameter name="general_g">
                         <ae:parameter name="pwd">n0tf0und</ae:parameter>
                         <ae:parameter name="attributes">
-                            <ae:parameter name="acl_role">honeybee-editor</ae:parameter>
+                            <ae:parameter name="acl_role">pulq-editor</ae:parameter>
                             <ae:parameter name="login">general</ae:parameter>
                             <ae:parameter name="name">General Gaff</ae:parameter>
                             <ae:parameter name="email">schmittrink@gmail.com</ae:parameter>
@@ -202,7 +202,7 @@
         </settings>
 
         <settings prefix="shofi.">
-            <setting name="cm_export_url">http://localhost/contentmachine/fe/index.php/adressen/honeybee-import</setting>
+            <setting name="cm_export_url">http://localhost/contentmachine/fe/index.php/adressen/pulq-import</setting>
         </settings>
     </ae:configuration>
 

@@ -10,7 +10,7 @@
     <property name="module.directory.impl" value="impl" />
     <property name="module.directory.resources" value="resources" />
 
-	<taskdef name="run" classname="pulqRunTask" classpath="${project.directory.etc}/build/tasks"/>
+	<taskdef name="run" classname="PulqRunTask" classpath="${project.directory.etc}/build/tasks"/>
 
     <!-- 
         Custom module wizward target that builds full stack pulq modules along with 
@@ -41,8 +41,6 @@
         <mkdir dir="${module.directory}/${module.directory.config}" />
         <mkdir dir="${module.directory}/${module.directory.lib}" />
         <mkdir dir="${module.directory}/${module.directory.resources}" />
-        <mkdir dir="${module.directory}/${module.directory.lib}/export" />
-        <mkdir dir="${module.directory}/${module.directory.lib}/renderer" />
 
         <!--# Create Library #-->
         <agavi.select-path property="template.path" type="directory" path="${templates.directory.app.modules.lib}">
@@ -52,7 +50,6 @@
             <mapper type="regexp" from="^(.+[\\\/])?(.+)\.tmpl$" to="\1/${module.name}\2" />
             <fileset dir="${template.path}">
                 <include name="**/*.tmpl" />
-                <exclude name="**/workflow/plugin/*.tmpl" />
             </fileset>
             <filterchain>
                 <replacetokens begintoken="%%" endtoken="%%">
@@ -67,20 +64,6 @@
         <agavi.select-path property="template.path" type="directory" path="${templates.directory.app.modules.lib}/workflow/plugin">
             <from path="${templates.directory}" />
         </agavi.select-path>
-        <copy todir="${module.directory}/${module.directory.lib}/workflow/plugin">
-            <mapper type="regexp" from="^(.+[\\\/])?(.+)\.tmpl$" to="\1/Workflow${module.name}\2" />
-            <fileset dir="${template.path}">
-                <include name="**/*.tmpl" />
-            </fileset>
-            <filterchain>
-                <replacetokens begintoken="%%" endtoken="%%">
-                    <token key="MODULE_PREFIX" value="${module.prefix}" />
-                    <token key="PROJECT_LOCATION" value="${project.directory}" />
-                    <token key="PROJECT_PREFIX" value="${project.prefix}" />
-                    <token key="MODULE_NAME" value="${module.name}" />
-                </replacetokens>
-            </filterchain>
-        </copy>
 
         <!--# Copy Configuration #-->
         <agavi.select-path property="template.path" path="${templates.directory.app.modules.config}">
@@ -102,19 +85,6 @@
                 </replacetokens>
             </filterchain>
         </copy>
-        <copy tofile="${module.directory}/${module.directory.config}/dat0r/codegen.ini" 
-              file="${template.path}/dat0r/codegen.ini.tmpl">
-            <filterchain>
-                <replacetokens begintoken="%%" endtoken="%%">
-                    <token key="MODULE_PREFIX" value="${module.prefix}" />
-                    <token key="PROJECT_LOCATION" value="${project.directory}" />
-                    <token key="PROJECT_PREFIX" value="${project.prefix}" />
-                    <token key="MODULE_NAME" value="${module.name}" />
-                </replacetokens>
-            </filterchain>
-        </copy>
-        <copy tofile="${module.directory}/${module.directory.config}/dat0r/.gitignore" 
-              file="${template.path}/dat0r/.gitignore.tmpl" />
         <!-- ... then copy the couchdb and elasticsearch cfg files. -->
         <copy todir="${module.directory}/${module.directory.config}">
             <mapper type="regexp" from="^(.+[\\\/])?(.+)\.tmpl$" to="\1/${module.prefix}\2" />

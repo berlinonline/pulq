@@ -17,26 +17,26 @@
                 <transformation>%core.agavi_dir%/config/xsl/caching.xsl</transformation>
             </handler>
 
-            <handler pattern="%core.config_dir%/access_control.xml" class="Honeybee\Agavi\ConfigHandler\AclConfigHandler">
+            <handler pattern="%core.config_dir%/access_control.xml" class="Pulq\Agavi\ConfigHandler\AclConfigHandler">
                 <validation>%core.config_dir%/xsd/access_control.xsd</validation>
             </handler>
 
-            <handler pattern="workflows.xml" class="Honeybee\Agavi\ConfigHandler\WorkflowConfigHandler">
+            <handler pattern="workflows.xml" class="Pulq\Agavi\ConfigHandler\WorkflowConfigHandler">
                 <validation>%core.config_dir%/xsd/workflows.xsd</validation>
-                <ae:parameter name="namespace_uri">http://berlinonline.de/schemas/honeybee/workflow/1.0</ae:parameter>
+                <ae:parameter name="namespace_uri">http://berlinonline.de/schemas/pulq/workflow/1.0</ae:parameter>
             </handler>
 
-            <handler pattern="dataimports.xml" class="Honeybee\Agavi\ConfigHandler\DataImportConfigHandler">
+            <handler pattern="dataimports.xml" class="Pulq\Agavi\ConfigHandler\DataImportConfigHandler">
                 <validation>%core.config_dir%/xsd/dataimport.xsd</validation>
                 <ae:parameters>
-                    <ae:parameter name="namespace_uri">http://berlinonline.de/schemas/honeybee/config/dataimport/definition/1.0</ae:parameter>
+                    <ae:parameter name="namespace_uri">http://berlinonline.de/schemas/pulq/config/dataimport/definition/1.0</ae:parameter>
                 </ae:parameters>
             </handler>
             
-            <handler pattern="datasources.xml" class="Honeybee\Agavi\ConfigHandler\DataSourceConfigHandler">
+            <handler pattern="datasources.xml" class="Pulq\Agavi\ConfigHandler\DataSourceConfigHandler">
                 <validation>%core.config_dir%/xsd/datasource.xsd</validation>
                 <ae:parameters>
-                    <ae:parameter name="namespace_uri">http://berlinonline.de/schemas/honeybee/config/datasource/definition/1.0</ae:parameter>
+                    <ae:parameter name="namespace_uri">http://berlinonline.de/schemas/pulq/config/datasource/definition/1.0</ae:parameter>
                 </ae:parameters>
             </handler>
 

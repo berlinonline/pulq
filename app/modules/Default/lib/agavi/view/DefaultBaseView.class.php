@@ -1,6 +1,6 @@
 <?php
 
-use Honeybee\Agavi\View\BaseView;
+use Pulq\Agavi\View\BaseView;
 
 /**
  * The DefaultBaseView serves as the base view to all views implemented inside of the Default module.

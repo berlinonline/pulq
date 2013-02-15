@@ -194,7 +194,6 @@ class Default_Error404_Error404SuccessView extends DefaultBaseView
         $response = $this->getContainer()->getResponse();
         $response->setContentType('text/html');
 
-        $this->getContext()->getUser()->setAttribute('breadcrumbs', array(), 'honeybee.breadcrumbs');
         $this->container->getResponse()->setHttpStatusCode($this->getAttribute('status', 404));
     }
 

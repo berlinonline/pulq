@@ -1,7 +1,7 @@
 {
-    "name": "honeybee-node",
-    "description": "Defines the node dependencies for honeybee.",
-    "author": "Thorsten Schmitt-Rink <thorsten.schmitt-rink@berlinonline.de>",
+    "name": "pulq-node",
+    "description": "Defines the node dependencies for pulq.",
+    "author": "Leon Weidauer <leon.weidauer@berlinonline.de>",
     "version": "0.0.1",
     "dependencies": {
         "vows": "0.6.x",

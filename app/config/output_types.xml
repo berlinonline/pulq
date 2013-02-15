@@ -12,7 +12,7 @@
         </layers>
 
         <renderers default="proxy">
-            <renderer name="proxy" class="Honeybee\Agavi\Renderer\ProxyRenderer">
+            <renderer name="proxy" class="Pulq\Agavi\Renderer\ProxyRenderer">
                 <ae:parameter name="renderers">
                     <ae:parameter>twig</ae:parameter>
                     <ae:parameter>php</ae:parameter>

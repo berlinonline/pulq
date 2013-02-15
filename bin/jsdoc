@@ -12,6 +12,6 @@ else
 fi
 
 OUT_DIR="${BASEDIR}/etc/integration/build/api/clientside"
-JSSRC_DIR="${BASEDIR}/pub/js/honeybee"
+JSSRC_DIR="${BASEDIR}/pub/js/pulq"
 JSDOC_CMD="ndoc ${JSSRC_DIR} -o ${OUT_DIR}"
 $JSDOC_CMD

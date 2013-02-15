@@ -4,7 +4,7 @@
     xmlns="http://agavi.org/agavi/config/parts/filters/1.0">
     <ae:configuration context="web">
         <filters>
-            <filter name="ResourceFilter" class="Honeybee\Agavi\Filter\ResourceFilter">
+            <filter name="ResourceFilter" class="Pulq\Agavi\Filter\ResourceFilter">
                 <ae:parameter name="output_types">
                     <ae:parameter>html</ae:parameter>
                 </ae:parameter>
@@ -48,7 +48,7 @@
 
     <ae:configuration context="web" environment="stage">
         <filters>
-            <filter name="ResourceFilter" class="Honeybee\Agavi\Filter\ResourceFilter">
+            <filter name="ResourceFilter" class="Pulq\Agavi\Filter\ResourceFilter">
                 <ae:parameter name="output_types">
                     <ae:parameter>html</ae:parameter>
                 </ae:parameter>

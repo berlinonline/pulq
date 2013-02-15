@@ -1,6 +1,6 @@
 <?php
 
-use Honeybee\Agavi\Filter;
+use Pulq\Agavi\Filter;
 
 $default_context = 'web';
 $rootDir = dirname(dirname(__FILE__));

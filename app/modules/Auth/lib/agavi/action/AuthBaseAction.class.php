@@ -1,6 +1,6 @@
 <?php
 
-use \Honeybee\Agavi\Action\BaseAction;
+use \Pulq\Agavi\Action\BaseAction;
 
 /**
  * The AuthBaseAction serves as the base action to all actions implemented inside of the Auth module.
