@@ -39,25 +39,6 @@ class ConfigurationScanner
                         $configsToInclude[$name][] = $configFile;
                     }
                 }
-                // scan for module specific dat0r packages
-                $dat0rPath = $file->getPathname().str_replace('/', DIRECTORY_SEPARATOR, '/lib/dat0r/');
-                if (is_dir($dat0rPath))
-                {
-                    $directoryIter = new \DirectoryIterator($dat0rPath);
-                    foreach ($directoryIter as $package)
-                    {
-                        $packageName = $package->getFilename();
-                        if ('.' === $packageName || '..' === $packageName)
-                        {
-                            continue;
-                        }
-                        if (! isset($configsToInclude['dat0r']))
-                        {
-                            $configsToInclude['dat0r'] = array();
-                        }
-                        $configsToInclude['dat0r'][] = $package->getPathName();
-                    }
-                }
 
                 $aclPath = $file->getPathname().str_replace('/', DIRECTORY_SEPARATOR, '/config/access_control/');
                 if (is_dir($aclPath))

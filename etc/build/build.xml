@@ -102,20 +102,6 @@
                 </replacetokens>
             </filterchain>
         </copy>
-        <copy tofile="${module.directory}/${module.directory.config}/dat0r/codegen.ini" 
-              file="${template.path}/dat0r/codegen.ini.tmpl">
-            <filterchain>
-                <replacetokens begintoken="%%" endtoken="%%">
-                    <token key="MODULE_PREFIX" value="${module.prefix}" />
-                    <token key="PROJECT_LOCATION" value="${project.directory}" />
-                    <token key="PROJECT_PREFIX" value="${project.prefix}" />
-                    <token key="MODULE_NAME" value="${module.name}" />
-                </replacetokens>
-            </filterchain>
-        </copy>
-        <copy tofile="${module.directory}/${module.directory.config}/dat0r/.gitignore" 
-              file="${template.path}/dat0r/.gitignore.tmpl" />
-        <!-- ... then copy the couchdb and elasticsearch cfg files. -->
         <copy todir="${module.directory}/${module.directory.config}">
             <mapper type="regexp" from="^(.+[\\\/])?(.+)\.tmpl$" to="\1/${module.prefix}\2" />
             <fileset dir="${template.path}">
@@ -183,6 +169,5 @@
         </copy>
 
         <run command="make link-project-modules" dir="${project.directory}" />
-        <run command="vendor/bin/dat0r.console generate ${module.ln_target}/config/dat0r/codegen.ini ${module.ln_target}/config/dat0r/module.xml gen+dep" dir="${project.directory}" />
     </target>
 </project>

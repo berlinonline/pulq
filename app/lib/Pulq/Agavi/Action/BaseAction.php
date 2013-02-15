@@ -2,8 +2,6 @@
 
 namespace Pulq\Agavi\Action;
 
-use Pulq\Core\Dat0r\Module;
-
 /**
  * The BaseAction serves as the base action to all actions implemented inside of pulq.
  *
@@ -35,21 +33,6 @@ class BaseAction extends \AgaviAction
     public function isSecure()
     {
         return TRUE;
-    }
-
-    protected function getModule()
-    {
-        $module = $this->getContext()->getRequest()->getAttribute('module', 'org.pulq.env');
-
-        if (! ($module instanceof Module))
-        {
-            throw new \Exception(
-                "Unable to determine honebee-module for the current action's scope." . PHP_EOL . 
-                "Make sure that the PulqModuleRoutingCallback is executed for the related route."
-            );
-        }
-
-        return $module;
     }
 
     protected function logError($msg)

@@ -188,9 +188,7 @@ remove-module:
 module-code:
 
 	@bin/agavi module-list
-	@read -p "Enter Module Name:" module; \
-    	dator_dir=app/modules/$$module/config/dat0r; \
-		vendor/bin/dat0r.console generate $$dator_dir/codegen.ini $$dator_dir/module.xml gen+dep
+	@read -p "Enter Module Name:" module; 
 	@make config
 	@curl -XDELETE localhost:9200/
 	@echo "\n"

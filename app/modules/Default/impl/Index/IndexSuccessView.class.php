@@ -13,8 +13,6 @@
 // |   End:                                                                    |
 // +---------------------------------------------------------------------------+
 
-use Pulq\Core\Dat0r\ModuleService;
-
 /**
  * The Default_Index_IndexSuccessView class provides presentation logic for the %system_actions.default% action.
  *
@@ -37,18 +35,6 @@ class Default_Index_IndexSuccessView extends DefaultBaseView
     public function executeHtml(AgaviRequestDataHolder $parameters) // @codingStandardsIgnoreEnd
     {
         $this->setupHtml($parameters);
-        $routing = $this->getContext()->getRouting();
-        $service = new ModuleService();
-
-        $modules = array();
-        foreach ($service->getModules() as $module)
-        {
-            $modules[$module->getName()] = array(
-                'list_link' => $routing->gen($module->getOption('prefix') . '.list')
-            );
-        }
-
-        $this->setAttribute('modules', $modules);
         $this->setAttribute('_title', $this->translationManager->_('Welcome to the Pulq web frontend.'));
     }
     
