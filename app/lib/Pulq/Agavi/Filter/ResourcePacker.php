@@ -30,15 +30,34 @@ class ResourcePacker
         $this->outputType = $outputType;
     }
 
-    public static function sortedGlob($from, $glob = '*')
+    public static function sortedGlob($from, $outputType, $glob = '*')
     {
         $files = glob($from.DIRECTORY_SEPARATOR.$glob);
         $sortedFiles = array();
         $indexFile = $from.DIRECTORY_SEPARATOR.'.index';
 
+        $index = array();
+        
         if (file_exists($indexFile))
         {
-            foreach (file($indexFile) as $fileName)
+            $index = file($indexFile);
+        }
+
+        if ($outputType)
+        {
+            $outputTypeIndexFile = $from.DIRECTORY_SEPARATOR.'.'.$outputType.'.index';
+
+            if (file_exists($outputTypeIndexFile))
+            {
+                $outputTypeIndex = file($outputTypeIndexFile);
+                $index = array_merge($index, file($outputTypeIndexFile));
+                
+            }
+        }
+
+        if (count($index) > 0)
+        {
+            foreach ($index as $fileName)
             {
                 $filePath = $from.DIRECTORY_SEPARATOR.trim($fileName);
                 if (in_array($filePath, $files))
@@ -55,11 +74,12 @@ class ResourcePacker
         $filesToLoad = array();
         foreach ($sortedFiles as $file)
         {
+
             if (is_dir($file))
             {
                 $filesToLoad = array_merge(
                     $filesToLoad,
-                    self::sortedGlob($file, $glob)
+                    self::sortedGlob($file, $outputType, $glob)
                 );
             }
             else
@@ -188,7 +208,7 @@ class ResourcePacker
 
     protected function packScripts($from, $to)
     {
-        $scriptFiles = self::sortedGlob($from);
+        $scriptFiles = self::sortedGlob($from, $this->outputType);
         $outputPath = $to . DIRECTORY_SEPARATOR . 'combined.js';
         
         if (! $this->checkForOutdatedPacking($scriptFiles, $outputPath))
@@ -210,7 +230,7 @@ class ResourcePacker
 
     protected function packStyles($from, $to, $combine = false)
     {
-        $styleFiles = self::sortedGlob($from);
+        $styleFiles = self::sortedGlob($from, $this->outputType);
         $outputPath = $to . DIRECTORY_SEPARATOR . 'combined.css';
         
         if (! $this->checkForOutdatedPacking($styleFiles, $outputPath))
@@ -245,7 +265,7 @@ class ResourcePacker
     protected function copyResources($from, $to)
     {
         $this->ensureDirectoryExists($to);
-        $files = self::sortedGlob($from);
+        $files = self::sortedGlob($from, $this->outputType);
         foreach($files as $file)
         {
             $targetPath = str_replace($from, $to, $file);
@@ -255,6 +275,17 @@ class ResourcePacker
             if (file_exists($indexFile))
             {
                 $this->recursiveCopy($indexFile, str_replace($from, $to, $indexFile));
+            }
+
+            if ($this->outputType)
+            {
+                $outputTypeIndexFile = dirname($file).DIRECTORY_SEPARATOR.'.'.$this->outputType.'.index';
+
+                if (file_exists($outputTypeIndexFile))
+                {
+                    $this->recursiveCopy($outputTypeIndexFile, str_replace($from, $to, $outputTypeIndexFile));
+                    
+                }
             }
         }
 

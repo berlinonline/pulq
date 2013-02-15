@@ -134,7 +134,8 @@ class ResourceFilter extends \AgaviFilter implements \AgaviIGlobalFilter
             : $this->config->getDeployDir();
         
         $files = ResourcePacker::sortedGlob(
-            $resourcesBaseDir.DIRECTORY_SEPARATOR.'_global'.DIRECTORY_SEPARATOR.$subdirectory
+            $resourcesBaseDir.DIRECTORY_SEPARATOR.'_global'.DIRECTORY_SEPARATOR.$subdirectory,
+            $this->curOutputType
         );
 
         foreach(static::$modules[$this->curOutputType] as $module)
@@ -147,7 +148,7 @@ class ResourceFilter extends \AgaviFilter implements \AgaviIGlobalFilter
 
             $files = array_merge(
                 $files, 
-                ResourcePacker::sortedGlob($moduleCachePath)
+                ResourcePacker::sortedGlob($moduleCachePath, $this->curOutputType)
             );
         }
         $urls = array();
