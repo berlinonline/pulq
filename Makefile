@@ -58,7 +58,7 @@ cc:
 
 config:
 
-	-@rm app/config/includes/*
+	-@rm app/config/includes/* > /dev/null
 	@php bin/include-configs.php
 	@make cc
 

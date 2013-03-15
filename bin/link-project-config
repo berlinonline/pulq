@@ -1,0 +1,14 @@
+#!/bin/bash
+
+BASEDIR=`readlink -f "$( dirname $0 )/.."`
+PWD=`pwd`
+
+cd $BASEDIR
+CONFIG_DIR="../project/app/config/"
+for CONFIG in `ls $CONFIG_DIR`; do
+    echo "Linking $CONFIG_DIR$CONFIG -> app/project/config/$CONFIG"
+    ln -s "../../../$CONFIG_DIR$CONFIG" "app/project/config/$CONFIG"
+done
+cd $PWD
+
+

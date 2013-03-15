@@ -3,19 +3,6 @@
     xmlns="http://agavi.org/agavi/config/parts/databases/1.0" 
     xmlns:ae="http://agavi.org/agavi/config/global/envelope/1.0"
     xmlns:xi="http://www.w3.org/2001/XInclude">
-    <ae:configuration environment="testing.*">
-        <databases default="CouchImport">
-            <!--
-                This database connection is used to test the CouchDbDataImport,
-                which is currently not integrated into any prod relevant code.
-                The Import/RunActionTest relies on this connection to exist.
-            -->
-            <database name="CouchImport" class="Pulq\Agavi\Database\CouchDb\Database">
-                <ae:parameter name="url">http://127.0.0.1:5984/</ae:parameter>
-                <ae:parameter name="database">couch_import_testing</ae:parameter>
-            </database>
-        </databases>
-    </ae:configuration>
 
     <xi:include href="%core.app_dir%/config/includes/databases.xml"
         xpointer="xmlns(ae=http://agavi.org/agavi/config/global/envelope/1.0) xpointer(/ae:configurations/*)">
