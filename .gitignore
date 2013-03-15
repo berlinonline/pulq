@@ -14,3 +14,4 @@ app/log/*
 vendor
 node_modules
 data
+etc/local

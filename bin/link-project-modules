@@ -2,6 +2,7 @@
 
 GIT_PATH=".git";
 BASEDIR=`readlink -f "$( dirname $0 )/.."`
+PWD=`pwd`
 
 if [ -f "$GIT_PATH" ]; then
     # the .git of the submodule is a file
@@ -17,8 +18,15 @@ fi
 
 EXCLUDE_FILE_PATH="$INFO_DIR/exclude";
 
-(for x in `ls $BASEDIR/../project/modules/`; do echo "app/modules/$x"; done) > "$EXCLUDE_FILE_PATH"
-(cd $BASEDIR/app/modules/ && ln -s ../../../project/modules/* .)
+cd $BASEDIR
+MODULE_DIR="../project/modules/"
+for MODULE in `ls $MODULE_DIR`; do
+    echo "Linking $MODULE_DIR$MODULE -> app/modules/$MODULE"
+    ln -s "../../$MODULE_DIR$MODULE" "app/modules/$MODULE"
+    echo "app/modules/$MODULE" > "$EXCLUDE_FILE_PATH"
+done
+cd $PWD
 
 echo -e "\033[32mExluded from git in $EXCLUDE_FILE_PATH:\033[39m"
 echo "`cat $EXCLUDE_FILE_PATH`"
+

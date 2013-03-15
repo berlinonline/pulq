@@ -103,7 +103,7 @@ install-composer:
 
 	@if [ -d vendor/agavi/agavi/ ]; then svn revert -R vendor/agavi/agavi/; fi
 	@if [ ! -f bin/composer.phar ]; then curl -s http://getcomposer.org/installer | php -d allow_url_fopen=1 -d date.timezone="Europe/Berlin" -- --install-dir=./bin; fi
-#	-@bin/apply-patches
+	-@bin/apply-patches
 	
 
 update-composer:
