@@ -178,6 +178,11 @@ module:
 	@bin/agavi pulq-module-wizard
 	@make config
 
+action:
+
+	@bin/agavi pulq-action-wizard
+	@make config
+
 remove-module:
 
 	@bin/agavi module-list
@@ -195,6 +200,6 @@ module-code:
 
 
 .PHONY: help module module-code lessw lessc jsdoc js-xunit js-specs phpdoc phpcs test twitter-bootstrap cc config install update
-
+    
 # vim: ts=4:sw=4:noexpandtab!:
 #

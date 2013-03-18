@@ -41,12 +41,10 @@
         <mkdir dir="${module.directory}/${module.directory.config}" />
         <mkdir dir="${module.directory}/${module.directory.lib}" />
         <mkdir dir="${module.directory}/${module.directory.resources}" />
-        <mkdir dir="${module.directory}/${module.directory.lib}/export" />
-        <mkdir dir="${module.directory}/${module.directory.lib}/renderer" />
 
         <!--# Create Library #-->
         <agavi.select-path property="template.path" type="directory" path="${templates.directory.app.modules.lib}">
-            <from path="${templates.directory}" />
+            <from path="${templates.module.directory}" />
         </agavi.select-path>
         <copy todir="${module.directory}/${module.directory.lib}">
             <mapper type="regexp" from="^(.+[\\\/])?(.+)\.tmpl$" to="\1/${module.name}\2" />
@@ -63,28 +61,10 @@
                 </replacetokens>
             </filterchain>
         </copy>
-        <!-- Special naming convention for workflow plugins (should get rid of that). -->
-        <agavi.select-path property="template.path" type="directory" path="${templates.directory.app.modules.lib}/workflow/plugin">
-            <from path="${templates.directory}" />
-        </agavi.select-path>
-        <copy todir="${module.directory}/${module.directory.lib}/workflow/plugin">
-            <mapper type="regexp" from="^(.+[\\\/])?(.+)\.tmpl$" to="\1/Workflow${module.name}\2" />
-            <fileset dir="${template.path}">
-                <include name="**/*.tmpl" />
-            </fileset>
-            <filterchain>
-                <replacetokens begintoken="%%" endtoken="%%">
-                    <token key="MODULE_PREFIX" value="${module.prefix}" />
-                    <token key="PROJECT_LOCATION" value="${project.directory}" />
-                    <token key="PROJECT_PREFIX" value="${project.prefix}" />
-                    <token key="MODULE_NAME" value="${module.name}" />
-                </replacetokens>
-            </filterchain>
-        </copy>
 
         <!--# Copy Configuration #-->
         <agavi.select-path property="template.path" path="${templates.directory.app.modules.config}">
-            <from path="${templates.directory}" />
+            <from path="${templates.module.directory}" />
         </agavi.select-path>
         <!-- Start with xml files ... -->
         <copy todir="${module.directory}/${module.directory.config}">
@@ -121,7 +101,7 @@
 
         <!--# Copy Script Resources #-->
         <agavi.select-path property="template.path" type="directory" path="${templates.directory.app.modules}/resources">
-            <from path="${templates.directory}" />
+            <from path="${templates.module.directory}" />
         </agavi.select-path>
         <copy todir="${module.directory}/${module.directory.resources}">
             <mapper type="regexp" from="^(.+[\\\/])?(.+)\.tmpl$" to="\1/${module.prefix}\2" />
@@ -149,9 +129,9 @@
             </filterchain>
         </copy>
 
-        <!--# Create default actions (List, Edit, Suggest and Export) #-->
+        <!--# Create default actions (Index) #-->
         <agavi.select-path property="template.path" type="directory" path="${templates.directory.app.modules}/impl">
-            <from path="${templates.directory}" />
+            <from path="${templates.module.directory}" />
         </agavi.select-path>
         <copy todir="${module.directory}/${module.directory.impl}">
             <mapper type="regexp" from="^(.+[\\\/])?(.+)\.tmpl$" to="\1\2" />
@@ -169,5 +149,62 @@
         </copy>
 
         <run command="make link-project-modules" dir="${project.directory}" />
+		<property userProperty="true" name="action.name" value="Index" override="true" />
+		<agavi.execute-target name="pulq-action-wizard" />
+    </target>
+
+    <!-- 
+        Custom module wizward target that builds full stack pulq modules along with 
+        framework boilerplate and default implementations.
+    -->
+    <target name="pulq-action-wizard" depends="project-locate" description="Creates a pulq action.">
+        <!--# Setup/Prompt Properties #-->
+        <agavi.input property="module.name" message="Module name" promptCharacter=":" failIfEmpty="true" ignoreIfSet="true" />
+        <property userProperty="true" name="module.name.input" value="${module.name}" override="true" />
+        <agavi.transform-string-to-identifier property="module.name" string="${module.name}" />
+        <if>
+            <not>
+                <equals arg1="${module.name}" arg2="${module.name.input}" />
+            </not>
+            <then>
+                <echo message="Module name ${module.name.input} is not a valid identifier; ${module.name} will be used instead" level="warning" />
+            </then>
+        </if>
+
+        <agavi.input property="action.name" message="Action name" promptCharacter=":" failIfEmpty="true" ignoreIfSet="true" />
+        <property userProperty="true" name="action.name.input" value="${action.name}" override="true" />
+        <agavi.transform-string-to-identifier property="action.name" string="${action.name}" />
+        <if>
+            <not>
+                <equals arg1="${action.name}" arg2="${action.name.input}" />
+            </not>
+            <then>
+                <echo message="Action name ${action.name.input} is not a valid identifier; ${action.name} will be used instead" level="warning" />
+            </then>
+        </if>
+
+		<property userProperty="true" name="module.directory" value="${project.directory}/${project.directory.app.modules}/${module.name}" override="true" />
+		<agavi.check-module property="module.available" path="${module.directory}" />
+		<fail unless="module.available" message="Module ${module.name} dows not exist at ${module.directory}" />
+
+        <!--# Create default actions (Index) #-->
+        <agavi.select-path property="template.path" type="directory" path="${templates.directory.app.modules}/impl">
+            <from path="${templates.action.directory}" />
+        </agavi.select-path>
+        <copy todir="${module.directory}/${module.directory.impl}/${action.name}">
+            <mapper type="regexp" from="^ActionName(.+)\.tmpl$" to="${action.name}\1" />
+            <fileset dir="${template.path}">
+                <include name="**/*.tmpl" />
+            </fileset>
+            <filterchain>
+                <replacetokens begintoken="%%" endtoken="%%">
+                    <token key="MODULE_PREFIX" value="${module.prefix}" />
+                    <token key="PROJECT_LOCATION" value="${project.directory}" />
+                    <token key="PROJECT_PREFIX" value="${project.prefix}" />
+                    <token key="MODULE_NAME" value="${module.name}" />
+                    <token key="ACTION_NAME" value="${action.name}" />
+                </replacetokens>
+            </filterchain>
+        </copy>
     </target>
 </project>

@@ -1,6 +1,5 @@
 <?php
 
-use Pulq\Domain\%%MODULE_NAME%%\%%MODULE_NAME%%Module;
 use \Pulq\Agavi\Action\BaseAction;
 
 /**
@@ -12,5 +11,8 @@ use \Pulq\Agavi\Action\BaseAction;
  */
 class %%MODULE_NAME%%BaseAction extends BaseAction
 {
-
+    public function isSecure()
+    {
+        return false;
+    }
 }
