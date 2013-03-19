@@ -120,7 +120,8 @@ class ResourceFilter extends \AgaviFilter implements \AgaviIGlobalFilter
     protected function getCachedAssetUrls($subdirectory)
     {
         $baseDir = $this->config->getBaseDir();
-        $pubDir = $this->config->getPubDir();
+        $pubDir = $this->config->getPubDir() . '/';
+
         $relativeBasePath = str_replace($pubDir, '', $baseDir);
         $baseUrl = \AgaviContext::getInstance()->getRouting()->getBaseHref() . $relativeBasePath;
         $resourceBaseUrl = 
