@@ -1,9 +1,9 @@
 {
-    "hash": "66c50048420ca637b4a30f51c767ff57",
+    "hash": "922cad03fec7d5e14465b61bf7214f52",
     "packages": [
         {
             "name": "PhpDebugToolbar/php-debug-toolbar",
-            "version": "1.5.0",
+            "version": "1.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/DracoBlue/PhpDebugToolbar.git",
@@ -1061,12 +1061,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "2c67e52445416bb7c14046b432acd7eb79e4e612"
+                "reference": "a09a260b6b1a3fa31f24b59c03da8d137f4fbfb2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/2c67e52445416bb7c14046b432acd7eb79e4e612",
-                "reference": "2c67e52445416bb7c14046b432acd7eb79e4e612",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/a09a260b6b1a3fa31f24b59c03da8d137f4fbfb2",
+                "reference": "a09a260b6b1a3fa31f24b59c03da8d137f4fbfb2",
                 "shasum": ""
             },
             "require": {
@@ -1080,7 +1080,7 @@
                 "phpunit/php-text-template": ">=1.1.1",
                 "phpunit/php-timer": ">=1.0.2,<1.1.0",
                 "phpunit/phpunit-mock-objects": ">=1.2.0,<1.3.0",
-                "symfony/yaml": ">=2.2.0"
+                "symfony/yaml": ">=2.0.0,<2.3.0"
             },
             "require-dev": {
                 "pear-pear/pear": "1.9.4"
@@ -1127,7 +1127,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2013-03-11 07:06:05"
+            "time": "2013-03-19 10:54:27"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
@@ -1230,12 +1230,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ruflin/Elastica.git",
-                "reference": "e6167d772b96e178fac18402e65ee517e825ed39"
+                "reference": "4976ea0403853d18e30b3086d1809ebe68d4e1a3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ruflin/Elastica/zipball/e6167d772b96e178fac18402e65ee517e825ed39",
-                "reference": "e6167d772b96e178fac18402e65ee517e825ed39",
+                "url": "https://api.github.com/repos/ruflin/Elastica/zipball/4976ea0403853d18e30b3086d1809ebe68d4e1a3",
+                "reference": "4976ea0403853d18e30b3086d1809ebe68d4e1a3",
                 "shasum": ""
             },
             "require": {
@@ -1271,7 +1271,7 @@
                 "client",
                 "search"
             ],
-            "time": "2013-02-25 15:30:16"
+            "time": "2013-03-18 22:35:39"
         },
         {
             "name": "symfony/console",
@@ -1455,17 +1455,17 @@
         },
         {
             "name": "symfony/yaml",
-            "version": "dev-master",
+            "version": "2.2.x-dev",
             "target-dir": "Symfony/Component/Yaml",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Yaml.git",
-                "reference": "f198ac28048eeceae852419c076123aaee59cd1c"
+                "reference": "bf9bdaaa9b6e5e6aeda5f9e995c00ce4b9befcaf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Yaml/zipball/f198ac28048eeceae852419c076123aaee59cd1c",
-                "reference": "f198ac28048eeceae852419c076123aaee59cd1c",
+                "url": "https://api.github.com/repos/symfony/Yaml/zipball/bf9bdaaa9b6e5e6aeda5f9e995c00ce4b9befcaf",
+                "reference": "bf9bdaaa9b6e5e6aeda5f9e995c00ce4b9befcaf",
                 "shasum": ""
             },
             "require": {
@@ -1474,7 +1474,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.3-dev"
+                    "dev-master": "2.2-dev"
                 }
             },
             "autoload": {
@@ -1498,7 +1498,7 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "http://symfony.com",
-            "time": "2013-01-31 21:39:01"
+            "time": "2013-03-06 17:38:49"
         },
         {
             "name": "twig/twig",

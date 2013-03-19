@@ -28,7 +28,7 @@
         "zend/acl": "dev-master",
         "phing/phing": "2.4.12",
         "zerkalica/phpcs": "dev-master",
-        "PhpDebugToolbar/php-debug-toolbar": "1.5.*",
+        "PhpDebugToolbar/php-debug-toolbar": "1.6.*",
         "jquery/jquery": "1.8.2",
         "underscorejs/underscorejs": "1.4.2",
         "twitter/bootstrap": "2.2.2",
@@ -53,7 +53,7 @@
             "type": "package",
             "package": {
                 "name": "PhpDebugToolbar/php-debug-toolbar",
-                "version": "1.5.0",
+                "version": "1.6.0",
                 "source": {
                     "url": "https://github.com/DracoBlue/PhpDebugToolbar.git",
                     "type": "git",
