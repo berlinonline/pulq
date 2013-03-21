@@ -9,7 +9,8 @@ help:
 	@echo "  update - Update the working copy and vendor libs."
 	@echo "  module - Create a new module"
 	@echo "  action - Create a new action inside an existing module"
-	@echo "  link-project-modules - Symlink custom code into the pulq submodule and update the local git/ingo/exclude settings."
+	@echo "  link-project-modules - Symlink custom code into the pulq submodule and update the local git/info/exclude settings."
+	@echo "  link-project-config - Symlink custom cconfigs into the pulq submodule."
 	@echo ""
 	@echo "DEVELOPMENT"
 	@echo "  Scafolding"
@@ -70,10 +71,11 @@ install: install-vendor install-node-deps cc
 	@if [ ! -f etc/local/local.config.sh ]; then bin/configure-env --init; fi
 	@make twitter-bootstrap
 	@make link-project-modules
+	@make link-project-config
 	@make deploy-resources
 
 
-update: update-composer update-vendor update-node-deps link-project-modules
+update: update-composer update-vendor update-node-deps link-project-modules link-project-config
 
 
 tail-logs:
@@ -174,6 +176,10 @@ link-project-modules:
 	@bin/link-project-modules
 	@make config
 
+link-project-config:
+
+	@bin/link-project-config
+	@make config
 
 module:
 
