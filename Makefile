@@ -7,6 +7,8 @@ help:
 	@echo "  tail-logs - Tail all application logs."
 	@echo "  install - Initially setup a vanilla checkout."
 	@echo "  update - Update the working copy and vendor libs."
+	@echo "  module - Create a new module"
+	@echo "  action - Create a new action inside an existing module"
 	@echo "  link-project-modules - Symlink custom code into the pulq submodule and update the local git/ingo/exclude settings."
 	@echo ""
 	@echo "DEVELOPMENT"

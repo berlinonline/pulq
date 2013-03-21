@@ -34,6 +34,13 @@
             <route name="disabled" pattern="^/disabled$" module="Disabled" action="Index" />
 
             <xi:include 
+                href="%core.app_dir%/project/config/routing.xml"
+                xpointer="xmlns(ae=http://agavi.org/agavi/config/global/envelope/1.0) xmlns(r=http://agavi.org/agavi/config/parts/routing/1.0)
+                xpointer(//ae:configuration[@context='web']/r:routes/r:route)/">
+                <xi:fallback />
+            </xi:include>
+
+            <xi:include 
                 href="%core.app_dir%/config/includes/routing.xml"
                 xpointer="xmlns(ae=http://agavi.org/agavi/config/global/envelope/1.0) xmlns(r=http://agavi.org/agavi/config/parts/routing/1.0)
                 xpointer(//ae:configuration[@context='web']/r:routes/r:route)/">
