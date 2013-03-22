@@ -19,10 +19,19 @@ fi
 EXCLUDE_FILE_PATH="$INFO_DIR/exclude";
 
 cd $BASEDIR
+
+echo "Executing in basedir $BASEDIR";
 MODULE_DIR="../project/modules/"
 for MODULE in `ls $MODULE_DIR`; do
-    echo "Linking $MODULE_DIR$MODULE -> app/modules/$MODULE"
-    ln -s "../../$MODULE_DIR$MODULE" "app/modules/$MODULE"
+
+    LINK_TARGET="../../$MODULE_DIR$MODULE"
+    LINK_LOCATION="app/modules/$MODULE"
+
+    if [ ! -L $LINK_LOCATION ]
+    then
+        echo "Linking $LINK_TARGET -> $LINK_LOCATION"
+        ln -s "$LINK_TARGET" $LINK_LOCATION
+    fi
 
     if ! grep -Fxq "app/modules/$MODULE" $EXCLUDE_FILE_PATH
     then
