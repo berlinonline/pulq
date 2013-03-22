@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    THIS FILE IS MERGED WITH THE ROUTES FROM app/config/routes.xml
+    AND THE ROUTING FILES THAT ARE INCLUDED FROM THERE.
+-->
+<ae:configurations 
+    xmlns:ae="http://agavi.org/agavi/config/global/envelope/1.0" 
+    xmlns="http://agavi.org/agavi/config/parts/routing/1.0">
+    <ae:configuration context="web">
+        <routes>
+            <!--
+                 The placeholder route will never match.
+                 You can remove it when you add custom routes.
+            -->
+            <route name="placeholder" pattern="$x"/>
+        </routes>
+    </ae:configuration>
+
+    <ae:configuration context="console">
+        <routes>
+            <!--
+                 The placeholder route will never match.
+                 You can remove it when you add custom routes.
+            -->
+            <route name="placeholder" pattern="$x"/>
+        </routes>
+    </ae:configuration>
+</ae:configurations>
+

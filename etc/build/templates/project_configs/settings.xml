@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    THIS FILE IS MERGED WITH THE ROUTES FROM app/config/settings.xml
+    AND THE SETTINGS FILES THAT ARE INCLUDED FROM THERE.
+-->
+<ae:configurations 
+    xmlns:ae="http://agavi.org/agavi/config/global/envelope/1.0" 
+    xmlns="http://agavi.org/agavi/config/parts/settings/1.0"
+    xmlns:xi="http://www.w3.org/2001/XInclude">
+    <ae:configuration>
+        <!--
+             Use this block to override the default system actions.
+
+             E.g. you probably want to have an "index" page that uses
+             on of your projects actions.
+        -->
+        <!--
+        <system_actions>
+            <system_action name="default">
+                <module>Index</module>
+                <action>Index</action>
+            </system_action>
+        </system_actions>
+        -->
+
+        <settings>
+            <!-- Change this to whatever you like to name your project -->
+            <setting name="app_name">Your projects name</setting>
+            <!--
+                 DBs are disabled by default to give you a working site
+                 even without DBs being configured
+            -->
+            <setting name="use_database">false</setting>
+        </settings>
+    </ae:configuration>
+</ae:configurations>
+

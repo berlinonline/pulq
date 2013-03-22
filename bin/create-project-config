@@ -1,0 +1,17 @@
+#!/bin/bash
+
+BASEDIR=`readlink -f "$( dirname $0 )/.."`
+PWD=`pwd`
+
+cd $BASEDIR
+CONFIG_DIR="../project/app/config/"
+CONFIG_TEMPLATE_DIR="etc/build/templates/project_configs/"
+for CONFIG in `ls $CONFIG_TEMPLATE_DIR`; do
+    if [ ! -f $CONFIG_DIR$CONFIG ]
+    then
+        echo "Creating $CONFIG_DIR$CONFIG from $CONFIG_TEMPLATE_DIR$CONFIG"
+        cp $CONFIG_TEMPLATE_DIR$CONFIG $CONFIG_DIR$CONFIG
+    fi
+done
+cd $PWD
+
