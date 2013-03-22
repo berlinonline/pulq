@@ -23,7 +23,12 @@ MODULE_DIR="../project/modules/"
 for MODULE in `ls $MODULE_DIR`; do
     echo "Linking $MODULE_DIR$MODULE -> app/modules/$MODULE"
     ln -s "../../$MODULE_DIR$MODULE" "app/modules/$MODULE"
-    echo "app/modules/$MODULE" > "$EXCLUDE_FILE_PATH"
+
+    if ! grep -Fxq "app/modules/$MODULE" $EXCLUDE_FILE_PATH
+    then
+        # code if found
+        echo "app/modules/$MODULE" >> "$EXCLUDE_FILE_PATH"
+    fi
 done
 cd $PWD
 
