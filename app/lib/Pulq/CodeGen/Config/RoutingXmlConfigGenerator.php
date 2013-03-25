@@ -17,24 +17,26 @@ class RoutingXmlConfigGenerator extends DefaultXmlConfigGenerator
         $consoleConfig->setAttribute('context', 'console');
         $root->appendChild($consoleConfig);
 
+        /*
         $document->appendChild($root);
         $routesNode = $document->createElement('routes');
         $webConfig->appendChild($routesNode);
+         */
 
         foreach ($filesToInclude as $configFile)
         {
-            $routesNode->appendChild(
-                $this->createWebRouting($document, $configFile)
+            $webConfig->appendChild(
+                $this->createRoutingInclude($document, 'web', $configFile)
             );
             $consoleConfig->appendChild(
-                $this->createConsoleRouting($document, $configFile)
+                $this->createRoutingInclude($document, 'console', $configFile)
             );
         }
 
         $this->writeConfigFile($document, $name);
     }
 
-    protected function createConsoleRouting(\DOMDocument $document, $configFile)
+    protected function createRoutingInclude(\DOMDocument $document, $context, $configFile)
     {
         $moduleRoutes = $document->createElement('xi:include');
         $moduleRoutes->setAttribute('href', str_replace(
@@ -44,7 +46,7 @@ class RoutingXmlConfigGenerator extends DefaultXmlConfigGenerator
         ));
         $moduleRoutes->setAttribute(
             'xpointer',
-            "xmlns(ae=http://agavi.org/agavi/config/global/envelope/1.0) xpointer(/ae:configurations/ae:configuration[@context='console'])/"
+            "xmlns(ae=http://agavi.org/agavi/config/global/envelope/1.0) xpointer(/ae:configurations/ae:configuration[@context='$context'])/"
         );
 
         return $moduleRoutes;
