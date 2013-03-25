@@ -63,4 +63,8 @@ AgaviConfig::set(
 // |  - core.template_dir (defaults to "<core.app_dir>/templates")             |
 // +---------------------------------------------------------------------------+
 
+
+// without this, the template_dir setting in settings.xml won't work …
+AgaviConfig::set('core.template_dir', null);
+
 date_default_timezone_set('Europe/Berlin');

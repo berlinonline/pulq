@@ -35,8 +35,8 @@
                 </ae:parameter>
                 <ae:parameter name="template_dirs">
                     <ae:parameters>
-                        <ae:parameter>%core.app_dir%/templates/macros</ae:parameter>
-                        <ae:parameter>%core.app_dir%/templates</ae:parameter>
+                        <ae:parameter>%core.template_dir%/macros</ae:parameter>
+                        <ae:parameter>%core.template_dir%</ae:parameter>
                     </ae:parameters>
                 </ae:parameter>
             </renderer>

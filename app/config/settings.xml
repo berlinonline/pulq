@@ -42,6 +42,8 @@
             <setting name="auth_provider">LdapAuthProvider</setting>
             <setting name="test_bootstrap_tpl">%core.app_dir%/../testing/TestCaseMethod.tpl</setting>
             <setting name="gravatar_url_tpl">http://www.gravatar.com/avatar/{EMAIL_HASH}?s=41</setting>
+
+            <setting name="template_dir">%core.app_dir%/../../project/app/templates</setting>
         </settings>
 
         <settings prefix="ldap.">

@@ -73,7 +73,6 @@ install: install-vendor install-node-deps cc
 	@make twitter-bootstrap
 	@make link-project-modules
 	@make create-project-config
-	@make link-project-config
 	@make deploy-resources
 
 
@@ -183,9 +182,15 @@ link-project-config:
 	@bin/link-project-config
 	@make config
 
+create-project-skeleton:
+    
+	@bin/create-project-skeleton
+	@make create-project-config
+
 create-project-config:
 
 	@bin/create-project-config
+	@make link-project-config
 	@make config
 
 module:

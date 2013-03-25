@@ -1,0 +1,20 @@
+#!/bin/bash
+
+BASEDIR=`readlink -f "$( dirname $0 )/.."`
+PWD=`pwd`
+
+PROJECT_DIR="$BASEDIR/../project"
+
+mkdir -p "$PROJECT_DIR/app/config"
+mkdir -p "$PROJECT_DIR/modules"
+
+
+PROJECT_TEMPLATE_DIR="$PROJECT_DIR/app/templates"
+if [ ! -d $PROJECT_TEMPLATE_DIR ]
+then
+    cp -R "$BASEDIR/etc/build/templates/project_templates" $PROJECT_TEMPLATE_DIR
+fi
+
+cd $PWD
+
+
