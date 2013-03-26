@@ -10,7 +10,9 @@ help:
 	@echo "  module - Create a new module"
 	@echo "  action - Create a new action inside an existing module"
 	@echo "  link-project-modules - Symlink custom code into the pulq submodule and update the local git/info/exclude settings."
-	@echo "  link-project-config - Symlink custom cconfigs into the pulq submodule."
+	@echo "  create-project-skeleton - Initially creates the project directory structure."
+	@echo "  link-project-config - Symlink custom configs into the pulq submodule."
+	@echo "  link-project-pub - Symlink custom public files into the pub directory."
 	@echo "  create-project-config - Creates the project specific config files."
 	@echo ""
 	@echo "DEVELOPMENT"
@@ -71,6 +73,7 @@ install: install-vendor install-node-deps cc
 
 	@if [ ! -f etc/local/local.config.sh ]; then bin/configure-env --init; fi
 	@make twitter-bootstrap
+	@make create-project-skeleton
 	@make link-project-modules
 	@make create-project-config
 	@make deploy-resources
@@ -180,6 +183,11 @@ link-project-modules:
 link-project-config:
 
 	@bin/link-project-config
+	@make config
+
+link-project-pub:
+
+	@bin/link-project-pub
 	@make config
 
 create-project-skeleton:

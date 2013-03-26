@@ -7,7 +7,7 @@ PROJECT_DIR="$BASEDIR/../project"
 
 mkdir -p "$PROJECT_DIR/app/config"
 mkdir -p "$PROJECT_DIR/modules"
-
+mkdir -p "$PROJECT_DIR/pub"
 
 PROJECT_TEMPLATE_DIR="$PROJECT_DIR/app/templates"
 if [ ! -d $PROJECT_TEMPLATE_DIR ]
@@ -26,6 +26,8 @@ if [ ! -L $APP_RESOURCES_DIR ]
 then
     ln -s "../../project/app/resources" $APP_RESOURCES_DIR
 fi
+
+
 
 cd $PWD
 
