@@ -2,7 +2,7 @@
 
 namespace Pulq\Data;
 
-class Set implements Countable, ArrayAccess, Iterator
+class Set implements \Countable, \ArrayAccess, \Iterator
 {
     private $elements = array();
     private $position = 0;
