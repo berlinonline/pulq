@@ -11,6 +11,10 @@
             <!-- /Zend -->
 
             <!-- Pulq: Agavi Integration -->
+            <autoload name="PulqContext">%core.app_dir%/../libs/Pulq/agavi/core/PulqContext.class.php</autoload>
+            <autoload name="PulqProxyUser">%core.app_dir%/../libs/Pulq/agavi/user/PulqProxyUser.class.php</autoload>
+            <autoload name="PulqProxyStorage">%core.app_dir%/../libs/Pulq/agavi/storage/PulqProxyStorage.class.php</autoload>
+            
             <autoload name="PulqBaseAction">%core.app_dir%/../libs/Pulq/agavi/action/PulqBaseAction.class.php</autoload>
             <autoload name="PulqBaseModel">%core.app_dir%/../libs/Pulq/agavi/model/PulqBaseModel.class.php</autoload>
             <autoload name="PulqBaseView">%core.app_dir%/../libs/Pulq/agavi/view/PulqBaseView.class.php</autoload>

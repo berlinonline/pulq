@@ -31,10 +31,15 @@
 
         <security_filter class="AgaviSecurityFilter" />
 
-        <storage class="AgaviSessionStorage" />
+		<storage class="PulqProxyStorage">
+			<ae:parameter name="class">AgaviSessionStorage</ae:parameter>
+			<ae:parameter name="session_name">pulq_sess</ae:parameter>
+		</storage>
 
-        <user class="AgaviSecurityUser" />
-        <!--<user class="ProjectZendAclSecurityUser" />-->
+		<user class="PulqProxyUser">
+			<ae:parameter name="class">AgaviSecurityUser</ae:parameter>
+	<!-- <ae:parameter name="class">ProjectZendAclSecurityUser</ae:parameter> -->
+		</user>
 
         <translation_manager class="AgaviTranslationManager" />
 

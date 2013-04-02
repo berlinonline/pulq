@@ -36,11 +36,12 @@
 
         <settings>
             <setting name="app_name">PulqApplication</setting>
+            <setting name="context_implementation">PulqContext</setting>
             <setting name="available">true</setting>
             <setting name="debug">false</setting>
             <setting name="use_database">true</setting>
             <setting name="use_logging">true</setting>
-            <setting name="use_security">true</setting>
+            <setting name="use_security">false</setting>
             <setting name="use_translation">true</setting>
             <setting name="auth_provider">LdapAuthProvider</setting>
             <setting name="test_bootstrap_tpl">%core.app_dir%/../testing/TestCaseMethod.tpl</setting>

@@ -67,13 +67,6 @@ class PulqBaseView extends AgaviView
     protected $translationManager;
 
     /**
-     * Holds a reference to the user for the current session.
-     *
-     * @var         AgaviUser
-     */
-    protected $user;
-
-    /**
      * Initialize the view thereby setting up our members.
      *
      * @param       AgaviExecutionContainer $container
@@ -85,7 +78,6 @@ class PulqBaseView extends AgaviView
         $this->routing = $this->getContext()->getRouting();
         $this->request = $this->getContext()->getRequest();
         $this->translationManager = $this->getContext()->getTranslationManager();
-        $this->user = $this->getContext()->getUser();
     }
 
     /**
