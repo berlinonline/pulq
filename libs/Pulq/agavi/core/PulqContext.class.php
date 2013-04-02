@@ -22,7 +22,6 @@ class PulqContext extends AgaviContext
     {
         if ($this->storage instanceof PulqProxyStorage)
         {
-            throw new Exception('ddd');
             $this->storage = $this->storage->getRealInstance();
             array_push($this->shutdownSequence, $this->storage);
         }
