@@ -11,8 +11,8 @@ require $rootDir . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'bootstra
 if (FALSE !== strpos(\Pulq\Core\Environment::getEnvironment(), 'development'))
 {
     PhpDebugToolbar::start(array(
-        'js_location' => 'static/PhpDebugToolbar/PhpDebugToolbar.js',
-        'css_location' => 'static/PhpDebugToolbar/PhpDebugToolbar.css'
+        'js_location' => '/static/PhpDebugToolbar/PhpDebugToolbar.js',
+        'css_location' => '/static/PhpDebugToolbar/PhpDebugToolbar.css'
     ));
 }
 
