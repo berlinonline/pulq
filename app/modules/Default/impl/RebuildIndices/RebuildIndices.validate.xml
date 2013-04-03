@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ae:configurations xmlns="http://agavi.org/agavi/config/parts/validators/1.0" xmlns:ae="http://agavi.org/agavi/config/global/envelope/1.0"
+    parent="%core.config_dir%/validators.xml">
+
+    <ae:configuration>
+
+        <validators>
+            <validator class="string">
+                <argument>db</argument>
+                <error>A configured database config name must be given.</error>
+            </validator>
+
+            <validator class="regex">
+                <argument>action</argument>
+                <error>One of "create", "switch" or "delete" must be given</error>
+                <ae:parameter name="pattern">/^(create|switch|delete)$/</ae:parameter>
+                <ae:parameter name="match">true</ae:parameter>
+            </validator>
+        </validators>
+
+    </ae:configuration>
+
+</ae:configurations>

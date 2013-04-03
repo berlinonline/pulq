@@ -39,15 +39,18 @@ class Database extends \AgaviDatabase
     {
         try
         {
-            $indexName = $this->getParameter('index');
+            $indexConfig = $this->getParameter('index');
+            $indexName = $indexConfig['name'];
+
             if (! $indexName)
             {
                 throw new \AgaviDatabaseException("Missing required index param in current configuration.");
             }
 
-            if (! $this->hasParameter('mapping_dir'))
+            $setupDir = $indexConfig['setup_dir'];
+            if (! $setupDir)
             {
-                throw new \AgaviDatabaseException("Missing required mapping_dir param in current configuration.");
+                throw new \AgaviDatabaseException("Missing required setup_dir param in current configuration.");
             }
 
             $this->connection = new Elastica\Client(
