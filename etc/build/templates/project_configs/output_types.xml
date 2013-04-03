@@ -46,7 +46,7 @@
                 </ae:parameter>
             </output_type>
             
-            <!-- Output type for binary data
+            <!-- Output type for JSON data
             <output_type name="json">
                 <ae:parameter name="http_headers">
                     <ae:parameter name="Content-Type">application/json; charset=UTF-8</ae:parameter>
@@ -54,13 +54,11 @@
             </output_type>
             -->
 
-            <!-- Output type for JSON data
             <output_type name="binary">
                 <ae:parameter name="http_headers">
                     <ae:parameter name="Content-Type">application/octet-stream;</ae:parameter>
                 </ae:parameter>
             </output_type>
-            -->
 
             <!-- Output type for RSS feeds
             <output_type name="rss">

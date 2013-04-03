@@ -4,6 +4,12 @@
     xmlns="http://agavi.org/agavi/config/parts/routing/1.0">
     <ae:configuration context="web">
         <routes>
+            <route name="default.asset"
+                pattern="^/asset/(module:\w+)/(asset:[\w-]+)$"
+                module="Default"
+                action="Asset"
+                output_type="binary"
+            />
         </routes>
     </ae:configuration>
 

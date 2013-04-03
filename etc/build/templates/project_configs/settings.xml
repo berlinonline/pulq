@@ -31,6 +31,10 @@
                  even without DBs being configured
             -->
             <setting name="use_database">false</setting>
+            <setting name="asset_service_map">
+                <ae:parameters>
+                </ae:parameters>
+            </setting>
         </settings>
     </ae:configuration>
 </ae:configurations>
