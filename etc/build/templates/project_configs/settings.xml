@@ -33,6 +33,9 @@
             <setting name="use_database">false</setting>
             <setting name="asset_service_map">
                 <ae:parameters>
+                    <!--
+                    <ae:parameter name="example_module">ExampleModuleImageService</ae:parameter>
+                         -->
                 </ae:parameters>
             </setting>
         </settings>
