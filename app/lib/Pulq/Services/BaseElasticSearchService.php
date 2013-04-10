@@ -3,7 +3,7 @@
 namespace Pulq\Services;
 use Pulq\Data\DataObjectSet;
 use Elastica\ResultSet;
-use Elastica\Query\AbstractQuery;
+use Elastica\Query;
 
 abstract class BaseElasticSearchService extends BaseService {
     protected $es_index = null;
@@ -20,7 +20,7 @@ abstract class BaseElasticSearchService extends BaseService {
         return $this->index->getType($this->es_type);
     }
 
-    protected function executeQuery(AbstractQuery $query)
+    protected function executeQuery(Query $query)
     {
         return $this->getType()->search($query);
     }
