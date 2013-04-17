@@ -213,4 +213,33 @@ class BaseView extends \AgaviView
 
         return $errors;
     }
+
+    /**
+     * Sets the breadcrumb URLs as a view attribute. The routes for this are set in getBreadCrumbRoutes.
+     */
+    protected function setBreadCrumbs()
+    {
+        $routes = $this->getBreadCrumbRoutes();
+        $ro = $this->getContext()->getRouting();
+
+        $urls = array();
+
+        foreach ($routes as $name => $route)
+        {
+            $urls[$name] = $ro->gen(
+                $route['route'],
+                isset($route['parameters']) ? $route['parameters'] : array()
+            );
+        }
+
+        $this->setAttribute('_breadcrumbs', $urls);
+    }
+
+    /**
+     * Returns an array of routes, each in the form of array('route' => 'foo.bar', paramaters => array(...))
+     */
+    protected function getBreadCrumbRoutes()
+    {
+        return array();
+    }
 }
