@@ -60,7 +60,10 @@ abstract class Image extends BaseDataObject
     {
         if ($this->isConverjonEnabled())
         {
-            $url = $this->getConverjonUrl($this->getAssetUrl(), $params);
+            $url = $this->getConverjonUrl(
+                rtrim(\AgaviContext::getInstance()->getRouting()->getBaseHref(), '/').$this->getAssetUrl(),
+                $params
+            );
         }
         else
         {
