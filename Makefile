@@ -227,7 +227,7 @@ module-code:
 	@echo "\n"
 
 rebuild-index:
-	@read -p "Enter Index name to rebuild:" index; bin/cli rebuild_indices -db $$index -action create
+	@bin/cli rebuild_indices -db Default.Read -action create
 
 
 .PHONY: help module module-code lessw lessc jsdoc js-xunit js-specs phpdoc phpcs test twitter-bootstrap cc config install update

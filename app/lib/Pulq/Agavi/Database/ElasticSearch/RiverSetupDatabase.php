@@ -75,7 +75,7 @@ class RiverSetupDatabase extends Database
         $indexParams = $this->getParameter('index');
         $esIndexName = $indexParams['name'] . date('-ymd-Hi');
         $setupDir = $indexParams['setup_dir'];
-        $idxFileName = realpath($setupDir . '/' . $indexParams['definition_filename']);
+        $idxFileName = realpath($indexParams['definition_file']);
         $idxFile = file_get_contents($idxFileName);
         $idxDef = json_decode($idxFile, TRUE);
 
@@ -89,6 +89,7 @@ class RiverSetupDatabase extends Database
             $idxDef['mappings'] = array();
         }
         $idxDef['mappings'] = array_merge($idxDef['mappings'], $this->getTypeDefinitions());
+
 
         $this->log("Create new elasticsearch index: '$esIndexName' …".PHP_EOL);
         $esIndex = $this->getConnection()
@@ -179,9 +180,8 @@ class RiverSetupDatabase extends Database
     protected function getRiverScript()
     {
         $indexParams = $this->getParameter('index');
-        $setupDir = $indexParams['setup_dir'];
         $riverScriptParam = $this->getParameter('river_script', '');
-        $scriptFilePath = realpath($setupDir . '/' . $riverScriptParam);
+        $scriptFilePath = realpath($riverScriptParam);
         if (is_readable($scriptFilePath))
         {
             $uglifyPath = str_replace('/', DIRECTORY_SEPARATOR, \AgaviConfig::get('core.app_dir').'/../node_modules/uglify-js/bin/uglifyjs');
@@ -202,12 +202,11 @@ class RiverSetupDatabase extends Database
     protected function getTypeDefinitions()
     {
         $idxParams = $this->getParameter('index');
-        $typeNames = $idxParams['types'];
+        $types = $idxParams['types'];
         $typeDefs = array();
 
-        foreach ($typeNames as $typeName)
+        foreach ($types as $typeName => $mappingFilePath)
         {
-            $mappingFilePath = realpath($idxParams['setup_dir'] . '/' . $typeName . '.mapping.json');
             $mappingDef = json_decode(file_get_contents($mappingFilePath), TRUE);
 
             if (!is_array($mappingDef) || JSON_ERROR_NONE != json_last_error())
