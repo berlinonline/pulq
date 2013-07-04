@@ -24,7 +24,14 @@ abstract class Image extends BaseDataObject
         $host = \AgaviConfig::get('converjon.host', 'localhost');
         $port = \AgaviConfig::get('converjon.port', 80);
         $baseUrl = \AgaviConfig::get('converjon.base_path', '/');
-        $converjon_url = sprintf('http://%s:%d%s?', $host, $port, $baseUrl);
+        if ($port == 80)
+        {
+            $converjon_url = sprintf('http://%s%s?', $host, $baseUrl);
+        }
+        else
+        {
+            $converjon_url = sprintf('http://%s:%d%s?', $host, $port, $baseUrl);
+        }
 
         $paramsString = '';
 
