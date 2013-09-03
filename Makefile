@@ -39,7 +39,6 @@ help:
 	@echo "  install-node-deps - install nodejs dependencies in node_modules folder."
 	@echo "  update-node-deps - update nodejs dependencies in node_modules folder."
 	@echo "  generate-autoloads - generate autoloads for vendors/dependencies and libs."
-	@echo "  twitter-bootstrap - build twitter-bootstrap with font-awesome."
 	@exit 0
 
 
@@ -72,7 +71,6 @@ config:
 install: install-vendor install-node-deps cc
 
 	@if [ ! -f etc/local/local.config.sh ]; then bin/configure-env --init; fi
-	@make twitter-bootstrap
 	@make create-project-skeleton
 	@make link-project-modules
 	@make create-project-config
@@ -92,12 +90,6 @@ generate-autoloads:
 	@php bin/composer.phar dump-autoload
 
 
-twitter-bootstrap: 
-
-	@cp vendor/fortawesome/font-awesome/less/font-awesome.less vendor/twitter/bootstrap/less/
-	@sed -i 's/@import "sprites.less"/@import "font-awesome.less"/g' vendor/twitter/bootstrap/less/bootstrap.less
-	@sed -i 's/..\/font\/fontawesome-webfont/..\/binaries\/fontawesome-webfont/g' vendor/twitter/bootstrap/less/font-awesome.less
-	@export PATH="${PROJECT_ROOT}/node_modules/.bin/:$(PATH)"; cd vendor/twitter/bootstrap; make
 
 
 deploy-resources:
@@ -230,7 +222,7 @@ rebuild-index:
 	@bin/cli rebuild_indices -db Default.Read -action create
 
 
-.PHONY: help module module-code lessw lessc jsdoc js-xunit js-specs phpdoc phpcs test twitter-bootstrap cc config install update
+.PHONY: help module module-code lessw lessc jsdoc js-xunit js-specs phpdoc phpcs test cc config install update
     
 # vim: ts=4:sw=4:noexpandtab!:
 #
