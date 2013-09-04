@@ -3,6 +3,7 @@
 namespace Pulq\Data;
 
 use Pulq\Exceptions\ArrayScopeException;
+use Pulq\Exceptions\InvalidArgumentException;
 
 abstract class BaseDataObject implements IDataObject
 {
@@ -125,7 +126,7 @@ abstract class BaseDataObject implements IDataObject
             }
             else
             {
-                if (is_object($value))
+                if (is_object($value) && !in_array(get_class($value), $this->getObjectTypeWhitelist()))
                 {
                     throw new InvalidArgumentException(
                         "Invalid array value encountered, " .
@@ -242,5 +243,11 @@ abstract class BaseDataObject implements IDataObject
     public static function fromArray(array $data = array())
     {
         return new static($data);
+    }
+
+    protected function getObjectTypeWhitelist(array $additionalTypes = array()) {
+        return array_merge(array(
+            'DateTime'
+        ), $additionalTypes);
     }
 }
