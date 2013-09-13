@@ -82,7 +82,7 @@ class Default_IndexAction extends DefaultBaseAction
 
     public function isSecure()
     {
-        return TRUE;
+        return FALSE;
     }
 
 }

@@ -1,6 +1,6 @@
 {
     "name": "berlinonline/pulq",
-    "type": "library",
+    "type": "project",
     "description": "Agavi based framework for building frontend applications.",
     "keywords": ["agavi", "mvc" , "frontend"],
     "homepage": "https://github.com/berlinonline/pulq",
@@ -17,23 +17,14 @@
         "psr-0": {"Pulq" : "app/lib" }
     },
 
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
 
     "require": {
         "php": ">=5.3.3",
         "agavi/agavi": "1.0.*",
         "twig/twig": "1.*",
-        "ruflin/Elastica": "dev-master",
-        "phpunit/phpunit": "3.7.*",
-        "zend/acl": "dev-master",
-        "phing/phing": "2.4.12",
-        "zerkalica/phpcs": "dev-master",
-        "PhpDebugToolbar/php-debug-toolbar": "1.6.*",
-        "jquery/jquery": "1.8.2",
-        "underscorejs/underscorejs": "1.4.2",
-        "twbs/bootstrap": "2.2.2",
-        "fortawesome/font-awesome": "2.0.0",
-        "phpdocumentor/phpdocumentor": "dev-master"
+        "ruflin/elastica": "0.90.*",
+        "PhpDebugToolbar/php-debug-toolbar": "1.6.*"
     },
 
     "repositories": [
@@ -61,52 +52,6 @@
                 },
                 "autoload": {
                     "classmap": ["lib/agavi/", "PhpDebugToolbar.class.php"]
-                }
-            }
-        },
-        {
-            "type": "package",
-            "package": {
-                "name": "jquery/jquery",
-                "version": "1.8.2",
-                "dist": {
-                    "url": "http://code.jquery.com/jquery-1.8.2.min.js",
-                    "type": "file"
-                }
-            }
-        },
-        {
-            "type": "package",
-            "package": {
-                "name": "twitter/bootstrap",
-                "version": "2.2.2",
-                "source": {
-                    "url": "https://github.com/twitter/bootstrap.git",
-                    "type": "git",
-                    "reference": "9376a7c221a64c2bf508d02ea2ccd85748d10fcc"
-                }
-            }
-        },
-        {
-            "type": "package",
-            "package": {
-                "name": "fortawesome/font-awesome",
-                "version": "2.0.0",
-                "source": {
-                    "url": "https://github.com/FortAwesome/Font-Awesome.git",
-                    "type": "git",
-                    "reference": "ee55c859d23af4a3d4825610815ed5926c417101"
-                }
-            }
-        },
-        {
-            "type": "package",
-            "package": {
-                "name": "underscorejs/underscorejs",
-                "version": "1.4.2",
-                "dist": {
-                    "url": "http://underscorejs.org/underscore-min.js",
-                    "type": "file"
                 }
             }
         }
