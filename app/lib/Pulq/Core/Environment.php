@@ -53,7 +53,7 @@ class Environment
     /**
      * The name (wihtout prefix) of the local config file that holds our env-settings.
      */
-    const CONFIG_FILE_NAME = 'environment.php';
+    const CONFIG_FILE_NAME = 'config.php';
 
     /**
      * A file prefix that is used to indicate local only files.
@@ -82,14 +82,6 @@ class Environment
     private $config;
 
     /**
-     * The hostname of the host we're running on.
-     * May be faked for cli requests in order to still generate web urls.
-     *
-     * @var         string
-     */
-    private $currentHost;
-
-    /**
      * Boolean flag that indicates whether we are in testing mode or not.
      *
      * @var         boolean
@@ -108,7 +100,6 @@ class Environment
      */
     private function __construct($testingEnabled = FALSE)
     {
-        $this->testingEnabled = $testingEnabled;
 
         $baseDir = dirname(dirname(dirname(dirname(dirname(__FILE__)))));
 
@@ -117,18 +108,15 @@ class Environment
             'etc' . DIRECTORY_SEPARATOR .
             'local' . DIRECTORY_SEPARATOR;
 
-        $filename = $this->testingEnabled ? 'testing.' . self::CONFIG_FILE_NAME : self::CONFIG_FILE_NAME;
-        $configFilepath = $localConfigDir . self::CONFIG_FILE_PREFIX . $filename;
+        $configFilepath = $localConfigDir . self::CONFIG_FILE_PREFIX . self::CONFIG_FILE_NAME;
 
-        $this->config = include($configFilepath);
+        $local_config = include($configFilepath);
+        $this->config = $local_config['config'];
 
-        if (isset($_SERVER['HTTP_HOST']))
-        {
-            $this->currentHost = $_SERVER['HTTP_HOST'];
-        }
         // No override allowed for testing environments.
         if (($env = getenv('AGAVI_ENVIRONMENT')) && TRUE !== $testingEnabled)
         {
+            var_dump($env);die();
             $this->config[self::CFG_ENVIRONMENT] = $env;
         }
     }

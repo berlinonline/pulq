@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "4651794f872739b8c7ec74b9a09a7b0b",
+    "hash": "9fb7dd0841f2ab573335cab177342a22",
     "packages": [
         {
             "name": "PhpDebugToolbar/php-debug-toolbar",
@@ -30,6 +30,70 @@
                 "reference": "tags/1.0.7/"
             },
             "type": "library"
+        },
+        {
+            "name": "graste/environaut",
+            "version": "v0.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/graste/environaut.git",
+                "reference": "40651ea9742be931d6eb6d79768b3189e16adcb7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/graste/environaut/zipball/40651ea9742be931d6eb6d79768b3189e16adcb7",
+                "reference": "40651ea9742be931d6eb6d79768b3189e16adcb7",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.2",
+                "sensiolabs/security-checker": "~1.2",
+                "symfony/console": "~2.2"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~3.7.22",
+                "sami/sami": "~1.1",
+                "squizlabs/php_codesniffer": "~1.4.5",
+                "symfony/finder": "~2.1"
+            },
+            "suggest": {
+                "lib-libxml": "The libXML library and PHP extension is necessary for XML configuration files."
+            },
+            "bin": [
+                "bin/environaut",
+                "bin/environaut.phar"
+            ],
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Environaut\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "CC-BY-SA-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Steffen Gransow",
+                    "email": "graste@mivesto.de",
+                    "homepage": "http://mivesto.de",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Define, configure and protect your application environment and its requirements.",
+            "homepage": "https://github.com/graste/environaut",
+            "keywords": [
+                "check",
+                "cli",
+                "configuration",
+                "configuration management",
+                "environment",
+                "php",
+                "requirements",
+                "web"
+            ],
+            "time": "2013-09-16 13:49:50"
         },
         {
             "name": "ruflin/elastica",
@@ -88,6 +152,103 @@
             "time": "2013-08-25 08:45:21"
         },
         {
+            "name": "sensiolabs/security-checker",
+            "version": "v1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sensiolabs/security-checker.git",
+                "reference": "edb9441bc9afcd7083a644b4315582e33a80c4e3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sensiolabs/security-checker/zipball/edb9441bc9afcd7083a644b4315582e33a80c4e3",
+                "reference": "edb9441bc9afcd7083a644b4315582e33a80c4e3",
+                "shasum": ""
+            },
+            "require": {
+                "symfony/console": "~2.0"
+            },
+            "bin": [
+                "security-checker"
+            ],
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.2-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "SensioLabs\\Security": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien.potencier@gmail.com"
+                }
+            ],
+            "description": "A security checker for your composer.lock",
+            "time": "2013-04-25 13:09:50"
+        },
+        {
+            "name": "symfony/console",
+            "version": "v2.3.4",
+            "target-dir": "Symfony/Component/Console",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/Console.git",
+                "reference": "db78f8ff7fc9e28d25ff9a0bf6ddf9f0e35fbbe3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/Console/zipball/db78f8ff7fc9e28d25ff9a0bf6ddf9f0e35fbbe3",
+                "reference": "db78f8ff7fc9e28d25ff9a0bf6ddf9f0e35fbbe3",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "require-dev": {
+                "symfony/event-dispatcher": "~2.1"
+            },
+            "suggest": {
+                "symfony/event-dispatcher": ""
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.3-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Symfony\\Component\\Console\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "http://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony Console Component",
+            "homepage": "http://symfony.com",
+            "time": "2013-08-17 16:34:49"
+        },
+        {
             "name": "twig/twig",
             "version": "v1.13.2",
             "source": {
@@ -135,6 +296,47 @@
                 "templating"
             ],
             "time": "2013-08-03 15:35:31"
+        },
+        {
+            "name": "zendframework/zend-permissions-acl",
+            "version": "2.2.4",
+            "target-dir": "Zend/Permissions/Acl",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zendframework/Component_ZendPermissionsAcl.git",
+                "reference": "6978e3eb9e726b60777fd9a329bc9ab5aa064931"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zendframework/Component_ZendPermissionsAcl/zipball/6978e3eb9e726b60777fd9a329bc9ab5aa064931",
+                "reference": "6978e3eb9e726b60777fd9a329bc9ab5aa064931",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.2-dev",
+                    "dev-develop": "2.3-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Zend\\Permissions\\Acl\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "description": "provides a lightweight and flexible access control list (ACL) implementation for privileges management",
+            "keywords": [
+                "acl",
+                "zf2"
+            ],
+            "time": "2013-06-12 19:45:49"
         }
     ],
     "packages-dev": [

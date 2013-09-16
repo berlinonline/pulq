@@ -1,5 +1,6 @@
 PROJECT_ROOT=`pwd`
 
+
 help:
 	@exit 0
 
@@ -24,8 +25,11 @@ config:
 	@php bin/include-configs.php
 	@make cc
 
+environment:
+	@vendor/graste/environaut/bin/environaut.phar check
+
 install: install-vendor node-deps cc
-	@if [ ! -f etc/local/local.config.sh ]; then bin/configure-env --init; fi
+	@make environment
 	@make create-project-skeleton
 	@make link-project-modules
 	@make create-project-config
@@ -106,7 +110,7 @@ rebuild-index:
 	@bin/cli rebuild_indices -db Default.Read -action create
 
 
-.PHONY: help module cc config install update
+.PHONY: help module cc config install update environment
 
-# vim: ts=4:sw=4:noexpandtab!:
+# vim: set ts=4 sw=4 noexpandtab:
 #
