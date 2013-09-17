@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ae:configurations xmlns="http://agavi.org/agavi/config/parts/autoload/1.0" xmlns:ae="http://agavi.org/agavi/config/global/envelope/1.0" parent="%core.system_config_dir%/autoload.xml">
+    <ae:configuration>
+        <autoloads>
+            <!-- Agavi -->
+            <autoload name="UtilBaseAction">%core.module_dir%/Util/lib/agavi/action/UtilBaseAction.class.php</autoload>
+            <autoload name="UtilBaseView">%core.module_dir%/Util/lib/agavi/view/UtilBaseView.class.php</autoload>
+            <!-- /Agavi -->
+        </autoloads>
+    </ae:configuration>
+</ae:configurations>

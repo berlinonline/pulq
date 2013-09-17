@@ -35,7 +35,7 @@ class Default_Index_IndexSuccessView extends DefaultBaseView
     public function executeHtml(AgaviRequestDataHolder $parameters) // @codingStandardsIgnoreEnd
     {
         $this->setupHtml($parameters);
-        $this->setAttribute('_title', $this->translationManager->_('Welcome to the Pulq web frontend.'));
+        $this->setAttribute('environment', AgaviConfig::get('core.environment'));
     }
     
     /**

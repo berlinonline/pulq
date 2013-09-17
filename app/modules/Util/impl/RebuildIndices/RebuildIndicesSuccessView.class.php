@@ -1,6 +1,6 @@
 <?php
 
-class Default_RebuildIndices_RebuildIndicesSuccessView extends DefaultBaseView
+class Util_RebuildIndices_RebuildIndicesSuccessView extends DefaultBaseView
 {
     
 

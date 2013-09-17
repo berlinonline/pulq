@@ -1,13 +1,13 @@
 <div class="container-fluid wrapper">
 	<div class="row-fluid">
         <div class="span12">
-            <h1>Willkommen im Pulq Framework</h1>
+            <h1>Pulq Framework</h1>
             <hr />
-            <ul class="dl-horizontal">
-                <li><b class="label label-info">Datum</b>  {{ date()|date('d.m.Y') }}</li>
-                <li><b class="label label-info">Zeit</b>  {{ date()|date('H:i') }}</li>
-                <li><b class="label label-info">Status</b>  Bereit</li>
-            </ul>
+            <dl>
+                <dt>Datum</dt><dd>{{ date()|date('d.m.Y') }}</dd>
+                <dt>Zeit</dt><dd>{{ date()|date('H:i') }}</dd>
+                <dt>Environment</dt><dd>{{ environment }}</dd>
+            </dl>
             <hr />
         </div>
 	</div>

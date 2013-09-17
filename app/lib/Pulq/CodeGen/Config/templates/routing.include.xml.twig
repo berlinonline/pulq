@@ -1,0 +1,17 @@
+{% extends "base/routing.xml.twig" %}
+{% from "base/xi.twig" import include %}
+
+{% block web %}
+    {% for module in modules %}
+        {{ include("../../modules/" ~ module ~ "/config/routing.xml",
+        "/ae:configurations/ae:configuration[@context='web']" | raw) }}
+    {% endfor %}
+{% endblock %}
+
+{% block console %}
+    {% for module in modules %}
+        {{ include("../../modules/" ~ module ~ "/config/routing.xml",
+        "/ae:configurations/ae:configuration[@context='console']" | raw) }}
+    {% endfor %}
+{% endblock %}
+

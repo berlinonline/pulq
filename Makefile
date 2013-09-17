@@ -22,7 +22,7 @@ cc:
 
 config:
 	-@rm app/config/includes/* > /dev/null
-	@php bin/include-configs.php
+	@bin/cli setup.buildconfigs
 	@make cc
 
 environment:

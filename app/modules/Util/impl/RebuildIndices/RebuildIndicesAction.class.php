@@ -2,7 +2,7 @@
 
 use Pulq\Agavi\Database\ElasticSearch;
 
-class Default_RebuildIndicesAction extends DefaultBaseAction
+class Util_RebuildIndicesAction extends UtilBaseAction
 {
     /**
      * Handles the Console request method.

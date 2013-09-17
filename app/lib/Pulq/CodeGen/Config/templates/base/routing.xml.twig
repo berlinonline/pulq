@@ -1,0 +1,12 @@
+{% extends "agavi_configuration.xml.twig" %}
+
+{% block configurations %}
+    <ae:configuration context="web">
+        {% block web %}
+        {% endblock %}
+    </ae:configuration>
+    <ae:configuration context="console">
+        {% block console %}
+        {% endblock %}
+    </ae:configuration>
+{% endblock %}

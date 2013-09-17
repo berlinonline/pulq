@@ -3,11 +3,15 @@
     xmlns:ae="http://agavi.org/agavi/config/global/envelope/1.0" 
     xmlns="http://agavi.org/agavi/config/parts/routing/1.0">
     <ae:configuration context="web">
-        <routes>
-        </routes>
     </ae:configuration>
 
     <ae:configuration context="console">
+        <routes>
+            <route name="setup" pattern="setup" method="Console" module="Util">
+                <route name=".rebuild_indices" pattern=".rebuild_indices" action="RebuildIndices"/>
+                <route name=".build_config" pattern=".build_config" action="BuildConfig"/>
+            </route>
+        </routes>
     </ae:configuration>
 </ae:configurations>
 

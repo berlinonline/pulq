@@ -80,6 +80,10 @@ class Default_Error404Action extends DefaultBaseAction
         return 'Success';
     }
 
+    public function isSecure()
+    {
+        return false;
+    }
 }
 
 ?>

@@ -15,7 +15,9 @@
 
         <filter_chain class="AgaviFilterChain" />
 
-        <logger_manager class="AgaviLoggerManager" />
+        <logger_manager class="Pulq\Agavi\Logging\LoggerManager" >
+            <ae:parameter name="default_message_class">AgaviLoggerMessage</ae:parameter>
+        </logger_manager>
 
         <request class="AgaviWebRequest">
             <!-- <ae:parameter name="method_names">

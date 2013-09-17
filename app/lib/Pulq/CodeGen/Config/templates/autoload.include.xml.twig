@@ -1,0 +1,8 @@
+{% extends "base/agavi_configuration.xml.twig" %}
+{% from "base/xi.twig" import include %}
+
+{% block configurations %}
+    {% for module in modules %}
+        {{ include("../../modules/" ~ module ~ "/config/autoload.xml", "/ae:configurations/*") }}
+    {% endfor %}
+{% endblock %}
