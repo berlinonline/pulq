@@ -76,6 +76,11 @@ class ModuleConfigBuilder {
         $path = \AgaviConfig::get('core.config_dir') . DIRECTORY_SEPARATOR .
             'includes' . DIRECTORY_SEPARATOR .
             $filename;
-        file_put_contents($path, $content);
+        $result = file_put_contents($path, $content);
+
+        $result = false;
+        if ($result === false) {
+            throw new \Exception("$filename could not be written");
+        }
     }
 }

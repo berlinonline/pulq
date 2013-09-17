@@ -8,7 +8,12 @@ class Util_BuildConfigAction extends UtilBaseAction
     {
         $builder = new ModuleConfigBuilder();
 
-        $builder->build();
+        try {
+            $builder->build();
+        } catch (Exception $e) {
+            $this->logError($e->getMessage());
+            throw $e;
+        }
 
         return 'Success';
     }
