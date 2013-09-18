@@ -26,9 +26,10 @@
         "twig/twig": "1.*",
         "ruflin/elastica": "0.90.*",
         "PhpDebugToolbar/php-debug-toolbar": "1.6.*",
-        "graste/environaut": "0.*",
+        "graste/environaut": "~0.3",
         "psr/log": "1.0.0",
-        "monolog/monolog": "1.5"
+        "monolog/monolog": "1.5",
+        "symfony/console": "~2.2"
     },
 
     "repositories": [

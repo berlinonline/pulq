@@ -2,23 +2,21 @@
 
 namespace Pulq\CodeGen\Config;
 
-class ModuleConfigBuilder {
+use Pulq\CodeGen\TwigBuilder;
+
+class ModuleConfigBuilder extends TwigBuilder
+{
 
     protected $module_dir;
     protected $modules;
+    protected $template_dir;
 
     public function __construct()
     {
-        $template_dir = dirname(__FILE__).DIRECTORY_SEPARATOR.'templates';
-        $loader = new \Twig_Loader_Filesystem(array(
-            $template_dir,
-            $template_dir . DIRECTORY_SEPARATOR . 'base'
-        ));
-        $this->twig = new \Twig_Environment($loader, array(
-            'cache' => \AgaviConfig::get('core.app_dir').'/cache/twig',
-        ));
+        $this->template_dir = dirname(__FILE__).DIRECTORY_SEPARATOR.'templates';
         $this->module_dir = \AgaviConfig::get('core.module_dir');
         $this->modules = $this->getModules();
+        parent::__construct();
     }
 
     public function build()
@@ -39,18 +37,17 @@ class ModuleConfigBuilder {
             }
         }
 
-        $template = $this->twig->loadTemplate($template_file);
-        $routing = $template->render(array(
+        $content = $this->renderTemplate($template_file, array(
             'modules' => $modules
         ));
 
-        $this->writeIncludeConfig($filename, $routing);
+        $this->writeIncludeConfig($filename, $content);
     }
 
     protected function getModuleConfigFilePath($module, $filename) {
         $path = $this->module_dir . DIRECTORY_SEPARATOR .
             $module . DIRECTORY_SEPARATOR .
-            'config' . DIRECTORY_SEPARATOR . 
+            'config' . DIRECTORY_SEPARATOR .
             $filename;
 
         if (is_file($path)) {
@@ -78,9 +75,16 @@ class ModuleConfigBuilder {
             $filename;
         $result = file_put_contents($path, $content);
 
-        $result = false;
         if ($result === false) {
             throw new \Exception("$filename could not be written");
         }
+    }
+
+    protected function getTemplateDirs()
+    {
+        return array(
+            $this->template_dir,
+            $this->template_dir . DIRECTORY_SEPARATOR . 'base'
+        );
     }
 }

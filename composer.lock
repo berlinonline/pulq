@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "e5ec4b31c3e203d7880339c72bc35d92",
+    "hash": "e489415cd795d9fec57df04e4e1e5753",
     "packages": [
         {
             "name": "PhpDebugToolbar/php-debug-toolbar",
