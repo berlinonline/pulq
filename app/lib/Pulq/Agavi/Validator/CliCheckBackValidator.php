@@ -7,6 +7,35 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 
 class CliCheckBackValidator extends \AgaviValidator
 {
+    protected $passthrough_parameters;
+
+	public function initialize(\AgaviContext $context, array $parameters = array(), array $arguments = array(), array $errors = array())
+    {
+        parent::initialize($context, $parameters, $arguments, $errors);
+
+        $this->passthrough_parameters = $this->getParameters();
+
+        $checkback_params = $this->getParameter('checkback', array());
+
+        if (isset($checkback_params['question'])) {
+            $this->setParameter('question', $checkback_params['question']);
+        } else {
+            throw new \AgaviValidatorException('The CliCheckBackValidator requires a "question" parameter.');
+        }
+
+        if (isset($checkback_params['validator'])) {
+            $this->setParameter('validator', $checkback_params['validator']);
+        } else {
+            throw new \AgaviValidatorException('The CliCheckBackValidator requires a "validator" parameter.');
+        }
+
+        if (isset($checkback_params['attempts'])) {
+            $this->setParameter('attempts', $checkback_params['attempts']);
+        } else {
+            $this->setParameter('attempts', 1);
+        }
+    }
+
     public function validate()
     {
         $argument = $this->getArgument();
@@ -20,7 +49,7 @@ class CliCheckBackValidator extends \AgaviValidator
         $validator->setParentContainer($this->getParentContainer());
         $validator->initialize(
             $this->getContext(),
-            $this->getParameters(),
+            $this->passthrough_parameters,
             $this->getArguments(),
             $this->errorMessages
         );
@@ -67,10 +96,11 @@ class CliCheckBackValidator extends \AgaviValidator
         $dialog->setInputStream($stdin);
 
         while($i < $attempts) {
-            $value = $dialog->ask($output, "O rly??", "Ya rly!!");
+            $value = $dialog->ask($output, $this->getParameter('question'), "");
             if ($this->checkValue($value)) {
                 break;
             }
+            $i++;
         }
 
         return $value;

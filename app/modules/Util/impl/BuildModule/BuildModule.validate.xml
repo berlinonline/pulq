@@ -8,10 +8,13 @@
                 <argument>module</argument>
                 <error>Only word characters are allowed in module names.</error>
                 <ae:parameters>
-                    <ae:parameter name="attempts">2</ae:parameter>
-                    <ae:parameter name="validator">\AgaviRegexValidator</ae:parameter>
+                    <ae:parameter name="checkback">
+                        <ae:parameter name="attempts">2</ae:parameter>
+                        <ae:parameter name="validator">\AgaviRegexValidator</ae:parameter>
+                        <ae:parameter name="question">Please enter the module name</ae:parameter>
+                    </ae:parameter>
 
-                    <ae:parameter name="pattern">/\w+/</ae:parameter>
+                    <ae:parameter name="pattern">/^\w+$/</ae:parameter>
                     <ae:parameter name="match">true</ae:parameter>
                 </ae:parameters>
             </validator>
