@@ -1,15 +1,16 @@
 <?php
 
-use Pulq\CodeGen\Agavi\ModuleBuilder;
+use Pulq\CodeGen\Agavi\ActionBuilder;
 
 
-class Util_BuildModuleAction extends UtilBaseAction
+class Util_BuildActionAction extends UtilBaseAction
 {
     public function execute(AgaviRequestDataHolder $rd)
     {
         $module_name = $rd->getParameter('module');
+        $action_name = $rd->getParameter('action');
 
-        $builder = new ModuleBuilder($module_name);
+        $builder = new ActionBuilder($module_name, $action_name);
 
         try {
             $builder->build();

@@ -11,6 +11,8 @@
                 <route name=".rebuild_indices" pattern=".rebuild_indices" action="RebuildIndices"/>
                 <route name=".build_config" pattern=".build_config" action="BuildConfig"/>
                 <route name=".build_module" pattern=".build_module" action="BuildModule"/>
+                <route name=".build_action" pattern=".build_action" action="BuildAction"/>
+                <route name=".link_modules" pattern=".link_modules" action="LinkModules"/>
             </route>
         </routes>
     </ae:configuration>

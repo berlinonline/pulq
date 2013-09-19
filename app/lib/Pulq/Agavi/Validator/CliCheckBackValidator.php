@@ -96,12 +96,14 @@ class CliCheckBackValidator extends \AgaviValidator
         $dialog->setInputStream($stdin);
 
         while($i < $attempts) {
-            $value = $dialog->ask($output, $this->getParameter('question'), "");
+            $value = $dialog->ask($output, $this->getParameter('question') . ' ', "");
             if ($this->checkValue($value)) {
                 break;
             }
             $i++;
         }
+
+        fclose($stdin);
 
         return $value;
     }

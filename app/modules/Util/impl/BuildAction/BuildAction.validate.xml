@@ -10,8 +10,19 @@
                 <ae:parameters>
                     <ae:parameter name="checkback">
                         <ae:parameter name="attempts">2</ae:parameter>
+                        <ae:parameter name="validator">Pulq\Agavi\Validator\ProjectModuleNameValidator</ae:parameter>
+                        <ae:parameter name="question">Please enter the name of an existing module:</ae:parameter>
+                    </ae:parameter>
+                </ae:parameters>
+            </validator>
+            <validator class="Pulq\Agavi\Validator\CliCheckBackValidator" required="false">
+                <argument>action</argument>
+                <error>Action names must consist only of word characters and must start with a capital letter.</error>
+                <ae:parameters>
+                    <ae:parameter name="checkback">
+                        <ae:parameter name="attempts">2</ae:parameter>
                         <ae:parameter name="validator">\AgaviRegexValidator</ae:parameter>
-                        <ae:parameter name="question">Please enter the module name</ae:parameter>
+                        <ae:parameter name="question">Please enter the action name:</ae:parameter>
                     </ae:parameter>
 
                     <ae:parameter name="pattern">/^[A-Z]\w*$/</ae:parameter>

@@ -2,11 +2,11 @@
 
 use Symfony\Component\Console\Output\ConsoleOutput;
 
-class Util_BuildConfig_BuildConfigSuccessView extends UtilBaseView 
+class Util_LinkModules_LinkModulesSuccessView extends UtilBaseView 
 {
     public function executeText(AgaviRequestDataHolder $parameters) // @codingStandardsIgnoreEnd
     {
         $output = new ConsoleOutput();
-        $output->writeln('<info>Sucessfully linked module configs</info>');
+        $output->writeln('<info>Sucessfully linked modules</info>');
     }
 }
