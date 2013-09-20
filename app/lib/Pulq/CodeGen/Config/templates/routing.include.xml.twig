@@ -3,15 +3,26 @@
 
 {% block web %}
     {% for module in modules %}
-        {{ include("../../modules/" ~ module ~ "/config/routing.xml",
-        "/ae:configurations/ae:configuration[@context='web']" | raw) }}
+        <xi:include
+            href="../../modules/{{module}}/config/routing.xml"
+            xpointer="
+                xmlns(ae=http://agavi.org/agavi/config/global/envelope/1.0)
+                xmlns(r=http://agavi.org/agavi/config/parts/routing/1.0)
+                xpointer(//ae:configuration[@context='web']/r:route)"
+        />
+
     {% endfor %}
 {% endblock %}
 
 {% block console %}
     {% for module in modules %}
-        {{ include("../../modules/" ~ module ~ "/config/routing.xml",
-        "/ae:configurations/ae:configuration[@context='console']" | raw) }}
+        <xi:include
+            href="../../modules/{{module}}/config/routing.xml"
+            xpointer="
+                xmlns(ae=http://agavi.org/agavi/config/global/envelope/1.0)
+                xmlns(r=http://agavi.org/agavi/config/parts/routing/1.0)
+                xpointer(//ae:configuration[@context='console']/r:route)"
+        />
     {% endfor %}
 {% endblock %}
 
