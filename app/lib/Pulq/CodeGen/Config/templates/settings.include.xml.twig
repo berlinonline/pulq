@@ -1,9 +1,14 @@
 {% extends "base/agavi_configuration.xml.twig" %}
-{% from "base/xi.twig" import include %}
 
 {% block configurations %}
     {% for module in modules %}
-        {{ include("../../modules/" ~ module ~ "/config/settings.xml", "/ae:configurations/*") }}
+        <xi:include
+            href="../../modules/{{module}}/config/settings.xml"
+            xpointer="
+                xmlns(ae=http://agavi.org/agavi/config/global/envelope/1.0)
+                xpointer(/ae:configurations/*)
+            "
+        />
     {% endfor %}
 {% endblock %}
 

@@ -41,12 +41,6 @@ tail-logs:
 	@tail -f app/log/*.log
 
 
-deploy-resources:
-	@if [ ! -d pub/static/deploy ]; then mkdir pub/static/deploy; fi
-	@rm -rf pub/static/deploy/*
-	@php bin/deploy-resources.php
-
-
 install-composer:
 	@if [ -d vendor/agavi/agavi/ ]; then svn revert -R vendor/agavi/agavi/; fi
 	@if [ ! -f bin/composer.phar ]; then curl -s http://getcomposer.org/installer | php -d allow_url_fopen=1 -d date.timezone="Europe/Berlin" -- --install-dir=./bin; fi
@@ -71,40 +65,6 @@ update-vendor: install-vendor
 node-deps:
 	@npm update
 
-link-project-modules:
-	@bin/link-project-modules
-	@make config
-
-link-project-config:
-	@bin/link-project-config
-	@make config
-
-link-project-pub:
-	@bin/link-project-pub
-	@make config
-
-create-project-skeleton:
-	@bin/create-project-skeleton
-	@make create-project-config
-
-create-project-config:
-	@bin/create-project-config
-	@make link-project-config
-	@make config
-
-module:
-	@bin/agavi pulq-module-wizard
-	@make config
-
-action:
-	@bin/agavi pulq-action-wizard
-	@make config
-
-remove-module:
-	@bin/agavi module-list
-	@read -p "Enter module to remove:" module; unlink app/modules/$$module; rm -rf ../project/modules/$$module
-	@make link-project-modules
-	@make config
 
 rebuild-index:
 	@bin/cli rebuild_indices -db Default.Read -action create

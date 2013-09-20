@@ -37,8 +37,6 @@ class ModuleConfigBuilder extends TwigBuilder
             }
         }
 
-        $modules = array('Util', 'Foo');
-
         $content = $this->renderTemplate($template_file, array(
             'modules' => $modules
         ));
