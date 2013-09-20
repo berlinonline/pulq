@@ -23,11 +23,13 @@ class Util_LinkModulesAction extends UtilBaseAction
             if ($filename === ".." || $filename === ".") {
                 continue;
             }
-            $source_path = $project_module_dir.'/'.$filename;
+            $source_path = realpath($project_module_dir.'/'.$filename);
             $target_path = $module_dir.'/'.$filename;
             if (is_dir($source_path)) {
                 symlink($source_path, $target_path);
+                echo "linked $source_path to $target_path\n";
             }
+
         }
 
         return 'Success';
