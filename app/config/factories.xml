@@ -11,7 +11,7 @@
 
         <execution_container class="AgaviExecutionContainer" />
 
-        <execution_filter class="Pulq\Agavi\Filter\ExecutionFilter" />
+        <execution_filter class="AgaviExecutionFilter" />
 
         <filter_chain class="AgaviFilterChain" />
 
@@ -45,10 +45,6 @@
         <translation_manager class="AgaviTranslationManager" />
 
         <validation_manager class="AgaviValidationManager" />
-    </ae:configuration>
-
-    <ae:configuration context="web" environment="development.*">
-        <execution_filter class="Pulq\Agavi\Filter\DebugExecutionFilter" />
     </ae:configuration>
 
     <ae:configuration context="console">

@@ -5,21 +5,6 @@
     xmlns="http://agavi.org/agavi/config/parts/filters/1.0">
     <ae:configuration context="web">
         <filters>
-            <filter name="ResourceFilter" class="Pulq\Agavi\Filter\ResourceFilter">
-                <ae:parameter name="output_types">
-                    <ae:parameter>html</ae:parameter>
-                </ae:parameter>
-                <ae:parameter name="base_dir">%core.app_dir%/../pub/static/</ae:parameter>
-                <!-- 
-                    defines whether the deploy or the cache directory is used. 
-                    use true for development and false for production. 
-                    make sure to deploy and commit your latest scripts: `make deploy-resources`
-                -->
-                <ae:parameter name="use_caching">true</ae:parameter>
-                <ae:parameter name="combine_scripts">off</ae:parameter>
-                <ae:parameter name="compress_scripts">off</ae:parameter>
-            </filter>
-
             <filter name="FormPopulationFilter" class="AgaviFormPopulationFilter">
                 <ae:parameter name="methods">
                     <ae:parameter>write</ae:parameter>
@@ -48,17 +33,6 @@
     </ae:configuration>
 
     <ae:configuration context="web" environment="stage">
-        <filters>
-            <filter name="ResourceFilter" class="Pulq\Agavi\Filter\ResourceFilter">
-                <ae:parameter name="output_types">
-                    <ae:parameter>html</ae:parameter>
-                </ae:parameter>
-                <ae:parameter name="base_dir">%core.app_dir%/../pub/static/</ae:parameter>
-                <ae:parameter name="use_caching">false</ae:parameter>
-                <ae:parameter name="combine_scripts">on</ae:parameter>
-                <ae:parameter name="compress_scripts">on</ae:parameter>
-            </filter>
-        </filters>
     </ae:configuration>
 
     <xi:include href="%core.app_dir%/project/config/global_filters.xml"
