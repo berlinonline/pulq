@@ -76,4 +76,8 @@
             </ae:parameter>
         </request>
     </ae:configuration>
+
+    <ae:configuration context="console" environment="emergency">
+        <routing class="Pulq\Agavi\Routing\EmergencyConsoleRouting" />
+    </ae:configuration>
 </ae:configurations>
