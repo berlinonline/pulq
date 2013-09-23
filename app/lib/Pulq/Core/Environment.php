@@ -2,24 +2,8 @@
 
 namespace Pulq\Core;
 
-/**
- * The Environment provides essential settings for bootstrapping this application,
- * such as the environment to use and depending on that load the correct application settings.
- * The settings provided by this class are always in a local (environment) dedicated and therefore
- * the bin/configure-env script must be run once to set things up before a fresh application can be run.
- *
- * @copyright       BerlinOnline Stadtportal GmbH & Co. KG
- * @author          Thorsten Schmitt-Rink <tschmittrink@gmail.com>
- */
 class Environment
 {
-    // ---------------------------------- <CONSTANTS> --------------------------------------------
-
-    /**
-     * The name of 'database' environment setting.
-     */
-    const CFG_DB = 'database';
-
     /**
      * The name of 'php' environment setting, a path to a php executable binary.
      */
@@ -34,16 +18,6 @@ class Environment
      * The name of 'environment' config setting.
      */
     const CFG_ENVIRONMENT = 'environment';
-
-    /**
-     * The name of our database-host setting.
-     */
-    const CFG_DB_HOST = 'host';
-
-    /**
-     * The name of our database-port setting.
-     */
-    const CFG_DB_PORT = 'port';
 
     /**
      * The name of our base-href setting.
@@ -62,43 +36,33 @@ class Environment
      */
     const CONFIG_FILE_PREFIX = 'local.';
 
-    // ---------------------------------- </CONSTANTS> -------------------------------------------
-
-
-    // ---------------------------------- <MEMBERS> ----------------------------------------------
-
     /**
      * Holds an instance of this class.
      *
      * @var         Environment
      */
-    private static $instance;
+    protected static $instance;
 
     /**
      * Holds the data from our local config file.
      *
      * @var         array
      */
-    private $config;
+    protected $config;
 
     /**
      * Boolean flag that indicates whether we are in testing mode or not.
      *
      * @var         boolean
      */
-    private $testingEnabled;
-
-    // ---------------------------------- </MEMBERS> ---------------------------------------------
-
-
-    // ---------------------------------- <CONSTRUCTOR> ------------------------------------------
+    protected $testingEnabled;
 
     /**
      * Create a new Environment instance.
      *
      * @param       boolean $testingEnabled If testing is enabled
      */
-    private function __construct($testingEnabled = FALSE)
+    protected function __construct($testingEnabled = FALSE)
     {
 
         $baseDir = dirname(dirname(dirname(dirname(dirname(__FILE__)))));
@@ -108,7 +72,7 @@ class Environment
             'etc' . DIRECTORY_SEPARATOR .
             'local' . DIRECTORY_SEPARATOR;
 
-        $configFilepath = $localConfigDir . self::CONFIG_FILE_PREFIX . self::CONFIG_FILE_NAME;
+        $configFilepath = $localConfigDir . static::CONFIG_FILE_PREFIX . static::CONFIG_FILE_NAME;
 
         $local_config = include($configFilepath);
         $this->config = $local_config['config'];
@@ -116,15 +80,9 @@ class Environment
         // No override allowed for testing environments.
         if (($env = getenv('AGAVI_ENVIRONMENT')) && TRUE !== $testingEnabled)
         {
-            var_dump($env);die();
-            $this->config[self::CFG_ENVIRONMENT] = $env;
+            $this->config[static::CFG_ENVIRONMENT] = $env;
         }
     }
-
-    // ---------------------------------- </CONSTRUCTOR> -----------------------------------------
-
-
-    // ---------------------------------- <PUBLIC METHODS> ---------------------------------------
 
     /**
      * Initialize our config instance, thereby loading our evironment settings.
@@ -135,12 +93,12 @@ class Environment
      */
     public static function load($testingEnabled = FALSE)
     {
-        if (NULL === self::$instance)
+        if (NULL === static::$instance)
         {
-            self::$instance = new Environment($testingEnabled);
+            static::$instance = new Environment($testingEnabled);
         }
 
-        return self::$instance;
+        return static::$instance;
     }
 
     /**
@@ -150,7 +108,7 @@ class Environment
      */
     public static function toEnvString()
     {
-        return self::getEnvironment();
+        return static::getEnvironment();
     }
 
     /**
@@ -160,7 +118,7 @@ class Environment
      */
     public static function getEnvironment()
     {
-        return self::$instance->config[self::CFG_ENVIRONMENT];
+        return static::$instance->config[static::CFG_ENVIRONMENT];
     }
 
     /**
@@ -170,41 +128,7 @@ class Environment
      */
     public static function getPhpPath()
     {
-        return self::$instance->config[self::CFG_PHP];
-    }
-
-    /**
-     * Return an array containing our current env specific database settings.
-     *
-     * @return      array
-     */
-    public static function getDatabaseSettings()
-    {
-        return self::$instance->config[self::CFG_DB];
-    }
-
-    /**
-     * Return our current env's database port setting.
-     *
-     * @return      int
-     */
-    public static function getDatabasePort()
-    {
-        $db_settings = self::getDatabaseSettings();
-
-        return $db_settings[self::CFG_DB_PORT];
-    }
-
-    /**
-     * Return our current env's database host setting.
-     *
-     * @return      string
-     */
-    public static function getDatabaseHost()
-    {
-        $db_settings = self::getDatabaseSettings();
-
-        return $db_settings[self::CFG_DB_HOST];
+        return static::$instance->config[static::CFG_PHP];
     }
 
     /**
@@ -214,7 +138,7 @@ class Environment
      */
     public static function getBaseHref()
     {
-        return self::$instance->config[self::CFG_BASE_HREF];
+        return static::$instance->config[static::CFG_BASE_HREF];
     }
 
     /**
@@ -226,10 +150,8 @@ class Environment
      */
     public static function isTestingEnabled()
     {
-        return self::$instance->testingEnabled;
+        return static::$instance->testingEnabled;
     }
-
-    // ---------------------------------- </PUBLIC METHODS> --------------------------------------
 }
 
 ?>
