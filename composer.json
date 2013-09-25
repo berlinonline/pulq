@@ -29,7 +29,8 @@
         "graste/environaut": "~0.3",
         "psr/log": "1.0.0",
         "monolog/monolog": "1.5",
-        "symfony/console": "~2.2"
+        "symfony/console": "~2.2",
+        "csswizardry/inuit.css": "5.0.1"
     },
 
     "repositories": [
@@ -57,6 +58,18 @@
                 },
                 "autoload": {
                     "classmap": ["lib/agavi/", "PhpDebugToolbar.class.php"]
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "csswizardry/inuit.css",
+                "version": "5.0.1",
+                "source": {
+                    "url": "https://github.com/csswizardry/inuit.css.git",
+                    "type": "git",
+                    "reference": "aa49931763f8ef8b1bf7780108a84fc75a099a66"
                 }
             }
         }

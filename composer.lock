@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "e489415cd795d9fec57df04e4e1e5753",
+    "hash": "49e2443c5c8b45a44fdc74f274365529",
     "packages": [
         {
             "name": "PhpDebugToolbar/php-debug-toolbar",
@@ -28,6 +28,16 @@
                 "type": "svn",
                 "url": "http://svn.agavi.org/",
                 "reference": "tags/1.0.7/"
+            },
+            "type": "library"
+        },
+        {
+            "name": "csswizardry/inuit.css",
+            "version": "5.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/csswizardry/inuit.css.git",
+                "reference": "aa49931763f8ef8b1bf7780108a84fc75a099a66"
             },
             "type": "library"
         },

@@ -23,7 +23,9 @@ class Util_BuildLinksAction extends UtilBaseAction
         $project_module_dir = AgaviConfig::get('core.app_dir').'/../../project/modules';
         $module_dir = AgaviConfig::get('core.module_dir');
 
-        $this->linkDirContents($project_module_dir, $module_dir);
+        if (is_dir($project_module_dir)) {
+            $this->linkDirContents($project_module_dir, $module_dir);
+        }
     }
 
     protected function linkPub()
@@ -31,7 +33,9 @@ class Util_BuildLinksAction extends UtilBaseAction
         $project_pub_dir = AgaviConfig::get('core.app_dir').'/../../project/pub';
         $pub_dir = AgaviConfig::get('core.app_dir').'/../pub';
 
-        $this->linkDirContents($project_pub_dir, $pub_dir);
+        if (is_dir($project_pub_dir)) {
+            $this->linkDirContents($project_pub_dir, $pub_dir);
+        }
     }
 
     protected function linkDirContents($source, $target)

@@ -60,6 +60,7 @@ class ProjectBuilder extends TwigBuilder
             'pub',
             'pub/static',
             'pub/static/js',
+            'pub/static/js/libs',
             'pub/static/scss',
             'pub/static/bin'
         );
