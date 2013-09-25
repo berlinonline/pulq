@@ -7,5 +7,12 @@
         href="%core.app_dir%/project/config/output_types.xml"
         xpointer="xmlns(ae=http://agavi.org/agavi/config/global/envelope/1.0) xmlns(ot=http://agavi.org/agavi/config/parts/output_types/1.0)
         xpointer(//ae:configurations/*)">
+        <xi:fallback>
+            <ae:configuration context="console">
+                <output_types default="text">
+                    <output_type name="text" />
+                </output_types>
+            </ae:configuration>
+        </xi:fallback>
     </xi:include>
 </ae:configurations>

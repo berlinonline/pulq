@@ -40,6 +40,7 @@
                     xmlns(ae=http://agavi.org/agavi/config/global/envelope/1.0)
                     xmlns(r=http://agavi.org/agavi/config/parts/routing/1.0)
                     xpointer(//ae:configuration[@context='web']/*)">
+                    <xi:fallback />
             </xi:include>
 
             <!-- The last route in case the input URL is just "/". -->
@@ -59,7 +60,16 @@
                     xmlns(ae=http://agavi.org/agavi/config/global/envelope/1.0)
                     xmlns(r=http://agavi.org/agavi/config/parts/routing/1.0)
                     xpointer(//ae:configuration[@context='console']/*)">
-                <xi:fallback />
+                    <xi:fallback>
+                        <xi:include 
+                            href="%core.module_dir%/Util/config/routing.xml"
+                            xpointer="
+                                xmlns(ae=http://agavi.org/agavi/config/global/envelope/1.0)
+                                xmlns(r=http://agavi.org/agavi/config/parts/routing/1.0)
+                                xpointer(//ae:configuration[@context='console']/*)">
+                            <xi:fallback />
+                        </xi:include>
+                    </xi:fallback>
             </xi:include>
         </routes>
     </ae:configuration>

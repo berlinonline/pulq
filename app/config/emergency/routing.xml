@@ -9,14 +9,6 @@
     <ae:configuration environment="emergency" context="console">
         <routes>
             <xi:include 
-                href="%core.module_dir%/Auth/config/routing.xml"
-                xpointer="
-                    xmlns(ae=http://agavi.org/agavi/config/global/envelope/1.0)
-                    xmlns(r=http://agavi.org/agavi/config/parts/routing/1.0)
-                    xpointer(//ae:configuration[@context='console']/*)">
-                <xi:fallback />
-            </xi:include>
-            <xi:include 
                 href="%core.module_dir%/Util/config/routing.xml"
                 xpointer="
                     xmlns(ae=http://agavi.org/agavi/config/global/envelope/1.0)
