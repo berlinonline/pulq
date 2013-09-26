@@ -28,6 +28,11 @@
             -->
             <setting name="use_database">false</setting>
         </settings>
+
+        <settings prefix="minify.">
+            <setting name="js">false</setting>
+            <setting name="css">false</setting>
+        </settings>
     </ae:configuration>
 </ae:configurations>
 

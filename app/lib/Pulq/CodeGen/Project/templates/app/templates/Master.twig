@@ -12,10 +12,18 @@
         <title>{{ _title }}</title>
         <base href="{{ ro.getBaseHref() }}" id="base_href"/>
         <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico" />
-        <script data-main="static/js/main" src="/static/require.js"></script>
+
+        <link rel="stylesheet" href="static/style.css" type="text/css" />
+
+        {% if ac("minify.js", false) %}
+            <script data-main="static/js/main-built" src="/static/require.js"></script>
+        {% else %}
+            <script data-main="static/js/main" src="/static/require.js"></script>
+        {% endif %}
     </head>
     <body>
         {{ inner|raw }}
 
     </body>
 </html>
+
