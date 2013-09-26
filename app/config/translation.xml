@@ -5,48 +5,29 @@
     xmlns:xi="http://www.w3.org/2001/XInclude">
     <ae:configuration>
         <available_locales default_locale="de_DE">
-			<!-- German, Germany -->
+            <!-- German, Germany -->
             <available_locale identifier="de_DE">
                 <ae:parameter name="description">Deutsch</ae:parameter>
             </available_locale>
-			<!-- English, United States -->
+            <!-- English, United States -->
             <available_locale identifier="en_EN">
                 <ae:parameter name="description">English</ae:parameter>
             </available_locale>
         </available_locales>
 
-       <translators default_domain="date_formats">
-           <translator domain="date_formats">
+        <translators default_domain="date_formats">
+            <translator domain="date_formats">
                 <translator domain="datetime">
-                        <date_formatter>
-                            <ae:parameters>
-                                <ae:parameter name="type">datetime</ae:parameter>
-                                <ae:parameter name="format">yyyy-MM-dd HH:mm:ss</ae:parameter>
-                            </ae:parameters>
-                        </date_formatter>
+                    <date_formatter>
+                        <ae:parameters>
+                            <ae:parameter name="type">datetime</ae:parameter>
+                            <ae:parameter name="format">yyyy-MM-dd HH:mm:ss</ae:parameter>
+                        </ae:parameters>
+                    </date_formatter>
                 </translator>
-            </translator>
-       </translators>
-    </ae:configuration>
-
-    <ae:configuration>
-        <translators default_domain="modules.labels">
-            <translator domain="modules">
-                <message_translator class="AgaviSimpleTranslator">
-                
-                     <ae:parameter name="labels">
-                        <ae:parameter name="de">
-                            <ae:parameter name="Organization">Institutionen</ae:parameter>
-                            <ae:parameter name="Person">Personen</ae:parameter>
-                            <ae:parameter name="Category">Kategorien</ae:parameter>
-                        </ae:parameter>
-                    </ae:parameter>
-
-                </message_translator>
             </translator>
         </translators>
     </ae:configuration>
-
 
     <xi:include href="%core.app_dir%/config/includes/translation.xml"
         xpointer="xmlns(ae=http://agavi.org/agavi/config/global/envelope/1.0) xpointer(/ae:configurations/*)">

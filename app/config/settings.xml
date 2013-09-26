@@ -65,22 +65,19 @@
         <settings prefix="curl.">
             <setting name="timeout">2</setting>
         </settings>
-        <settings>
+        <!--<settings>
             <setting name="auth_provider">SimpleAuthProvider</setting>
             <setting name="simple_logins">
                 <ae:parameters>
-                    <ae:parameter name="shrink0r">
-                        <ae:parameter name="pwd">shrink0r</ae:parameter>
+                    <ae:parameter name="pulq">
+                        <ae:parameter name="pwd">pulq</ae:parameter>
                         <ae:parameter name="attributes">
-                            <ae:parameter name="acl_role">pulq-editor</ae:parameter>
-                            <ae:parameter name="login">shrink0r</ae:parameter>
-                            <ae:parameter name="name">General Gaff</ae:parameter>
-                            <ae:parameter name="email">Thorsten.Schmitt-Rink@berlinonline.de</ae:parameter>
+                            <ae:parameter name="acl_role">basic</ae:parameter>
                         </ae:parameter>
                     </ae:parameter>
                 </ae:parameters>
             </setting>
-        </settings>
+        </settings>-->
     </ae:configuration>
 
     <xi:include href="%core.app_dir%/config/includes/settings.xml"
