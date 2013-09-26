@@ -14,9 +14,11 @@ cc:
 tail-logs:
 	@tail -f app/log/*.log
 
-install: install-dependencies skeleton symlinks environment config cc
+install: cc install-dependencies skeleton symlinks environment config js css cc
 
-update: update-dependencies symlinks config cc
+update: cc update-dependencies symlinks config js css cc
+
+static: cc js css
 
 install-composer:
 	@if [ ! -f bin/composer.phar ]; then curl -s http://getcomposer.org/installer | php -d allow_url_fopen=1 -d date.timezone="Europe/Berlin" -- --install-dir=./bin; fi
@@ -54,7 +56,13 @@ module:
 action:
 	@bin/cli util.build_action
 
-.PHONY: help install update skeleton symlinks module action environment cc
+js:
+	@bin/cli util.requirejs
+
+css:
+	@bin/cli util.scss
+
+.PHONY: help install update skeleton symlinks module action environment js css cc
 
 # vim: set ts=4 sw=4 noexpandtab:
 #
