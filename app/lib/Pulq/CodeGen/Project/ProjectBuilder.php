@@ -80,6 +80,7 @@ class ProjectBuilder extends TwigBuilder
             'pub/static/js/libs/JsBehaviourToolkit.js',
             'pub/static/scss/_vars.scss',
             'pub/static/scss/main.scss',
+            'pub/static/scss/_body.scss',
         );
 
         $target_dir = $this->project_dir.'/';
