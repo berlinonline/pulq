@@ -1,5 +1,7 @@
 <?php
 
+use Pulq\Auth\Agavi\View\BaseView;
+
 /**
  * The Auth_Login_LoginSuccessView class handles success data presentation
  * for our various supported output types.
@@ -10,7 +12,7 @@
  * @package         Auth
  * @subpackage      Mvc
  */
-class Auth_Login_LoginSuccessView extends AuthBaseView
+class Auth_Login_LoginSuccessView extends BaseView
 {
     public function executeBinary(AgaviRequestDataHolder $parameters) // @codingStandardsIgnoreEnd
     {

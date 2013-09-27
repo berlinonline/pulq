@@ -1,9 +1,9 @@
 <?php
 
+use Pulq\Util\Agavi\Action\BaseAction;
 use Pulq\CodeGen\Agavi\ActionBuilder;
 
-
-class Util_BuildActionAction extends UtilBaseAction
+class Util_BuildActionAction extends BaseAction
 {
     public function execute(AgaviRequestDataHolder $rd)
     {

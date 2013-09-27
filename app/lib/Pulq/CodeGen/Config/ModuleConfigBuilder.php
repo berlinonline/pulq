@@ -23,6 +23,7 @@ class ModuleConfigBuilder extends TwigBuilder
     {
         $this->buildFile('routing.xml', 'routing.include.xml.twig');
         $this->buildFile('autoload.xml', 'autoload.include.xml.twig');
+        $this->buildFile('namespaces.xml', 'namespaces.include.xml.twig');
         $this->buildFile('settings.xml', 'settings.include.xml.twig');
         $this->buildFile('translation.xml', 'translation.include.xml.twig');
     }

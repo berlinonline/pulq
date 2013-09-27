@@ -24,3 +24,19 @@ Environment::load(FALSE);
 $_SERVER['AGAVI_ENVIRONMENT'] = Environment::toEnvString();
 Agavi::bootstrap($_SERVER['AGAVI_ENVIRONMENT']);
 AgaviConfig::set('core.default_context', $default_context);
+
+//register module and project namespaces for autoloading
+$cfg = AgaviConfig::get('core.config_dir') . '/namespaces.xml';
+$namespaces = include(AgaviConfigCache::checkConfig($cfg));
+
+#var_dump($namespaces);die();
+
+$loader = new Composer\Autoload\Classloader();
+
+foreach ($namespaces as $namespace => $dir) {
+    $loader->add($namespace, $dir, true);
+}
+
+$loader->register();
+
+#var_dump(new Pulq\Util\Foo());die();

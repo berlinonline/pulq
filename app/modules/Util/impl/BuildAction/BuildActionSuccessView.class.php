@@ -1,8 +1,9 @@
 <?php
 
+use Pulq\Util\Agavi\View\BaseView;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
-class Util_BuildAction_BuildActionSuccessView extends UtilBaseView 
+class Util_BuildAction_BuildActionSuccessView extends BaseView 
 {
     public function executeText(AgaviRequestDataHolder $rd)
     {

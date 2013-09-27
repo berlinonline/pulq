@@ -21,6 +21,10 @@
                 <validation>%core.config_dir%/xsd/access_control.xsd</validation>
             </handler>
 
+            <handler pattern="%core.config_dir%/namespaces.xml" class="Pulq\Agavi\ConfigHandler\NamespacesConfigHandler">
+                <validation>%core.config_dir%/xsd/namespaces.xsd</validation>
+            </handler>
+
             <handler pattern="%core.config_dir%/emergency/routing.xml" class="AgaviRoutingConfigHandler">
                 <validation>%core.agavi_dir%/config/xsd/routing.xsd</validation>
                 <transformation>%core.agavi_dir%/config/xsl/routing.xsl</transformation>

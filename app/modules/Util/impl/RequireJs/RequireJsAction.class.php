@@ -1,8 +1,9 @@
 <?php
 
+use Pulq\Util\Agavi\Action\BaseAction;
 use \AgaviConfig;
 
-class Util_RequireJsAction extends UtilBaseAction
+class Util_RequireJsAction extends BaseAction
 {
     public function execute(AgaviRequestDataHolder $rd)
     {

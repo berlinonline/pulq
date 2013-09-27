@@ -1,6 +1,8 @@
 <?php
 
-class Auth_LoginAction extends AuthBaseAction
+use Pulq\Auth\Agavi\Action\BaseAction;
+
+class Auth_LoginAction extends BaseAction
 {
     public function executeRead(AgaviParameterHolder $parameters)
     {

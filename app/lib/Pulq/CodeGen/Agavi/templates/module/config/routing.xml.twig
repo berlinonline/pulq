@@ -3,12 +3,12 @@
     xmlns:ae="http://agavi.org/agavi/config/global/envelope/1.0" 
     xmlns="http://agavi.org/agavi/config/parts/routing/1.0">
     <ae:configuration context="web">
-        <route name="default" pattern="default" module="Default">
+        <route name="{{module_name|lower}}" pattern="{{module_name|lower}}" module="{{module_name}}">
         </route>
     </ae:configuration>
 
     <ae:configuration context="console">
-        <route name="default" pattern="default" module="Default">
+        <route name="{{module_name|lower}}" pattern="{{module_name|lower}}" module="{{module_name}}">
         </route>
     </ae:configuration>
 </ae:configurations>

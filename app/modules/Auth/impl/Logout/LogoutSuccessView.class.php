@@ -1,5 +1,7 @@
 <?php
 
+use Pulq\Auth\Agavi\View\BaseView;
+
 /**
  * The Auth_Logout_LogoutSuccessView class handles success data presentation
  * for the various supported output types we want to support for our Auth_LogoutAction.
@@ -10,7 +12,7 @@
  * @package         Auth
  * @subpackage      Mvc
  */
-class Auth_Logout_LogoutSuccessView extends AuthBaseView
+class Auth_Logout_LogoutSuccessView extends BaseView
 {
     /**
      * Execute any html related presentation logic and sets up our template attributes.

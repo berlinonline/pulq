@@ -1,9 +1,10 @@
 
 <?php
 
+use Pulq\Util\Agavi\View\BaseView;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
-class Util_BuildModule_BuildModuleErrorView extends UtilBaseView 
+class Util_BuildModule_BuildModuleErrorView extends BaseView 
 {
     public function executeText(AgaviRequestDataHolder $rd)
     {

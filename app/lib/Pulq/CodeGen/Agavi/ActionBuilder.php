@@ -67,6 +67,10 @@ class ActionBuilder extends TwigBuilder
                 'action_name' => $this->action_name
             ));
 
+            if ($filename == 'validate.xml') {
+                $filename = '.validate.xml';
+            }
+
             $result = file_put_contents($this->action_dir.'/'.$this->action_name.$filename, $content);
             if ($result === false) {
                 throw new \Exception($target_dir.$filename." could not be written");

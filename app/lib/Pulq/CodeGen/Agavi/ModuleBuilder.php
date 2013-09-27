@@ -56,9 +56,10 @@ class ModuleBuilder extends TwigBuilder
             'config',
             'impl',
             'lib',
-            'lib/agavi',
-            'lib/agavi/action',
-            'lib/agavi/view',
+            'lib/Project',
+            'lib/Project/'.$this->module_name.'/Agavi',
+            'lib/Project/'.$this->module_name.'/Agavi/Action',
+            'lib/Project/'.$this->module_name.'/Agavi/View',
         );
     }
 
@@ -69,6 +70,7 @@ class ModuleBuilder extends TwigBuilder
             'routing.xml',
             'module.xml',
             'autoload.xml',
+            'namespaces.xml',
             'translation.xml'
         );
 
@@ -90,13 +92,13 @@ class ModuleBuilder extends TwigBuilder
     protected function buildBaseView()
     {
         $content = $this->renderTemplate(
-            'module/lib/agavi/view/BaseView.class.php.twig',
+            'module/lib/Project/'.$this->module_name.'/Agavi/View/BaseView.php.twig',
             array (
                 'module_name' => $this->module_name
             )
         );
 
-        $filename = $this->module_dir.'/lib/agavi/view/'.$this->module_name.'BaseView.class.php';
+        $filename = $this->module_dir.'/lib/Project/'.$this->module_name.'/Agavi/View/BaseView.php';
 
         $result = file_put_contents($filename, $content);
 
@@ -108,13 +110,13 @@ class ModuleBuilder extends TwigBuilder
     protected function buildBaseAction()
     {
         $content = $this->renderTemplate(
-            'module/lib/agavi/action/BaseAction.class.php.twig',
+            'module/lib/Project/'.$this->module_name.'/Agavi/Action/BaseAction.php.twig',
             array (
                 'module_name' => $this->module_name
             )
         );
 
-        $filename = $this->module_dir.'/lib/agavi/action/'.$this->module_name.'BaseAction.class.php';
+        $filename = $this->module_dir.'/lib/Project/'.$this->module_name.'/Agavi/Action/BaseAction.php';
 
         $result = file_put_contents($filename, $content);
 

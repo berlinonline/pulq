@@ -1,6 +1,8 @@
 <?php
 
-class {{module_name}}_{{action_name}}Action extends {{module_name}}BaseAction
+use Project\{{module_name}}\Agavi\Action\BaseAction;
+
+class {{module_name}}_{{action_name}}Action extends BaseAction
 {
     public function execute(AgaviRequestDataHolder $rd)
     {

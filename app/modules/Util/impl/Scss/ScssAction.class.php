@@ -1,8 +1,9 @@
 <?php
 
+use Pulq\Util\Agavi\Action\BaseAction;
 use \AgaviConfig;
 
-class Util_ScssAction extends UtilBaseAction
+class Util_ScssAction extends BaseAction
 {
     public function execute(AgaviRequestDataHolder $rd)
     {
