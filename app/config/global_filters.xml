@@ -6,14 +6,23 @@
     <ae:configuration context="web">
         <filters>
             <filter name="FormPopulationFilter" class="AgaviFormPopulationFilter">
+                <!-- run only on POSTs or other HTTP methods as well? -->
                 <ae:parameter name="methods">
                     <ae:parameter>write</ae:parameter>
                 </ae:parameter>
+                <!-- on which output types should this filter run? only (X)HTML probably... -->
                 <ae:parameter name="output_types">
                     <ae:parameter>html</ae:parameter>
                 </ae:parameter>
-                <ae:parameter name="force_output_mode">xhtml</ae:parameter>
-                <!-- for all field error messages. errors that yield no match and those that have no corresponding field are inserted using rules defined in "error_messages". errors that belong to more than one field (e.g. date validator) can be handled using "multi_field_error_messages" -->
+                <!-- always HTML/UTF-8 to make e.g. html entities and empty script tags work -->
+                <ae:parameter name="force_encoding">UTF-8</ae:parameter>
+                <ae:parameter name="force_output_mode">html</ae:parameter>
+                <!-- exceptions should be thrown and will then be logged anyways, thus we don't need logs here -->
+                <ae:parameter name="log_parse_errors">false</ae:parameter>
+                <!-- only fatal errors should be thrown as exception while 
+                     html5 elements like <article> and entities like &nbsp; should be fine -->
+                <ae:parameter name="ignore_parse_errors">LIBXML_ERR_FATAL</ae:parameter>
+                <!-- <ae:parameter name="savexml_options">LIBXML_NOEMPTYTAG</ae:parameter> -->
                 <ae:parameter name="field_error_messages">
                     <!-- ${htmlnsPrefix} is either empty (for HTML) or something like "html:" for XHTML documents with xmlns="..." notation. Always use this, makes your code more bullet proof. XPath needs the namespaces when the document is namespaced -->
                     <ae:parameter name="parent::${htmlnsPrefix}dd">
