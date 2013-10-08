@@ -1,0 +1,66 @@
+<info>{{ac('core.app_name')}} - version {{ac('core.version')}}</info>
+
+Maintenance targets
+
+    help            Prints this short help text
+
+    cc              Clears the application cache
+                    That includes configs, templates and content fragments.
+
+    tail-logs       Prints lates log entries and keeps running to also print
+                    changes of the logs.
+
+Setup targets
+
+    new             Creates a new project skeleton and sets it up initially
+                    <error>This is potentially destructive!</error>
+
+    install         Sets up a new working copy of an existing project
+                    Inludces dependencies, symlinks and static files
+
+    update          Brings the installed dependencies to their most current allowed versions
+                    Also rebuilds all symlinks.
+
+    environment     Runs the wizard for creating the working copy environment
+                    <error>This is potentially destructive!</error>
+
+    static          Generates static JS and CSS files
+
+    js              Generates JS files
+                    Uses Require.JS optimizer. Compression depends on configuration
+
+    css             Generates CSS files
+                    Uses SCSS compiler. Compression style depends on configuration
+
+    symlinks        Rebuilds symlinks to link project files and directories
+                    into the application
+
+    config          Generates config files to link project config into the application
+
+Development targets
+
+    module          Runs the wizard for creating a new application module
+
+    action          Runs the wizard for creating a new action inside a module
+
+
+<info>Common use cases</info>
+
+    You just checked out the project from version control
+        make install
+
+    You added a new dependency or changed the version of an existing one
+        make update
+
+    You want to set up a new project
+        make new
+        make module
+        make action
+
+    A change in some config file or template is not showing any effect
+        make cc
+
+    An action is not found or a route is not matched
+        make symlinks
+        make config
+

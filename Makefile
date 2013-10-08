@@ -2,7 +2,7 @@ PROJECT_ROOT=`pwd`
 
 
 help:
-	@exit 0
+	@bin/cli util.help --emergency
 
 cc:
 	@if [ ! -d app/cache ]; then mkdir -p app/cache; fi
@@ -14,7 +14,9 @@ cc:
 tail-logs:
 	@tail -f app/log/*.log
 
-install: cc install-dependencies skeleton symlinks environment config js css cc
+new: cc install-dependencies skeleton symlinks environment config js css cc
+
+install: cc install-dependencies symlinks environment config js css cc
 
 update: cc update-dependencies symlinks config js css cc
 
@@ -62,7 +64,7 @@ js:
 css:
 	@bin/cli util.scss
 
-.PHONY: help install update skeleton symlinks module action environment js css cc
+.PHONY: help new install update skeleton symlinks module action environment js css cc
 
 # vim: set ts=4 sw=4 noexpandtab:
 #

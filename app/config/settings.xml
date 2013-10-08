@@ -33,6 +33,7 @@
 
         <settings>
             <setting name="app_name">Pulq Framework</setting>
+            <setting name="version">1.0.0</setting>
             <setting name="available">true</setting>
             <setting name="debug">false</setting>
             <setting name="use_database">false</setting>

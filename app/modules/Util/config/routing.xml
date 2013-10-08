@@ -17,6 +17,7 @@
             <route name=".build_links" pattern=".build_links" action="BuildLinks"/>
             <route name=".scss" pattern=".scss" action="Scss"/>
             <route name=".requirejs" pattern=".requirejs" action="RequireJs"/>
+            <route name=".help" pattern=".help" action="Help"/>
         </route>
     </ae:configuration>
 </ae:configurations>
