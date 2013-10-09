@@ -2,15 +2,13 @@
 
 namespace Pulq\Agavi\Database\ElasticSearch;
 
-use Pulq\Agavi\Database\IDatabaseSetup;
+use Pulq\Agavi\Database\PulqDatabase;
 use Elastica;
+use Elastica\Status;
+use \AgaviDatabaseException;
+use \AgaviDatabaseManager;
 
-/**
- * Provide elastic search database connection handle
- *
- * @author tay
- */
-class Database extends \AgaviDatabase
+class Database extends PulqDatabase
 {
     const DEFAULT_SETUP = 'Pulq\Agavi\Database\ElasticSearch\DatabaseSetup';
 
@@ -35,22 +33,22 @@ class Database extends \AgaviDatabase
      */
     protected $resource;
 
+
+    public function initialize(AgaviDatabaseManager $database_manager, array $parameters = array())
+    {
+        parent::initialize($database_manager, $parameters);
+        $this->index_config = $this->getParameter('index');
+    }
+
     protected function connect()
     {
         try
         {
-            $indexConfig = $this->getParameter('index');
-            $indexName = $indexConfig['name'];
+            $indexName = $this->index_config['name'];
 
             if (! $indexName)
             {
-                throw new \AgaviDatabaseException("Missing required index param in current configuration.");
-            }
-
-            $setupDir = $indexConfig['setup_dir'];
-            if (! $setupDir)
-            {
-                throw new \AgaviDatabaseException("Missing required setup_dir param in current configuration.");
+                throw new AgaviDatabaseException("Missing required index param in current configuration.");
             }
 
             $this->connection = new Elastica\Client(
@@ -67,22 +65,6 @@ class Database extends \AgaviDatabase
         {
             throw new \AgaviDatabaseException($e->getMessage(), $e->getCode(), $e);
         }
-
-        try
-        {
-            $this->resource->getStatus();
-        }
-        catch (Elastica\Exception\ResponseException $e)
-        {
-            if (FALSE !== strpos($e->getMessage(), 'IndexMissingException'))
-            {
-                $this->createIndex();
-            }
-            else
-            {
-                throw new \AgaviDatabaseException($e->getMessage(), $e->getCode(), $e);
-            }
-        }
     }
 
     public function shutdown()
@@ -91,31 +73,46 @@ class Database extends \AgaviDatabase
         $this->resource = NULL;
     }
 
-    protected function createIndex()
+    public function setup()
     {
-        $indexName = $this->getParameter('index');
-        if (! $this->getParameter('setup', FALSE))
-        {
-            $this->resource->create();
-            return;
+        $connection = $this->getConnection();
+
+        $alias_name = $this->index_config['name'];
+        $index_name = $alias_name . '_' . date('Y-m-d_H-i-s');
+
+        $existing_indices = array();
+        $status = new Status($connection);
+        foreach ($status->getIndicesWithAlias( $alias_name ) as $aliased_index ) {
+            $existing_indices[] = $aliased_index;
         }
 
-        $setupImplementor = $this->getParameter('setup_class', self::DEFAULT_SETUP);
-        if (! class_exists($setupImplementor))
-        {
-            throw new \AgaviDatabaseException(
-                "Setup class '$setupImplementor' can not be found."
-            );
+        $definition_file = $this->index_config['definition_file'];
+        $definition = json_decode(file_get_contents($definition_file), true);
+
+        $mappings = $this->getMappings();
+        if (count($mappings) > 0) {
+            $definition['mappings'] = $mappings;
         }
 
-        $setup = new $setupImplementor();
-        if (! ($setup instanceof IDatabaseSetup))
-        {
-            throw new \AgaviDatabaseException(
-                "Setup class does not implement IDatabaseSetup: $setupImplementor"
-            );
+        $connection->getIndex($index_name)->create($definition);
+
+        $connection->getIndex($index_name)->addAlias($alias_name, true);
+
+        foreach ($existing_indices as $existing_index) {
+            $existing_index->delete();
         }
 
-        $setup->execute($this);
+    }
+
+    protected function getMappings()
+    {
+        $mappings = array();
+        foreach($this->index_config['types'] as $name => $filepath) {
+            $definition = json_decode(file_get_contents($filepath), true);
+            $mappings[$name] = $definition;
+        }
+
+        return $mappings;
     }
 }
+

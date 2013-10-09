@@ -10,6 +10,7 @@ class Util_BuildLinksAction extends BaseAction
     {
         $this->linkModules();
         $this->linkPub();
+        $this->linkConfig();
 
         return 'Success';
     }
@@ -36,6 +37,16 @@ class Util_BuildLinksAction extends BaseAction
 
         if (is_dir($project_pub_dir)) {
             $this->linkDirContents($project_pub_dir, $pub_dir);
+        }
+    }
+
+    protected function linkConfig()
+    {
+        $project_config_dir = AgaviConfig::get('core.app_dir').'/../../project/app/config';
+        $config_dir = AgaviConfig::get('core.app_dir').'/project/config';
+
+        if (is_dir($project_config_dir)) {
+            $this->linkDirContents($project_config_dir, $config_dir);
         }
     }
 

@@ -52,6 +52,9 @@ config:
 	@bin/cli util.build_config --emergency
 	@make cc
 
+db:
+	@bin/cli util.create_db
+
 module:
 	@bin/cli util.build_module
 
@@ -64,7 +67,7 @@ js:
 css:
 	@bin/cli util.scss
 
-.PHONY: help new install update skeleton symlinks module action environment js css cc
+.PHONY: help new install update skeleton symlinks db module action environment js css cc
 
 # vim: set ts=4 sw=4 noexpandtab:
 #

@@ -92,7 +92,7 @@ class ModuleBuilder extends TwigBuilder
     protected function buildBaseView()
     {
         $content = $this->renderTemplate(
-            'module/lib/Project/'.$this->module_name.'/Agavi/View/BaseView.php.twig',
+            'module/lib/Agavi/View/BaseView.php.twig',
             array (
                 'module_name' => $this->module_name
             )
@@ -110,7 +110,7 @@ class ModuleBuilder extends TwigBuilder
     protected function buildBaseAction()
     {
         $content = $this->renderTemplate(
-            'module/lib/Project/'.$this->module_name.'/Agavi/Action/BaseAction.php.twig',
+            'module/lib/Agavi/Action/BaseAction.php.twig',
             array (
                 'module_name' => $this->module_name
             )

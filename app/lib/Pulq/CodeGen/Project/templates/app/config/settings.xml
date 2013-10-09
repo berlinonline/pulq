@@ -22,6 +22,7 @@
         <settings>
             <!-- Change this to whatever you like to name your project -->
             <setting name="app_name">Yet another Pulq application</setting>
+            <setting name="project_prefix">pulq</setting>
             <!--
                  DBs are disabled by default to give you a working site
                  even without DBs being configured

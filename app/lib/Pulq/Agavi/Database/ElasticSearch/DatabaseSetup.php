@@ -26,23 +26,15 @@ class DatabaseSetup implements IDatabaseSetup
 
         $this->createIndex($tearDownFirst);
         $this->registerMappings();
-        $this->initializeRiver();
     }
 
     public function tearDown()
     {
-        $this->deleteRiver();
         $this->database->getResource()->delete();
     }
 
     protected function createIndex($tearDownFirst)
     {
-        // Delete before the index to prevent a current river from crashing
-        if (TRUE === $tearDownFirst)
-        {
-            $this->deleteRiver();
-        }
-
         $indexSettings = array(
             'number_of_shards' => 2,
             'number_of_replicas' => 1,
