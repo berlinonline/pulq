@@ -13,6 +13,14 @@ class Consumer_Push_PushErrorView extends BaseView
                 'errors' => array()
             )
         );
+
+        $errors = $this->getContainer()->getValidationManager()->getErrors();
+        foreach($errors as $argument => $argument_errors) {
+            foreach ($argument_errors['messages'] as $error_message) {
+                $output['status']['errors'][$argument] = $error_message;
+            }
+        }
+
         return json_encode($output);
     }
 

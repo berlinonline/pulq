@@ -6,20 +6,23 @@
         <validators method="write">
             <validator class="Pulq\Consumer\Agavi\Validate\SignedRequestValidator">
                 <argument>id</argument>
+                <errors>
+                    <error for="not_signed">Request is not properly signed</error>
+                </errors>
             </validator>
             <validator class="Pulq\Consumer\Agavi\Validate\DocumentValidator" source="files">
                 <arguments>
                     <argument>put_file</argument>
                 </arguments>
-                <errors>
-                    <error for="not_signed">Request is not properly signed</error>
-                </errors>
             </validator>
         </validators>
 
         <validators method="remove">
             <validator class="Pulq\Consumer\Agavi\Validate\SignedRequestValidator">
                 <argument>id</argument>
+                <errors>
+                    <error for="not_signed">Request is not properly signed</error>
+                </errors>
             </validator>
         </validators>
     </ae:configuration>
