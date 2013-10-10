@@ -38,7 +38,7 @@ update-dependencies: install-composer
 	@npm update
 
 environment:
-	@vendor/graste/environaut/bin/environaut.phar check
+	@vendor/graste/environaut/bin/environaut.phar check --autoload-dir="app/lib"
 
 skeleton:
 	@bin/cli util.build_project --emergency

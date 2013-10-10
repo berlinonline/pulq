@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ae:configurations 
+    xmlns:ae="http://agavi.org/agavi/config/global/envelope/1.0" 
+    xmlns="http://agavi.org/agavi/config/parts/settings/1.0">
+    <ae:configuration>
+        <settings prefix="consumer.">
+            <setting name="shared_secret_path">%core.app_dir%/../etc/local/consumer_shared_secret</setting>
+            <setting name="database">default</setting>
+        </settings>
+
+    </ae:configuration>
+</ae:configurations>
