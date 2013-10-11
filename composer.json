@@ -30,7 +30,9 @@
         "psr/log": "1.0.0",
         "monolog/monolog": "1.5",
         "symfony/console": "~2.2",
-        "csswizardry/inuit.css": "5.0.1"
+        "csswizardry/inuit.css": "5.0.1",
+        "aptoma/twig-markdown": "0.2.*",
+        "dflydev/markdown": "~1.0"
     },
 
     "repositories": [

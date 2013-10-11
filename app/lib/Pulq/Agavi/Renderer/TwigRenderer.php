@@ -12,6 +12,9 @@ use \Twig_Loader_Filesystem;
 use \Twig_Loader_String;
 use \Twig_Template;
 
+use Aptoma\Twig\Extension\MarkdownExtension;
+use Aptoma\Twig\Extension\MarkdownEngine;
+
 /**
  * Extends the AgaviTwigRenderer to add twig extensions via parameters. If you
  * need more functionality you should extend the AgaviTwigRenderer by yourself
@@ -30,6 +33,8 @@ class TwigRenderer extends AgaviTwigRenderer
     {
         $twig = parent::getEngine();
 
+        $this->addMarkdownExtension($twig);
+
         foreach ($this->getParameter('extensions', array()) as $extension_class_name)
         {
             $ext = new $extension_class_name();
@@ -41,6 +46,13 @@ class TwigRenderer extends AgaviTwigRenderer
             }
         }
 
+
         return $twig;
+    }
+
+    protected function addMarkdownExtension(Twig_Environment $twig)
+    {
+        $md_engine = $engine = new MarkdownEngine\DflydevMarkdownEngine();
+        $twig->addExtension(new MarkdownExtension($engine));
     }
 }
