@@ -8,6 +8,7 @@
                 <argument>id</argument>
                 <errors>
                     <error for="not_signed">Request is not properly signed</error>
+                    <error for="id_malformed">ID is malformed. Expected is [type]-[nr], like "asset-42".</error>
                 </errors>
             </validator>
             <validator class="Pulq\Consumer\Agavi\Validate\DocumentValidator" source="files">
@@ -22,6 +23,7 @@
                 <argument>id</argument>
                 <errors>
                     <error for="not_signed">Request is not properly signed</error>
+                    <error for="id_malformed">ID is malformed. Expected is [type]-[nr], like "asset-42".</error>
                 </errors>
             </validator>
         </validators>

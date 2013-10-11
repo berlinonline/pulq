@@ -2,20 +2,8 @@
 require(dirname(__DIR__) . '/vendor/autoload.php');
 require(dirname(__DIR__) . '/vendor/agavi/agavi/src/agavi.php');
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 AgaviConfig::set('core.app_dir', __DIR__);
+AgaviConfig::set('core.pub_dir', realpath(__DIR__.'/../pub'));
 AgaviConfig::set('core.project_dir', realpath(__DIR__.'/../../project'));
 AgaviConfig::set('core.modules_dir', __DIR__ . DIRECTORY_SEPARATOR . 'modules');
 AgaviConfig::set(

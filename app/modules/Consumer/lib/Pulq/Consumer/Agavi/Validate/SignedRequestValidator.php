@@ -11,12 +11,15 @@ class SignedRequestValidator extends AgaviValidator
     {
         $id = $this->getData($this->getArgument());
 
+        if (!preg_match('/[A-z0-9]+-[0-9]+/', $id)) {
+            $this->throwError('id_malformed');
+            return false;
+        }
+
         $rd = $this->getContext()->getRequest()->getRequestData();
         $signature = $rd->get('headers', 'SIGNATURE', '');
 
         $signature_service = new SignatureService();
-
-        var_dump($signature_service->sign($id));
 
         if ($signature_service->sign($id) === $signature) {
             $this->export($id, $this->getArgument());

@@ -14,9 +14,9 @@ class Consumer_PushAction extends BaseAction
 
         $id = $rd->getParameter('id');
 
-        $handler = new DocumentHandler();
+        $handler = DocumentHandler::create($id, $document);
 
-        $handler->saveDocument($id, $document);
+        $handler->saveDocument();
 
         return 'Success';
     }
@@ -25,9 +25,9 @@ class Consumer_PushAction extends BaseAction
     {
         $id = $rd->getParameter('id');
 
-        $handler = new DocumentHandler();
+        $handler = DocumentHandler::create($id);
 
-        $handler->deleteDocument($id);
+        $handler->deleteDocument();
 
         return 'Success';
     }

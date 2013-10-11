@@ -54,6 +54,7 @@ class ProjectBuilder extends TwigBuilder
         return array(
             'app',
             'app/config',
+            'app/config/elasticsearch',
             'app/templates',
             'app/templates/macros',
             'modules',
@@ -71,7 +72,9 @@ class ProjectBuilder extends TwigBuilder
         $files = array(
             'app/config/settings.xml',
             'app/config/routing.xml',
+            'app/config/databases.xml',
             'app/config/output_types.xml',
+            'app/config/elasticsearch/default.index.json',
             'app/templates/Master.twig',
             'pub/static/require.js',
             'pub/static/js/main.js',
