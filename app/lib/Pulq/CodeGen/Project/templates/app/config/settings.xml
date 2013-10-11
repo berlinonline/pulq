@@ -28,6 +28,8 @@
                  even without DBs being configured
             -->
             <setting name="use_database">false</setting>
+            <setting name="asset_directory">%core.pub_dir%/assets</setting>
+            <setting name="asset_url_path">assets</setting>
         </settings>
 
         <settings prefix="minify.">

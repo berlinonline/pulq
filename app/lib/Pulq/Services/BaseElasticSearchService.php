@@ -31,7 +31,9 @@ abstract class BaseElasticSearchService extends BaseService {
 
         foreach($resultSet->getResults() as $result)
         {
+            $id = $result->getId();
             $data = $result->getData();
+            $data['_id'] = $id;
 
             $class_name = $this->data_object_class;
             $data_objects[] = $class_name::fromArray($data);

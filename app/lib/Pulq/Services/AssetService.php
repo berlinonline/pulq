@@ -3,6 +3,7 @@
 namespace Pulq\Services;
 
 use \AgaviConfig;
+use \AgaviContext;
 use Pulq\Exceptions\AssetException;
 
 class AssetService extends BaseService
@@ -23,11 +24,24 @@ class AssetService extends BaseService
         return $this->asset_directory;
     }
 
-    public function getAssetPathById($id)
+    protected function getRelativeAssetPathById($id)
     {
         list($type, $numeric_id) = explode('-', $id);
         $path_parts = str_split($numeric_id, 2);
 
-        return $this->getAssetDirectory() . '/' . implode('/', $path_parts) . '/' . $id;
+        return implode('/', $path_parts) . '/' . $id;
+
+    }
+
+    public function getAssetPathById($id)
+    {
+        return $this->getAssetDirectory() . '/' . $this->getRelativeAssetPathById($id);
+    }
+
+    public function getAssetUrlById($id)
+    {
+        $base_href = AgaviContext::getInstance()->getRouting()->getBaseHref();
+        $asset_url_path = AgaviConfig::get('core.asset_url_path');
+        return $base_href . $asset_url_path . '/'. $this->getRelativeAssetPathById($id);
     }
 }
