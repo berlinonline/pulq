@@ -75,7 +75,7 @@ class Environment
         $configFilepath = $localConfigDir . static::CONFIG_FILE_PREFIX . static::CONFIG_FILE_NAME;
 
         $local_config = include($configFilepath);
-        $this->config = $local_config['config'];
+        $this->config = $local_config['pulq_environment'];
 
         // No override allowed for testing environments.
         if (($env = getenv('AGAVI_ENVIRONMENT')) && TRUE !== $testingEnabled)

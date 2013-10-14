@@ -53,6 +53,9 @@ class TwigRenderer extends AgaviTwigRenderer
     protected function addMarkdownExtension(Twig_Environment $twig)
     {
         $md_engine = $engine = new MarkdownEngine\DflydevMarkdownEngine();
-        $twig->addExtension(new MarkdownExtension($engine));
+        $md_extension = new MarkdownExtension($engine);
+        if (!$twig->hasExtension($md_extension->getName())) {
+            $twig->addExtension($md_extension);
+        }
     }
 }

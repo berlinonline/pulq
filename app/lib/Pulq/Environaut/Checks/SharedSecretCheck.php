@@ -16,7 +16,7 @@ class SharedSecretCheck extends Check
         $output = $this->getOutputStream();
 
         if (file_exists($path)) {
-            $question = "<question>$confirm_question</question> (Type [y/n/<return>], default=n): ";
+            $question = "<question>$question</question> (Type [y/n/<return>], default=n): ";
             $value = $dialog->askConfirmation($output, $question, $default = false);
             if (!$value) {
                 return true;
