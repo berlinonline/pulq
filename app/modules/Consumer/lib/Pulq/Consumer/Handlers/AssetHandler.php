@@ -4,6 +4,7 @@ namespace Pulq\Consumer\Handlers;
 use \AgaviConfig;
 use \Exception;
 use Pulq\Services\AssetService;
+use Pulq\Data\Asset;
 
 class AssetHandler extends DocumentHandler
 {
@@ -14,7 +15,7 @@ class AssetHandler extends DocumentHandler
         parent::__construct($id, $type, $document);
 
         $this->asset_service = new AssetService();
-        $this->asset_path = $this->asset_service->getAssetPathById($this->document_id);
+        $this->asset_path = $this->asset_service->getAssetPath(new Asset($this->document));
 
     }
 
@@ -29,6 +30,8 @@ class AssetHandler extends DocumentHandler
         if (false === $result) {
             throw new AssetException("Could not write file $this->asset_path");
         }
+
+        unset($this->document['data']);
 
         parent::saveDocument();
     }

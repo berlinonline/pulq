@@ -15,6 +15,36 @@ abstract class BaseElasticSearchService extends BaseService {
         $this->index = \AgaviContext::getInstance()->getDatabaseManager()->getDatabase($this->es_index)->getResource();
     }
 
+    public function getById($id)
+    {
+        $query = new Query\Field('_id', $id);
+        $resultData = $this->executeQuery(Query::create($query));
+
+        $set = $this->extractFromResultSet($resultData);
+
+        if ($set->getTotalCount() < 1)
+        {
+            throw new NotFoundException($this->data_object_class . ' not found.');
+        }
+
+        return $set[0];
+    }
+
+    public function getByIds(array $ids)
+    {
+        if (empty($ids))
+        {
+            return new DataObjectSet(array());
+        }
+
+        $query = new Query\Field('_id', implode(' ', $ids));
+        $resultData = $this->executeQuery(Query::create($query));
+
+        $set = $this->extractFromResultSet($resultData);
+
+        return $set;
+    }
+
     protected function getType()
     {
         return $this->index->getType($this->es_type);
