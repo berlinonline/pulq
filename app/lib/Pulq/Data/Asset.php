@@ -14,9 +14,11 @@ class Asset extends BaseDataObject
     {
         return array(
             'list' => array(
+                'id',
                 'url',
             ),
             'detail' => array(
+                'id',
                 'url',
                 'mime',
                 'filename'
