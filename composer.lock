@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "98a338f76a30dc6c0caf8c1f6a59eb14",
+    "hash": "4339eb6c653e25ab81021cd418b50d00",
     "packages": [
         {
             "name": "PhpDebugToolbar/php-debug-toolbar",
@@ -154,16 +154,16 @@
         },
         {
             "name": "graste/environaut",
-            "version": "v0.4.0",
+            "version": "v0.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/graste/environaut.git",
-                "reference": "3b02cb0bbc3dbb2f9971039c0afb38237e3d21b5"
+                "reference": "8264e5cd43afb41135b98a8d03a74eed47934502"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/graste/environaut/zipball/3b02cb0bbc3dbb2f9971039c0afb38237e3d21b5",
-                "reference": "3b02cb0bbc3dbb2f9971039c0afb38237e3d21b5",
+                "url": "https://api.github.com/repos/graste/environaut/zipball/8264e5cd43afb41135b98a8d03a74eed47934502",
+                "reference": "8264e5cd43afb41135b98a8d03a74eed47934502",
                 "shasum": ""
             },
             "require": {
@@ -214,7 +214,7 @@
                 "requirements",
                 "web"
             ],
-            "time": "2013-09-26 22:06:09"
+            "time": "2013-10-14 20:42:27"
         },
         {
             "name": "monolog/monolog",
@@ -471,16 +471,16 @@
         },
         {
             "name": "twig/twig",
-            "version": "v1.14.0",
+            "version": "v1.14.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/fabpot/Twig.git",
-                "reference": "224fc55635d544a2ec8edb3592be18db5a093f59"
+                "reference": "8873d7593ad7c120004f177c0fd01459b383c9cb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fabpot/Twig/zipball/224fc55635d544a2ec8edb3592be18db5a093f59",
-                "reference": "224fc55635d544a2ec8edb3592be18db5a093f59",
+                "url": "https://api.github.com/repos/fabpot/Twig/zipball/8873d7593ad7c120004f177c0fd01459b383c9cb",
+                "reference": "8873d7593ad7c120004f177c0fd01459b383c9cb",
                 "shasum": ""
             },
             "require": {
@@ -516,7 +516,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2013-10-03 06:41:20"
+            "time": "2013-10-15 19:17:38"
         },
         {
             "name": "zendframework/zend-permissions-acl",

@@ -23,7 +23,7 @@
         "php": ">=5.3.3",
         "agavi/agavi": "1.0.*",
         "zendframework/zend-permissions-acl": "2.2.*",
-        "twig/twig": "1.*",
+        "twig/twig": "1.14.*",
         "ruflin/elastica": "0.90.*",
         "PhpDebugToolbar/php-debug-toolbar": "1.6.*",
         "graste/environaut": "~0.3",
