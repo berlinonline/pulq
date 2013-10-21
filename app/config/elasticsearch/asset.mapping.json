@@ -1,6 +1,6 @@
 {
-    "index_analyzer": "DefaultAnalyzer",
-    "search_analyzer": "DefaultAnalyzer",
+    "index_analyzer": "standard",
+    "search_analyzer": "standard",
     "dynamic" : false,
     "_source": {
         "enabled": true

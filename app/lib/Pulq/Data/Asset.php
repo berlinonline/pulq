@@ -39,7 +39,7 @@ class Asset extends BaseDataObject
 
     public function __toString()
     {
-        return $this->getSrc();
+        return $this->getUrl();
     }
 }
 

@@ -2,8 +2,8 @@
 <ae:configurations xmlns:ae="http://agavi.org/agavi/config/global/envelope/1.0" xmlns="http://agavi.org/agavi/config/parts/translation/1.0">
     <ae:configuration>
 
-        <translators default_domain="guide.errors">
-            <translator domain="foo">
+        <translators default_domain="consumer">
+            <translator domain="consumer">
                 <message_translator class="AgaviSimpleTranslator">
 
                     <!--
