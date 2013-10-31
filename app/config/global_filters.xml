@@ -47,7 +47,7 @@
         </filters>
     </ae:configuration>
 
-    <ae:configuration context="web" environment="stage">
+    <ae:configuration context="web" environment="stage|preview">
         <filters>
             <filter name="ResourceFilter" class="Pulq\Agavi\Filter\ResourceFilter">
                 <ae:parameter name="output_types">
