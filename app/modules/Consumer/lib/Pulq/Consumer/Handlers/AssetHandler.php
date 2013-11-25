@@ -15,8 +15,9 @@ class AssetHandler extends DocumentHandler
         parent::__construct($id, $type, $document);
 
         $this->asset_service = new AssetService();
-        $this->asset_path = $this->asset_service->getAssetPath(new Asset($this->document));
+        $asset = Asset::fromArray($this->document);
 
+        $this->asset_path = $this->asset_service->getAssetPath($asset);
     }
 
     public function saveDocument()
