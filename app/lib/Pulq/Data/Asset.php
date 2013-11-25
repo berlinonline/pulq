@@ -26,6 +26,21 @@ class Asset extends BaseDataObject
         );
     }
 
+    public static function fromArray(array $data = array())
+    {
+        if (isset($data['id']) && !isset($data['_id']))
+        {
+            $data['_id'] = $data['id'];
+        }
+
+        if (isset($data['_id']) && !isset($data['id']))
+        {
+            $data['id'] = $data['_id'];
+        }
+
+        return new static($data);
+    }
+
     public function getId()
     {
         return $this->_id;
