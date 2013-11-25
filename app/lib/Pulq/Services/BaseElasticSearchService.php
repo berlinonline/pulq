@@ -2,6 +2,7 @@
 
 namespace Pulq\Services;
 use Pulq\Data\DataObjectSet;
+use Pulq\Exceptions\NotFoundException;
 use Elastica\ResultSet;
 use Elastica\Query;
 
