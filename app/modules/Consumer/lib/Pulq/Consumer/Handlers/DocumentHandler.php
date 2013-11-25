@@ -14,7 +14,7 @@ class DocumentHandler
     protected $document_type;
     protected $document = array();
 
-    public static function create($id, array $document = array())
+    public static function create($id, array $document)
     {
         $id_parts = explode('-', $id);
         $type = $id_parts[0];
