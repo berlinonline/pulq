@@ -9,6 +9,9 @@
         "enabled": false
     },
     "properties" : {
+        "live": {
+            "type": "boolean"
+        },
         "filename": {
             "type": "multi_field",
             "fields": {
