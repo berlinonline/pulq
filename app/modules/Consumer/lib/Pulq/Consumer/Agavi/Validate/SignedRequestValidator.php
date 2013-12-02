@@ -11,7 +11,7 @@ class SignedRequestValidator extends AgaviValidator
     {
         $id = $this->getData($this->getArgument());
 
-        if (!preg_match('/[A-z0-9]+-[0-9]+/', $id)) {
+        if (!preg_match('/[A-z0-9]+-[A-z0-9-]+/', $id)) {
             $this->throwError('id_malformed');
             return false;
         }
