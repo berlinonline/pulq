@@ -40,7 +40,7 @@ class AssetService extends BaseElasticSearchService
         list($type, $numeric_id) = explode('-', $id);
         $path_parts = str_split($numeric_id, 2);
 
-        return implode('/', $path_parts) . '/' . $id . ($extension ? ".$extension" : "");
+        return implode('/', $path_parts) . '/' . $id . '/' . $filename;
 
     }
 
