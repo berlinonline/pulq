@@ -1,16 +1,15 @@
 <?php
 
 use Pulq\Util\Agavi\Action\BaseAction;
-use Elastica\Status;
 
-class Util_CreateDatabaseAction extends BaseAction
+class Util_ReindexAction extends BaseAction
 {
     public function execute(AgaviRequestDataHolder $rd)
     {
         $db = $rd->getParameter('database');
-        $db->setup();
+        $db->reindex();
 
-        return 'Success';
+        return "Success";
     }
 
     public function isSecure()
@@ -18,3 +17,4 @@ class Util_CreateDatabaseAction extends BaseAction
         return FALSE;
     }
 }
+

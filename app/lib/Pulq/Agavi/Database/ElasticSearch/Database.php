@@ -5,6 +5,8 @@ namespace Pulq\Agavi\Database\ElasticSearch;
 use Pulq\Agavi\Database\PulqDatabase;
 use Elastica;
 use Elastica\Status;
+use Elastica\Search;
+use Elastica\Document;
 use \AgaviDatabaseException;
 use \AgaviDatabaseManager;
 
@@ -75,16 +77,19 @@ class Database extends PulqDatabase
 
     public function setup()
     {
-        $connection = $this->getConnection();
-
         $alias_name = $this->index_config['name'];
-        $index_name = $alias_name . '_' . date('Y-m-d_H-i-s');
+        $index_name = $this->getRealIndexName($alias_name);
 
-        $existing_indices = array();
-        $status = new Status($connection);
-        foreach ($status->getIndicesWithAlias( $alias_name ) as $aliased_index ) {
-            $existing_indices[] = $aliased_index;
-        }
+
+        $this->createIndex($index_name);
+
+        $this->switchIndexAlias($alias_name, $index_name);
+
+    }
+
+    protected function createIndex($index_name)
+    {
+        $connection = $this->getConnection();
 
         $definition_file = $this->index_config['definition_file'];
         $definition = json_decode(file_get_contents($definition_file), true);
@@ -94,14 +99,34 @@ class Database extends PulqDatabase
             $definition['mappings'] = $mappings;
         }
 
-        $connection->getIndex($index_name)->create($definition);
+        $index = $connection->getIndex($index_name);
+        $index->create($definition);
+
+        return $index;
+    }
+
+    protected function getRealIndexName($name)
+    {
+        return $name . '_' . date('Y-m-d_H-i-s');
+    }
+
+    protected function switchIndexAlias($alias_name, $index_name, $delete_old = false)
+    {
+        $connection = $this->getConnection();
+
+        $existing_indices = array();
+        $status = new Status($connection);
+        foreach ($status->getIndicesWithAlias( $alias_name ) as $aliased_index ) {
+            $existing_indices[] = $aliased_index;
+        }
 
         $connection->getIndex($index_name)->addAlias($alias_name, true);
 
-        foreach ($existing_indices as $existing_index) {
-            $existing_index->delete();
+        if ($delete_old) {
+            foreach ($existing_indices as $existing_index) {
+                $existing_index->delete();
+            }
         }
-
     }
 
     protected function getMappings()
@@ -113,6 +138,46 @@ class Database extends PulqDatabase
         }
 
         return $mappings;
+    }
+
+    public function reindex()
+    {
+        $alias_name = $this->index_config['name'];
+        $index_name = $this->getRealIndexName($alias_name);
+
+        //create the new index
+        $new_index = $this->createIndex($index_name);
+
+        //Prepare the scan search
+        $search = new Search($this->getConnection());
+        $search->addIndex($alias_name);
+        $result = $search->search(array(), array(
+            Search::OPTION_SEARCH_TYPE => Search::OPTION_SEARCH_TYPE_SCAN,
+            Search::OPTION_SCROLL => '5m',
+            Search::OPTION_SIZE => 20,
+        ));
+        $scroll_id = $result->getResponse()->getScrollId();
+
+        //execute scan until no more documents are left
+        do {
+            $response = $search->search(array(), array(
+                Search::OPTION_SCROLL => '5m',
+                Search::OPTION_SCROLL_ID => $scroll_id,
+            ));
+
+            $results = $response->getResults();
+            $n = count($results);
+
+            foreach($results as $result) {
+                $new_index->getType($result->getType())->addDocument(
+                    new Document($result->getId(), $result->getData())
+                );
+            }
+
+        } while ($n > 0);
+
+        //Switch alias to point to the new index
+        $this->switchIndexAlias($alias_name, $index_name);
     }
 }
 

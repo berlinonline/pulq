@@ -57,6 +57,9 @@ config:
 db:
 	@bin/cli util.create_db
 
+reindex:
+	@bin/cli util.reindex
+
 module:
 	@bin/cli util.build_module
 
