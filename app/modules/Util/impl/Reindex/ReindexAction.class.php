@@ -15,7 +15,7 @@ class Util_ReindexAction extends BaseAction
         $dialog  =new DialogHelper($output);
         $dialog->setInputStream($stdin);
 
-        $delete_old = $dialog->askConfirmation($output, "<error>Delete old index? (y/n)</error>", false);
+        $delete_old = $dialog->askConfirmation($output, "<error>Delete old index? (y/n)</error> ", false);
 
         fclose($stdin);
 
