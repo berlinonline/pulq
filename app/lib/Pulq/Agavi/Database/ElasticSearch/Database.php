@@ -140,7 +140,7 @@ class Database extends PulqDatabase
         return $mappings;
     }
 
-    public function reindex()
+    public function reindex($delete_old_index = false)
     {
         $alias_name = $this->index_config['name'];
         $index_name = $this->getRealIndexName($alias_name);
@@ -177,7 +177,7 @@ class Database extends PulqDatabase
         } while ($n > 0);
 
         //Switch alias to point to the new index
-        $this->switchIndexAlias($alias_name, $index_name);
+        $this->switchIndexAlias($alias_name, $index_name, $delete_old_index);
     }
 }
 

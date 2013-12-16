@@ -58,7 +58,7 @@ db:
 	@bin/cli util.create_db
 
 reindex:
-	@bin/cli util.reindex
+	@bin/cli util.rebuild_idx
 
 module:
 	@bin/cli util.build_module
