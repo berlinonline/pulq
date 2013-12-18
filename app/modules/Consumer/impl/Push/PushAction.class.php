@@ -26,10 +26,14 @@ class Consumer_PushAction extends BaseAction
     {
         $id = $rd->getParameter('id');
 
-        $asset_service = new AssetService();
-        $asset = $asset_service->getById($id);
+        if (preg_match('/^asset-/', $id)) {
+            $asset_service = new AssetService();
+            $document_data = $asset_service->getById($id)->toArray('detail');
+        } else {
+            $document_data = array();
+        }
 
-        $handler = DocumentHandler::create($id, $asset->toArray('detail'));
+        $handler = DocumentHandler::create($id, $document_data);
 
         $handler->deleteDocument();
 
