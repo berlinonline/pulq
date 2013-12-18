@@ -58,8 +58,8 @@ class Asset extends BaseDataObject
     }
 
     public function getMime() {
-        $mime_parts = explode(' ', $this->mime);
-        $mime = $mime_parts[0];
+        $mime_parts = explode(';', $this->mime);
+        $mime = trim($mime_parts[0]);
 
         return $mime;
     }
