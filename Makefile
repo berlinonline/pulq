@@ -40,6 +40,7 @@ update-dependencies: install-composer
 	@npm update
 
 environment:
+	@mkdir -p etc/local
 	@vendor/graste/environaut/bin/environaut.phar check --autoload-dir="app/lib"
 
 skeleton:
