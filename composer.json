@@ -7,8 +7,12 @@
     "license": "MIT",
     "authors": [
         {
-            "name": "Leon Weidauer",
-            "name": "Tom Anheyer",
+            "name": "Leon Weidauer"
+        },
+        {
+            "name": "Tom Anheyer"
+        },
+        {
             "name": "Thorsten Schmitt-Rink"
         }
     ],
@@ -29,7 +33,7 @@
         "graste/environaut": "~0.3",
         "psr/log": "1.0.0",
         "monolog/monolog": "1.5",
-        "symfony/console": "~2.2",
+        "symfony/console": "~2.4",
         "csswizardry/inuit.css": "5.0.1",
         "aptoma/twig-markdown": "0.2.*",
         "dflydev/markdown": "~1.0"

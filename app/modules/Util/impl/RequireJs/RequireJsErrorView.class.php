@@ -8,6 +8,6 @@ class Util_RequireJs_RequireJsErrorView extends BaseView
     public function executeText(AgaviRequestDataHolder $parameters) // @codingStandardsIgnoreEnd
     {
         $output = new ConsoleOutput();
-        $output->writeln('<info>JS optimization failed</info>');
+        $output->writeln('<error>JS optimization failed</error>');
     }
 }
