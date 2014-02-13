@@ -26,6 +26,6 @@ class Consumer_Push_PushErrorView extends BaseView
 
     public function throwOutputTypeNotImplementedException()
     {
-        die('foo');
+        die('Output type "'.$this->getContainer()->getOutputType()->getName().'" not implemented');
     }
 }

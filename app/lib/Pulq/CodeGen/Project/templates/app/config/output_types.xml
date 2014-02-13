@@ -42,13 +42,11 @@
                 </ae:parameter>
             </output_type>
 
-            <!-- Output type for JSON data
             <output_type name="json">
                 <ae:parameter name="http_headers">
                     <ae:parameter name="Content-Type">application/json; charset=UTF-8</ae:parameter>
                 </ae:parameter>
             </output_type>
-            -->
 
             <output_type name="binary">
                 <ae:parameter name="http_headers">

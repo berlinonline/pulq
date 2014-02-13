@@ -16,9 +16,9 @@ tail-logs:
 
 new: cc
 	@make install-dependencies
+	@make environment
 	@make skeleton
 	@make symlinks
-	@make environment
 	@make config
 	@make js
 	@make css
@@ -26,8 +26,8 @@ new: cc
 
 install: cc
 	@make install-dependencies
-	@make symlinks
 	@make environment
+	@make symlinks
 	@make config
 	@make js
 	@make css
