@@ -16,3 +16,4 @@ Thumbs.db
 /etc/local
 .environaut.cache
 /.sass-cache
+/composer.lock

@@ -14,13 +14,36 @@ cc:
 tail-logs:
 	@tail -f app/log/*.log
 
-new: cc install-dependencies skeleton symlinks environment config js css cc
+new: cc
+	@make install-dependencies
+	@make skeleton
+	@make symlinks
+	@make environment
+	@make config
+	@make js
+	@make css
+	@make cc
 
-install: cc install-dependencies symlinks environment config js css cc
+install: cc
+	@make install-dependencies
+	@make symlinks
+	@make environment
+	@make config
+	@make js
+	@make css
+	@make cc
 
-update: cc update-dependencies symlinks config js css cc
+update: cc
+	@make update-dependencies
+	@make symlinks
+	@make config
+	@make js
+	@make css
+	@make cc
 
-static: cc js css
+static: cc
+	@make js
+	@make css
 
 install-composer:
 	@if [ ! -f bin/composer.phar ]; then curl -s http://getcomposer.org/installer | php -d allow_url_fopen=1 -d date.timezone="Europe/Berlin" -- --install-dir=./bin; fi
