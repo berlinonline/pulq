@@ -47,6 +47,17 @@ abstract class BaseElasticSearchService extends BaseService {
         return $set;
     }
 
+    public function getAll()
+    {
+        $query = new Query\MatchAll();
+
+        $resultData = $this->executeQuery(Query::create($query));
+
+        $set = $this->extractFromResultSet($resultData);
+
+        return $set;
+    }
+
     protected function getType()
     {
         return $this->index->getType($this->es_type);
@@ -67,6 +78,7 @@ abstract class BaseElasticSearchService extends BaseService {
             }
 
             $query->setFilter($bool_filter);
+            $query->setSize(100000);
         }
 
         return $this->getType()->search($query);
