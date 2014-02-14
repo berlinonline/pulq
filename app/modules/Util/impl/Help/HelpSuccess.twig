@@ -40,6 +40,10 @@ Setup targets
     db              Runs the setup for all configured databases.
                     <error>This is potentially destructive! Old DBs will be replaced!</error>
 
+    reindex         Reindexes all documents from the currently active index into a new one and switches
+                    the index alias afterewards. The old index can be deleted optinally.
+                    <error>This is potentially destructive! Old DBs may be deleted!</error>
+
 Development targets
 
     module          Runs the wizard for creating a new application module
