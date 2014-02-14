@@ -75,6 +75,7 @@ abstract class BaseElasticSearchService extends BaseService {
 
             if ($query->hasParam('filter')) {
                 $existing_filter = $query->getParam('filter');
+                $bool_filter->addMust($existing_filter);
             }
 
             $query->setFilter($bool_filter);
