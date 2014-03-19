@@ -56,8 +56,6 @@ class Util_LoadFixturesAction extends BaseAction
                 "modified" => date('c', filemtime($filepath)),
                 "data" => base64_encode(file_get_contents($filepath))
             );
-
-            echo "asset length: ".strlen($document['data']).PHP_EOL;
         }
 
         return $document;
