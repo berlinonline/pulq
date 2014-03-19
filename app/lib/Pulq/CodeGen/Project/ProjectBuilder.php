@@ -57,6 +57,7 @@ class ProjectBuilder extends TwigBuilder
             'app/config/elasticsearch',
             'app/templates',
             'app/templates/macros',
+            'app/lib',
             'modules',
             'pub',
             'pub/static',
