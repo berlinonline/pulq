@@ -84,6 +84,9 @@ db:
 reindex:
 	@bin/cli util.rebuild_idx
 
+fixtures:
+	@bin/cli util.load_fixtures
+
 module:
 	@bin/cli util.build_module
 

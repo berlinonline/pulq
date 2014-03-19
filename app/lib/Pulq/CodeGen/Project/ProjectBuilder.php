@@ -63,7 +63,10 @@ class ProjectBuilder extends TwigBuilder
             'pub/static/js',
             'pub/static/js/libs',
             'pub/static/scss',
-            'pub/static/bin'
+            'pub/static/bin',
+            'dev',
+            'dev/fixtures',
+            'dev/fixtures/default'
         );
     }
 

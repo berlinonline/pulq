@@ -17,6 +17,7 @@
 
             <route name=".create_db" pattern=".create_db" action="CreateDatabase"/>
             <route name=".reindex" pattern=".rebuild_idx" action="Reindex"/>
+            <route name=".load_fixtures" pattern=".load_fixtures" action="LoadFixtures"/>
 
             <route name=".scss" pattern=".scss" action="Scss"/>
             <route name=".requirejs" pattern=".requirejs" action="RequireJs"/>

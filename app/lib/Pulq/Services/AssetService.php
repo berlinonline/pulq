@@ -34,6 +34,7 @@ class AssetService extends BaseElasticSearchService
     {
 
         $id = $asset->getId();
+
         $filename = $asset->getFilename();
         $extension = pathinfo($filename, PATHINFO_EXTENSION);
 

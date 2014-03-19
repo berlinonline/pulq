@@ -42,6 +42,7 @@
             <setting name="use_translation">true</setting>
             <setting name="auth_provider">LdapAuthProvider</setting>
             <setting name="template_dir">%core.app_dir%/../../project/app/templates</setting>
+            <setting name="fixtures_dir">%core.app_dir%/../../project/dev/fixtures</setting>
         </settings>
 
         <exception_templates>
