@@ -4,16 +4,9 @@
 
     <ae:configuration context="console">
         <validators>
-            <validator class="Pulq\Agavi\Validator\CliCheckBackValidator" required="false">
+            <validator class="Pulq\Agavi\Validator\DatabaseNameValidator" required="false">
                 <argument>database</argument>
                 <error>Please provide a name of a configured database</error>
-                <ae:parameters>
-                    <ae:parameter name="checkback">
-                        <ae:parameter name="attempts">2</ae:parameter>
-                        <ae:parameter name="validator">Pulq\Agavi\Validator\DatabaseNameValidator</ae:parameter>
-                        <ae:parameter name="question">Please enter the name of a configured database:</ae:parameter>
-                    </ae:parameter>
-                </ae:parameters>
             </validator>
         </validators>
     </ae:configuration>

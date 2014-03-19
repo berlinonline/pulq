@@ -5,7 +5,7 @@
     <ae:configuration>
         <controller class="AgaviController" />
 
-        <database_manager class="AgaviDatabaseManager" />
+        <database_manager class="Pulq\Agavi\Database\PulqDatabaseManager" />
 
         <dispatch_filter class="AgaviDispatchFilter" />
 
