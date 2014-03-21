@@ -65,22 +65,24 @@ abstract class BaseElasticSearchService extends BaseService {
 
     protected function executeQuery(Query $query, $use_live_filter = true)
     {
-        if ($use_live_filter) {
-            $bool_filter = new Filter\Bool();
+        $bool_filter = new Filter\Bool();
+        $bool_filter->addMust($this->getDefaultFilter());
 
+        if ($use_live_filter) {
             $live_query = new Query\Field('live', "true");
             $live_filter = new Filter\Query($live_query);
-
             $bool_filter->addMust($live_filter);
-
-            if ($query->hasParam('filter')) {
-                $existing_filter = $query->getParam('filter');
-                $bool_filter->addMust($existing_filter);
-            }
-
-            $query->setFilter($bool_filter);
-            $query->setSize(100000);
         }
+
+        if ($query->hasParam('filter')) {
+            $existing_filter = $query->getParam('filter');
+            $bool_filter->addMust($existing_filter);
+        }
+
+        $query->setFilter($bool_filter);
+        $query->setSize(100000);
+
+        #echo json_encode($query->toArray());die;
 
         return $this->getType()->search($query);
     }
@@ -103,5 +105,9 @@ abstract class BaseElasticSearchService extends BaseService {
         $set->setTotalCount($resultSet->getTotalHits());
 
         return $set;
+    }
+
+    protected function getDefaultFilter() {
+        return new Filter\MatchAll();
     }
 }
