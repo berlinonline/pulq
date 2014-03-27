@@ -78,6 +78,7 @@ class ProjectBuilder extends TwigBuilder
             'app/config/routing.xml',
             'app/config/databases.xml',
             'app/config/output_types.xml',
+            'app/config/translation.xml',
             'app/config/elasticsearch/default.index.json',
             'app/templates/Master.twig',
             'pub/static/require.js',
