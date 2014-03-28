@@ -54,7 +54,8 @@ class Util_LoadFixturesAction extends BaseAction
                 "type" => "asset",
                 "mime" => $mime,
                 "modified" => date('c', filemtime($filepath)),
-                "data" => base64_encode(file_get_contents($filepath))
+                "data" => base64_encode(file_get_contents($filepath)),
+                "live" => true
             );
         }
 
