@@ -55,6 +55,7 @@ class Util_LoadFixturesAction extends BaseAction
                 "mime" => $mime,
                 "modified" => date('c', filemtime($filepath)),
                 "data" => base64_encode(file_get_contents($filepath)),
+                "copyright" => "Testing Content ".date('Y'),
                 "live" => true
             );
         }
