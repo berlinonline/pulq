@@ -29,6 +29,7 @@
                 </ae:parameter>
                 <ae:parameter name="extensions">
                     <ae:parameter>Pulq\Agavi\Renderer\Twig\AgaviConfigExtension</ae:parameter>
+                    <ae:parameter>Pulq\Agavi\Renderer\Twig\ConverjonExtension</ae:parameter>
                 </ae:parameter>
                 <ae:parameter name="default_extension">.twig</ae:parameter>
                 <ae:parameter name="extract_vars">true</ae:parameter>

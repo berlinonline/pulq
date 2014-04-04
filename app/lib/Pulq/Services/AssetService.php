@@ -56,4 +56,32 @@ class AssetService extends BaseElasticSearchService
         $asset_url_path = AgaviConfig::get('core.asset_url_path');
         return $base_href . $asset_url_path . '/'. $this->getRelativeAssetPath($asset);
     }
+
+    public static function getConverjonUrl($url, array $params)
+    {
+        $params['url'] = urlencode($url);
+
+        $host = AgaviConfig::get('converjon.host', 'localhost');
+        $port = AgaviConfig::get('converjon.port', 80);
+        $baseUrl = AgaviConfig::get('converjon.base_path', '/');
+        if ($port == 80)
+        {
+            $converjon_url = sprintf('http://%s%s?', $host, $baseUrl);
+        }
+        else
+        {
+            $converjon_url = sprintf('http://%s:%d%s?', $host, $port, $baseUrl);
+        }
+
+        $paramsString = '';
+
+        foreach ($params as $key => $value)
+        {
+            $paramsString .= ($paramsString ? '&' : '') .  $key . '=' . $value;
+        }
+
+        $converjon_url .= $paramsString;
+
+        return $converjon_url;
+    }
 }
