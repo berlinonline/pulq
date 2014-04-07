@@ -21,9 +21,9 @@
 
     "require": {
         "php": ">=5.3.3",
-        "agavi/agavi": "1.0.*",
+        "agavi/agavi": "1.0.7",
         "twig/twig": "1.*",
-        "ruflin/Elastica": "dev-master",
+        "ruflin/Elastica": "v0.90.10.0",
         "phpunit/phpunit": "3.7.*",
         "zend/acl": "dev-master",
         "phing/phing": "2.4.12",

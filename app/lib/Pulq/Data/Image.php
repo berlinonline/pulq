@@ -41,8 +41,8 @@ abstract class Image extends BaseDataObject
         }
 
         $converjon_url .= $paramsString;
-
-        return $converjon_url;
+        
+	return $converjon_url;
     }
 
     public function getArrayScopes()
@@ -68,7 +68,7 @@ abstract class Image extends BaseDataObject
         if ($this->isConverjonEnabled())
         {
             $url = $this->getConverjonUrl(
-                rtrim(\AgaviContext::getInstance()->getRouting()->getBaseHref(), '/').$this->getAssetUrl(),
+                $this->getAssetUrl(),
                 $params
             );
         }
