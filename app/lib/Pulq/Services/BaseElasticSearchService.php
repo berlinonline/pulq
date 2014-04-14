@@ -63,10 +63,25 @@ abstract class BaseElasticSearchService extends BaseService {
         return $this->index->getType($this->es_type);
     }
 
-    protected function executeQuery(Query $query, $use_live_filter = true)
+    protected function executeFilteredQuery(Query $query)
+    {
+        return $this->executeQuery($query, $live_filter = true, $default_filter = true);
+    }
+
+    protected function executeUnfilteredQuery(Query $query)
+    {
+        return $this->executeQuery($query, $live_filter = false, $default_filter = false);
+    }
+
+    protected function executeQuery(Query $query, $use_live_filter = true, $use_default_filter = true)
     {
         $bool_filter = new Filter\Bool();
-        $bool_filter->addMust($this->getDefaultFilter());
+
+        $bool_filter->addMust(new Filter\MatchAll());
+
+        if ($use_default_filter) {
+            $bool_filter->addMust($this->getDefaultFilter());
+        }
 
         if ($use_live_filter) {
             $live_query = new Query\Field('live', "true");
