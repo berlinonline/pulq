@@ -51,7 +51,7 @@ abstract class BaseElasticSearchService extends BaseService {
     {
         $query = new Query\MatchAll();
 
-        $resultData = $this->executeQuery(Query::create($query));
+        $resultData = $this->executeFilteredQuery(Query::create($query));
 
         $set = $this->extractFromResultSet($resultData);
 
