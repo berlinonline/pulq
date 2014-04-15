@@ -125,4 +125,19 @@ abstract class BaseElasticSearchService extends BaseService {
     protected function getDefaultFilter() {
         return new Filter\MatchAll();
     }
+
+    public function getByPreviewId($preview_id)
+    {
+        $query = new Query\Field('preview_id', $preview_id);
+        $resultData = $this->executeUnfilteredQuery(Query::create($query));
+
+        $set = $this->extractFromResultSet($resultData);
+
+        if ($set->getTotalCount() < 1)
+        {
+            throw new NotFoundException($this->data_object_class . ' not found.');
+        }
+
+        return $set[0];
+    }
 }
