@@ -57,6 +57,7 @@ class Util_LoadFixturesAction extends BaseAction
                 "data" => base64_encode(file_get_contents($filepath)),
                 "copyright" => "Testing Content ".date('Y'),
                 "copyright_url" => "http://example.org",
+                "caption" => "Lorem ipsum dolor sit amet",
                 "live" => true
             );
         }

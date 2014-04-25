@@ -11,6 +11,7 @@ class Asset extends BaseDataObject
     protected $mime;
     protected $copyright;
     protected $copyright_url;
+    protected $caption;
 
     public function getArrayScopes()
     {
@@ -25,7 +26,8 @@ class Asset extends BaseDataObject
                 'mime',
                 'filename',
                 'copyright',
-                'copyright_url'
+                'copyright_url',
+                'caption'
             )
         );
     }
