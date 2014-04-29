@@ -36,7 +36,7 @@
         "phpdocumentor/phpdocumentor": "dev-master",
         "guzzlehttp/guzzle": "4.*",
         "guzzle/plugin": "3.*",
-        "guzzle/cache": "v3.*",
+        "guzzle/cache": "v3.8.1",
         "doctrine/cache": "1.*"
     },
 
