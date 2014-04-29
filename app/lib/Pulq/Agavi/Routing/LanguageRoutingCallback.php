@@ -19,6 +19,12 @@ class LanguageRoutingCallback extends \AgaviRoutingCallback
      */
     protected $availableLocales = array();
 
+
+    /**
+     * a setting value that controls, if a cookie will be used or not.
+     */
+    protected $use_locale_cookie = true;
+
     /**
      * Initialize this ProjectLanguageRoutingCallback instance.
      *
@@ -35,6 +41,8 @@ class LanguageRoutingCallback extends \AgaviRoutingCallback
 
         // store the available locales, that's faster
         $this->availableLocales = $this->context->getTranslationManager()->getAvailableLocales();
+
+        $this->use_locale_cookie = \AgaviConfig::get('core.use_locale_cookie', true);
     }
 
     /**
@@ -55,12 +63,15 @@ class LanguageRoutingCallback extends \AgaviRoutingCallback
         try
         {
             $this->context->getTranslationManager()->getLocaleIdentifier($parameters['locale']);
+
             // yup, worked. now lets set that as a cookie
-            $this->context->getController()->getGlobalResponse()->setCookie(
-                'locale',
-                $parameters['locale'],
-                '+1 month'
-            );
+            if ($this->use_locale_cookie) {
+                $this->context->getController()->getGlobalResponse()->setCookie(
+                    'locale',
+                    $parameters['locale'],
+                    '+1 month'
+                );
+            }
 
             return TRUE;
         }
@@ -90,20 +101,22 @@ class LanguageRoutingCallback extends \AgaviRoutingCallback
         // that's sad. let's see if there's a locale set in a cookie from an earlier visit.
         $requestData = $this->context->getRequest()->getRequestData();
 
-        $cookie = $requestData->getCookie('locale');
+        if ($this->use_locale_cookie) {
+            $cookie = $requestData->getCookie('locale');
 
-        if ($cookie !== NULL)
-        {
-            try
+            if ($cookie !== NULL)
             {
-                $this->translationManager->setLocale($cookie);
+                try
+                {
+                    $this->translationManager->setLocale($cookie);
 
-                return;
-            }
-            catch (\AgaviException $e)
-            {
-                // bad cookie :<
-                $this->context->getController()->getGlobalResponse()->unsetCookie('locale');
+                    return;
+                }
+                catch (\AgaviException $e)
+                {
+                    // bad cookie :<
+                    $this->context->getController()->getGlobalResponse()->unsetCookie('locale');
+                }
             }
         }
 
