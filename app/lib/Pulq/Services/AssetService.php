@@ -61,17 +61,7 @@ class AssetService extends BaseElasticSearchService
     {
         $params['url'] = urlencode($url);
 
-        $host = AgaviConfig::get('converjon.host', 'localhost');
-        $port = AgaviConfig::get('converjon.port', 80);
-        $baseUrl = AgaviConfig::get('converjon.base_path', '/');
-        if ($port == 80)
-        {
-            $converjon_url = sprintf('http://%s%s?', $host, $baseUrl);
-        }
-        else
-        {
-            $converjon_url = sprintf('http://%s:%d%s?', $host, $port, $baseUrl);
-        }
+        $converjon_url = AgaviConfig::get('converjon.base_url', "http://localhost/") . "?";
 
         $paramsString = '';
 
