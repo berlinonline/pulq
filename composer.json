@@ -35,7 +35,9 @@
         "fortawesome/font-awesome": "2.0.0",
         "phpdocumentor/phpdocumentor": "dev-master",
         "guzzlehttp/guzzle": "4.*",
-        "guzzle/plugin": "3.*"
+        "guzzle/plugin": "3.*",
+        "guzzle/cache": "v3.*",
+        "doctrine/cache": "1.*"
     },
 
     "repositories": [
