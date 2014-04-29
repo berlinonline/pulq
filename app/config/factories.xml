@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ae:configurations 
     xmlns:ae="http://agavi.org/agavi/config/global/envelope/1.0" 
-    xmlns="http://agavi.org/agavi/config/parts/factories/1.0">
+    xmlns="http://agavi.org/agavi/config/parts/factories/1.0"
+    xmlns:xi="http://www.w3.org/2001/XInclude">
     <ae:configuration>
         <controller class="AgaviController" />
 
@@ -81,4 +82,10 @@
     <ae:configuration context="console" environment="emergency">
         <routing class="Pulq\Agavi\Routing\EmergencyConsoleRouting" />
     </ae:configuration>
+
+
+    <xi:include href="%core.app_dir%/project/config/factories.xml"
+        xpointer="xmlns(ae=http://agavi.org/agavi/config/global/envelope/1.0) xpointer(/ae:configurations/*)">
+        <xi:fallback />
+    </xi:include>
 </ae:configurations>
