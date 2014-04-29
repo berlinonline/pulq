@@ -33,7 +33,8 @@
         "underscorejs/underscorejs": "1.4.2",
         "twbs/bootstrap": "2.2.2",
         "fortawesome/font-awesome": "2.0.0",
-        "phpdocumentor/phpdocumentor": "dev-master"
+        "phpdocumentor/phpdocumentor": "dev-master",
+        "guzzlehttp/guzzle": "4.*"
     },
 
     "repositories": [
