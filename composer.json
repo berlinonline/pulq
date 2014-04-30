@@ -35,8 +35,7 @@
         "monolog/monolog": "1.5",
         "symfony/console": "~2.4",
         "csswizardry/inuit.css": "5.0.1",
-        "aptoma/twig-markdown": "0.2.*",
-        "dflydev/markdown": "~1.0"
+        "michelf/php-markdown": "~1.0"
     },
 
     "repositories": [
