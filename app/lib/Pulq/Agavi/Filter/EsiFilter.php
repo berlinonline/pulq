@@ -127,7 +127,12 @@ class EsiFilter extends \AgaviFilter implements \AgaviIGlobalFilter
      */
     public function esiInclude($url)
     {
-        if ('/' == $url[0])
+        if (0 == strpos($url, '//'))
+        {
+            $scheme = $this->getContext()->getRequest()->getUrlScheme();
+            $url = $scheme . ':' . $url;
+        }
+        else if ('/' == $url[0])
         {
             $baseUrl = preg_replace('#/+$#', '',
                     $this->getParameter(

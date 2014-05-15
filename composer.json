@@ -34,7 +34,7 @@
         "twbs/bootstrap": "2.2.2",
         "fortawesome/font-awesome": "2.0.0",
         "phpdocumentor/phpdocumentor": "dev-master",
-        "guzzlehttp/guzzle": "4.*",
+        "guzzlehttp/guzzle": "3.*",
         "guzzle/plugin": "3.*",
         "guzzle/cache": "v3.8.1",
         "doctrine/cache": "1.*"
