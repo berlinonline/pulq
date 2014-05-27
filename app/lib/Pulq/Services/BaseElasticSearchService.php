@@ -6,6 +6,7 @@ use Pulq\Exceptions\NotFoundException;
 use Elastica\ResultSet;
 use Elastica\Query;
 use Elastica\Filter;
+use Elastica\Util;
 
 abstract class BaseElasticSearchService extends BaseService {
     protected $es_index = null;
@@ -19,6 +20,8 @@ abstract class BaseElasticSearchService extends BaseService {
 
     public function getById($id)
     {
+        $id = Util::escapeTerm($id);
+
         $query = new Query\Field('_id', $id);
         $resultData = $this->executeQuery(Query::create($query), false);
 
@@ -39,7 +42,9 @@ abstract class BaseElasticSearchService extends BaseService {
             return new DataObjectSet(array());
         }
 
-        $query = new Query\Field('_id', implode(' ', $ids));
+        $ids_string = Util::escapeTerm(implode(' ', $ids));
+
+        $query = new Query\Field('_id', $ids_string);
         $resultData = $this->executeQuery(Query::create($query));
 
         $set = $this->extractFromResultSet($resultData);
@@ -128,6 +133,8 @@ abstract class BaseElasticSearchService extends BaseService {
 
     public function getByPreviewId($preview_id)
     {
+        $preview_id = Util::escapeTerm($preview_id);
+
         $query = new Query\Field('preview_id', $preview_id);
         $resultData = $this->executeUnfilteredQuery(Query::create($query));
 
