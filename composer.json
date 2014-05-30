@@ -37,7 +37,8 @@
         "guzzlehttp/guzzle": "3.*",
         "guzzle/plugin": "3.*",
         "guzzle/cache": "v3.8.1",
-        "doctrine/cache": "1.*"
+        "doctrine/cache": "1.*",
+        "netcarver/textile": "3.5.*"
     },
 
     "repositories": [

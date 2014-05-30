@@ -18,7 +18,7 @@
                     <ae:parameter>php</ae:parameter>
                 </ae:parameter>
             </renderer>
-            <renderer name="twig" class="AgaviTwigRenderer">
+            <renderer name="twig" class="Pulq\Agavi\Renderer\TwigRenderer">
                 <ae:parameter name="assigns">
                     <ae:parameter name="routing">ro</ae:parameter>
                     <ae:parameter name="request">rq</ae:parameter>
