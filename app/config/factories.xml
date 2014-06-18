@@ -41,7 +41,7 @@
 
         <storage class="AgaviSessionStorage" />
 
-        <user class="Pulq\Agavi\User\ZendAclSecurityUser" />
+        <user class="AgaviSecurityUser" />
 
         <translation_manager class="AgaviTranslationManager" />
 
@@ -58,7 +58,7 @@
 
         <routing class="AgaviConsoleRouting" />
 
-        <user class="Pulq\Agavi\User\ZendAclSecurityUser" />
+        <user class="AgaviSecurityUser" />
     </ae:configuration>
 
     <ae:configuration context="web" environment="testing.*">
@@ -82,10 +82,4 @@
     <ae:configuration context="console" environment="emergency">
         <routing class="Pulq\Agavi\Routing\EmergencyConsoleRouting" />
     </ae:configuration>
-
-
-    <xi:include href="%core.app_dir%/project/config/factories.xml"
-        xpointer="xmlns(ae=http://agavi.org/agavi/config/global/envelope/1.0) xpointer(/ae:configurations/*)">
-        <xi:fallback />
-    </xi:include>
 </ae:configurations>

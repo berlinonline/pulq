@@ -64,8 +64,8 @@ class Environment
      */
     protected function __construct($testingEnabled = FALSE)
     {
-
-        $baseDir = dirname(dirname(dirname(dirname(dirname(__FILE__)))));
+        # find the base dir of the project
+        $baseDir = realpath(dirname(__FILE__)."/../../../../../../../");
 
         $localConfigDir =
             $baseDir . DIRECTORY_SEPARATOR .
@@ -154,4 +154,3 @@ class Environment
     }
 }
 
-?>

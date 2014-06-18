@@ -17,12 +17,8 @@
                 <transformation>%core.agavi_dir%/config/xsl/caching.xsl</transformation>
             </handler>
 
-            <handler pattern="%core.config_dir%/access_control.xml" class="Pulq\Agavi\ConfigHandler\AclConfigHandler">
-                <validation>%core.config_dir%/xsd/access_control.xsd</validation>
-            </handler>
-
             <handler pattern="%core.config_dir%/namespaces.xml" class="Pulq\Agavi\ConfigHandler\NamespacesConfigHandler">
-                <validation>%core.config_dir%/xsd/namespaces.xsd</validation>
+                <validation>%core.pulq_dir%/app/config/xsd/namespaces.xsd</validation>
             </handler>
 
             <handler pattern="%core.config_dir%/emergency/routing.xml" class="AgaviRoutingConfigHandler">

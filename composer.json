@@ -18,7 +18,7 @@
     ],
 
     "autoload": {
-        "psr-0": {"Pulq" : "app/lib" }
+        "psr-0": {"" : "app/lib" }
     },
 
     "minimum-stability": "stable",

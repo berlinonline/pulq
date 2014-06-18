@@ -1,9 +1,6 @@
 #!/bin/bash
 
-cd `dirname $0`
-
-# Store the vendor directory
-cd ..
+$original_dir=`pwd`
 
 if [ ! -d vendor ] ; then
 	echo "No vendor directory found, skipping patches.";
@@ -14,8 +11,8 @@ cd vendor
 vendor_directory=`pwd`
 
 # Store the patches directory
-cd ..
-cd patches
+cd berlinonline/pulq/patches
+
 patches_directory=`pwd`
 
 # For each patches directory (e.g. patches/agavi)
@@ -34,4 +31,5 @@ done
 cd ..
 done
 
+cd $original_dir
 exit 0

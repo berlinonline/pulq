@@ -8,8 +8,8 @@ class Util_BuildLinksAction extends BaseAction
 {
     public function execute(AgaviRequestDataHolder $rd)
     {
-        $this->linkModules();
-        $this->linkPub();
+        //$this->linkModules();
+        //$this->linkPub();
         $this->linkConfig();
 
         return 'Success';

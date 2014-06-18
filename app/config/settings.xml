@@ -42,8 +42,8 @@
             <setting name="use_translation">true</setting>
             <setting name="use_locale_cookie">true</setting>
             <setting name="auth_provider">LdapAuthProvider</setting>
-            <setting name="template_dir">%core.app_dir%/../../project/app/templates</setting>
-            <setting name="fixtures_dir">%core.app_dir%/../../project/dev/fixtures</setting>
+            <setting name="template_dir">%core.app_dir%/templates</setting>
+            <setting name="fixtures_dir">%core.base_dir%/dev/fixtures</setting>
         </settings>
 
         <exception_templates>
@@ -52,11 +52,6 @@
         </exception_templates>
     </ae:configuration>
 
-    <!--
-    ####################
-    DEVELOPMENT COMMONS
-    ####################
-    -->
     <ae:configuration environment="development*">
         <settings>
             <setting name="debug">true</setting>
@@ -68,29 +63,13 @@
         <settings prefix="curl.">
             <setting name="timeout">2</setting>
         </settings>
-        <!--<settings>
-            <setting name="auth_provider">SimpleAuthProvider</setting>
-            <setting name="simple_logins">
-                <ae:parameters>
-                    <ae:parameter name="pulq">
-                        <ae:parameter name="pwd">pulq</ae:parameter>
-                        <ae:parameter name="attributes">
-                            <ae:parameter name="acl_role">basic</ae:parameter>
-                        </ae:parameter>
-                    </ae:parameter>
-                </ae:parameters>
-            </setting>
-        </settings>-->
     </ae:configuration>
 
+    <!--
     <xi:include href="%core.app_dir%/config/includes/settings.xml"
         xpointer="xmlns(ae=http://agavi.org/agavi/config/global/envelope/1.0) xpointer(/ae:configurations/*)">
         <xi:fallback />
     </xi:include>
 
-    <xi:include href="%core.app_dir%/project/config/settings.xml"
-        xpointer="xmlns(ae=http://agavi.org/agavi/config/global/envelope/1.0) xpointer(/ae:configurations/*)">
-        <xi:fallback />
-    </xi:include>
-
+-->
 </ae:configurations>
