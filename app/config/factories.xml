@@ -17,7 +17,7 @@
 
         <logger_manager class="AgaviLoggerManager" />
 
-        <request class="AgaviWebRequest">
+        <request class="Pulq\Agavi\Request\PulqWebRequest">
             <!-- <ae:parameter name="method_names">
                 <ae:parameter name="POST">create</ae:parameter>
                 <ae:parameter name="GET">read</ae:parameter>
