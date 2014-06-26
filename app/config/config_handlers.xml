@@ -21,7 +21,7 @@
                 <validation>%core.pulq_dir%/app/config/xsd/namespaces.xsd</validation>
             </handler>
 
-            <handler pattern="%core.config_dir%/emergency/routing.xml" class="AgaviRoutingConfigHandler">
+            <handler pattern="%core.pulq_dir%/app/config/emergency/routing.xml" class="AgaviRoutingConfigHandler">
                 <validation>%core.agavi_dir%/config/xsd/routing.xsd</validation>
                 <transformation>%core.agavi_dir%/config/xsl/routing.xsl</transformation>
             </handler>
