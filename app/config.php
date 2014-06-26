@@ -7,7 +7,7 @@ AgaviConfig::set('core.app_dir', BASE_DIR . "/app");
 AgaviConfig::set('core.config_dir', BASE_DIR . "/app/config");
 AgaviConfig::set('core.pub_dir', BASE_DIR . "/pub");
 AgaviConfig::set('core.project_dir', BASE_DIR);
-AgaviConfig::set('core.modules_dir', BASE_DIR . 'app/modules');
+AgaviConfig::set('core.modules_dir', BASE_DIR . '/app/modules');
 AgaviConfig::set('core.agavi_dir', VENDOR_DIR . "/agavi/agavi/src");
 AgaviConfig::set('core.pulq_dir', VENDOR_DIR . "/berlinonline/pulq");
 

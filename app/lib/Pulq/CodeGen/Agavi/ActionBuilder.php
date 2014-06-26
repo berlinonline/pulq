@@ -16,8 +16,9 @@ class ActionBuilder extends TwigBuilder
 
     public function __construct($module_name, $action_name)
     {
-        $this->action_dir = AgaviConfig::get('core.app_dir') .
-            '/../../project/modules/' . $module_name . '/impl/' . $action_name;
+        $this->action_dir = AgaviConfig::get('core.modules_dir') .
+            '/' . $module_name .
+            '/impl/' . $action_name;
 
         $this->module_name = $module_name;
         $this->action_name = $action_name;

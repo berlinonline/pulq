@@ -15,8 +15,8 @@ class ModuleBuilder extends TwigBuilder
 
     public function __construct($module_name)
     {
-        $this->module_dir = AgaviConfig::get('core.app_dir') .
-            '/../../project/modules/' . $module_name;
+        $this->module_dir = AgaviConfig::get('core.modules_dir') .
+            '/' . $module_name;
 
         $this->module_name = $module_name;
         parent::__construct();
