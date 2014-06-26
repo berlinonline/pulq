@@ -8,20 +8,20 @@ namespace Pulq\Agavi\Renderer;
  */
 class TwigRenderer extends \AgaviTwigRenderer
 {
-	protected function getEngine()
-	{
-		if(!$this->twig) {
-			$this->twig = $this->createEngineInstance();
-			
-			// register extensions
-			$this->twig->addExtension(new Twig\Extension\PulqTwigExtension());
+    protected function getEngine()
+    {
+        if(!$this->twig) {
+            $this->twig = $this->createEngineInstance();
 
-			// assigns can be set as globals
-			foreach($this->assigns as $key => $getter) {
-				$this->twig->addGlobal($key, $this->context->$getter());
-			}
-		}
+            // register extensions
+            $this->twig->addExtension(new Twig\Extension\PulqTwigExtension());
 
-		return $this->twig;
-	}
+            // assigns can be set as globals
+            foreach($this->assigns as $key => $getter) {
+                $this->twig->addGlobal($key, $this->context->$getter());
+            }
+        }
+
+        return $this->twig;
+    }
 }
