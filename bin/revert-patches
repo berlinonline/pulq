@@ -1,0 +1,16 @@
+#!/bin/bash
+
+ORIGINAL_DIR=`pwd`
+
+if [ ! -d vendor/agavi/agavi ] ; then
+    echo "No agavi directory found, skipping Agavi.";
+    exit 1
+fi
+
+cd vendor/agavi/agavi
+git checkout .
+git clean -f .
+
+cd $ORIGINAL_DIR
+exit 0
+
