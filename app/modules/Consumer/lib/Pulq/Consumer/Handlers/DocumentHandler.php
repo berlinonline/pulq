@@ -10,6 +10,9 @@ use Elastica\Document;
 
 class DocumentHandler
 {
+    protected $database;
+    protected $index_name;
+
     protected $document_id;
     protected $document_type;
     protected $document = array();
@@ -35,25 +38,30 @@ class DocumentHandler
 
         $database_name = AgaviConfig::get('consumer.database', 'default');
 
-        $database = AgaviContext::getInstance()
+        $this->database = AgaviContext::getInstance()
             ->getDatabaseManager()->getDatabase($database_name);
-
-        $this->es_index = $database->getResource();
     }
 
     public function saveDocument()
     {
-        $es_type = $this->es_index->getType($this->document_type);
+        $params = array(
+            "index" => $this->database->getIndexName(),
+            "type" => $this->document_type,
+            "id" => $this->document_id,
+            "body" => $this->document,
+        );
 
-        $es_document = new Document($this->document_id, $this->document);
-
-        $es_type->addDocument($es_document);
+        $this->database->getConnection()->index($params);
     }
 
     public function deleteDocument()
     {
-        $es_type = $this->es_index->getType($this->document_type);
+        $params = array(
+            "index" => $this->database->getIndexName(),
+            "type" => $this->document_type,
+            "id" => $this->document_id,
+        );
 
-        $es_type->deleteById($this->document_id);
+        $this->database->getConnection()->delete($params);
     }
 }

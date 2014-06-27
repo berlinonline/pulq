@@ -10,69 +10,38 @@ use Elastica\Document;
 use \AgaviDatabaseException;
 use \AgaviDatabaseManager;
 
+use Elasticsearch\Client;
+use Elasticsearch\Common\Exceptions\Missing404Exception;
+
 class Database extends PulqDatabase
 {
-    const DEFAULT_SETUP = 'Pulq\Agavi\Database\ElasticSearch\DatabaseSetup';
+    const DEFAULT_HOST = 'localhost:9200';
 
-    const DEFAULT_PORT = 9200;
-
-    const DEFAULT_HOST = 'localhost';
-
-    const DEFAULT_TRANSPORT = 'Http';
-
-    /**
-     * The client used to talk to elastic search.
-     *
-     * @var Elastica_Client
-     */
     protected $connection;
-
-    /**
-     * The elastic search index that is considered as our 'connection'
-     * which stands for the resource this class works on.
-     *
-     * @var Elastica_Index
-     */
-    protected $resource;
-
+    protected $index_config;
 
     public function initialize(AgaviDatabaseManager $database_manager, array $parameters = array())
     {
         parent::initialize($database_manager, $parameters);
         $this->index_config = $this->getParameter('index');
+
+        $this->connect();
     }
 
     protected function connect()
     {
-        try
-        {
-            $indexName = $this->index_config['name'];
+        $params = array(
+            'hosts'      => array(
+                $this->getParameter('host', self::DEFAULT_HOST),
+            ),
+        );
 
-            if (! $indexName)
-            {
-                throw new AgaviDatabaseException("Missing required index param in current configuration.");
-            }
-
-            $this->connection = new Elastica\Client(
-                array(
-                    'host'      => $this->getParameter('host', self::DEFAULT_HOST),
-                    'port'      => $this->getParameter('port', self::DEFAULT_PORT),
-                    'transport' => $this->getParameter('transport', self::DEFAULT_TRANSPORT)
-                )
-            );
-
-            $this->resource = $this->connection->getIndex($indexName);
-        }
-        catch (Exception $e)
-        {
-            throw new \AgaviDatabaseException($e->getMessage(), $e->getCode(), $e);
-        }
+        $this->connection = new Client($params);
     }
 
     public function shutdown()
     {
         $this->connection = NULL;
-        $this->resource = NULL;
     }
 
     public function setup()
@@ -81,15 +50,11 @@ class Database extends PulqDatabase
         $index_name = $this->getRealIndexName($alias_name);
 
         $this->createIndex($index_name);
-
         $this->switchIndexAlias($alias_name, $index_name);
-
     }
 
     protected function createIndex($index_name)
     {
-        $connection = $this->getConnection();
-
         $definition_file = $this->index_config['definition_file'];
         $definition = json_decode(file_get_contents($definition_file), true);
 
@@ -98,10 +63,12 @@ class Database extends PulqDatabase
             $definition['mappings'] = $mappings;
         }
 
-        $index = $connection->getIndex($index_name);
-        $index->create($definition);
+        $params = array(
+            "index" => $index_name,
+            "body" => $definition,
+        );
 
-        return $index;
+        $this->connection->indices()->create($params);
     }
 
     protected function getRealIndexName($name)
@@ -109,21 +76,35 @@ class Database extends PulqDatabase
         return $name . '_' . date('Y-m-d_H-i-s');
     }
 
-    protected function switchIndexAlias($alias_name, $index_name, $delete_old = false)
+    protected function switchIndexAlias($alias_name, $index_name, $delete_old_index = false)
     {
-        $connection = $this->getConnection();
+        try {
+            $alias = $this->connection->indices()->getAlias(array(
+                "name" => $alias_name,
+            ));
 
-        $existing_indices = array();
-        $status = new Status($connection);
-        foreach ($status->getIndicesWithAlias( $alias_name ) as $aliased_index ) {
-            $existing_indices[] = $aliased_index;
+            $aliased_index_names = array_keys($alias);
+
+            foreach($aliased_index_names as $iname) {
+                $this->connection->indices()->deleteAlias(array(
+                    "name" => $alias_name,
+                    "index" => $iname,
+                ));
+            }
+        } catch (Missing404Exception $exception) {
+
         }
 
-        $connection->getIndex($index_name)->addAlias($alias_name, true);
+        $this->connection->indices()->putAlias(array(
+            "name" => $alias_name,
+            "index" => $index_name,
+        ));
 
-        if ($delete_old) {
-            foreach ($existing_indices as $existing_index) {
-                $existing_index->delete();
+        if ($delete_old_index) {
+            foreach($aliased_index_names as $iname) {
+                $this->connection->indices()->delete(array(
+                    "index" => $iname
+                ));
             }
         }
     }
@@ -139,41 +120,56 @@ class Database extends PulqDatabase
         return $mappings;
     }
 
+    public function getIndexName()
+    {
+        $index_config = $this->index_config;
+        return $index_config['name'];
+    }
+
     public function reindex($delete_old_index = false)
     {
         $alias_name = $this->index_config['name'];
         $index_name = $this->getRealIndexName($alias_name);
 
         //create the new index
-        $new_index = $this->createIndex($index_name);
+        $this->createIndex($index_name);
+
+        $scroll_size = 20;
 
         //Prepare the scan search
-        $search = new Search($this->getConnection());
-        $search->addIndex($alias_name);
-        $result = $search->search(array(), array(
-            Search::OPTION_SEARCH_TYPE => Search::OPTION_SEARCH_TYPE_SCAN,
-            Search::OPTION_SCROLL => '5m',
-            Search::OPTION_SIZE => 20,
-        ));
-        $scroll_id = $result->getResponse()->getScrollId();
+        $params = array(
+            "index" => $alias_name,
+            "scroll" => "5m",
+            "size" => $scroll_size,
+        );
 
-        //execute scan until no more documents are left
+        $results = $this->connection->search($params);
+        $scroll_id = $results["_scroll_id"];
+        $hits = $results["hits"]["hits"];
+
         do {
-            $response = $search->search(array(), array(
-                Search::OPTION_SCROLL => '5m',
-                Search::OPTION_SCROLL_ID => $scroll_id,
-            ));
-
-            $results = $response->getResults();
-            $n = count($results);
-
-            foreach($results as $result) {
-                $new_index->getType($result->getType())->addDocument(
-                    new Document($result->getId(), $result->getData())
+            foreach($hits as $hit) {
+                $new_params = array(
+                    "index" => $index_name,
+                    "type" => $hit["_type"],
+                    "id" => $hit["_id"],
+                    "body" => $hit["_source"],
                 );
+
+                $this->connection->index($new_params);
             }
 
-        } while ($n > 0);
+            // do the next scroll step
+            $params = array(
+                "scroll" => "5m",
+                "scroll_id" => $scroll_id,
+            );
+
+            $results = $this->connection->scroll($params);
+            $scroll_id = $results["_scroll_id"];
+            $hits = $results["hits"]["hits"];
+
+        } while (count($hits) > 0);
 
         //Switch alias to point to the new index
         $this->switchIndexAlias($alias_name, $index_name, $delete_old_index);
