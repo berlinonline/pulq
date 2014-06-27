@@ -1,6 +1,5 @@
 <?php
 require(VENDOR_DIR."/autoload.php");
-require(VENDOR_DIR."/agavi/agavi/src/agavi.php");
 
 AgaviConfig::set('core.vendor_dir', VENDOR_DIR);
 AgaviConfig::set('core.app_dir', BASE_DIR . "/app");

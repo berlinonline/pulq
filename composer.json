@@ -25,7 +25,7 @@
 
     "require": {
         "php": ">=5.3.3",
-        "agavi/agavi": "1.0.*",
+        "agavi/agavi": "1.0.7",
         "zendframework/zend-permissions-acl": "2.2.*",
         "twig/twig": "1.14.*",
         "ruflin/elastica": "0.90.*",
