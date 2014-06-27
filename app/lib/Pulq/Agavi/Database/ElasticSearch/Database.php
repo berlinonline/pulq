@@ -80,7 +80,6 @@ class Database extends PulqDatabase
         $alias_name = $this->index_config['name'];
         $index_name = $this->getRealIndexName($alias_name);
 
-
         $this->createIndex($index_name);
 
         $this->switchIndexAlias($alias_name, $index_name);

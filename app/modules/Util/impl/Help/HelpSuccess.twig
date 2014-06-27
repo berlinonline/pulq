@@ -10,16 +10,18 @@ Maintenance targets
     tail-logs       Prints lates log entries and keeps running to also print
                     changes of the logs.
 
+                    Includes application logs and PHP logs.
+
 Setup targets
 
-    new             Creates a new project skeleton and sets it up initially
-                    <error>This is potentially destructive!</error>
-
     install         Sets up a new working copy of an existing project
-                    Inludces dependencies, symlinks and static files
+                    Installs all dependencies
+                    Also runs 'prepare'
 
     update          Brings the installed dependencies to their most current allowed versions
-                    Also rebuilds all symlinks.
+                    Also runs 'prepare'
+
+    prepare         Rebuilds symlinks, configuration and static files (JS/CSS)
 
     environment     Runs the wizard for creating the working copy environment
                     <error>This is potentially destructive!</error>
@@ -61,15 +63,9 @@ Development targets
     You added a new dependency or changed the version of an existing one
         make update
 
-    You want to set up a new project
-        make new
-        make module
-        make action
-
     A change in some config file or template is not showing any effect
         make cc
 
-    An action is not found or a route is not matched
-        make symlinks
-        make config
+    An action is not found, a route is not matched or some config setting is not available.
+        make prepare
 
