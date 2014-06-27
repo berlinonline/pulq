@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ae:configurations 
+    xmlns:ae="http://agavi.org/agavi/config/global/envelope/1.0" 
+    xmlns="http://agavi.org/agavi/config/parts/routing/1.0" 
+    xmlns:xi="http://www.w3.org/2001/XInclude">
+    <ae:configuration environment="emergency" context="web">
+    </ae:configuration>
+
+    <ae:configuration environment="emergency" context="console">
+        <routes>
+            <xi:include 
+                href="%core.module_dir%/Util/config/routing.xml"
+                xpointer="
+                    xmlns(ae=http://agavi.org/agavi/config/global/envelope/1.0)
+                    xmlns(r=http://agavi.org/agavi/config/parts/routing/1.0)
+                    xpointer(//ae:configuration[@context='console']/*)">
+                <xi:fallback />
+            </xi:include>
+        </routes>
+    </ae:configuration>
+</ae:configurations>

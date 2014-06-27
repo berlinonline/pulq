@@ -1,0 +1,15 @@
+{% extends "base/agavi_configuration.xml.twig" %}
+
+{% block configurations %}
+    {% for module in modules %}
+        <xi:include
+            href="../../modules/{{module}}/config/autoload.xml"
+            xpointer="
+                xmlns(ae=http://agavi.org/agavi/config/global/envelope/1.0)
+                xpointer(/ae:configurations/*)
+            "
+        >
+            <xi:fallback />
+        </xi:include>
+    {% endfor %}
+{% endblock %}

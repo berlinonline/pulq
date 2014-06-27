@@ -1,0 +1,29 @@
+{% extends "base/routing.xml.twig" %}
+
+{% block web %}
+    {% for module in modules %}
+        <xi:include
+            href="../../modules/{{module}}/config/routing.xml"
+            xpointer="
+                xmlns(ae=http://agavi.org/agavi/config/global/envelope/1.0)
+                xmlns(r=http://agavi.org/agavi/config/parts/routing/1.0)
+                xpointer(//ae:configuration[@context='web']/r:route)"
+        >
+            <xi:fallback />
+        </xi:include>
+
+    {% endfor %}
+{% endblock %}
+
+{% block console %}
+    {% for module in modules %}
+        <xi:include
+            href="../../modules/{{module}}/config/routing.xml"
+            xpointer="
+                xmlns(ae=http://agavi.org/agavi/config/global/envelope/1.0)
+                xmlns(r=http://agavi.org/agavi/config/parts/routing/1.0)
+                xpointer(//ae:configuration[@context='console']/r:route)"
+        />
+    {% endfor %}
+{% endblock %}
+

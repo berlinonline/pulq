@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ae:configurations 
+    xmlns="http://berlinonline.de/schemas/pulq/config/namespaces/1.0"
+    xmlns:ae="http://agavi.org/agavi/config/global/envelope/1.0" 
+    xmlns:xi="http://www.w3.org/2001/XInclude">
+
+    <ae:configuration environment="emergency">
+        <namespaces>
+            <namespace name="Pulq\Util">%core.module_dir%/Util/lib</namespace>
+
+        </namespaces>
+    </ae:configuration>
+
+</ae:configurations>
+

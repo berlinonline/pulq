@@ -1,65 +1,167 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ae:configurations 
-    xmlns:ae="http://agavi.org/agavi/config/global/envelope/1.0" 
-    xmlns="http://agavi.org/agavi/config/parts/logging/1.0">
+<!DOCTYPE namespaces [
+    <!ENTITY ael "xmlns(ae=http://agavi.org/agavi/config/global/envelope/1.0) xmlns(l=http://agavi.org/agavi/config/parts/logging/1.0)">
+]>
+<ae:configurations xmlns:ae="http://agavi.org/agavi/config/global/envelope/1.0" xmlns="http://agavi.org/agavi/config/parts/logging/1.0" xmlns:xi="http://www.w3.org/2001/XInclude">
     <ae:configuration>
-        <loggers default="app">
-            <!-- logs only DEBUG messages -->
-            <logger name="app" class="AgaviLogger" level="AgaviLogger::ALL ^ AgaviLogger::DEBUG">
+
+        <loggers default="default">
+
+            <!-- log all messages, appenders decide if they actually want to log at all -->
+            <logger name="default" class="Pulq\Agavi\Logging\Logger">
                 <appenders>
-                    <appender>ApplicationLogAppender</appender>
+                    <appender>default</appender>
+                    <appender>fingers_crossed</appender>
                 </appenders>
             </logger>
-            <logger name="debug" class="AgaviLogger" level="AgaviLogger::DEBUG">
+
+            <!-- accept only DEBUG messages, appenders won't get other log level messages -->
+            <logger name="debug" class="Pulq\Agavi\Logging\Logger" level="\AgaviLogger::DEBUG">
                 <appenders>
-                    <appender>DebugLogAppender</appender>
+                    <appender>debug-only</appender>
                 </appenders>
             </logger>
-            <logger name="error" class="AgaviLogger" level="AgaviLogger::ALL ^ AgaviLogger::DEBUG ^ AgaviLogger::INFO">
+
+            <!-- accept all messages -->
+            <logger name="error" class="Pulq\Agavi\Logging\Logger">
                 <appenders>
-                    <appender>ErrorLogAppender</appender>
+                    <appender>error</appender> <!-- log ERROR and below (see appender) -->
+                    <appender>fingers_crossed</appender>
                 </appenders>
             </logger>
-            <logger name="login" class="AgaviLogger" level="AgaviLogger::ALL ^ AgaviLogger::DEBUG">
+
+            <!-- accept all messages -->
+            <logger name="import" class="Pulq\Agavi\Logging\Logger">
                 <appenders>
-                    <appender>LoginLogAppender</appender>
+                    <appender>import</appender>
+                    <appender>fingers_crossed</appender>
                 </appenders>
             </logger>
+
+            <!-- accept all messages -->
+            <logger name="mail" class="Pulq\Agavi\Logging\Logger">
+                <appenders>
+                    <appender>mail</appender>
+                    <appender>fingers_crossed</appender>
+                </appenders>
+            </logger>
+
+            <!-- log all authentication related messages -->
+            <logger name="auth" class="Pulq\Agavi\Logging\Logger">
+                <appenders>
+                    <appender>auth</appender>
+                    <appender>fingers_crossed</appender>
+                </appenders>
+            </logger>
+
         </loggers>
 
         <appenders>
+
+            <!-- DefaultSetup specifies a Monolog\Logger with FingersCrossedHandler that logs all messages above DEBUG
+                 level to syslog and file when a CRITICAL log message appears. For parameters see the source. -->
+            <appender name="fingers_crossed" class="Pulq\Agavi\Logging\MonologLoggerAppender" layout="default">
+                <ae:parameters>
+                    <ae:parameter name="channel">critical</ae:parameter>
+                    <ae:parameter name="setup">Pulq\Agavi\Logging\Monolog\DefaultSetup</ae:parameter>
+                </ae:parameters>
+            </appender>
+
+            <!-- FirePhpSetup specifies a Monolog\Logger with FirePHPHandler that logs all messages above DEBUG
+                 level via FirePHP and thus you may see those messages in Firefox etc. For parameters see source. -->
+            <appender name="firephp" class="Pulq\Agavi\Logging\MonologLoggerAppender" layout="default">
+                <ae:parameters>
+                    <ae:parameter name="channel">%core.clean_environment%</ae:parameter>
+                    <ae:parameter name="setup">Pulq\Agavi\Logging\Monolog\FirePhpSetup</ae:parameter>
+                </ae:parameters>
+            </appender>
+
+            <!-- ChromePhpSetup specifies a Monolog\Logger with ChromePHPHandler that logs all messages above DEBUG
+                 level via ChromePHP and thus you may see those messages in Chrome etc. For parameters see source. -->
+            <appender name="chromephp" class="Pulq\Agavi\Logging\MonologLoggerAppender" layout="default">
+                <ae:parameters>
+                    <ae:parameter name="channel">%core.clean_environment%</ae:parameter>
+                    <ae:parameter name="setup">Pulq\Agavi\Logging\Monolog\ChromePhpSetup</ae:parameter>
+                </ae:parameters>
+            </appender>
+
+            <!-- log all messages to %core.app_dir%/log/default.log -->
+            <appender name="default" class="Pulq\Agavi\Logging\FileLoggerAppender" layout="default" />
+
+            <!-- log all messages to %core.app_dir%/log/login.log -->
+            <appender name="auth" class="Pulq\Agavi\Logging\VerboseLoggerAppender" layout="default" />
+
+            <!-- log all messages to %core.app_dir%/log/trace.log -->
+            <appender name="trace" class="Pulq\Agavi\Logging\FileLoggerAppender" layout="default" />
+
+            <!-- log all messages to %core.app_dir%/log/import.log -->
+            <appender name="import" class="Pulq\Agavi\Logging\FileLoggerAppender" layout="default" />
+
+            <!-- log all messages to %core.app_dir%/log/mail.log -->
+            <appender name="mail" class="Pulq\Agavi\Logging\FileLoggerAppender" layout="default" />
+
+            <!-- log all messages to %core.app_dir%/log/debug.log -->
+            <appender name="debug-only" class="Pulq\Agavi\Logging\FileLoggerAppender" layout="default">
+                <ae:parameters>
+                    <!-- logs to EMERGENCY, CRITICAL, ALERT, ERROR, WARNING, NOTICE, INFO and DEBUG, BUT as the
+                         the "debug" logger only accepts DEBUG messages there will be only those messages in the log. -->
+                    <ae:parameter name="max_level">AgaviLogger::DEBUG</ae:parameter>
+                </ae:parameters>
+            </appender>
+
+            <!-- log all messages to error.log -->
+            <appender name="error" class="Pulq\Agavi\Logging\FileLoggerAppender" layout="default">
+                <ae:parameters>
+                    <!-- logs to EMERGENCY, CRITICAL, ALERT and ERROR -->
+                    <ae:parameter name="max_level">AgaviLogger::ERROR</ae:parameter>
+                </ae:parameters>
+            </appender>
+            <!--
+            <appender name="phpdebugtoolbar" class="PhpDebugToolbarLoggerAppender" layout="default" />
+            -->
             <!--
                 Debug logs are rotated in a 7 day (AgaviRotatingFileLoggerAppender default) cycle
                 Use 'cycle' parameter to alter the cycle.
-            -->
             <appender name="ApplicationLogAppender" class="AgaviRotatingFileLoggerAppender" layout="DateTimeLayout">
                 <ae:parameters>
                     <ae:parameter name="dir">%core.app_dir%/log/</ae:parameter>
                     <ae:parameter name="prefix">app-</ae:parameter>
                 </ae:parameters>
             </appender>
-            <appender name="DebugLogAppender" class="AgaviRotatingFileLoggerAppender" layout="DateTimeLayout">
-                <ae:parameters>
-                    <ae:parameter name="dir">%core.app_dir%/log/</ae:parameter>
-                    <ae:parameter name="prefix">debug-</ae:parameter>
-                </ae:parameters>
-            </appender>
-            <appender name="ErrorLogAppender" class="AgaviRotatingFileLoggerAppender" layout="DateTimeLayout">
-                <ae:parameters>
-                    <ae:parameter name="dir">%core.app_dir%/log/</ae:parameter>
-                    <ae:parameter name="prefix">error-</ae:parameter>
-                </ae:parameters>
-            </appender>
-            <appender name="LoginLogAppender" class="AgaviRotatingFileLoggerAppender" layout="DateTimeLayout">
-                <ae:parameters>
-                    <ae:parameter name="dir">%core.app_dir%/log/</ae:parameter>
-                    <ae:parameter name="prefix">login-</ae:parameter>
-                </ae:parameters>
-            </appender>
+            -->
+
         </appenders>
 
         <layouts>
-            <layout name="DateTimeLayout" class="AgaviTimestampLoggerLayout"/>
+            <layout name="default" class="Pulq\Agavi\Logging\LoggerLayout" />
+            <layout name="DateTimeLayout" class="AgaviTimestampLoggerLayout" />
         </layouts>
+
     </ae:configuration>
+
+    <!--
+        Create a logging.xml in app/project/config/ and extend logging configuration as you need. You can use the normal
+        Agavi merging of context and environment specific config blocks to your advantage as well. Please note, that it
+        is not possible to remove appenders from already defined loggers or add appenders with names that already exist.
+
+        Example to add FirePHP and ChromePHP to default logger in development environments for all contexts (cli and web)
+        and add the PhpDebugToolbarLoggerAppender to development environments in the web context (as it modifies HTML):
+
+        <ae:configurations xmlns:ae="http://agavi.org/agavi/config/global/envelope/1.0"
+            xmlns="http://agavi.org/agavi/config/parts/logging/1.0"
+            xmlns:xi="http://www.w3.org/2001/XInclude">
+            <ae:configuration environment="^development.+(?!-testing)$" context="web">
+                <loggers default="default">
+                    <logger name="default">
+                        <appenders>
+                            <appender>firephp</appender>
+                            <appender>chromephp</appender>
+                            <appender>phpdebugtoolbar</appender>
+                        </appenders>
+                    </logger>
+                </loggers>
+            </ae:configuration>
+        </ae:configurations>
+    -->
+
 </ae:configurations>

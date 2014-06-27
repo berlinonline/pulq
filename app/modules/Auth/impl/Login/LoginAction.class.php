@@ -1,24 +1,9 @@
 <?php
 
-/**
- * The Auth_LoginAction class provides login support.
- *
- * @version         $Id$
- * @copyright       BerlinOnline Stadtportal GmbH & Co. KG
- * @author          Tom Anheyer <Tom.Anheyer@BerlinOnline.de>
- * @author          Thorsten Schmitt-Rink <thorsten.schmitt-rink@berlinonline.de>
- * @package         Auth
- * @subpackage      Mvc
- */
-class Auth_LoginAction extends AuthBaseAction
+use Pulq\Auth\Agavi\Action\BaseAction;
+
+class Auth_LoginAction extends BaseAction
 {
-    /**
-     * Execute our read logic, hence get the login prompt up.
-     *
-     * @param AgaviParameterHolder $parameters
-     *
-     * @return string The name of the view to execute.
-     */
     public function executeRead(AgaviParameterHolder $parameters)
     {
         // Forward to write if someone is passing our action the required parameters for logging in.
@@ -29,13 +14,6 @@ class Auth_LoginAction extends AuthBaseAction
         return 'Input';
     }
 
-    /**
-     * Try to login based on the account information, that is provided with our given $rd.
-     *
-     * @param       AgaviParameterHolder $parameters
-     *
-     * @return      string The name of the view to execute.
-     */
     public function executeWrite(AgaviParameterHolder $parameters)
     {
         $logger = $this->getContext()->getLoggerManager()->getLogger('login');
@@ -104,13 +82,6 @@ class Auth_LoginAction extends AuthBaseAction
         return 'Error';
     }
 
-    /**
-     * This method handles validation errors that occur upon our received input data.
-     *
-     * @param       AgaviRequestDataHolder $parameters
-     *
-     * @return      string The name of the view to execute.
-     */
     public function handleError(AgaviRequestDataHolder $parameters)
     {
         $logger = $this->getContext()->getLoggerManager()->getLogger('login');
@@ -130,16 +101,8 @@ class Auth_LoginAction extends AuthBaseAction
         return 'Input';
     }
 
-    /**
-     * Return whether this action requires authentication
-     * before execution.
-     *
-     * @return      boolean
-     */
     public function isSecure()
     {
         return FALSE;
     }
 }
-
-?>

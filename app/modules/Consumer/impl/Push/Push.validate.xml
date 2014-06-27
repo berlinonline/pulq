@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ae:configurations xmlns="http://agavi.org/agavi/config/parts/validators/1.0" xmlns:ae="http://agavi.org/agavi/config/global/envelope/1.0"
+    parent="%core.config_dir%/validators.xml">
+
+    <ae:configuration context="web">
+        <validators method="write">
+            <validator class="Pulq\Consumer\Agavi\Validate\SignedRequestValidator">
+                <argument>id</argument>
+                <errors>
+                    <error for="not_signed">Request is not properly signed</error>
+                    <error for="id_malformed">ID is malformed. Expected is [type]-[nr], like "asset-42".</error>
+                </errors>
+            </validator>
+            <validator class="Pulq\Consumer\Agavi\Validate\DocumentValidator" source="files">
+                <arguments>
+                    <argument>put_file</argument>
+                </arguments>
+            </validator>
+        </validators>
+
+        <validators method="remove">
+            <validator class="Pulq\Consumer\Agavi\Validate\SignedRequestValidator">
+                <argument>id</argument>
+                <errors>
+                    <error for="not_signed">Request is not properly signed</error>
+                    <error for="id_malformed">ID is malformed. Expected is [type]-[nr], like "asset-42".</error>
+                </errors>
+            </validator>
+        </validators>
+    </ae:configuration>
+</ae:configurations>

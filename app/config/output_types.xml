@@ -1,11 +1,73 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ae:configurations 
-    xmlns:ae="http://agavi.org/agavi/config/global/envelope/1.0" 
-    xmlns="http://agavi.org/agavi/config/parts/output_types/1.0" 
+<ae:configurations
+    xmlns:ae="http://agavi.org/agavi/config/global/envelope/1.0"
+    xmlns="http://agavi.org/agavi/config/parts/output_types/1.0"
     xmlns:xi="http://www.w3.org/2001/XInclude">
-     <xi:include 
-        href="%core.app_dir%/project/config/output_types.xml"
-        xpointer="xmlns(ae=http://agavi.org/agavi/config/global/envelope/1.0) xmlns(ot=http://agavi.org/agavi/config/parts/output_types/1.0)
-        xpointer(//ae:configurations/*)">
-    </xi:include>
+
+    <ae:configuration context="web">
+        <output_types default="html">
+            <output_type name="html">
+                <xi:include
+                    xpointer="xmlns(ae=http://agavi.org/agavi/config/global/envelope/1.0) xmlns(ot=http://agavi.org/agavi/config/parts/output_types/1.0) xpointer(/ae:configurations/ae:sandbox/ot:renderers)"
+                    href="ot_sandbox.xml"/>
+                <layouts default="default">
+                    <layout name="default">
+                        <!-- include common layer definitions from the sandbox -->
+                        <xi:include xpointer="xmlns(ae=http://agavi.org/agavi/config/global/envelope/1.0) xmlns(ot=http://agavi.org/agavi/config/parts/output_types/1.0) xpointer(/ae:configurations/ae:sandbox/ot:layers/*)"
+                            href="ot_sandbox.xml"/>
+
+
+                        <!-- and then define those special tp this layout -->
+                        <layer name="decorator">
+                            <!--<slots>
+                                <slot name="header" module="Common" action="Header" />
+                            </slots>-->
+                            <ae:parameter name="directory">%core.template_dir%</ae:parameter>
+                            <ae:parameter name="template">Master</ae:parameter>
+                        </layer>
+                    </layout>
+
+                    <!--
+                        "slot" is a minimal layout without any decorattion. just the view output.
+                        Use it in views that are used as a slot or for HTML fragments in Ajax requests.
+                    -->
+                    <layout name="slot">
+                        <!-- include common layer definitions from the sandbox -->
+                        <xi:include xpointer="xmlns(ae=http://agavi.org/agavi/config/global/envelope/1.0) xmlns(ot=http://agavi.org/agavi/config/parts/output_types/1.0) xpointer(/ae:configurations/ae:sandbox/ot:layers/*)"
+                            href="ot_sandbox.xml"/>
+                    </layout>
+                </layouts>
+                <ae:parameter name="http_headers">
+                    <ae:parameter name="Content-Type">text/html; charset=UTF-8</ae:parameter>
+                </ae:parameter>
+            </output_type>
+
+            <output_type name="json">
+                <ae:parameter name="http_headers">
+                    <ae:parameter name="Content-Type">application/json; charset=UTF-8</ae:parameter>
+                </ae:parameter>
+            </output_type>
+
+            <output_type name="binary">
+                <ae:parameter name="http_headers">
+                    <ae:parameter name="Content-Type">application/octet-stream;</ae:parameter>
+                </ae:parameter>
+            </output_type>
+
+            <!-- Output type for RSS feeds
+            <output_type name="rss">
+                <ae:parameter name="http_headers">
+                    <ae:parameter name="Content-Type">application/rss+xml;</ae:parameter>
+                </ae:parameter>
+            </output_type>
+            -->
+        </output_types>
+    </ae:configuration>
+
+    <ae:configuration context="console">
+        <output_types default="text">
+            <output_type name="text" />
+        </output_types>
+    </ae:configuration>
 </ae:configurations>
+

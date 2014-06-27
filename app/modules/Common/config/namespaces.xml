@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ae:configurations
+    xmlns="http://berlinonline.de/schemas/pulq/config/namespaces/1.0"
+    xmlns:ae="http://agavi.org/agavi/config/global/envelope/1.0"
+>
+    <ae:configuration>
+        <namespaces>
+            <namespace name="Pulq\Common">%core.module_dir%/Common/lib</namespace>
+        </namespaces>
+    </ae:configuration>
+</ae:configurations>
+

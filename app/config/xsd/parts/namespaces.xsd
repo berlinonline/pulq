@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns="http://berlinonline.de/schemas/pulq/config/namespaces/1.0"
+    xmlns:types_1_0="http://agavi.org/agavi/config/global/types/1.0"
+    targetNamespace="http://berlinonline.de/schemas/pulq/config/namespaces/1.0"
+    elementFormDefault="qualified">
+
+    <!-- agavi config envelope -->
+
+    <xs:group name="configuration">
+        <xs:choice>
+            <xs:element name="namespaces" type="namespaces" minOccurs="0" maxOccurs="1" />
+        </xs:choice>
+    </xs:group>
+
+    <xs:complexType name="namespace" mixed="true">
+        <xs:attribute name="name" type="types_1_0:php_class" use="required" />
+    </xs:complexType>
+
+    <xs:complexType name="namespaces">
+        <xs:sequence>
+            <xs:choice maxOccurs="unbounded">
+                <xs:element name="namespace" type="namespace" maxOccurs="unbounded" />
+            </xs:choice>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

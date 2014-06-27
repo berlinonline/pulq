@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ae:configurations 
+    xmlns:ae="http://agavi.org/agavi/config/global/envelope/1.0" 
+    xmlns="http://agavi.org/agavi/config/parts/routing/1.0">
+    <ae:configuration context="web">
+        <route name="consumer" pattern="/consumer" module="Consumer">
+            <route name=".push" pattern="/push/(id:[A-z0-9-]+)" action="Push" output_type="json"/>
+        </route>
+    </ae:configuration>
+
+    <ae:configuration context="console">
+        <route name="consumer" pattern="consumer" method="Console" module="Consumer">
+        </route>
+    </ae:configuration>
+</ae:configurations>
+

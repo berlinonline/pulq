@@ -67,15 +67,11 @@ class BaseView extends \AgaviView
      */
     protected $user;
 
-    /**
-     * Initialize the view thereby setting up our members.
-     *
-     * @param       AgaviExecutionContainer $container
-     */
     public function initialize(\AgaviExecutionContainer $container)
     {
         parent::initialize($container);
-
+        
+        $this->controller = $this->getContext()->getController();
         $this->routing = $this->getContext()->getRouting();
         $this->request = $this->getContext()->getRequest();
         $this->translationManager = $this->getContext()->getTranslationManager();
@@ -83,61 +79,58 @@ class BaseView extends \AgaviView
     }
 
     /**
-     * If no output type specfic execute* method could be found on our current
-     * concrete implemenation, then we will throw an exception letting the dev know.
+     * If developers try to use the execute method in views instead of creating
+     * an output type specific handler they will get a fatal error. If they call
+     * this method directly we try to help them with an exception.
      *
-     * @param       AgaviRequestDataHolder $parameters
+     * @param \AgaviRequestDataHolder $request_data
      *
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      * @codingStandardsIgnoreStart
      */
-    public final function execute(\AgaviRequestDataHolder $parameters) // @codingStandardsIgnoreEnd
+    public final function execute(\AgaviRequestDataHolder $request_data) // @codingStandardsIgnoreEnd
     {
-        $this->throwOutputPutTypeNotImplementedException();
+        throw new \AgaviViewException(
+            sprintf(
+                'There should be no "execute()" method in "%1$s". Views deal ' .
+                'with output types and should therefore implement specific ' .
+                '"execute<OutputTypeName>()" methods. It is recommended that ' .
+                'you either implement "execute%3$s()" for the current output type ' .
+                '"%2$s" and all other supported output types in each of your views ' .
+                'or implement more general fallbacks in the module\'s or applications\'s base views (e.g. "%4$s").',
+                get_class($this),
+                $this->container->getOutputType()->getName(),
+                ucfirst(strtolower($this->container->getOutputType()->getName())),
+                get_class()
+            )
+        );
     }
 
     /**
-     * If this method is called someone has missed to provide html view support
-     * for the current action.
-     * Let them know ^^
+     * Handles non-existing methods. This includes mainly the not implemented
+     * handling of certain output types.
      *
-     * @param       AgaviRequestDataHolder $parameters
+     * @param string $method_name
+     * @param array $arguments
      *
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
-     *
-     * @codingStandardsIgnoreStart
+     * @throws \AgaviViewException with different messages
      */
-    public function executeHtml(\AgaviRequestDataHolder $parameters) // @codingStandardsIgnoreEnd
+    public function __call($method_name, $arguments)
     {
-        $this->throwOutputPutTypeNotImplementedException();
-    }
+        if (preg_match('~^(execute|setup)([A-Za-z_]+)$~', $method_name, $matches))
+        {
+            $this->throwOutputTypeNotImplementedException();
+        }
 
-    /**
-     * If this method is called someone has missed to provide json view support
-     * for the current action.
-     *
-     * @param       AgaviRequestDataHolder $parameters
-     *
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
-     * @codingStandardsIgnoreStart
-     */
-    public function executeJson(\AgaviRequestDataHolder $parameters) // @codingStandardsIgnoreEnd
-    {
-        $this->throwOutputPutTypeNotImplementedException();
-    }
-
-    /**
-     * If this method is called someone has missed to provide text(console) view support
-     * for the current action.
-     *
-     * @param       AgaviRequestDataHolder $parameters
-     *
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
-     * @codingStandardsIgnoreStart
-     */
-    public function executeText(\AgaviRequestDataHolder $parameters) // @codingStandardsIgnoreEnd
-    {
-        $this->throwOutputPutTypeNotImplementedException();
+        throw new \AgaviViewException(
+            sprintf(
+                'The view "%1$s" does not implement an "%2$s()" method. Please ' .
+                'implement "%1$s::%2$s()" or handle this situation in one of the base views (e.g. "%3$s").',
+                get_class($this),
+                $method_name,
+                get_class()
+            )
+        );
     }
 
     /**
@@ -241,5 +234,64 @@ class BaseView extends \AgaviView
     protected function getBreadCrumbRoutes()
     {
         return array();
+    }
+
+    public function getLoggerName()
+    {
+        return 'default';
+    }
+
+    protected function log($level, $args) {
+        $this->getContext()->getLoggerManager()->logTo(
+            $this->getLoggerName(),
+            $level,
+            get_class($this),
+            $args
+        );
+    }
+
+    public function logTrace()
+    {
+        $this->log(\AgaviLogger::TRACE, func_get_args());
+    }
+
+    public function logDebug()
+    {
+        $this->log(\AgaviLogger::DEBUG, func_get_args());
+    }
+
+    public function logInfo()
+    {
+        $this->log(\AgaviLogger::INFO, func_get_args());
+    }
+
+    public function logNotice()
+    {
+        $this->log(\AgaviLogger::NOTICE, func_get_args());
+    }
+
+    public function logWarning()
+    {
+        $this->log(\AgaviLogger::WARNING, func_get_args());
+    }
+
+    public function logError()
+    {
+        $this->log(\AgaviLogger::ERROR, func_get_args());
+    }
+
+    public function logCritical()
+    {
+        $this->log(\AgaviLogger::CRITICAL, func_get_args());
+    }
+
+    public function logAlert()
+    {
+        $this->log(\AgaviLogger::ALERT, func_get_args());
+    }
+
+    public function logEmergency()
+    {
+        $this->log(\AgaviLogger::EMERGENCY, func_get_args());
     }
 }

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<environaut xmlns="http://mivesto.de/environaut/config/1.0" xmlns:xi="http://www.w3.org/2001/XInclude">
+    <name>Environment definition for Pulq applications</name>
+    <export>
+        <formatter location="etc/local/local.config.sh" group="pulq_environment">
+            <parameters>
+                <parameter name="capitalize_names">true</parameter>
+            </parameters>
+        </formatter>
+        <formatter location="etc/local/local.config.php" group="pulq_environment"/>
+    </export>
+    <checks>
+        <check name="php" group="pulq_environment">
+            <parameter name="question">Where is your PHP CLI binary located?</parameter>
+            <parameter name="default">/usr/bin/php</parameter>
+        </check>
+        <check name="base_href" group="pulq_environment">
+            <parameter name="question">What is the base URL of this application?</parameter>
+            <parameter name="default">http://pulq-showcase.local</parameter>
+        </check>
+        <check name="environment" group="pulq_environment">
+            <parameter name="question">What environment do you want to use for this application?</parameter>
+            <parameter name="default">development-vagrant</parameter>
+        </check>
+
+        <check
+            name="consumer_shared_secret"
+            group="shared_secrets"
+            class="Pulq\Environaut\Checks\SharedSecretCheck"
+            >
+            <parameter name="path">etc/local/consumer_shared_secret</parameter>
+            <parameter name="confirm_question">Generate new shared secret for the data consumer?</parameter>
+            <parameter name="length">24</parameter>
+        </check>
+    </checks>
+</environaut>

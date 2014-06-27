@@ -33,44 +33,12 @@
 
             <route name="disabled" pattern="^/disabled$" module="Disabled" action="Index" />
 
-            <xi:include 
-                href="%core.app_dir%/project/config/routing.xml"
-                xpointer="xmlns(ae=http://agavi.org/agavi/config/global/envelope/1.0) xmlns(r=http://agavi.org/agavi/config/parts/routing/1.0)
-                xpointer(//ae:configuration[@context='web']/r:routes/*)/">
-                <xi:fallback />
-            </xi:include>
-
-            <xi:include 
-                href="%core.app_dir%/config/includes/routing.xml"
-                xpointer="xmlns(ae=http://agavi.org/agavi/config/global/envelope/1.0) xmlns(r=http://agavi.org/agavi/config/parts/routing/1.0)
-                xpointer(//ae:configuration[@context='web']/r:routes/r:route)/">
-                <xi:fallback />
-            </xi:include>
-
             <!-- The last route in case the input URL is just "/". -->
             <route name="index" pattern="^/$" module="%actions.default_module%" action="%actions.default_action%" />
             <!--
                 If no route matched here, the 404 action will be used.
                 You could change that behavior by setting the last route above to use an empty pattern.
             -->
-        </routes>
-    </ae:configuration>
-
-    <ae:configuration context="console">
-        <routes>
-            <xi:include 
-                href="%core.app_dir%/project/config/routing.xml"
-                xpointer="xmlns(ae=http://agavi.org/agavi/config/global/envelope/1.0) xmlns(r=http://agavi.org/agavi/config/parts/routing/1.0)
-                xpointer(//ae:configuration[@context='console']/r:routes/*)/">
-                <xi:fallback />
-            </xi:include>
-
-            <xi:include 
-                href="%core.app_dir%/config/includes/routing.xml"
-                xpointer="xmlns(ae=http://agavi.org/agavi/config/global/envelope/1.0) xmlns(r=http://agavi.org/agavi/config/parts/routing/1.0)
-                xpointer(//ae:configuration[@context='console']/r:routes/r:route)/">
-                <xi:fallback />
-            </xi:include>
         </routes>
     </ae:configuration>
 </ae:configurations>

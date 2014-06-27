@@ -2,13 +2,15 @@
 
 namespace Pulq\Agavi\User;
 
+use Zend\Permissions\Acl;
+
 /**
  * The ZendAclSecurityUser is responseable for detecting required scripts and deploying them for your view.
  *
  * @copyright       BerlinOnline Stadtportal GmbH & Co. KG
  * @author          Thorsten Schmitt-Rink <thorsten.schmitt-rink@berlinonline.de>
  */
-class ZendAclSecurityUser extends \AgaviSecurityUser implements \Zend_Acl_Role_Interface
+class ZendAclSecurityUser extends \AgaviSecurityUser implements Acl\Role\RoleInterface
 {
     protected $zendAcl;
 
@@ -26,7 +28,7 @@ class ZendAclSecurityUser extends \AgaviSecurityUser implements \Zend_Acl_Role_I
 
     protected function createZendAcl()
     {
-        $zendAcl = new \Zend_Acl();
+        $zendAcl = new Acl\Acl();
         // setup our resources
         foreach ($this->accessConfig['resources'] as $resource => $def)
         {

@@ -1,0 +1,135 @@
+--- agavi/src/logging/AgaviILogger.interface.php	2013-05-31 16:05:43.938719547 +0200
++++ agavi/src/logging/AgaviILogger.interface.php	2013-05-31 16:12:02.980145903 +0200
+@@ -20,6 +20,7 @@
+  * @subpackage logging
+  *
+  * @author     David Zülke <dz@bitxtender.com>
++ * @author     Steffen Gransow <agavi@mivesto.de>
+  * @copyright  Authors
+  * @copyright  The Agavi Project
+  *
+@@ -30,42 +31,95 @@
+ interface AgaviILogger
+ {
+ 	/**
+-	 * Fatal level.
++	 * System is unusable or urgent alert messages.
++	 *
++	 * @since      1.0.8
++	 */
++	const EMERGENCY = 1;
++
++	/**
++	 * Fatal level. Same as EMERGENCY.
+ 	 *
+ 	 * @since      0.9.0
+ 	 */
+ 	const FATAL = 1;
+ 
+ 	/**
+-	 * Error level.
++	 * Action must be taken immediately.
++	 *
++	 * Example: Entire website is down, services are unavailable etc.
++	 *
++	 * This should trigger SMS alerts or similar and wake someone up.
++	 *
++	 * @since      1.0.8
++	 */
++	const ALERT = 2;
++
++	/**
++	 * Critical condition messages.
++	 *
++	 * Example: Application component unavailable or unexpected exceptions.
++	 *
++	 * @since      1.0.8
++	 */
++	const CRITICAL = 4;
++
++	/**
++	 * Error level messages for runtime errors.
+ 	 *
+ 	 * @since      0.9.0
+ 	 */
+-	const ERROR = 2;
++	const ERROR = 8;
+ 
+ 	/**
+-	 * Warning level.
++	 * Warning level for exceptional occurrences that are not errors.
++	 *
++	 * Examples: Use of deprecated APIs, poor use of an API
++	 * or undesirable things that are not necessarily wrong.
++	 *
++	 * @since      1.0.8
++	 */
++	const WARNING = 16;
++
++	/**
++	 * Warning level. Same as WARNING.
+ 	 *
+ 	 * @since      0.9.0
+ 	 */
+-	const WARN = 4;
++	const WARN = 16;
+ 
+ 	/**
+-	 * Information level.
++	 * Normal but significant conditions or uncommon events.
++	 *
++	 * @since      1.0.8
++	 */
++	const NOTICE = 32;
++
++	/**
++	 * Information level messages for interesting events.
++	 *
++	 * Examples: User logs in or validation fails.
+ 	 *
+ 	 * @since      0.9.0
+ 	 */
+-	const INFO = 8;
++	const INFO = 64;
+ 
+ 	/**
+-	 * Debug level.
++	 * Debug level messages with detailed debug information.
+ 	 *
+ 	 * @since      0.9.0
+ 	 */
+-	const DEBUG = 16;
++	const DEBUG = 128;
+ 
+ 	/**
+-	 * All levels. (2^32-1)
++	 * Verbose debug level messages including extensive debug information.
++	 *
++	 * @since      1.0.8
++	 */
++	const TRACE = 256;
++
++	/**
++	 * All levels (2^32-1).
+ 	 *
+ 	 * @since      0.11.0
+ 	 */
+@@ -90,7 +144,7 @@
+ 	 * @param      string              An appender name.
+ 	 * @param      AgaviLoggerAppender An Appender instance.
+ 	 *
+-	 * @throws     <b>AgaviLoggingException</b> If an appender with the name 
++	 * @throws     <b>AgaviLoggingException</b> If an appender with the name
+ 	 *                                          already exists.
+ 	 *
+ 	 * @author     Sean Kerr <skerr@mojavi.org>
+@@ -128,6 +182,7 @@
+ 	 * @since      0.11.0
+ 	 */
+ 	public function shutdown();
++
+ }
+ 
+-?>
+\ No newline at end of file
++?>

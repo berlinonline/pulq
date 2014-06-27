@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ae:configurations 
-    xmlns:ae="http://agavi.org/agavi/config/global/envelope/1.0" 
-    xmlns="http://agavi.org/agavi/config/parts/config_handlers/1.0" 
-    xmlns:xi="http://www.w3.org/2001/XInclude" 
+<ae:configurations
+    xmlns:ae="http://agavi.org/agavi/config/global/envelope/1.0"
+    xmlns="http://agavi.org/agavi/config/parts/config_handlers/1.0"
+    xmlns:xi="http://www.w3.org/2001/XInclude"
     parent="%core.system_config_dir%/config_handlers.xml">
     <ae:configuration>
         <handlers>
@@ -17,27 +17,13 @@
                 <transformation>%core.agavi_dir%/config/xsl/caching.xsl</transformation>
             </handler>
 
-            <handler pattern="%core.config_dir%/access_control.xml" class="Pulq\Agavi\ConfigHandler\AclConfigHandler">
-                <validation>%core.config_dir%/xsd/access_control.xsd</validation>
+            <handler pattern="%core.config_dir%/namespaces.xml" class="Pulq\Agavi\ConfigHandler\NamespacesConfigHandler">
+                <validation>%core.pulq_dir%/app/config/xsd/namespaces.xsd</validation>
             </handler>
 
-            <handler pattern="workflows.xml" class="Pulq\Agavi\ConfigHandler\WorkflowConfigHandler">
-                <validation>%core.config_dir%/xsd/workflows.xsd</validation>
-                <ae:parameter name="namespace_uri">http://berlinonline.de/schemas/pulq/workflow/1.0</ae:parameter>
-            </handler>
-
-            <handler pattern="dataimports.xml" class="Pulq\Agavi\ConfigHandler\DataImportConfigHandler">
-                <validation>%core.config_dir%/xsd/dataimport.xsd</validation>
-                <ae:parameters>
-                    <ae:parameter name="namespace_uri">http://berlinonline.de/schemas/pulq/config/dataimport/definition/1.0</ae:parameter>
-                </ae:parameters>
-            </handler>
-            
-            <handler pattern="datasources.xml" class="Pulq\Agavi\ConfigHandler\DataSourceConfigHandler">
-                <validation>%core.config_dir%/xsd/datasource.xsd</validation>
-                <ae:parameters>
-                    <ae:parameter name="namespace_uri">http://berlinonline.de/schemas/pulq/config/datasource/definition/1.0</ae:parameter>
-                </ae:parameters>
+            <handler pattern="%core.pulq_dir%/app/config/emergency/routing.xml" class="AgaviRoutingConfigHandler">
+                <validation>%core.agavi_dir%/config/xsd/routing.xsd</validation>
+                <transformation>%core.agavi_dir%/config/xsl/routing.xsl</transformation>
             </handler>
 
         </handlers>

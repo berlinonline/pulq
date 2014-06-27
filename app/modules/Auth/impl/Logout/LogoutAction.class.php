@@ -1,5 +1,7 @@
 <?php
 
+use Pulq\Auth\Agavi\Action\BaseAction;
+
 /**
  * The Auth_LogoutAction class provides standard logout functionality and ends any current session.
  *
@@ -9,7 +11,7 @@
  * @package         Auth
  * @subpackage      Mvc
  */
-class Auth_LogoutAction extends AuthBaseAction 
+class Auth_LogoutAction extends BaseAction 
 {
     /**
      * This Action does not yet serve any Request methods.

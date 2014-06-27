@@ -1,0 +1,27 @@
+{% set locale = tm.getCurrentLocale() %}
+{% set dir = locale.getCharacterOrientation() == 'right-to-left' ? 'rtl' : 'ltr' %}
+<!DOCTYPE html>
+<html lang="{{ locale.getLocaleLanguage() }}" dir="{{ dir }}">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+        <title>{{ _title }}</title>
+        <base href="{{ ro.getBaseHref() }}" id="base_href" />
+        <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico" />
+
+        <link rel="stylesheet" href="static/style.css" type="text/css" />
+    </head>
+    <body>
+        {{ inner|raw }}
+
+        {% if ac("minify.js", false) %}
+            <script data-main="static/js/main-built" src="/static/require.js"></script>
+        {% else %}
+            <script data-main="static/js/main" src="/static/require.js"></script>
+        {% endif %}
+    </body>
+</html>
+

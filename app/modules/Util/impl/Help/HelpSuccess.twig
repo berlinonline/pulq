@@ -1,0 +1,71 @@
+<info>{{ac('core.app_name')}} - version {{ac('core.version')}}</info>
+
+Maintenance targets
+
+    help            Prints this short help text
+
+    cc              Clears the application cache
+                    That includes configs, templates and content fragments.
+
+    tail-logs       Prints lates log entries and keeps running to also print
+                    changes of the logs.
+
+                    Includes application logs and PHP logs.
+
+Setup targets
+
+    install         Sets up a new working copy of an existing project
+                    Installs all dependencies
+                    Also runs 'prepare'
+
+    update          Brings the installed dependencies to their most current allowed versions
+                    Also runs 'prepare'
+
+    prepare         Rebuilds symlinks, configuration and static files (JS/CSS)
+
+    environment     Runs the wizard for creating the working copy environment
+                    <error>This is potentially destructive!</error>
+
+    static          Generates static JS and CSS files
+
+    js              Generates JS files
+                    Uses Require.JS optimizer. Compression depends on configuration
+
+    css             Generates CSS files
+                    Uses SCSS compiler. Compression style depends on configuration
+
+    symlinks        Rebuilds symlinks to link project files and directories
+                    into the application
+
+    config          Generates config files to link project config into the application
+
+    db              Runs the setup for all configured databases.
+                    <error>This is potentially destructive! Old DBs will be replaced!</error>
+
+    reindex         Reindexes all documents from the currently active index into a new one and switches
+                    the index alias afterewards. The old index can be deleted optinally.
+                    <error>This is potentially destructive! Old DBs may be deleted!</error>
+
+Development targets
+
+    module          Runs the wizard for creating a new application module
+
+    action          Runs the wizard for creating a new action inside a module
+
+    fixtures        Pushes a set of fixture documents against the applications consumer endpoint.
+
+
+<info>Common use cases</info>
+
+    You just checked out the project from version control
+        make install
+
+    You added a new dependency or changed the version of an existing one
+        make update
+
+    A change in some config file or template is not showing any effect
+        make cc
+
+    An action is not found, a route is not matched or some config setting is not available.
+        make prepare
+

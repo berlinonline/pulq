@@ -56,10 +56,18 @@ abstract class BaseDataObject implements IDataObject
         {
             // either call a getter or just grab the value foreach property
             $getter = 'get' . ucfirst($prop);
+            $getter_camelcase = 'get'.str_replace(' ', '', ucwords( str_replace('_', ' ', $prop)));
             $propValue = NULL;
-            if (is_callable(array($this, $getter)))
+
+            if (is_callable(array($this, $getter_camelcase))) {
+                $propValue = $this->$getter_camelcase();
+            }
+            else if (is_callable(array($this, $getter)))
             {
                 $propValue = $this->$getter();
+            }
+            else if (is_callable(array($this, $getter_camelcase))) {
+                $propValue = $this->$getter_camelcase();
             }
             else
             {
@@ -235,6 +243,8 @@ abstract class BaseDataObject implements IDataObject
             }
             else
             {
+                //convert back from camelCase to underscore_format
+                $fieldName = strtolower(preg_replace('/([a-z])([A-Z])/', '$1_$2', $fieldName));
                 return $this->$fieldName;
             }
         }
