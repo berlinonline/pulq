@@ -5,14 +5,19 @@ ehthumbs.db
 Icon?
 Thumbs.db
 
-app/cache/*
-app/log/*
+/app/cache/*
+/app/log/*
 /.settings
 /.buildpath
 /.project
 /.externalToolBuilders
-vendor
-node_modules
-data
-etc/local
-app/resources
+/vendor
+/node_modules
+/data
+/etc/local
+/app/resources
+/.environaut.cache
+/.sass-cache
+/app/modules/*
+!/app/modules/Auth
+!/app/modules/Default
