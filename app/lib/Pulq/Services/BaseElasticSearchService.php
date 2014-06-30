@@ -3,10 +3,8 @@
 namespace Pulq\Services;
 use Pulq\Data\DataObjectSet;
 use Pulq\Exceptions\NotFoundException;
-use Elastica\ResultSet;
-use Elastica\Query;
-use Elastica\Filter;
-use Elastica\Util;
+use \AgaviContext;
+use Elasticsearch\Common\Exceptions\Missing404Exception;
 
 abstract class BaseElasticSearchService extends BaseService {
     protected $es_index = null;
@@ -15,24 +13,28 @@ abstract class BaseElasticSearchService extends BaseService {
 
     public function __construct()
     {
-        $this->index = \AgaviContext::getInstance()->getDatabaseManager()->getDatabase($this->es_index)->getResource();
+        $this->database = AgaviContext::getInstance()
+            ->getDatabaseManager()
+            ->getDatabase($this->es_index);
+        $this->es_client = $this->database->getConnection();
     }
 
     public function getById($id)
     {
-        $id = Util::escapeTerm($id);
+        $params = [
+            "id" => $id,
+        ];
 
-        $query = new Query\Field('_id', $id);
-        $resultData = $this->executeQuery(Query::create($query), false);
+        $params = $this->addIndexAndType($params);
 
-        $set = $this->extractFromResultSet($resultData);
-
-        if ($set->getTotalCount() < 1)
-        {
-            throw new NotFoundException($this->data_object_class . ' not found.');
+        try {
+            $result = $this->es_client->get($params);
+            $document = $result['_source'];
+        } catch (Missing404Exception $exception) {
+            throw new NotFoundException("Document with id $id not found");
         }
 
-        return $set[0];
+        return new $this->data_object_class($document);
     }
 
     public function getByIds(array $ids)
@@ -42,79 +44,120 @@ abstract class BaseElasticSearchService extends BaseService {
             return new DataObjectSet(array());
         }
 
-        $ids_string = Util::escapeTerm(implode(' ', $ids));
+        $params = [
+            "body" => [ "ids" => $ids ],
+        ];
 
-        $query = new Query\Field('_id', $ids_string);
-        $resultData = $this->executeQuery(Query::create($query));
+        $params = $this->addIndexAndType($params);
 
-        $set = $this->extractFromResultSet($resultData);
+        $result = $this->es_client->mget($params);
+        $documents = $result['docs'];
+
+        $data_objects = [];
+
+        foreach($documents as $document) {
+            if (!$document['found']) {
+                continue;
+            }
+
+            $data_objects[] = new $this->data_object_class($document['_source']);
+        }
+
+        $set = new DataObjectSet($data_objects);
+        $set->setTotalCount(count($data_objects));
 
         return $set;
     }
 
     public function getAll()
     {
-        $query = new Query\MatchAll();
+        $search = [
+            "filter" => ["match_all" => []],
+        ];
 
-        $resultData = $this->executeFilteredQuery(Query::create($query));
+        $resultData = $this->executeFiltered($search);
 
-        $set = $this->extractFromResultSet($resultData);
+        $set = $this->extractFromResult($resultData);
 
         return $set;
     }
 
-    protected function getType()
+    protected function executeFiltered(array $search)
     {
-        return $this->index->getType($this->es_type);
+        return $this->execute($search, $live_filter = true, $default_filter = true);
     }
 
-    protected function executeFilteredQuery(Query $query)
+    protected function executeUnfiltered(array $search)
     {
-        return $this->executeQuery($query, $live_filter = true, $default_filter = true);
+        return $this->execute($search, $live_filter = false, $default_filter = false);
     }
 
-    protected function executeUnfilteredQuery(Query $query)
+    protected function execute(array $search, $use_live_filter = true, $use_default_filter = true)
     {
-        return $this->executeQuery($query, $live_filter = false, $default_filter = false);
-    }
-
-    protected function executeQuery(Query $query, $use_live_filter = true, $use_default_filter = true)
-    {
-        $bool_filter = new Filter\Bool();
-
-        $bool_filter->addMust(new Filter\MatchAll());
+        $filter = [
+            "bool" => [
+                "must" => [],
+                "must_not" => [],
+                "should" => [],
+            ]
+        ];
 
         if ($use_default_filter) {
-            $bool_filter->addMust($this->getDefaultFilter());
+            $filter["bool"]["must"][] = $this->getDefaultFilter();
         }
 
         if ($use_live_filter) {
-            $live_query = new Query\Field('live', "true");
-            $live_filter = new Filter\Query($live_query);
-            $bool_filter->addMust($live_filter);
+            $filter["bool"]["must"][] = [
+                "term" => ["live" => true]
+            ];
         }
 
-        if ($query->hasParam('filter')) {
-            $existing_filter = $query->getParam('filter');
-            $bool_filter->addMust($existing_filter);
+        if (isset($search['filter'])) {
+            //include the existing filter in the MUST part of the new one.
+            $filter["bool"]["must"][] = $search["filter"];
         }
 
-        $query->setFilter($bool_filter);
-        $query->setSize(100000);
+        $search["filter"] = $filter;
 
-        #echo json_encode($query->toArray());die;
+        if (!isset($search["size"])) {
+            $search["size"] = 10000;
+        }
 
-        return $this->getType()->search($query);
+        # echo json_encode($search);die;
+
+        $params = $this->addIndexAndType([
+            "body" => $search,
+        ]);
+
+        return $this->es_client->search($params);
     }
 
-    protected function extractFromResultSet(ResultSet $resultSet)
-    {
-        $data_objects = array();
+    protected function addIndexAndType(array $params) {
+        if (!isset($params['index'])) {
+            $params['index'] = $this->database->getIndexName();
+        }
 
-        foreach($resultSet->getResults() as $result)
+        if (!isset($params['type'])) {
+            $params['type'] = $this->es_type;
+        }
+
+        return $params;
+    }
+
+    protected function extractFromResult(array $result)
+    {
+        $data_objects = [];
+        $hits = $result["hits"]["hits"];
+        $total = $result["hits"]["total"];
+
+        if ($total === 0) {
+            return new DataObjectSet([]);
+        }
+
+        foreach($hits as $hit)
         {
-            $id = $result->getId();
-            $data = $result->getData();
+            $id = $hit["_id"];
+            $data = $hit["_source"];
             $data['_id'] = $id;
 
             $class_name = $this->data_object_class;
@@ -122,23 +165,29 @@ abstract class BaseElasticSearchService extends BaseService {
         }
 
         $set = new DataObjectSet($data_objects);
-        $set->setTotalCount($resultSet->getTotalHits());
+        $set->setTotalCount($total);
 
         return $set;
     }
 
     protected function getDefaultFilter() {
-        return new Filter\MatchAll();
+        return [
+            "match_all" => [],
+        ];
     }
 
     public function getByPreviewId($preview_id)
     {
-        $preview_id = Util::escapeTerm($preview_id);
+        $search = [
+            "filter" => [
+                "term" => [
+                    "preview_id" => $preview_id
+                ]
+            ]
+        ];
 
-        $query = new Query\Field('preview_id', $preview_id);
-        $resultData = $this->executeUnfilteredQuery(Query::create($query));
-
-        $set = $this->extractFromResultSet($resultData);
+        $resultData = $this->executeUnfiltered(search);
+        $set = $this->extractFromResult($resultData);
 
         if ($set->getTotalCount() < 1)
         {

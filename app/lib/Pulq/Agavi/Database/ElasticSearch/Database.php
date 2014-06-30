@@ -3,10 +3,6 @@
 namespace Pulq\Agavi\Database\ElasticSearch;
 
 use Pulq\Agavi\Database\PulqDatabase;
-use Elastica;
-use Elastica\Status;
-use Elastica\Search;
-use Elastica\Document;
 use \AgaviDatabaseException;
 use \AgaviDatabaseManager;
 

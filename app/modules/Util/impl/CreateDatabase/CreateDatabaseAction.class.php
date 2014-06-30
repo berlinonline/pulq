@@ -1,7 +1,6 @@
 <?php
 
 use Pulq\Util\Agavi\Action\BaseAction;
-use Elastica\Status;
 
 class Util_CreateDatabaseAction extends BaseAction
 {

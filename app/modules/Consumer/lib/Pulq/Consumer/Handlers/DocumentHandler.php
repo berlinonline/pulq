@@ -6,12 +6,9 @@ use \AgaviConfig;
 use \AgaviContext;
 use \Exception;
 
-use Elastica\Document;
-
 class DocumentHandler
 {
     protected $database;
-    protected $index_name;
 
     protected $document_id;
     protected $document_type;
