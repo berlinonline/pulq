@@ -1,6 +1,8 @@
 <?php
 namespace Pulq\Agavi\Renderer;
 
+use \AgaviConfig;
+
 /**
  * Renderer with support for Twig extensions
  *
@@ -15,6 +17,9 @@ class TwigRenderer extends \AgaviTwigRenderer
 
             // register extensions
             $this->twig->addExtension(new Twig\Extension\PulqTwigExtension());
+            if(AgaviConfig::get('core.debug', false)) {
+                $this->twig->addExtension(new \Twig_Extension_Debug());
+            }
 
             // assigns can be set as globals
             foreach($this->assigns as $key => $getter) {
