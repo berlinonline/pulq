@@ -47,6 +47,17 @@
         </filters>
     </ae:configuration>
 
+    <!--
+        When using ESI includes (not relying on the ESI filter) and FPF you will need to enable the FixEsi filter to restore the <esi:include /> tag
+    -->
+    <!--
+    <ae:configuration context="web" environment="production">
+        <filters>
+            <filter name="FixEsiFilter" class="Pulq\Agavi\Filter\FixEsiFilter" enabled="true" />
+        </filters>
+    </ae:configuration>
+    -->
+
     <ae:configuration context="web" environment="stage|production">
         <filters>
             <filter name="ResourceFilter" class="Pulq\Agavi\Filter\ResourceFilter">
