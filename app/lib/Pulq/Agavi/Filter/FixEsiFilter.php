@@ -11,6 +11,8 @@ use \AgaviExecutionContainer;
  * the FPF will change all the response content into XML DOM, translating <esi:include />
  * into <include />.
  * Use this filter to restore the right ESI tag and the correct functionality.
+ *
+ * This filter must run AFTER the FPF
  */
 class FixEsiFilter extends AgaviFilter implements AgaviIGlobalFilter, AgaviIActionFilter
 {
@@ -26,14 +28,12 @@ class FixEsiFilter extends AgaviFilter implements AgaviIGlobalFilter, AgaviIActi
     {
         $filterChain->execute($container);
         $response = $container->getResponse();
-
-        $fpf = $this->getContext()
-                ->getRequest()
-                ->getAttribute('populate', 'org.agavi.filter.FormPopulationFilter');
-        if ($fpf && $response->isContentMutable() && "html" == $response->getOutputType()->getName() )
+        $output_types = $this->getParameter('output_types', array('html'));
+        
+        if ($response->isContentMutable() && in_array($response->getOutputType()->getName(), $output_types))
         {
             $str = preg_replace(
-                    '#<include\s+xmlns:esi=".*?"\s+src="(.*?)"></include>#s',
+                    '#<include\s+src="(.*?)"></include>#s',
                     '<esi:include src="$1"/>',
                     $response->getContent());
             $response->setContent($str);

@@ -3,6 +3,27 @@
     xmlns:ae="http://agavi.org/agavi/config/global/envelope/1.0" 
     xmlns:xi="http://www.w3.org/2001/XInclude"
     xmlns="http://agavi.org/agavi/config/parts/filters/1.0">
+
+    <!--
+        Fix ESI filter
+        When using ESI includes (not relying on the ESI filter) and FPF you will need 
+        to enable the FixESI filter to restore the <esi:include /> tag.
+        The FixESI filter needs to wrap the FPF, so its declaration comes first.
+
+        The config beneath is let here just as template
+    -->
+    <!--
+    <ae:configuration context="web">
+        <filters>
+            <filter name="FixEsiFilter"  class="Pulq\Agavi\Filter\FixEsiFilter" enabled="true">
+                <ae:parameter name="output_types">
+                    <ae:parameter>html</ae:parameter>
+                </ae:parameter>
+            </filter>
+        </filters>
+    </ae:configuration>
+    -->
+
     <ae:configuration context="web">
         <filters>
             <filter name="ResourceFilter" class="Pulq\Agavi\Filter\ResourceFilter">
@@ -19,7 +40,15 @@
                 <ae:parameter name="combine_scripts">off</ae:parameter>
                 <ae:parameter name="compress_scripts">off</ae:parameter>
             </filter>
+            <!--
+                Form Population filter
+                    it should be defined in the specific project global_filter.xml (see XInclude beneath).
+                    This will allow more freedom in the configuration, when is needed to wrap the FPF into
+                    another filter (as in the case of the FixESI filter).
 
+                    The config beneath is let here just as template
+            -->
+            <!--
             <filter name="FormPopulationFilter" class="AgaviFormPopulationFilter">
                 <ae:parameter name="methods">
                     <ae:parameter>write</ae:parameter>
@@ -28,35 +57,20 @@
                     <ae:parameter>html</ae:parameter>
                 </ae:parameter>
                 <ae:parameter name="force_output_mode">xhtml</ae:parameter>
-                <!-- for all field error messages. errors that yield no match and those that have no corresponding field are inserted using rules defined in "error_messages". errors that belong to more than one field (e.g. date validator) can be handled using "multi_field_error_messages" -->
                 <ae:parameter name="field_error_messages">
-                    <!-- ${htmlnsPrefix} is either empty (for HTML) or something like "html:" for XHTML documents with xmlns="..." notation. Always use this, makes your code more bullet proof. XPath needs the namespaces when the document is namespaced -->
                     <ae:parameter name="parent::${htmlnsPrefix}dd">
-                        <!-- can be any of "before", "after" or "child" (to insert as prev, next sibling or last child) -->
                         <ae:parameter name="location">after</ae:parameter>
-                        <!-- a container groups all errors for one element -->
                         <ae:parameter name="container"><![CDATA[<dd>${errorMessages}</dd>]]>
                         </ae:parameter>
                         <ae:parameter name="markup"><![CDATA[<p class="error">${errorMessage}</p>]]>
                         </ae:parameter>
                     </ae:parameter>
-                    <!-- you could have more rules above, e.g. ${htmlnsPrefix}input[@type="checkbox"]... to have a rule that only applies to checkbox elements. first match is used. -->
                 </ae:parameter>
                 <ae:parameter name="savexml_options">LIBXML_NOEMPTYTAG</ae:parameter>
             </filter>
+            -->
         </filters>
     </ae:configuration>
-
-    <!--
-        When using ESI includes (not relying on the ESI filter) and FPF you will need to enable the FixEsi filter to restore the <esi:include /> tag
-    -->
-    <!--
-    <ae:configuration context="web" environment="production">
-        <filters>
-            <filter name="FixEsiFilter" class="Pulq\Agavi\Filter\FixEsiFilter" enabled="true" />
-        </filters>
-    </ae:configuration>
-    -->
 
     <ae:configuration context="web" environment="stage|production">
         <filters>
