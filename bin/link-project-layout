@@ -1,0 +1,67 @@
+#!/bin/bash
+
+### Functons definition ###
+
+function deleted() {
+    FILE_PATH=$1
+    if [ -L $FILE_PATH ]
+      then
+        read -p "The symlink 'pub/$ITEM' already exists. Do you want to overwrite it? " -r -n 1
+        if [[ ! $REPLY =~ ^[Yy]$ ]]
+          then
+            echo -e "\r"
+            return 2
+          else
+            echo -e "\r"
+            rm "$FILE_PATH"
+        fi
+    fi
+    return 0
+}
+### Script ###
+
+## Get directories info
+BASEDIR=`readlink -f "$( dirname $0 )/.."` # Pulq directory
+PWD=`pwd`
+
+## Check parameter
+VERSION=$1
+if [ -z "$1" ]
+  then
+    echo -e "\nPlease provide a version name\r"
+    exit 2
+fi
+
+LAYOUTS_DIR="$BASEDIR/../project/app/layouts"
+VERSION_DIR="$LAYOUTS_DIR/v$VERSION"
+if [ ! -d "$VERSION_DIR" ]
+  then
+    echo -e "\nThe specified version doesn't exist\r"
+    exit 2
+fi
+
+## Check if symlinks exist and overwrite them
+
+# Pub directory
+cd $BASEDIR
+APP_PUB_DIR="$BASEDIR/pub"
+PROJECT_I9F_RESOURCES_DIR="$VERSION_DIR/resources"
+for ITEM in `ls $PROJECT_I9F_RESOURCES_DIR`; do
+    if deleted "$APP_PUB_DIR/$ITEM";
+      then
+        echo "Linking $PROJECT_I9F_RESOURCES_DIR/$ITEM -> pub/$ITEM"
+        ln -s "$PROJECT_I9F_RESOURCES_DIR/$ITEM" "$APP_PUB_DIR/$ITEM"
+    fi
+done
+
+# Includes directory
+APP_INCLUDES_DIR="$BASEDIR/../project/app/templates/macros/includes"
+PROJECT_I9F_INCLUDES_DIR="$VERSION_DIR/includes"
+for ITEM in `ls $PROJECT_I9F_INCLUDES_DIR`; do
+    if deleted "$APP_INCLUDES_DIR/$ITEM";
+    then
+        echo "Linking $PROJECT_I9F_RESOURCES_DIR/$ITEM -> $APP_INCLUDES_DIR/$ITEM"
+        ln -s "$PROJECT_I9F_INCLUDES_DIR/$ITEM" "$APP_INCLUDES_DIR/$ITEM"
+    fi
+done
+cd $PWD

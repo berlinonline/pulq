@@ -13,6 +13,7 @@ help:
 	@echo "  create-project-skeleton - Initially creates the project directory structure."
 	@echo "  link-project-config - Symlink custom configs into the pulq submodule."
 	@echo "  link-project-pub - Symlink custom public files into the pub directory."
+	@echo "  link-project-layout - Symlink resources (to pub directory) and templates includes, referring a specific version (e.g. 'make link-project-layout version=YYYYMMDD')"
 	@echo "  create-project-config - Creates the project specific config files."
 	@echo ""
 	@echo "DEVELOPMENT"
@@ -180,6 +181,11 @@ link-project-config:
 link-project-pub:
 
 	@bin/link-project-pub
+	@make config
+
+link-project-layout:
+
+	@bin/link-project-layout $(version)
 	@make config
 
 create-project-skeleton:
