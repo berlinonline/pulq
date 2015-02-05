@@ -73,6 +73,11 @@ skeleton:
 symlinks:
 	@bin/cli util.build_links --emergency
 
+link-project-layout:
+
+	@bin/link-project-layout $(version)
+	@make config
+
 config:
 	-@rm app/config/includes/* > /dev/null
 	@bin/cli util.build_config --emergency
