@@ -100,12 +100,12 @@ deploy-resources:
 	@php bin/deploy-resources.php
 
 
-install-composer: 
+install-composer:
 
 	@if [ -d vendor/agavi/agavi/ ]; then svn revert -R vendor/agavi/agavi/; fi
 	@if [ ! -f bin/composer.phar ]; then curl -s http://getcomposer.org/installer | php -d allow_url_fopen=1 -d date.timezone="Europe/Berlin" -- --install-dir=./bin; fi
 	-@bin/apply-patches
-	
+
 
 update-composer:
 	@bin/composer.phar self-update
@@ -189,7 +189,7 @@ link-project-layout:
 	@make config
 
 create-project-skeleton:
-    
+
 	@bin/create-project-skeleton
 	@make create-project-config
 
@@ -219,7 +219,7 @@ remove-module:
 module-code:
 
 	@bin/agavi module-list
-	@read -p "Enter Module Name:" module; 
+	@read -p "Enter Module Name:" module;
 	@make config
 	@curl -XDELETE localhost:9200/
 	@echo "\n"
@@ -229,6 +229,6 @@ rebuild-index:
 
 
 .PHONY: help module module-code lessw lessc jsdoc js-xunit js-specs phpdoc phpcs test cc config install update
-    
+
 # vim: ts=4:sw=4:noexpandtab!:
 #

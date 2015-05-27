@@ -31,5 +31,5 @@ class AssetValidator extends \AgaviValidator
             $this->throwError("not_found", "asset");
             return false;
         }
-    }  
+    }
 }

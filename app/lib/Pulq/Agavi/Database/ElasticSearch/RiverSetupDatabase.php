@@ -115,6 +115,7 @@ class RiverSetupDatabase extends Database
                         "host" => $dbUrl['host'],
                         "port" => $dbUrl['port'],
                         "db" => $couchDb->getParameter('database'),
+                        "script_type" => "javascript",
                         "script" => $this->getRiverScript()
                 ),
                 "index" => array_merge(
@@ -153,7 +154,8 @@ class RiverSetupDatabase extends Database
             $esData = $response->getData();
             if (!isset($esData['_source']['couchdb']['last_seq']))
             {
-                if (isset($esData['_type']) && FALSE === $esData['exists'])
+                var_dump($esData);
+                if (isset($esData['_type']) && FALSE === $esData['found'])
                 {
                     $this->log("Wait for river start …\n");
                     continue;

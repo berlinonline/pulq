@@ -17,13 +17,13 @@
         "psr-0": {"Pulq" : "app/lib" }
     },
 
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
 
     "require": {
         "php": ">=5.3.3",
         "agavi/agavi": "1.0.7",
         "twig/twig": "1.*",
-        "ruflin/Elastica": "v0.90.10.0",
+        "ruflin/Elastica": "1.4.*",
         "phpunit/phpunit": "3.7.*",
         "zend/acl": "dev-master",
         "phing/phing": "2.4.12",
