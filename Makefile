@@ -72,8 +72,8 @@ config:
 install: install-vendor install-node-deps cc
 
 	@if [ ! -f etc/local/local.config.sh ]; then bin/configure-env --init; fi
-	@make create-project-skeleton
 	@make link-project-modules
+	@make create-project-skeleton
 	@make create-project-config
 	@make deploy-resources
 
@@ -171,7 +171,6 @@ jsdoc:
 link-project-modules:
 
 	@bin/link-project-modules
-	@make config
 
 link-project-config:
 
@@ -197,7 +196,6 @@ create-project-config:
 
 	@bin/create-project-config
 	@make link-project-config
-	@make config
 
 module:
 

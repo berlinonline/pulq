@@ -154,7 +154,6 @@ class RiverSetupDatabase extends Database
             $esData = $response->getData();
             if (!isset($esData['_source']['couchdb']['last_seq']))
             {
-                var_dump($esData);
                 if (isset($esData['_type']) && FALSE === $esData['found'])
                 {
                     $this->log("Wait for river start …\n");
