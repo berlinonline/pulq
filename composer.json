@@ -25,47 +25,17 @@
 
     "require": {
         "php": ">=5.3.3",
-        "agavi/agavi": "1.0.*",
-        "zendframework/zend-permissions-acl": "2.2.*",
-        "twig/twig": "1.14.*",
-        "ruflin/elastica": "0.90.*",
-        "PhpDebugToolbar/php-debug-toolbar": "1.6.*",
+        "honeybee/agavi": "1.1.*",
+        "twig/twig": "1.21.*",
         "graste/environaut": "~0.3",
         "psr/log": "1.0.0",
         "monolog/monolog": "1.5",
-        "symfony/console": "~2.4",
+        "symfony/console": "~2.7",
         "csswizardry/inuit.css": "5.0.1",
         "michelf/php-markdown": "~1.0"
     },
 
     "repositories": [
-        {
-            "type": "package",
-            "package": {
-                "name": "agavi/agavi",
-                "version": "1.0.7",
-                "source": {
-                    "url": "http://svn.agavi.org/",
-                    "type": "svn",
-                    "reference": "tags/1.0.7/"
-                }
-            }
-        },
-        {
-            "type": "package",
-            "package": {
-                "name": "PhpDebugToolbar/php-debug-toolbar",
-                "version": "1.6.0",
-                "source": {
-                    "url": "https://github.com/DracoBlue/PhpDebugToolbar.git",
-                    "type": "git",
-                    "reference": "8f829a838dc6dee69dbbc4a4af28295bf07abd0a"
-                },
-                "autoload": {
-                    "classmap": ["lib/agavi/", "PhpDebugToolbar.class.php"]
-                }
-            }
-        },
         {
             "type": "package",
             "package": {

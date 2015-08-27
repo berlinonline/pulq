@@ -49,17 +49,13 @@ install-composer:
 	@if [ ! -f bin/composer.phar ]; then curl -s http://getcomposer.org/installer | php -d allow_url_fopen=1 -d date.timezone="Europe/Berlin" -- --install-dir=./bin; fi
 
 install-dependencies: install-composer
-	@if [ -d vendor/agavi/agavi ]; then svn revert -R vendor/agavi/agavi/ || true ; fi
 	@if [ ! -f bin/composer.phar ]; then make install-composer; fi
 	@if [ -f vendor ]; then rm -rf vendor; fi
 	@php -d allow_url_fopen=1 bin/composer.phar install
-	-@bin/apply-patches
 	@npm update
 
 update-dependencies: install-composer
-	@if [ -d vendor/agavi/agavi ]; then svn revert -R vendor/agavi/agavi/ || true ; fi
 	@php -d allow_url_fopen=1 bin/composer.phar update
-	-@bin/apply-patches
 	@npm update
 
 environment:

@@ -7,7 +7,7 @@
     <xs:import namespace="http://berlinonline.de/schemas/pulq/config/access_control/1.0"
                schemaLocation="parts/access_control.xsd" />
 
-           <xs:redefine schemaLocation="../../../vendor/agavi/agavi/src/config/xsd/_envelope.xsd"
+           <xs:redefine schemaLocation="../../../vendor/honeybee/agavi/src/config/xsd/_envelope.xsd"
                  xmlns:acl="http://berlinonline.de/schemas/pulq/config/access_control/1.0">
         <xs:complexType name="configuration">
             <xs:complexContent>

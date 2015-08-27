@@ -7,7 +7,7 @@
     <xs:import namespace="http://berlinonline.de/schemas/pulq/config/namespaces/1.0"
                schemaLocation="parts/namespaces.xsd" />
 
-           <xs:redefine schemaLocation="../../../vendor/agavi/agavi/src/config/xsd/_envelope.xsd"
+           <xs:redefine schemaLocation="../../../vendor/honeybee/agavi/src/config/xsd/_envelope.xsd"
                  xmlns:ns="http://berlinonline.de/schemas/pulq/config/namespaces/1.0">
         <xs:complexType name="configuration">
             <xs:complexContent>
