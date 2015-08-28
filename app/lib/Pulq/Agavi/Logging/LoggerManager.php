@@ -565,10 +565,6 @@ class LoggerManager extends \AgaviLoggerManager implements ILogger//, \Psr\Log\L
         $extra['first_container_output_type'] = $first_output_type;
         $extra['first_container_module_action_and_view'] = $first_module_action_and_view;
 
-        // see ZendAclSecurityUser or user class defined in factories.xml
-        $extra['raw_user_agent'] = $agavi_context->getUser()->getRawUserAgent();
-        $extra['raw_referer'] = $agavi_context->getUser()->getRawReferer();
-
         $ssh_connection = getenv('SSH_CONNECTION');
         if (!empty($ssh_connection))
         {
