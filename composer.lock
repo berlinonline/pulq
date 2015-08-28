@@ -4,8 +4,24 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "9f8c4fbebed3658a7dcf48ddb55b85e6",
+    "hash": "2771034a096dac2d72be5779f085f7c4",
     "packages": [
+        {
+            "name": "PhpDebugToolbar/php-debug-toolbar",
+            "version": "1.6.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/DracoBlue/PhpDebugToolbar.git",
+                "reference": "8f829a838dc6dee69dbbc4a4af28295bf07abd0a"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "lib/agavi/",
+                    "PhpDebugToolbar.class.php"
+                ]
+            }
+        },
         {
             "name": "csswizardry/inuit.css",
             "version": "5.0.1",
@@ -346,6 +362,58 @@
                 "psr-3"
             ],
             "time": "2012-12-21 11:40:51"
+        },
+        {
+            "name": "ruflin/elastica",
+            "version": "v0.90.10.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ruflin/Elastica.git",
+                "reference": "bb03eb21b96ea88fc6fefb97a7b2c2d7708fdfe2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ruflin/Elastica/zipball/bb03eb21b96ea88fc6fefb97a7b2c2d7708fdfe2",
+                "reference": "bb03eb21b96ea88fc6fefb97a7b2c2d7708fdfe2",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "require-dev": {
+                "munkie/elasticsearch-thrift-php": "1.4.*",
+                "psr/log": "~1.0",
+                "satooshi/php-coveralls": "dev-master"
+            },
+            "suggest": {
+                "monolog/monolog": "Logging request",
+                "munkie/elasticsearch-thrift-php": "Allow using thrift transport",
+                "psr/log": "for logging"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Elastica": "lib/",
+                    "Elastica\\Test": "test/lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache 2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Nicolas Ruflin",
+                    "homepage": "http://ruflin.com/"
+                }
+            ],
+            "description": "Elasticsearch Client",
+            "homepage": "http://elastica.io/",
+            "keywords": [
+                "client",
+                "search"
+            ],
+            "time": "2014-02-02 07:44:29"
         },
         {
             "name": "sensiolabs/security-checker",
