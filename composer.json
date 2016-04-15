@@ -34,7 +34,8 @@
         "monolog/monolog": "1.5",
         "symfony/console": "~2.7",
         "csswizardry/inuit.css": "5.0.1",
-        "michelf/php-markdown": "~1.0"
+        "michelf/php-markdown": "~1.0",
+        "openid/php-openid": "^2.3"
     },
 
     "repositories": [
