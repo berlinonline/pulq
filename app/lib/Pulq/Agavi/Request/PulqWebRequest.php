@@ -12,12 +12,14 @@ class PulqWebRequest extends AgaviWebRequest
         'X_SSL' => 'yes',
     );
 
-    public function initialize(AgaviContext $context, array $parameters = array()) {
+    public function initialize(AgaviContext $context, array $parameters = array())
+    {
         parent::initialize($context, $parameters);
 
         $force_https = false;
-
-        foreach($this->https_headers as $header_name => $header_value) {
+// var_dump($_SERVER);
+// die;
+        foreach ($this->https_headers as $header_name => $header_value) {
             $full_header_name = "HTTP_$header_name";
 
             if (isset($_SERVER[$full_header_name])) {
@@ -31,5 +33,15 @@ class PulqWebRequest extends AgaviWebRequest
             $this->urlPort = 443;
             $this->urlScheme = "https";
         }
+    }
+
+    public function getUrl($scheme = null)
+    {
+        $url_scheme = $scheme ? $scheme : $this->getUrlScheme();
+
+        return
+            $url_scheme . '://' .
+            $this->getUrlAuthority() .
+            $this->getRequestUri();
     }
 }

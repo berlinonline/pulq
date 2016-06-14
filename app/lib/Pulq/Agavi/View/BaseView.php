@@ -76,6 +76,13 @@ class BaseView extends \AgaviView
         $this->request = $this->getContext()->getRequest();
         $this->translationManager = $this->getContext()->getTranslationManager();
         $this->user = $this->getContext()->getUser();
+
+
+        if (!$this->request->isHttps()) {
+            $container->getResponse()->setRedirect(
+                $this->request->getUrl('https')
+            );
+        }
     }
 
     /**
