@@ -70,12 +70,20 @@ class BaseView extends \AgaviView
     public function initialize(\AgaviExecutionContainer $container)
     {
         parent::initialize($container);
-        
+
         $this->controller = $this->getContext()->getController();
         $this->routing = $this->getContext()->getRouting();
         $this->request = $this->getContext()->getRequest();
         $this->translationManager = $this->getContext()->getTranslationManager();
         $this->user = $this->getContext()->getUser();
+
+        $force_https = \AgaviConfig::get('core.force_https_redirect', false);
+
+        if ($force_https && !$this->request->isHttps()) {
+            $container->getResponse()->setRedirect(
+                $this->request->getUrl('https')
+            );
+        }
     }
 
     /**
