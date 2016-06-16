@@ -33,14 +33,4 @@ class PulqWebRequest extends AgaviWebRequest
             $this->urlScheme = "https";
         }
     }
-
-    public function getUrl($scheme = null)
-    {
-        $url_scheme = $scheme ? $scheme : $this->getUrlScheme();
-
-        return
-            $url_scheme . '://' .
-            $this->getUrlAuthority() .
-            $this->getRequestUri();
-    }
 }

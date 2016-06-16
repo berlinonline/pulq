@@ -81,7 +81,7 @@ class BaseView extends \AgaviView
 
         if ($force_https && !$this->request->isHttps()) {
             $container->getResponse()->setRedirect(
-                $this->request->getUrl('https')
+                $this->routing->gen(null, [], [ 'scheme'=>'https' ])
             );
         }
     }
