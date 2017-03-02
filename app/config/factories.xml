@@ -58,6 +58,8 @@
 
         <routing class="AgaviConsoleRouting" />
 
+        <storage class="AgaviNullStorage" />
+
         <user class="AgaviSecurityUser" />
     </ae:configuration>
 
