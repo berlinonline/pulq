@@ -1,7 +1,6 @@
 <?php
 
 use Pulq\Util\Agavi\Action\BaseAction;
-use \AgaviConfig;
 
 class Util_RequireJsAction extends BaseAction
 {

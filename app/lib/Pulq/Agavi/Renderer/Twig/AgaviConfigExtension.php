@@ -1,20 +1,16 @@
 <?php
 namespace Pulq\Agavi\Renderer\Twig;
 
-use \AgaviConfig;
-use \Twig_Extension;
-use \Twig_Function_Method;
-
 /**
  * Twig extension to have AgaviConfig methods available as simple
  * and short functions in twig templates. This should save some keystrokes.
  */
-class AgaviConfigExtension extends Twig_Extension
+class AgaviConfigExtension extends \Twig_Extension
 {
     public function getFunctions()
     {
         return array(
-            'ac' => new Twig_Function_Method($this, 'ac'),
+            'ac' => new \Twig_Function_Method($this, 'ac'),
         );
     }
 
@@ -28,7 +24,7 @@ class AgaviConfigExtension extends Twig_Extension
      */
     public function ac($setting_name, $default_value = null)
     {
-        return AgaviConfig::get($setting_name, $default_value);
+        return \AgaviConfig::get($setting_name, $default_value);
     }
 
     /**

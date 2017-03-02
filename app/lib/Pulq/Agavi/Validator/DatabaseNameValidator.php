@@ -1,15 +1,11 @@
 <?php
 
 namespace Pulq\Agavi\Validator;
-use \AgaviValidator;
-use \AgaviConfig;
-use \AgaviContext;
-use \AgaviDatabaseException;
 
 use Symfony\Component\Console\Helper\DialogHelper;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
-class DatabaseNameValidator extends AgaviValidator
+class DatabaseNameValidator extends \AgaviValidator
 {
     protected function validate()
     {

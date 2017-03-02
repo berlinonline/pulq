@@ -1,13 +1,12 @@
 <?php
 
 use Pulq\Util\Agavi\Action\BaseAction;
-use \AgaviConfig;
 
 class Util_ScssAction extends BaseAction
 {
     public function execute(AgaviRequestDataHolder $rd)
     {
-        if ( AgaviConfig::get('minify.css', false) ) {
+        if ( \AgaviConfig::get('minify.css', false) ) {
             $scss_style = 'compressed';
         } else {
             $scss_style = 'nested';

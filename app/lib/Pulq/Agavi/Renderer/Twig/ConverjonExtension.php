@@ -1,21 +1,17 @@
 <?php
 namespace Pulq\Agavi\Renderer\Twig;
 
-use \AgaviConfig;
-use \Twig_Extension;
-use \Twig_Function_Method;
-
 use Pulq\Services\AssetService;
 
 /**
  * Twig extension to have convenience methods for handling Converjon in templates.
  */
-class ConverjonExtension extends Twig_Extension
+class ConverjonExtension extends \Twig_Extension
 {
     public function getFunctions()
     {
         return array(
-            'cv' => new Twig_Function_Method($this, 'cv'),
+            'cv' => new \Twig_Function_Method($this, 'cv'),
         );
     }
 

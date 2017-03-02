@@ -2,16 +2,6 @@
 
 namespace Pulq\Agavi\Renderer;
 
-use \AgaviConfig;
-use \AgaviFileTemplateLayer;
-use \AgaviTemplateLayer;
-use \AgaviToolkit;
-use \AgaviTwigRenderer;
-use \Twig_Environment;
-use \Twig_Loader_Filesystem;
-use \Twig_Loader_String;
-use \Twig_Template;
-
 use Pulq\Agavi\Renderer\Twig\MarkdownExtension;
 
 /**
@@ -20,7 +10,7 @@ use Pulq\Agavi\Renderer\Twig\MarkdownExtension;
  * and use that in the output_types.xml file.
  *
  */
-class TwigRenderer extends AgaviTwigRenderer
+class TwigRenderer extends \AgaviTwigRenderer
 {
 
     /**
@@ -49,7 +39,7 @@ class TwigRenderer extends AgaviTwigRenderer
         return $twig;
     }
 
-    protected function addMarkdownExtension(Twig_Environment $twig)
+    protected function addMarkdownExtension(\Twig_Environment $twig)
     {
         $md_extension = new MarkdownExtension($engine);
         if (!$twig->hasExtension($md_extension->getName())) {

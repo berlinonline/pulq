@@ -7,8 +7,6 @@ use Elastica;
 use Elastica\Status;
 use Elastica\Search;
 use Elastica\Document;
-use \AgaviDatabaseException;
-use \AgaviDatabaseManager;
 
 class Database extends PulqDatabase
 {
@@ -36,7 +34,7 @@ class Database extends PulqDatabase
     protected $resource;
 
 
-    public function initialize(AgaviDatabaseManager $database_manager, array $parameters = array())
+    public function initialize(\AgaviDatabaseManager $database_manager, array $parameters = array())
     {
         parent::initialize($database_manager, $parameters);
         $this->index_config = $this->getParameter('index');
@@ -50,7 +48,7 @@ class Database extends PulqDatabase
 
             if (! $indexName)
             {
-                throw new AgaviDatabaseException("Missing required index param in current configuration.");
+                throw new \AgaviDatabaseException("Missing required index param in current configuration.");
             }
 
             $this->connection = new Elastica\Client(

@@ -2,7 +2,6 @@
 
 use Pulq\Util\Agavi\Action\BaseAction;
 use Pulq\CodeGen\Config\ModuleConfigBuilder;
-use \AgaviConfig;
 
 class Util_BuildLinksAction extends BaseAction
 {
@@ -22,8 +21,8 @@ class Util_BuildLinksAction extends BaseAction
 
     protected function linkModules()
     {
-        $project_module_dir = AgaviConfig::get('core.app_dir').'/../../project/modules';
-        $module_dir = AgaviConfig::get('core.module_dir');
+        $project_module_dir = \AgaviConfig::get('core.app_dir').'/../../project/modules';
+        $module_dir = \AgaviConfig::get('core.module_dir');
 
         if (is_dir($project_module_dir)) {
             $this->linkDirContents($project_module_dir, $module_dir);
@@ -32,8 +31,8 @@ class Util_BuildLinksAction extends BaseAction
 
     protected function linkPub()
     {
-        $project_pub_dir = AgaviConfig::get('core.app_dir').'/../../project/pub';
-        $pub_dir = AgaviConfig::get('core.app_dir').'/../pub';
+        $project_pub_dir = \AgaviConfig::get('core.app_dir').'/../../project/pub';
+        $pub_dir = \AgaviConfig::get('core.app_dir').'/../pub';
 
         if (is_dir($project_pub_dir)) {
             $this->linkDirContents($project_pub_dir, $pub_dir);
@@ -42,8 +41,8 @@ class Util_BuildLinksAction extends BaseAction
 
     protected function linkConfig()
     {
-        $project_config_dir = AgaviConfig::get('core.app_dir').'/../../project/app/config';
-        $config_dir = AgaviConfig::get('core.app_dir').'/project/config';
+        $project_config_dir = \AgaviConfig::get('core.app_dir').'/../../project/app/config';
+        $config_dir = \AgaviConfig::get('core.app_dir').'/project/config';
 
         if (is_dir($project_config_dir)) {
             $this->linkDirContents($project_config_dir, $config_dir);

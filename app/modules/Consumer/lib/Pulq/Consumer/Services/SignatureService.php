@@ -2,8 +2,6 @@
 
 namespace Pulq\Consumer\Services;
 
-use \AgaviConfig;
-
 class SignatureService
 {
     protected $shared_secret;
@@ -12,7 +10,7 @@ class SignatureService
 
     public function __construct()
     {
-        $shared_secret_path = AgaviConfig::get('consumer.shared_secret_path');
+        $shared_secret_path = \AgaviConfig::get('consumer.shared_secret_path');
 
         $this->shared_secret = file_get_contents($shared_secret_path);
     }

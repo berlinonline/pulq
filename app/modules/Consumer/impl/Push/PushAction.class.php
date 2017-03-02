@@ -1,8 +1,6 @@
 <?php
 
 use Pulq\Consumer\Agavi\Action\BaseAction;
-use \AgaviConfig;
-
 use Pulq\Consumer\Handlers\DocumentHandler;
 use Pulq\Services\AssetService;
 

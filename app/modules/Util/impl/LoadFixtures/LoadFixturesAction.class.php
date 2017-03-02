@@ -1,11 +1,7 @@
 <?php
 
 use Pulq\Util\Agavi\Action\BaseAction;
-
 use Pulq\Consumer\Services\SignatureService;
-
-use \AgaviConfig;
-use \AgaviContext;
 
 class Util_LoadFixturesAction extends BaseAction
 {
@@ -13,7 +9,7 @@ class Util_LoadFixturesAction extends BaseAction
     {
         $fixture_set = $rd->getParameter('fixture');
 
-        $fixtures_dir = AgaviConfig::get('core.fixtures_dir');
+        $fixtures_dir = \AgaviConfig::get('core.fixtures_dir');
 
         $glob = $fixtures_dir.DIRECTORY_SEPARATOR.$fixture_set.DIRECTORY_SEPARATOR.'*';
 
@@ -89,7 +85,7 @@ class Util_LoadFixturesAction extends BaseAction
 
     protected function getPushUrl($id)
     {
-        $routing = AgaviContext::getInstance('web')->getRouting();
+        $routing = \AgaviContext::getInstance('web')->getRouting();
 
         $url = $routing->gen(
             'consumer.push',
@@ -102,7 +98,7 @@ class Util_LoadFixturesAction extends BaseAction
             )
         );
 
-        $env_path = AgaviConfig::get('core.app_dir').'/../etc/local/local.config.php';
+        $env_path = \AgaviConfig::get('core.app_dir').'/../etc/local/local.config.php';
 
         $env = require($env_path);
 

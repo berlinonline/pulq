@@ -2,16 +2,11 @@
 
 namespace Pulq\Agavi\ConfigHandler;
 
-use \AgaviXmlConfigHandler;
-use \AgaviXmlConfigDomDocument;
-use \AgaviToolkit;
-use \AgaviParseException;
-
-class NamespacesConfigHandler extends AgaviXmlConfigHandler
+class NamespacesConfigHandler extends \AgaviXmlConfigHandler
 {
     const XML_NAMESPACE = 'http://berlinonline.de/schemas/pulq/config/namespaces/1.0';
 
-    public function execute(AgaviXmlConfigDomDocument $document)
+    public function execute(\AgaviXmlConfigDomDocument $document)
     {
         $this->resourceActions = array();
         $this->externalRoles = array();
@@ -26,7 +21,7 @@ class NamespacesConfigHandler extends AgaviXmlConfigHandler
             $namespaces = $cfgNode->getChild('namespaces');
             foreach($namespaces->get('namespace') as $namespace) {
                 $name = $namespace->getAttribute('name');
-                $value = AgaviToolkit::expandDirectives($namespace->getValue());
+                $value = \AgaviToolkit::expandDirectives($namespace->getValue());
                 $data[$name] = $value;
             }
         }

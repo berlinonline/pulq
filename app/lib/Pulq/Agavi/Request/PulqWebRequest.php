@@ -2,17 +2,14 @@
 
 namespace Pulq\Agavi\Request;
 
-use \AgaviWebRequest;
-use \AgaviContext;
-
-class PulqWebRequest extends AgaviWebRequest
+class PulqWebRequest extends \AgaviWebRequest
 {
     protected $https_headers = array(
         'HTTPS' => 'yes',
         'X_SSL' => 'yes',
     );
 
-    public function initialize(AgaviContext $context, array $parameters = array())
+    public function initialize(\AgaviContext $context, array $parameters = array())
     {
         parent::initialize($context, $parameters);
 

@@ -1,8 +1,8 @@
 <?php
 
 namespace Pulq\Consumer\Handlers;
-use \AgaviConfig;
-use \Exception;
+
+use Pulq\Exceptions\AssetException;
 use Pulq\Services\AssetService;
 use Pulq\Data\Asset;
 

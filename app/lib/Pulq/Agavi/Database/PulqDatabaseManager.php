@@ -2,9 +2,7 @@
 
 namespace Pulq\Agavi\Database;
 
-use \AgaviDatabaseManager;
-
-class PulqDatabaseManager extends AgaviDatabaseManager
+class PulqDatabaseManager extends \AgaviDatabaseManager
 {
     public function getDatabaseNames()
     {

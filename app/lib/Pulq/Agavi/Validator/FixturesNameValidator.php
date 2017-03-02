@@ -5,10 +5,7 @@ namespace Pulq\Agavi\Validator;
 use Symfony\Component\Console\Helper\DialogHelper;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
-use \AgaviConfig;
-use \AgaviValidator;
-
-class FixturesNameValidator extends AgaviValidator
+class FixturesNameValidator extends \AgaviValidator
 {
     public function validate()
     {
@@ -52,7 +49,7 @@ class FixturesNameValidator extends AgaviValidator
 
     protected function getFixtureSets()
     {
-        $fixtures_dir = AgaviConfig::get('core.fixtures_dir');
+        $fixtures_dir = \AgaviConfig::get('core.fixtures_dir');
 
         $dirs = glob($fixtures_dir.DIRECTORY_SEPARATOR.'*', GLOB_ONLYDIR);
 

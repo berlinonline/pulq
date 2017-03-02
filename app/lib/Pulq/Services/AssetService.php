@@ -2,8 +2,6 @@
 
 namespace Pulq\Services;
 
-use \AgaviConfig;
-use \AgaviContext;
 use Pulq\Exceptions\AssetException;
 use Pulq\Data\Asset;
 
@@ -18,7 +16,7 @@ class AssetService extends BaseElasticSearchService
     public function __construct()
     {
         parent::__construct();
-        $this->asset_directory = AgaviConfig::get('core.asset_directory');
+        $this->asset_directory = \AgaviConfig::get('core.asset_directory');
 
         if (!$this->asset_directory) {
             throw new AssetException("No asset directory is configured or directory doesn't exist!");
@@ -52,8 +50,8 @@ class AssetService extends BaseElasticSearchService
 
     public function getAssetUrl(Asset $asset)
     {
-        $base_href = AgaviContext::getInstance()->getRouting()->getBaseHref();
-        $asset_url_path = AgaviConfig::get('core.asset_url_path');
+        $base_href = \AgaviContext::getInstance()->getRouting()->getBaseHref();
+        $asset_url_path = \AgaviConfig::get('core.asset_url_path');
         return $base_href . $asset_url_path . '/'. $this->getRelativeAssetPath($asset);
     }
 
@@ -61,7 +59,7 @@ class AssetService extends BaseElasticSearchService
     {
         $params['url'] = urlencode($url);
 
-        $converjon_url = AgaviConfig::get('converjon.base_url', "http://localhost/") . "?";
+        $converjon_url = \AgaviConfig::get('converjon.base_url', "http://localhost/") . "?";
 
         $paramsString = '';
 

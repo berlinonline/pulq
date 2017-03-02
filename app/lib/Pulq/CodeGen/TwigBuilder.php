@@ -2,10 +2,6 @@
 
 namespace Pulq\CodeGen;
 
-use \Twig_Loader_Filesystem;
-use \Twig_Environment;
-use \AgaviConfig;
-
 class TwigBuilder
 {
     protected $twig;
@@ -13,9 +9,9 @@ class TwigBuilder
 
     public function __construct()
     {
-        $loader = new Twig_Loader_Filesystem($this->getTemplateDirs());
-        $this->twig = new Twig_Environment($loader, array(
-            'cache' => AgaviConfig::get('core.cache_dir').'/twig',
+        $loader = new \Twig_Loader_Filesystem($this->getTemplateDirs());
+        $this->twig = new \Twig_Environment($loader, array(
+            'cache' => \AgaviConfig::get('core.cache_dir').'/twig',
         ));
     }
 

@@ -3,8 +3,6 @@
 namespace Pulq\CodeGen\Agavi;
 
 use Pulq\CodeGen\TwigBuilder;
-use \AgaviConfig;
-use \Exception;
 
 class ModuleBuilder extends TwigBuilder
 {
@@ -15,7 +13,7 @@ class ModuleBuilder extends TwigBuilder
 
     public function __construct($module_name)
     {
-        $this->module_dir = AgaviConfig::get('core.app_dir') .
+        $this->module_dir = \AgaviConfig::get('core.app_dir') .
             '/../../project/modules/' . $module_name;
 
         $this->module_name = $module_name;
@@ -44,7 +42,7 @@ class ModuleBuilder extends TwigBuilder
             if (!is_dir($dir_path)) {
                 $success = mkdir($dir_path, self::DIR_MODE, $recursive = true);
                 if (!$success) {
-                    throw new Exception("Could not create directory $dir_path");
+                    throw new \Exception("Could not create directory $dir_path");
                 }
             }
         }

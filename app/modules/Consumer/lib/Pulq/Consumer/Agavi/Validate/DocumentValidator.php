@@ -2,10 +2,9 @@
 
 namespace Pulq\Consumer\Agavi\Validate;
 
-use \AgaviValidator;
 use Pulq\Consumer\Services\SignatureService;
 
-class DocumentValidator extends AgaviValidator
+class DocumentValidator extends \AgaviValidator
 {
     protected function validate()
     {

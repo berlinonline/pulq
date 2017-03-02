@@ -2,10 +2,6 @@
 
 namespace Pulq\Consumer\Handlers;
 
-use \AgaviConfig;
-use \AgaviContext;
-use \Exception;
-
 use Elastica\Document;
 
 class DocumentHandler
@@ -33,9 +29,9 @@ class DocumentHandler
 
         $this->document = $document;
 
-        $database_name = AgaviConfig::get('consumer.database', 'default');
+        $database_name = \AgaviConfig::get('consumer.database', 'default');
 
-        $database = AgaviContext::getInstance()
+        $database = \AgaviContext::getInstance()
             ->getDatabaseManager()->getDatabase($database_name);
 
         $this->es_index = $database->getResource();
