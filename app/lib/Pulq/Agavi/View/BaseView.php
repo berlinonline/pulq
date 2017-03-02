@@ -77,12 +77,14 @@ class BaseView extends \AgaviView
         $this->translationManager = $this->getContext()->getTranslationManager();
         $this->user = $this->getContext()->getUser();
 
-        $force_https = \AgaviConfig::get('core.force_https_redirect', false);
+        if ($this->request instanceof \AgaviWebRequest) {
+            $force_https = \AgaviConfig::get('core.force_https_redirect', false);
 
-        if ($force_https && !$this->request->isHttps()) {
-            $container->getResponse()->setRedirect(
-                $this->routing->gen(null, [], [ 'scheme'=>'https' ])
-            );
+            if ($force_https && !$this->request->isHttps()) {
+                $container->getResponse()->setRedirect(
+                    $this->request->getUrl('https')
+                );
+            }
         }
     }
 
