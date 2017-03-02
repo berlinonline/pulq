@@ -20,6 +20,6 @@ if [ -z "$ENVIRONMENT" ] ; then
     echo "[Executing] `which rlwrap` $PHP -d html_errors=off -f `dirname $0`/cli.php $@"
     PHP=$PHP `which rlwrap` $PHP -d html_errors=off -f "`dirname $0`/cli.php" -- "$@"
 else
-    echo "[Executing] `which rlwrap` $ENVIRONMENT $PHP -d html_errors=off -f `dirname $0`/cli.php $@"
+    echo "[Executing] $ENVIRONMENT $PHP -d html_errors=off -f `dirname $0`/cli.php $@"
     PHP=$PHP ENVIRONMENT=$ENVIRONMENT $PHP -d html_errors=off -f "`dirname $0`/cli.php" -- "$@"
 fi
