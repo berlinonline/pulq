@@ -24,13 +24,11 @@ class TwigRenderer extends \AgaviTwigRenderer
 
         $this->addMarkdownExtension($twig);
 
-        foreach ($this->getParameter('extensions', array()) as $extension_class_name)
-        {
+        foreach ($this->getParameter('extensions', array()) as $extension_class_name) {
             $ext = new $extension_class_name();
 
             // as the renderer is reusable it may have the extension already
-            if (!$twig->hasExtension($ext->getName()))
-            {
+            if (!$twig->hasExtension($ext->getName())) {
                 $twig->addExtension($ext);
             }
         }
@@ -41,7 +39,7 @@ class TwigRenderer extends \AgaviTwigRenderer
 
     protected function addMarkdownExtension(\Twig_Environment $twig)
     {
-        $md_extension = new MarkdownExtension($engine);
+        $md_extension = new MarkdownExtension($twig);
         if (!$twig->hasExtension($md_extension->getName())) {
             $twig->addExtension($md_extension);
         }
