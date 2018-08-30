@@ -12,7 +12,7 @@
                  call does not explicitly mention it. The matched "language" parameter will not be available
                  as a request parameter in the code, because it's "ignore"d
             -->
-            <route pattern="^/({locale:[a-z]{2}(_[A-Z]{2})?})" stop="false" imply="true" cut="true" locale="${locale}">
+            <route name="locale" pattern="^/({locale:[a-z]{2}(_[A-Z]{2})?})" stop="false" imply="true" cut="true" locale="${locale}">
                 <callbacks>
                     <callback class="Pulq\Agavi\Routing\LanguageRoutingCallback" />
                 </callbacks>
