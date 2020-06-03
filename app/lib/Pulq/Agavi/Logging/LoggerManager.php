@@ -219,7 +219,9 @@ class LoggerManager extends \AgaviLoggerManager implements ILogger//, \Psr\Log\L
         $logger_message->setParameter('scope', trim($scope));
 
         // might be a PSR-3 compatible log call with templated message and context array
-        if (2 === count($log_message_parts) && is_string($log_message_parts[0]) && self::isAssoc($log_message_parts[1]) && (false !== strpos($log_message_parts[0], '{')))
+        if (is_countable($log_message_parts) && 2 === count($log_message_parts)
+            && is_string($log_message_parts[0]) && self::isAssoc($log_message_parts[1])
+            && (false !== strpos($log_message_parts[0], '{')))
         {
             $logger_message->setParameter('psr3.context', $log_message_parts[1]);
             $logger_message->setLevel(Logger::getAgaviLogLevel($log_level));
