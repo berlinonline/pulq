@@ -27,7 +27,7 @@
         "php": ">=5.3.3",
         "honeybee/agavi": "1.1.*",
         "ruflin/elastica": "0.90.*",
-        "PhpDebugToolbar/php-debug-toolbar": "1.6.*",
+        "phpdebugtoolbar/php-debug-toolbar": "1.6.*",
         "twig/twig": "1.42.5",
         "graste/environaut": "~0.3",
         "psr/log": "1.0.0",
